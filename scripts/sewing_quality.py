@@ -99,8 +99,19 @@ def evaluate(vertices, flat_rest, faces, sewing_pairs, target, initial_vertices)
         raise ValueError("Non-finite 3D face area")
     # Reversal relative to original orientation is a fold warning, NOT a proof
     # of self-intersection. A zero-area triangle is tracked separately.
-    reverse_count = int(np.count_nonzero(oriented < -1e-15))
+    reverse_indices = np.flatnonzero(oriented < -1e-15)
+    reverse_count = int(len(reverse_indices))
     collapsed_count = int(np.count_nonzero(face_area < 1e-12))
+    # Actionable evidence: identify where the fold warnings occur rather than
+    # presenting a bare count. Indices use the two-triangle-per-quad layout.
+    reverse_samples = [
+        {
+            "quad_face_index": int(t % len(quad)),
+            "triangle_of_quad": int(t // len(quad)),
+            "rest_longitudinal_center_mm": float(rest[tri[t], 1].mean() * 1000)
+        }
+        for t in reverse_indices[:40]
+    ]
     aligned = rigid_alignment(xyz, goal)
     correspondence = np.linalg.norm(aligned - goal, axis=1)
     unaligned = np.linalg.norm(xyz - goal, axis=1)
@@ -134,6 +145,7 @@ def evaluate(vertices, flat_rest, faces, sewing_pairs, target, initial_vertices)
             "p95_abs_principal_strain": float(np.quantile(abs_strain, .95)),
             "area_3d_over_flat_rest": float(face_area.sum() / rest_area),
             "orientation_reversed_vs_initial": reverse_count,
+            "orientation_reversal_samples": reverse_samples,
             "near_zero_area_triangles": collapsed_count,
         },
         "limitations": [
