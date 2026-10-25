@@ -43,7 +43,9 @@ def test_refuse_incompatible_schema():
 
 
 def test_cli_no_overwrite(tmp_path):
-    import json,subprocess,sys
+    import json
+    import subprocess
+    import sys
     spec=tmp_path/"source.json"
     out=tmp_path/"design.svg"
     spec.write_text(json.dumps(caps.make()))

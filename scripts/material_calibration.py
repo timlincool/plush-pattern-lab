@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate measured directional fabric swatch curves (engineering research, not stuffing FEM)."""
-import argparse, json
+import argparse
+import json
 from pathlib import Path
 import numpy as np
 

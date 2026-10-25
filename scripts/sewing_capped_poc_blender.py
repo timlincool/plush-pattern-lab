@@ -19,38 +19,7 @@ from sewing_quality import evaluate
 from audit_stitched_shell import inspect_welded_shell
 
 
-def main():
-    p=argparse.ArgumentParser(description=__doc__)
-    for key in ("spec","output","report"):
-        p.add_argument("--"+key,type=Path,required=True)
-    p.add_argument("--frames",type=int,default=48)
-    p.add_argument("--self-collision",action="store_true",help="Enable measured finite cloth self-contact proxy")
-    a=p.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else [])
-    if not a.spec.is_file() or a.output.exists() or a.report.exists():
-        raise RuntimeError("Source missing or protected output already exists")
-    if not 24<=a.frames<=120:
-        raise RuntimeError("Frame count outside research bounds")
-    spec=json.loads(a.spec.read_text(encoding="utf8"))
-    if spec.get("schema")!="synthetic-capped-plush-pattern-v1":
-        raise RuntimeError("Not a verified capped research pattern")
-    par=spec["parameters"]
-    n=int(par["panels"]);N=int(par["segments"])+1
-    if not (6<=n<=24 and 25<=N<=257 and len(spec["sewing_pairs"])==3*n):
-        raise RuntimeError("Expected N gores + two caps stitch contract")
-    R=float(par["radius_mm"])*.001
-    H=float(par["half_height_mm"])*.001
-    angles=np.asarray(spec["geometry"]["theta_radians"],dtype=float)
-    radial=np.asarray(spec["geometry"]["radial_mm"],dtype=float)*.001
-    z=np.asarray(spec["geometry"]["z_mm"],dtype=float)*.001
-    left=np.asarray(spec["gore"]["left_stitch_2d_mm"],dtype=float)
-    right=np.asarray(spec["gore"]["right_stitch_2d_mm"],dtype=float)
-    if any(len(v)!=N for v in (angles,radial,z,left,right)):
-        raise RuntimeError("Discontinuous source profile")
-    if min(radial)<=0 or abs(left[0,0]+right[0,0])>1e-10:
-        raise RuntimeError("Tip ring is not a symmetric non-zero open section")
-    if par["pole_cut_deg"]<=0:
-        raise RuntimeError("Untrimmed zero-radius pole forbidden")
-    bpy.ops.wm.read_factory_settings(use_empty=True)
+def _build_geometry(spec, n, N, H, radial, z, right):
     verts,rest,reference,faces,loose,pairs,face_class=[],[],[],[],[],[],[]
     outward_offset=.003  # 3mm *known-reference assisted* initial panel separation
 
@@ -139,6 +108,41 @@ def main():
         if np.linalg.norm(np.cross(v1-v0,v3-v0)) < 1e-12:
             raise RuntimeError("Degenerate initial mesh face at index "+str(f))
 
+    return verts, rest, reference, faces, loose, pairs, face_class
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    for key in ("spec","output","report"):
+        p.add_argument("--"+key,type=Path,required=True)
+    p.add_argument("--frames",type=int,default=48)
+    p.add_argument("--self-collision",action="store_true",help="Enable measured finite cloth self-contact proxy")
+    a=p.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else [])
+    if not a.spec.is_file() or a.output.exists() or a.report.exists():
+        raise RuntimeError("Source missing or protected output already exists")
+    if not 24<=a.frames<=120:
+        raise RuntimeError("Frame count outside research bounds")
+    spec=json.loads(a.spec.read_text(encoding="utf8"))
+    if spec.get("schema")!="synthetic-capped-plush-pattern-v1":
+        raise RuntimeError("Not a verified capped research pattern")
+    par=spec["parameters"]
+    n=int(par["panels"]);N=int(par["segments"])+1
+    if not (6<=n<=24 and 25<=N<=257 and len(spec["sewing_pairs"])==3*n):
+        raise RuntimeError("Expected N gores + two caps stitch contract")
+    H=float(par["half_height_mm"])*.001
+    angles=np.asarray(spec["geometry"]["theta_radians"],dtype=float)
+    radial=np.asarray(spec["geometry"]["radial_mm"],dtype=float)*.001
+    z=np.asarray(spec["geometry"]["z_mm"],dtype=float)*.001
+    left=np.asarray(spec["gore"]["left_stitch_2d_mm"],dtype=float)
+    right=np.asarray(spec["gore"]["right_stitch_2d_mm"],dtype=float)
+    if any(len(v)!=N for v in (angles,radial,z,left,right)):
+        raise RuntimeError("Discontinuous source profile")
+    if min(radial)<=0 or abs(left[0,0]+right[0,0])>1e-10:
+        raise RuntimeError("Tip ring is not a symmetric non-zero open section")
+    if par["pole_cut_deg"]<=0:
+        raise RuntimeError("Untrimmed zero-radius pole forbidden")
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    verts,rest,reference,faces,loose,pairs,face_class = _build_geometry(spec, n, N, H, radial, z, right)
     mesh=bpy.data.meshes.new("SYNTHETIC_CAPPED_2D_REST_CLOTH")
     mesh.from_pydata(verts,loose,faces)
     mesh.update()

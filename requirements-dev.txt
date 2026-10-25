@@ -4,3 +4,4 @@ shapely>=2.0,<3
 pytest>=8,<10
 
 PyYAML>=6.0.2,<7
+ruff==0.17.2

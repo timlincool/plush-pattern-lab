@@ -1,5 +1,6 @@
 """Blender Cloth smoke test: a 8x8 plane must fall under gravity."""
-import json,sys
+import json
+import sys
 from pathlib import Path
 import bpy
 import numpy as np

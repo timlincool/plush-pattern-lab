@@ -9,3 +9,13 @@
 PR 建议每次只解决一种可证伪的问题：缝线长度、展开畸变、经纬布向、裁片缺口、碰撞稳定性或材料标定。数值求解通过不等于实物生产可行。
 
 更多安全规则与 GitHub 网页设置：[PR_SECURITY.md](docs/PR_SECURITY.md)。Codeowners 文件本身不会代替 branch Ruleset 保护。
+
+## 代码质量（合并前由维护者在可信环境执行）
+
+```bash
+python scripts/check_quality_limits.py
+ruff check scripts tests --ignore-noqa
+python -m pytest -q
+```
+
+圈复杂度 **C901 ≤20**、Python 文件 **≤2000 行**是硬门槛，不接受 `noqa` 跳过检测；禁止为通过检查直接提高阈值。此项目不自动运行陌生 PR，必须先看完整 Diff，再在无私人密钥的隔离环境中做验证；主分支绿灯不是陌生 PR 的自动审查。完整说明见 [QUALITY_GATES.md](docs/QUALITY_GATES.md)。

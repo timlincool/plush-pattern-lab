@@ -3,7 +3,9 @@
 
 This is NOT a fabric feasibility decision until actual textile data are available.
 """
-import argparse, json, sys
+import argparse
+import json
+import sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from plush_gore_pattern import generate

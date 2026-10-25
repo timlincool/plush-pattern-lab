@@ -26,7 +26,8 @@ def test_reports_geometric_strain_not_manufacturing_approval():
     assert d["2d_to_3d_sewing_simulated"] is False
 
 def test_output_non_destructive(tmp_path):
-    import subprocess, sys
+    import subprocess
+    import sys
     out=tmp_path/"gore"
     cmd=[sys.executable,str(SOURCE),"--out-prefix",str(out)]
     assert subprocess.run(cmd,capture_output=True).returncode==0
