@@ -7,6 +7,7 @@ remain independent meshes within one object and connected by loose sewing edges.
 import argparse
 import json
 import math
+import time
 import sys
 from pathlib import Path
 
@@ -23,6 +24,7 @@ def main():
     for key in ("spec","output","report"):
         p.add_argument("--"+key,type=Path,required=True)
     p.add_argument("--frames",type=int,default=48)
+    p.add_argument("--self-collision",action="store_true",help="Enable measured finite cloth self-contact proxy")
     a=p.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else [])
     if not a.spec.is_file() or a.output.exists() or a.report.exists():
         raise RuntimeError("Source missing or protected output already exists")
@@ -160,8 +162,16 @@ def main():
     settings.shear_stiffness=8.0
     settings.bending_stiffness=.5
     settings.use_pressure=False
-    mod.collision_settings.use_collision=False
-    mod.collision_settings.use_self_collision=False
+    collision=mod.collision_settings
+    collision.use_collision=bool(a.self_collision)
+    collision.use_self_collision=bool(a.self_collision)
+    if a.self_collision:
+        # Blender 4.3.2 uses metres for separation distances; this is an
+        # assumed 1mm proxy thickness, NOT measured backing material thickness.
+        collision.collision_quality=3
+        collision.distance_min=.001
+        collision.self_distance_min=.001
+        collision.self_friction=5.0
     scene=bpy.context.scene
     scene.gravity=(0,0,0)
     scene.frame_start=1
@@ -179,6 +189,7 @@ def main():
     start=np.asarray(verts,dtype=float)
     init=gaps(start)
     final=None;trail=[]
+    started=time.monotonic()
     for frame in range(1,a.frames+1):
         scene.frame_set(frame)
         evaluated=obj.evaluated_get(dep)
@@ -196,6 +207,7 @@ def main():
         if frame%16==0:
             print("CAPPED_SEW_FRAME",frame,gaps(xyz),flush=True)
         final=xyz
+    simulation_elapsed_s=round(time.monotonic()-started,3)
     initial_quality=evaluate(start,np.asarray(rest),faces,pairs,np.asarray(reference),start)
     final_quality=evaluate(final,np.asarray(rest),faces,pairs,np.asarray(reference),start)
     end=gaps(final)
@@ -216,7 +228,10 @@ def main():
         "side_stitches":n*(N-2),"cap_stitches":6*n,
         "total_sewing_springs":len(pairs),
         "frames":a.frames,"gravity":0,"pressure_enabled":False,
-        "self_collision_enabled":False,
+        "self_collision_enabled":bool(collision.use_self_collision),
+        "collision_assumed_thickness_mm":1.0 if a.self_collision else None,
+        "collision_quality":int(collision.collision_quality) if a.self_collision else None,
+        "solver_elapsed_seconds":simulation_elapsed_s,
         "prepositioning":"analytic target assisted, gores offset 3mm",
         "initial":init,"final":end,"trace":trail,
         "initial_geometry_quality":initial_quality,
@@ -228,7 +243,8 @@ def main():
             for x in reversed_samples],
         "not_verified":[
             "Seam vertices are only analytically identified; Blender Cloth remains independent surface pieces",
-            "No physical seal, tested self/inter-panel contact or confirmed fully sewn shell",
+            "Blender self-collision flag alone cannot prove collision-free cloth; no independent triangle-intersection audit",
+            "No physical seal, tested inter-panel contact certification or confirmed fully sewn shell",
             "No measured fabric properties or physically simulated polyester fill",
             "No independent reference reconstruction: initialization uses target",
             "Seam matching and reduction do not establish manufacturability",
