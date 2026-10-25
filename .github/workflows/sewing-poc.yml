@@ -2,7 +2,7 @@ name: Synthetic 2D-pattern sewing PoC
 on:
   workflow_dispatch:
   push:
-    branches: [main, work/sewing-quality-gate-20261025]
+    branches: [main]
     paths:
       - 'scripts/sewing_poc_blender.py'
       - 'scripts/cloth_solver_canary.py'
