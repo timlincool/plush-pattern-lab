@@ -3,12 +3,15 @@ import argparse, json, sys
 from pathlib import Path
 import bpy
 import numpy as np
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from sewing_quality import evaluate
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ("spec","output","report"):
         p.add_argument("--"+key,type=Path,required=True)
     p.add_argument("--frames",type=int,default=48)
+    p.add_argument("--placement",choices=("legacy","reference_offset"),default="legacy")
     a=p.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else [])
     if not a.spec.is_file() or a.output.exists() or a.report.exists():
         raise RuntimeError("Input absent / outputs exist")
@@ -25,7 +28,7 @@ def main():
     if len(data["sewing_pairs"])!=n:
         raise RuntimeError("Stitch pairing graph incomplete")
     bpy.ops.wm.read_factory_settings(use_empty=True)
-    vertices,rest,faces,loose,seams=[],[],[],[],[]
+    vertices,rest,faces,loose,seams,reference=[],[],[],[],[],[]
     rad=par["radius_mm"]*.001
     half=par["half_height_mm"]*.001
     height=max(q[1] for q in right)
@@ -36,15 +39,29 @@ def main():
         start=len(vertices)
         for j in range(N):
             yy=right[j][1]
+            theta=np.pi*j/(N-1)
             f=yy/height
             radius=(.30+.70*np.sin(np.pi*f))*rad
             # Pole rows otherwise contain coincident vertices and zero-area quads.
             # Use a 0.035mm numerical cap; this is NOT an approved seam allowance.
             half_width=.035 if j in (0,N-1) else abs(right[j][0])
-            for x in (-half_width,0.,half_width):
-                pos=radius*outward+x*.001*tangent+np.array([0,0,half*(1-2*f)])
+            for slot,x in enumerate((-half_width,0.,half_width)):
+                angle=az+(slot-1)*np.pi/n
+                goal=np.array((rad*np.sin(theta)*np.cos(angle),
+                               rad*np.sin(theta)*np.sin(angle),
+                               half*np.cos(theta)),dtype=float)
+                if a.placement=="reference_offset":
+                    # Known target assists *pre-positioning*; not independent
+                    # reconstruction. Small panel radial displacement gives
+                    # sewing springs a real gap to close.
+                    pos=goal + .004*outward
+                    if j in (0,N-1):
+                        pos=pos + x*.001*tangent  # non-degenerate pole cap
+                else:
+                    pos=radius*outward+x*.001*tangent+np.array([0,0,half*(1-2*f)])
                 vertices.append(tuple(pos))
                 rest.append((x*.001+i*.20,yy*.001,0.))
+                reference.append(tuple(goal))
         for j in range(N-1):
             v=start+3*j;w=v+3
             faces.append((v,w,w+1,v+1))
@@ -88,7 +105,8 @@ def main():
     modifier.collision_settings.use_collision=False
     modifier.collision_settings.use_self_collision=False
     scene=bpy.context.scene
-    scene.gravity=(0,0,-9.81)  # Canary: prove solver actually advances, not a no-force static frame
+    # Isolate sewing forces; the independent cloth_solver_canary.py tests gravity.
+    scene.gravity=(0,0,0)
     scene.frame_start=1
     scene.frame_end=a.frames
     modifier.point_cache.frame_start=1
@@ -116,24 +134,38 @@ def main():
         last=xyz
         if frame%12==0:print("SEW_FRAME",frame,gap(xyz),flush=True)
     final=gap(last)
+    rest_xy=np.asarray(rest,dtype=float)[:,:2]
+    reference_xyz=np.asarray(reference,dtype=float)
+    initial_quality=evaluate(np.asarray(vertices,dtype=float),rest_xy,faces,seams,
+                             reference_xyz,np.asarray(vertices,dtype=float))
+    final_quality=evaluate(last,rest_xy,faces,seams,reference_xyz,
+                           np.asarray(vertices,dtype=float))
+    if not np.isfinite(final_quality["strain"]["max_abs_principal_strain"]):
+        raise RuntimeError("The cloth deformation gradient is nonfinite")
     out={
         "status":"ACTUAL_CLOTH_SEWING_SPRINGS_NUMERICAL_TRIAL",
         "blender":bpy.app.version_string,
         "frames":a.frames,
         "synthetic_panel_count":n,
+        "preposition_mode":a.placement,
+        "reference_assisted_initialization":a.placement=="reference_offset",
         "seam_spring_edges":len(seams),
         "mesh_vertices":len(vertices),
         "mesh_faces":len(faces),
         "rest_shape_key":"Flat2DRestPattern",
         "used_sewing_springs":bool(setting.use_sewing_springs),
         "pressure_enabled":bool(setting.use_pressure),
-        "gravity_m_s2":-9.81,
+        "gravity_m_s2":0.0,
         "initial":initial,"final":final,"trace":trace,
+        "initial_geometry_quality":initial_quality,
+        "final_geometry_quality":final_quality,
         "gap_reduction_ratio":1-final["mean_gap_mm"]/initial["mean_gap_mm"],
         "limitations":[
             "Synthetic ellipsoid, not an alpaca model",
+            "Reference-offset placement uses known synthetic target for initialization",
             "No final welded shell, tension/contact certification",
-            "No gravity, measured material, stuffing or manufacturability validation"]}
+            "No measured material, stuffing or manufacturability validation",
+            "Rigid-aligned error is measured to synthetic geometry, not the user's plush"]}
     a.report.parent.mkdir(parents=True,exist_ok=True)
     a.report.write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
     snapshot=bpy.data.meshes.new("FINAL_FRAME_SNAPSHOT_MESH")
