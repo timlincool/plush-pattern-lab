@@ -3,6 +3,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from audit_self_intersections_blender import audit_geometry
 
 
