@@ -5,3 +5,6 @@
 /tests/ @timlincool
 /SECURITY.md @timlincool
 /.github/CODEOWNERS @timlincool
+/ruff.toml @timlincool
+/scripts/check_quality_limits.py @timlincool
+/tests/test_quality_limits.py @timlincool

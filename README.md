@@ -40,6 +40,8 @@ Python 3.11+：
 
 ```bash
 python -m pip install -r requirements-dev.txt
+python scripts/check_quality_limits.py
+ruff check scripts tests --ignore-noqa
 python -m pytest -q
 ```
 
@@ -88,7 +90,7 @@ blender --disable-autoexec -b input.blend --python scripts/audit_physical_shell.
 
 ## 参与贡献
 
-请提交可复现测试、输入来源、计算误差、失败反例及制造限制。外部 PR 使用只读 CI；包含大模型的仿真由维护者在可信输入上手动触发。参考 [CONTRIBUTING.md](CONTRIBUTING.md)。
+请提交可复现测试、输入来源、计算误差、失败反例及制造限制。外部 PR 不自动执行 Python、依赖安装或 Blender CI；维护者先审查，再在受信任的主分支验证。参考 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 
 ## 第三方 PR 安全策略
@@ -99,3 +101,7 @@ blender --disable-autoexec -b input.blend --python scripts/audit_physical_shell.
 ## 物理穿插风险（研究现状）
 
 已对真实保存的合成布壳运行独立 **Blender BVH 非相邻三角面相交检查**。即使缝口和闭壳拓扑的研究门禁通过，开启 Cloth 自碰撞的版本仍检测到穿插，因此新的接触晋升门禁会明确**拒绝**它；详见 [接触审计与当前失败证据](docs/CONTACT_INTERSECTION_SCREEN.md)。不能将可运行的 `.blend` 当作经验证的生产纸样。
+
+## 可维护性门禁
+
+所有受信任主分支 CI 执行 [静态质量门禁](docs/QUALITY_GATES.md)：Ruff 语法/未定义变量/危险动态执行检查、**McCabe 圈复杂度 ≤20**，以及 **Python 单文件 ≤2000 行**。这些限制会导致主分支 CI 失败，但由于不自动执行外部 PR，**不能将其误称为已强制阻止不可信 PR 合并**；预合并必须经人工检查及隔离验证。
