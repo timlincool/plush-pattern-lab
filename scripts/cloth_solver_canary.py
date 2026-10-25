@@ -3,7 +3,10 @@ import json,sys
 from pathlib import Path
 import bpy
 import numpy as np
-path=Path(sys.argv[sys.argv.index("--")+1])
+args=sys.argv[sys.argv.index("--")+1:]
+path=Path(args[0])
+mode=args[1] if len(args)>1 else "plain"
+if mode not in ("plain","rest"):raise ValueError("Invalid canary mode")
 if path.exists():raise FileExistsError(path)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 verts=[(i*.02,j*.02,.2) for j in range(8) for i in range(8)]
@@ -17,7 +20,13 @@ mesh.from_pydata(verts,[],faces)
 mesh.update()
 obj=bpy.data.objects.new("gravity_cloth_canary",mesh)
 bpy.context.scene.collection.objects.link(obj)
+rest=None
+if mode=="rest":
+    obj.shape_key_add(name="Basis",from_mix=False)
+    rest=obj.shape_key_add(name="Rest",from_mix=False)
 mod=obj.modifiers.new("cloth","CLOTH")
+if rest is not None:
+    mod.settings.rest_shape_key=rest
 mod.settings.mass=.01
 mod.settings.quality=4
 scene=bpy.context.scene
@@ -38,6 +47,6 @@ for frame in range(1,25):
         measures.append({"frame":frame,"mean_z":float(z.mean()),"range":float(np.ptp(z))})
 path.parent.mkdir(parents=True,exist_ok=True)
 path.write_text(json.dumps(measures,indent=2))
-print("CANARY",measures,flush=True)
+print("CANARY",mode,measures,flush=True)
 if measures[-1]["mean_z"] >= measures[0]["mean_z"]-.001:
     raise RuntimeError("Cloth gravity integration absent")
