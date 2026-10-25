@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/sewing_capped_poc_blender.py'
+      - 'scripts/audit_self_intersections_blender.py'
+      - 'scripts/verify_bvh_intersection_canary.py'
       - '.github/workflows/selfcollision-ab.yml'
   workflow_dispatch:
 permissions:
@@ -29,6 +31,8 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - name: Install geometry tools
         run: python -m pip install -r requirements-dev.txt
+      - name: Refuse fake contact pass, corrupt input, and missing evidence
+        run: python -m pytest -q tests/test_contact_integrity.py
       - name: Synthesize clean 12-gore + two-cap rest pattern
         shell: bash
         run: |
@@ -47,6 +51,13 @@ jobs:
           B="$RUNNER_TEMP/blender-4.3.2-linux-x64/blender"
           [[ "$("$B" --version)" == *"Blender 4.3.2"* ]]
           echo "BLENDER=$B" >> "$GITHUB_ENV"
+      - name: Independent deliberately crossing / separated triangle canaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/verify_bvh_intersection_canary.py -- \
+            --report "$RUNNER_TEMP/collision/bvh_canary.json"
       - name: Same pattern, zero gravity, collisions OFF / ON
         shell: bash
         run: |
@@ -63,6 +74,27 @@ jobs:
               --report "$RUNNER_TEMP/collision/$MODE.json" \
               --output "$RUNNER_TEMP/collision/$MODE.research_gate.json"
           done
+      - name: Independently reopen two saved .blend snapshots and classify nonadjacent triangle intersections
+        shell: bash
+        run: |
+          set -euo pipefail
+          for MODE in disabled enabled; do
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+              --python scripts/audit_self_intersections_blender.py -- \
+              --input "$RUNNER_TEMP/collision/$MODE.blend" \
+              --case-report "$RUNNER_TEMP/collision/$MODE.json" \
+              --output "$RUNNER_TEMP/collision/$MODE.triangles.json"
+          done
+      - name: Independent contact veto (execution can succeed but research candidate can fail)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for MODE in disabled enabled; do
+            python scripts/assess_contact_integrity.py \
+              --simulation-report "$RUNNER_TEMP/collision/$MODE.json" \
+              --triangle-report "$RUNNER_TEMP/collision/$MODE.triangles.json" \
+              --output "$RUNNER_TEMP/collision/$MODE.contact_gate.json"
+          done
       - name: Write directly comparable parameter/quality report
         shell: bash
         run: |
@@ -75,7 +107,13 @@ jobs:
               r=json.loads((root/(mode+".json")).read_text())
               gate=json.loads((root/(mode+".research_gate.json")).read_text())
               q=r["final_geometry_quality"]
+              tri=json.loads((root/(mode+".triangles.json")).read_text())
+              contact=json.loads((root/(mode+".contact_gate.json")).read_text())
               rows.append({
+                "contact_gate":contact["status"],
+                "research_contact_screen_pass":contact["finite_zero_thickness_screen_pass"],
+                "finite_nonadjacent_seam_related":tri["nonadjacent_seam_related_pair_count"],
+                "finite_nonadjacent_other":tri["nonadjacent_other_pair_count"],
                 "mode":mode,"blender":r["blender"],
                 "self_collision_enabled":r["self_collision_enabled"],
                 "collision_distance_mm":r["collision_assumed_thickness_mm"],

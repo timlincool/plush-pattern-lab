@@ -39,3 +39,18 @@
 - [Blender Cloth Collisions 官方手册](https://docs.blender.org/manual/en/4.1/physics/cloth/settings/collisions.html)
 - Bridson/Fedkiw/Anderson: [Robust Treatment of Collisions, Contact and Friction for Cloth Animation](https://doi.org/10.1145/566654.566623)
 - Ji/Li/Qiu: [Three-dimensional Garment Simulation Based on a Mass-Spring System](https://doi.org/10.1177/0040517506057169)
+
+
+## 2026-10-25 追加：独立三角片空间相交审计改变了候选裁决
+
+原来表中的“研究几何筛选通过”只针对缝口长度、局部主伸长、法向与分析性闭壳拓扑，**不包括面片交叉**。现在已真正保存重开并运行 Blender BVH 逐对三角面相交测试，增加单独的接触晋升否决门禁：
+
+| 新增独立接触证据 | 自碰撞关闭 | 自碰撞开启 |
+|---|---:|---:|
+| 非相邻、缝线相关相交对 | 900 | 851 |
+| 非相邻、非缝线相关相交对 | 4 | 7 |
+| 有限接触筛选 | **拒绝** | **拒绝** |
+
+完整证据、反例、算法界限：[CONTACT_INTERSECTION_SCREEN.md](CONTACT_INTERSECTION_SCREEN.md)，[实际 Blender 测试（含10项安全/篡改负测）](https://github.com/timlincool/plush-pattern-lab/actions/runs/40173337532)。
+
+**重要修订**：任何“接缝拓扑通过”都不能推导为无面片穿插；此前通过的候选在新增严格接触筛选下均被拒绝。工作流执行成功只说明采样、计算和报告成功。剩余问题是定位实际穿插在何处、排查帽片和缝口预定位，之后才适合讨论真实布料厚度、材料试样与填充。
