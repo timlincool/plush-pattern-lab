@@ -32,7 +32,7 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-dev.txt
       - name: Geometry dependencies
-        run: python -m pip install -r requirements-dev.txt
+        run: python -m pip install --only-binary=:all: -r requirements-dev.txt
       - name: Generate synthetic 8 and 12-piece 2D rest patterns
         shell: bash
         run: |
