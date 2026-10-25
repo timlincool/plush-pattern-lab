@@ -1,0 +1,66 @@
+name: Synthetic capped plush sewing trial
+on:
+  push:
+    branches: [work/explicit-pole-caps-20261025]
+    paths:
+      - 'scripts/capped_gore_pattern.py'
+      - 'scripts/sewing_capped_poc_blender.py'
+      - '.github/workflows/capped-sewing.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sewn-caps:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Verify generated cap patterns
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pytest -q tests/test_capped_gore_pattern.py
+          mkdir -p "$RUNNER_TEMP/capped"
+          python scripts/capped_gore_pattern.py --panels 8 --pole-cut-deg 8 \
+            --out "$RUNNER_TEMP/capped/pattern_8caps.json"
+      - name: Download exact Blender 4.3.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --connect-timeout 30 \
+            https://download.blender.org/release/Blender4.3/blender-4.3.2-linux-x64.tar.xz \
+            -o "$RUNNER_TEMP/blender.tar.xz"
+          tar -xJf "$RUNNER_TEMP/blender.tar.xz" -C "$RUNNER_TEMP"
+          B="$RUNNER_TEMP/blender-4.3.2-linux-x64/blender"
+          [[ "$("$B" --version)" == *"Blender 4.3.2"* ]]
+          echo "BLENDER=$B" >> "$GITHUB_ENV"
+      - name: Real sewing-spring physics with two cap pieces
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+            --python scripts/sewing_capped_poc_blender.py -- \
+            --spec "$RUNNER_TEMP/capped/pattern_8caps.json" \
+            --output "$RUNNER_TEMP/capped/capped_8.blend" \
+            --report "$RUNNER_TEMP/capped/capped_8.json" --frames 48
+          test -s "$RUNNER_TEMP/capped/capped_8.json"
+          test -s "$RUNNER_TEMP/capped/capped_8.blend"
+      - name: Preserve geometry evidence without any private assets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-explicit-pole-cap-experiment
+          path: ${{ runner.temp }}/capped/
+          if-no-files-found: warn
+          retention-days: 7
