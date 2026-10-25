@@ -77,7 +77,7 @@ def main():
     modifier.collision_settings.use_collision=False
     modifier.collision_settings.use_self_collision=False
     scene=bpy.context.scene
-    scene.gravity=(0,0,0)
+    scene.gravity=(0,0,-9.81)  # Canary: prove solver actually advances, not a no-force static frame
     scene.frame_start=1
     scene.frame_end=a.frames
     modifier.point_cache.frame_start=1
@@ -116,6 +116,7 @@ def main():
         "rest_shape_key":"Flat2DRestPattern",
         "used_sewing_springs":bool(setting.use_sewing_springs),
         "pressure_enabled":bool(setting.use_pressure),
+        "gravity_m_s2":-9.81,
         "initial":initial,"final":final,"trace":trace,
         "gap_reduction_ratio":1-final["mean_gap_mm"]/initial["mean_gap_mm"],
         "limitations":[
