@@ -13,6 +13,7 @@ BASE = Path(__file__).resolve().parents[1]
 ROOT = BASE / ".github" / "workflows"
 EXPECTED = {"ci.yml", "sewing-poc.yml", "capped-sewing.yml", "selfcollision-ab.yml"}
 MAIN_REF = "github.ref == 'refs/heads/main'"
+BLENDER_SHA256 = "4da1c956673c0485e63054e563ee69198cc8f80d8157dd7592dffc8a6a5592e6"
 PIN = re.compile(r"^actions/[A-Za-z0-9_.-]+@[0-9a-f]{40}$")
 
 
@@ -30,6 +31,10 @@ def check_workflows(files: dict[str, str]) -> None:
         assert not any(key in content for key in (
             "github.event.pull_request", "github.event.issue",
             "github.event.comment", "secrets.", "permissions: write-all")), filename
+        if filename != "ci.yml":
+            # The official Blender 4.3.2 binary must be checked before tar extraction.
+            assert BLENDER_SHA256 in content, (filename, "Blender SHA256")
+            assert "sha256sum -c -" in content, (filename, "Blender hash check")
         jobs = cfg.get("jobs")
         assert isinstance(jobs, dict) and jobs, (filename, "jobs")
         for job_name, job in jobs.items():
@@ -104,6 +109,10 @@ def test_reject_unpinned_action():
 
 def test_reject_checkout_credentials():
     _reject("ci.yml", "persist-credentials: false", "persist-credentials: true")
+
+
+def test_reject_missing_blender_hash_check():
+    _reject("sewing-poc.yml", BLENDER_SHA256, "0" * 64)
 
 
 def test_reject_new_yaml_workflow():
