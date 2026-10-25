@@ -1,7 +1,7 @@
 name: Capped plush sewing self-collision A-B
 on:
   push:
-    branches: [work/self-collision-ab-20261025]
+    branches: [main]
     paths:
       - 'scripts/sewing_capped_poc_blender.py'
       - '.github/workflows/selfcollision-ab.yml'
