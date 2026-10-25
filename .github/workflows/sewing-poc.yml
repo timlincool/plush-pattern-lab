@@ -1,0 +1,65 @@
+name: Synthetic 2D-pattern sewing PoC
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/sewing_poc_blender.py'
+      - 'scripts/plush_gore_pattern.py'
+      - '.github/workflows/sewing-poc.yml'
+permissions:
+  contents: read
+jobs:
+  blender-sewing:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Geometry dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Generate synthetic 8-piece 2D rest pattern
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/sewing"
+          python scripts/plush_gore_pattern.py --radius-mm 55 --half-height-mm 70 \
+            --panels 8 --segments 64 --out-prefix "$RUNNER_TEMP/sewing/8gore"
+      - name: Download and verify Blender 4.3.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --connect-timeout 30 \
+            https://download.blender.org/release/Blender4.3/blender-4.3.2-linux-x64.tar.xz \
+            -o "$RUNNER_TEMP/blender.tar.xz"
+          tar -xJf "$RUNNER_TEMP/blender.tar.xz" -C "$RUNNER_TEMP"
+          B="$RUNNER_TEMP/blender-4.3.2-linux-x64/blender"
+          [[ "$("$B" --version)" == *"Blender 4.3.2"* ]]
+          echo "BLENDER=$B" >> "$GITHUB_ENV"
+      - name: Actual Cloth sewing-springs numerical experiment (not stuffing)
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+            --python scripts/sewing_poc_blender.py -- \
+            --spec "$RUNNER_TEMP/sewing/8gore.json" \
+            --output "$RUNNER_TEMP/sewing/2d_sewing_experiment.blend" \
+            --report "$RUNNER_TEMP/sewing/sewing_report.json" --frames 48
+          test -s "$RUNNER_TEMP/sewing/sewing_report.json"
+          test -s "$RUNNER_TEMP/sewing/2d_sewing_experiment.blend"
+      - name: Preserve numerical evidence and generated Blender scene
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-plush-2d-sewing-experiment
+          path: ${{ runner.temp }}/sewing/
+          retention-days: 7
+          if-no-files-found: warn
