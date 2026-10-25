@@ -10,6 +10,9 @@ def capped_report(flips,p95):
     return {
         "status":"ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY",
         "panels":12,"prepositioning":"analytic target assisted, gores offset 3mm",
+        "analytical_stitch_weld_topology":{
+            "status":"ANALYTICAL_WELDED_PROXY_NOT_A_PHYSICAL_CLOTH_SHELL",
+            "research_topological_sphere_screen_pass":True},
         "final_geometry_quality":{
             "status":"NUMERICAL_DIAGNOSTICS_NOT_MANUFACTURING_APPROVAL",
             "seam":{"mean_gap_mm":.001,"max_gap_mm":.003},
@@ -38,3 +41,19 @@ def test_cap_study_gate_passes_only_research_geometry():
     assert r["panel_count"]==12
     assert r["target_assisted_prepositioning"]
     assert r["noncertified_requirements"]
+
+
+def test_study_gate_cannot_promote_closed_gap_with_open_welded_topology():
+    case=capped_report(0,.07)
+    case["analytical_stitch_weld_topology"]["research_topological_sphere_screen_pass"]=False
+    result=m.assess(case)
+    assert not result["passed"]
+    assert [f["metric"] for f in result["failed_checks"]]==[
+        "topological_sphere_proxy_required"]
+
+
+def test_study_gate_must_not_accept_missing_weld_evidence():
+    case=capped_report(0,.07)
+    del case["analytical_stitch_weld_topology"]
+    result=m.assess(case)
+    assert not result["passed"]
