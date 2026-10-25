@@ -1,4 +1,5 @@
-import importlib.util, json
+import importlib.util
+import json
 from pathlib import Path
 import pytest
 ROOT=Path(__file__).resolve().parents[1]
@@ -26,7 +27,8 @@ def test_refuse_mismatched_loading_unloading_endpoints():
     with pytest.raises(ValueError):mat.calculate(s)
 
 def test_cli_non_overwrite(tmp_path):
-    import subprocess,sys
+    import subprocess
+    import sys
     input=tmp_path/"swatch.json";input.write_text(json.dumps(sample()))
     out=tmp_path/"report.json"
     cmd=[sys.executable,str(ROOT/"scripts/material_calibration.py"),

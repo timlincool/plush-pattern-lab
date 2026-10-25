@@ -62,7 +62,8 @@ def test_reject_invalid_poles_and_legacy_input():
 
 
 def test_no_overwrite_cli(tmp_path):
-    import subprocess,sys
+    import subprocess
+    import sys
     target=tmp_path/"cap_pattern.json"
     args=[sys.executable,str(SOURCE),"--out",str(target)]
     assert subprocess.run(args,capture_output=True).returncode==0
