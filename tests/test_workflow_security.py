@@ -86,6 +86,12 @@ def test_codeowner_review_scope():
                  "/scripts/", "/tests/", "/.github/CODEOWNERS"):
         assert path in owners
     assert "@timlincool" in owners
+    # GitHub resolves the *last* matching CODEOWNERS pattern.
+    # Refuse both missing global ownership and delegated ownership overrides.
+    rules = [line.split("#", 1)[0].split() for line in owners.splitlines()
+             if line.strip() and not line.lstrip().startswith("#")]
+    assert ["*", "@timlincool"] in rules
+    assert all(fields[1:] == ["@timlincool"] for fields in rules)
 
 
 def _reject(filename, old, new):
