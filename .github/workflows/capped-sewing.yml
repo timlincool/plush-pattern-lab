@@ -1,11 +1,12 @@
 name: Synthetic capped plush sewing trial
 on:
   push:
-    branches: [main]
+    branches: [main, work/explicit-pole-caps-20261025]
     paths:
       - 'scripts/capped_gore_pattern.py'
       - 'scripts/export_capped_svg.py'
       - 'scripts/sewing_capped_poc_blender.py'
+      - 'scripts/audit_stitched_shell.py'
       - 'scripts/assess_research_candidate.py'
       - '.github/workflows/capped-sewing.yml'
   workflow_dispatch:
@@ -32,7 +33,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m pytest -q tests/test_capped_gore_pattern.py
+          python -m pytest -q tests/test_capped_gore_pattern.py tests/test_audit_stitched_shell.py tests/test_capped_research_gate.py
           mkdir -p "$RUNNER_TEMP/capped"
           for N in 8 12; do
             python scripts/capped_gore_pattern.py --panels "$N" --pole-cut-deg 8 \
