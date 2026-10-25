@@ -34,3 +34,22 @@ GitHub 官方资料：
 - https://docs.github.com/en/actions/reference/security/securely-using-pull_request_target
 - https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository
 - https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets
+
+## 2026-10-25 第二轮对抗性审查补充
+
+**实际仓库状态：** `GET /branches/main` 返回 `protected=false` 和 `protection.enabled=false`；`GET /rulesets` 为 `[]`。主分支确实尚未受到强制规则保护。
+
+**外部 PR 限定结论：** 当前四份默认分支工作流只有 `push(main)` / `workflow_dispatch(main)`，普通陌生 PR 不会触发这些已有工作流。**但是外部 PR 可以提交或修改 `.github/workflows/*.yml` / `*.yaml`，其运行受 GitHub Fork 工作流审批政策影响。**因此只检查 main 的触发器远远不够。
+
+在 **Settings → Actions → General → Fork pull request workflows** 选择 **Require approval for all external contributors**。只要求首次贡献者审批存在绕过路径：攻击者先获得一次无害文档修改的合并，之后再提交恶意工作流。
+
+**必须保留的边界：**
+- 外部 Fork PR：先审阅 Files changed，不下载执行陌生脚本或 `.blend`，不要未经检查点击 Approve workflows。
+- 禁止在 `pull_request_target`、`workflow_run`、`issue_comment` 的高权限上下文 checkout 并执行 Fork 代码、构建文件或工件。
+- 当前代码只在有写权限者合并到 main 后执行，所以必须建立 Active Ruleset，要求 PR，禁止 force-push/删除。单人项目暂不要配置必须由另一人批准而锁死自己。
+- 继续仅使用 GitHub-hosted Runner，避免将任何公开 PR 代码交给绑定私人文件和凭据的自托管电脑。
+- 回归测试现在用 YAML 结构解析和恶意事件/写权限/自托管/未固定 Action 反例；Blender 二进制也用预先固定的官方 SHA-256 核验。但这些测试不能替代仓库管理员设置。
+
+**仍需处理的供应链风险：** `requirements-dev.txt` 使用版本范围而非完整传递依赖哈希，受信 main 上的 `pip install` 仍会访问包索引。以后应引入确定性依赖锁及漏洞更新流程；不能以自动执行陌生 PR 的测试作为解决方案。
+
+以上状态仅代表本次实际查询时刻，如设置已被修改需要重新验证。
