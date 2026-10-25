@@ -47,6 +47,8 @@ jobs:
           curl -fL --retry 3 --connect-timeout 30 \
             https://download.blender.org/release/Blender4.3/blender-4.3.2-linux-x64.tar.xz \
             -o "$RUNNER_TEMP/blender.tar.xz"
+          # Pinned digest from the official Blender 4.3.2 SHA256 manifest.
+          echo "4da1c956673c0485e63054e563ee69198cc8f80d8157dd7592dffc8a6a5592e6  $RUNNER_TEMP/blender.tar.xz" | sha256sum -c -
           tar -xJf "$RUNNER_TEMP/blender.tar.xz" -C "$RUNNER_TEMP"
           B="$RUNNER_TEMP/blender-4.3.2-linux-x64/blender"
           [[ "$("$B" --version)" == *"Blender 4.3.2"* ]]
