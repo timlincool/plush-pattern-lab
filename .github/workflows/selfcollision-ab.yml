@@ -30,7 +30,7 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-dev.txt
       - name: Install geometry tools
-        run: python -m pip install --only-binary=:all: -r requirements-dev.txt
+        run: 'python -m pip install --only-binary=:all: -r requirements-dev.txt'
       - name: Refuse fake contact pass, corrupt input, and missing evidence
         run: python -m pytest -q tests/test_contact_integrity.py
       - name: Synthesize clean 12-gore + two-cap rest pattern
