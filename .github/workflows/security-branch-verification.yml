@@ -23,6 +23,12 @@ jobs:
           python-version: '3.11'
       - name: Do not include temporary trusted verification workflow in release policy
         run: rm .github/workflows/security-branch-verification.yml
+      - name: Read official Blender archive checksum (read-only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 2 https://download.blender.org/release/Blender4.3/blender-4.3.2.sha256 -o "$RUNNER_TEMP/blender.sha256"
+          grep 'blender-4.3.2-linux-x64.tar.xz' "$RUNNER_TEMP/blender.sha256"
       - name: Run security negative tests and all existing unit tests
         run: |
           python -m pip install -r requirements-dev.txt
