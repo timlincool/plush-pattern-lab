@@ -32,8 +32,10 @@ jobs:
           set -euo pipefail
           python -m pytest -q tests/test_capped_gore_pattern.py
           mkdir -p "$RUNNER_TEMP/capped"
-          python scripts/capped_gore_pattern.py --panels 8 --pole-cut-deg 8 \
-            --out "$RUNNER_TEMP/capped/pattern_8caps.json"
+          for N in 8 12; do
+            python scripts/capped_gore_pattern.py --panels "$N" --pole-cut-deg 8 \
+              --out "$RUNNER_TEMP/capped/pattern_${N}caps.json"
+          done
       - name: Download exact Blender 4.3.2
         shell: bash
         run: |
@@ -49,13 +51,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
-            --python scripts/sewing_capped_poc_blender.py -- \
-            --spec "$RUNNER_TEMP/capped/pattern_8caps.json" \
-            --output "$RUNNER_TEMP/capped/capped_8.blend" \
-            --report "$RUNNER_TEMP/capped/capped_8.json" --frames 48
-          test -s "$RUNNER_TEMP/capped/capped_8.json"
-          test -s "$RUNNER_TEMP/capped/capped_8.blend"
+          for N in 8 12; do
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+              --python scripts/sewing_capped_poc_blender.py -- \
+              --spec "$RUNNER_TEMP/capped/pattern_${N}caps.json" \
+              --output "$RUNNER_TEMP/capped/capped_${N}.blend" \
+              --report "$RUNNER_TEMP/capped/capped_${N}.json" --frames 48
+            test -s "$RUNNER_TEMP/capped/capped_${N}.json"
+            test -s "$RUNNER_TEMP/capped/capped_${N}.blend"
+          done
       - name: Preserve geometry evidence without any private assets
         if: always()
         uses: actions/upload-artifact@v4
