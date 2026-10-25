@@ -72,7 +72,8 @@ def draw(spec):
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width:.3f}mm" height="{height:.3f}mm" viewBox="0 0 {width:.3f} {height:.3f}">',
         '<style>.cut{stroke:#253649;stroke-width:0.38;fill:#f3f7f8}.stitch{stroke:#1579a5;stroke-width:0.30;fill:none;stroke-dasharray:2 1}text{font-family:Arial,sans-serif;fill:#203448}</style>',
         '<rect width="100%" height="100%" fill="white"/>',
-        '<text x="9" y="10" font-size="4.5">RESEARCH ONLY - NOT APPROVED FOR FABRIC CUTTING</text>'
+        '<text x="9" y="10" font-size="4">RESEARCH ONLY - NOT APPROVED</text>',
+        '<text x="9" y="15" font-size="3.2">No approved sewing / fabric / fill</text>'
     ]
     for i,piece in enumerate(pieces):
         parts.append(f'<polygon class="cut" points="{coords(piece["cut"],i)}"/>')
@@ -93,8 +94,8 @@ def draw(spec):
             xx,yy=ring[idx]-dims[k][0]+origins[k]
             parts.append(f'<circle cx="{xx:.3f}" cy="{yy:.3f}" r="0.7" fill="#c54a38"/>')
     parts.extend([
-        f'<text x="9" y="{height-9:.2f}" font-size="3.7">Scale 1:1 (mm) | dashed blue = NET stitching | solid = tentative {allowance:g} mm allowance</text>',
-        f'<text x="9" y="{height-4:.2f}" font-size="3.5">No measured fabric, sewing/contact simulation or stuffing approval.</text>',
+        f'<text x="9" y="{height-9:.2f}" font-size="3.2">Scale 1:1 mm | dashed: sew | solid: cut (+{allowance:g} mm)</text>',
+        f'<text x="9" y="{height-4:.2f}" font-size="3.2">Pattern is a geometric experiment, not a production tool.</text>',
         '</svg>',
     ])
     return "\n".join(parts)+"\n"
