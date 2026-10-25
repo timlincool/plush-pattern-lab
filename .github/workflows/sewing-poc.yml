@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/sewing_poc_blender.py'
+      - 'scripts/cloth_solver_canary.py'
       - 'scripts/plush_gore_pattern.py'
       - '.github/workflows/sewing-poc.yml'
 permissions:
