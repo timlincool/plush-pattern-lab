@@ -15,6 +15,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sewing_quality import evaluate
+from audit_stitched_shell import inspect_welded_shell
 
 
 def main():
@@ -198,6 +199,9 @@ def main():
     initial_quality=evaluate(start,np.asarray(rest),faces,pairs,np.asarray(reference),start)
     final_quality=evaluate(final,np.asarray(rest),faces,pairs,np.asarray(reference),start)
     end=gaps(final)
+    # Read-only *analytical* seam weld: never overwrite any real Cloth vertices.
+    # It verifies graph closure and winding, NOT collision-free sealed material.
+    analytical_shell=inspect_welded_shell(final,faces,pairs)
     if end["mean_gap_mm"]>=init["mean_gap_mm"]*.95:
         raise RuntimeError("Sewing springs did not close even 5%")
     reversed_samples=final_quality["strain"]["orientation_reversal_samples"]
@@ -217,12 +221,14 @@ def main():
         "initial":init,"final":end,"trace":trail,
         "initial_geometry_quality":initial_quality,
         "final_geometry_quality":final_quality,
+        "analytical_stitch_weld_topology":analytical_shell,
         "reversed_face_samples_with_region":[{
             **x,
             "region":face_class[x["quad_face_index"]]}
             for x in reversed_samples],
         "not_verified":[
-            "No fully welded watertight shell or self/inter-panel collision",
+            "Seam vertices are only analytically identified; Blender Cloth remains independent surface pieces",
+            "No physical seal, tested self/inter-panel contact or confirmed fully sewn shell",
             "No measured fabric properties or physically simulated polyester fill",
             "No independent reference reconstruction: initialization uses target",
             "Seam matching and reduction do not establish manufacturability",
@@ -241,7 +247,8 @@ def main():
         "panels":n,"gap":end,
         "shape_rms_mm":final_quality["target_shape"]["rigid_aligned_correspondence_rms_mm"],
         "strain_p95":final_quality["strain"]["p95_abs_principal_strain"],
-        "flips":final_quality["strain"]["orientation_reversed_vs_initial"]},
+        "flips":final_quality["strain"]["orientation_reversed_vs_initial"],
+        "welded_topology_pass":analytical_shell["research_topological_sphere_screen_pass"]},
         ensure_ascii=False),flush=True)
 
 
