@@ -1,7 +1,7 @@
 name: Capped plush sewing self-collision A-B
 on:
   push:
-    branches: [main, work/bvh-intersection-audit-20261025]
+    branches: [main]
     paths:
       - 'scripts/sewing_capped_poc_blender.py'
       - 'scripts/audit_self_intersections_blender.py'
@@ -13,7 +13,7 @@ permissions:
 jobs:
   collision-study:
     # Only a maintainer-reviewed default-branch commit is executable.
-    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/work/bvh-intersection-audit-20261025') && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-24.04
     timeout-minutes: 28
     env:
