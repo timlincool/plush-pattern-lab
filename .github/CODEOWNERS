@@ -1,4 +1,7 @@
-# Advisory only until the repository's main ruleset requires code owner reviews.
+# All changes belong to the owner. Enforcement requires an active main ruleset
+# with "Require review from Code Owners" and explicit owner-only PR bypass.
+# CODEOWNERS changes themselves are also covered by the wildcard below.
+* @timlincool
 /.github/workflows/ @timlincool
 /requirements-dev.txt @timlincool
 /scripts/ @timlincool
