@@ -54,17 +54,42 @@ jobs:
             "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
               --python scripts/cloth_solver_canary.py -- "$RUNNER_TEMP/sewing/solver_canary_$MODE.json" "$MODE"
           done
-      - name: Actual Cloth sewing-springs numerical experiment (not stuffing)
+      - name: Actual Blender Cloth sewn-shape A/B experiments (not manufacturing)
         shell: bash
         run: |
           set -euo pipefail
-          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
-            --python scripts/sewing_poc_blender.py -- \
-            --spec "$RUNNER_TEMP/sewing/8gore.json" \
-            --output "$RUNNER_TEMP/sewing/2d_sewing_experiment.blend" \
-            --report "$RUNNER_TEMP/sewing/sewing_report.json" --frames 48
-          test -s "$RUNNER_TEMP/sewing/sewing_report.json"
-          test -s "$RUNNER_TEMP/sewing/2d_sewing_experiment.blend"
+          for MODE in legacy reference_offset; do
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+              --python scripts/sewing_poc_blender.py -- \
+              --spec "$RUNNER_TEMP/sewing/8gore.json" \
+              --output "$RUNNER_TEMP/sewing/2d_sewing_${MODE}.blend" \
+              --report "$RUNNER_TEMP/sewing/sewing_report_${MODE}.json" \
+              --frames 48 --placement "$MODE"
+            test -s "$RUNNER_TEMP/sewing/sewing_report_${MODE}.json"
+            test -s "$RUNNER_TEMP/sewing/2d_sewing_${MODE}.blend"
+          done
+      - name: Record seam-versus-shape A/B; research execution is not shape approval
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os,pathlib
+          out=pathlib.Path(os.environ["RUNNER_TEMP"])/"sewing"
+          rows=[]
+          for name in ("legacy","reference_offset"):
+              d=json.loads((out/("sewing_report_"+name+".json")).read_text())
+              q=d["final_geometry_quality"]
+              rows.append({
+                  "variant":name,
+                  "seam_mean_gap_mm":d["final"]["mean_gap_mm"],
+                  "aligned_target_rms_mm":q["target_shape"]["rigid_aligned_correspondence_rms_mm"],
+                  "p95_principal_strain":q["strain"]["p95_abs_principal_strain"],
+                  "flipped_triangles":q["strain"]["orientation_reversed_vs_initial"]})
+          (out/"ab_quality_comparison.json").write_text(json.dumps({
+              "status":"COMPARISON_ONLY_NOT_MANUFACTURING_APPROVED",
+              "cases":rows},indent=2))
+          print("SEWING_SHAPE_AB",json.dumps(rows))
+          PY
       - name: Preserve numerical evidence and generated Blender scene
         if: always()
         uses: actions/upload-artifact@v4
