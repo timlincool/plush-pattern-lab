@@ -1,7 +1,7 @@
 name: Synthetic capped plush sewing trial
 on:
   push:
-    branches: [main, work/explicit-pole-caps-20261025]
+    branches: [main]
     paths:
       - 'scripts/capped_gore_pattern.py'
       - 'scripts/export_capped_svg.py'
