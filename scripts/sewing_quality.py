@@ -7,7 +7,6 @@ reported lengths are mm. Never a material or manufacturability certificate.
 from __future__ import annotations
 
 import numpy as np
-from scipy.spatial import cKDTree
 
 
 def _points(data, width, name):
@@ -36,6 +35,26 @@ def rigid_alignment(points, reference):
     sign = np.sign(np.linalg.det(u @ vt))
     rot = u @ np.diag([1.0, 1.0, sign]) @ vt
     return x @ rot + reference.mean(axis=0)
+
+
+def nearest_vertex_distances(points, target, block=128):
+    """Memory-bounded exact vertex-to-vertex nearest distances, NumPy only.
+
+    O(N*M) work is intentional for small (<=5000) research meshes. Raise
+    before accidental million-fibre use; use a spatial index for large meshes.
+    """
+    if len(points) > 5000 or len(target) > 5000 or len(points)==0 or len(target)==0:
+        raise ValueError("Nearest-distance research input must be <=5000 vertices")
+    norms = np.einsum("ij,ij->i", target, target)
+    answer = np.empty(len(points), dtype=np.float64)
+    for start in range(0, len(points), block):
+        part = points[start:start + block]
+        dist2 = (np.einsum("ij,ij->i", part, part)[:,None]
+                 + norms[None,:] - 2.0*(part @ target.T))
+        # Rounding can make exact-zero squared distances slightly negative.
+        np.maximum(dist2, 0.0, out=dist2)
+        answer[start:start+len(part)] = np.sqrt(dist2.min(axis=1))
+    return answer
 
 
 def evaluate(vertices, flat_rest, faces, sewing_pairs, target, initial_vertices):
@@ -87,8 +106,8 @@ def evaluate(vertices, flat_rest, faces, sewing_pairs, target, initial_vertices)
     unaligned = np.linalg.norm(xyz - goal, axis=1)
     # Symmetric *vertex-sampled* nearest-neighbour distance (not a true
     # continuous-surface Chamfer/Hausdorff bound; mesh density can bias it).
-    d1 = cKDTree(goal).query(aligned, workers=1)[0]
-    d2 = cKDTree(aligned).query(goal, workers=1)[0]
+    d1 = nearest_vertex_distances(aligned, goal)
+    d2 = nearest_vertex_distances(goal, aligned)
     gap = np.linalg.norm(xyz[pairs[:, 0]] - xyz[pairs[:, 1]], axis=1)
     return {
         "status": "NUMERICAL_DIAGNOSTICS_NOT_MANUFACTURING_APPROVAL",
