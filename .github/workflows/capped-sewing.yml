@@ -1,0 +1,104 @@
+name: Synthetic capped plush sewing trial
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/capped_gore_pattern.py'
+      - 'scripts/export_capped_svg.py'
+      - 'scripts/sewing_capped_poc_blender.py'
+      - 'scripts/audit_stitched_shell.py'
+      - 'scripts/assess_research_candidate.py'
+      - '.github/workflows/capped-sewing.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  sewn-caps:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - name: Dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Verify generated cap patterns
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pytest -q tests/test_capped_gore_pattern.py tests/test_audit_stitched_shell.py tests/test_capped_research_gate.py
+          mkdir -p "$RUNNER_TEMP/capped"
+          for N in 8 12; do
+            python scripts/capped_gore_pattern.py --panels "$N" --pole-cut-deg 8 \
+              --out "$RUNNER_TEMP/capped/pattern_${N}caps.json"
+            python scripts/export_capped_svg.py \
+              --input "$RUNNER_TEMP/capped/pattern_${N}caps.json" \
+              --output "$RUNNER_TEMP/capped/pattern_${N}caps.svg"
+          done
+      - name: Download exact Blender 4.3.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --connect-timeout 30 \
+            https://download.blender.org/release/Blender4.3/blender-4.3.2-linux-x64.tar.xz \
+            -o "$RUNNER_TEMP/blender.tar.xz"
+          tar -xJf "$RUNNER_TEMP/blender.tar.xz" -C "$RUNNER_TEMP"
+          B="$RUNNER_TEMP/blender-4.3.2-linux-x64/blender"
+          [[ "$("$B" --version)" == *"Blender 4.3.2"* ]]
+          echo "BLENDER=$B" >> "$GITHUB_ENV"
+      - name: Real sewing-spring physics with two cap pieces
+        shell: bash
+        run: |
+          set -euo pipefail
+          for N in 8 12; do
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+              --python scripts/sewing_capped_poc_blender.py -- \
+              --spec "$RUNNER_TEMP/capped/pattern_${N}caps.json" \
+              --output "$RUNNER_TEMP/capped/capped_${N}.blend" \
+              --report "$RUNNER_TEMP/capped/capped_${N}.json" --frames 48
+            test -s "$RUNNER_TEMP/capped/capped_${N}.json"
+            test -s "$RUNNER_TEMP/capped/capped_${N}.blend"
+          done
+      - name: Report research candidate rejection/passing without implying manufacture
+        shell: bash
+        run: |
+          set -euo pipefail
+          for N in 8 12; do
+            python scripts/assess_research_candidate.py \
+              --report "$RUNNER_TEMP/capped/capped_${N}.json" \
+              --output "$RUNNER_TEMP/capped/research_gate_${N}.json"
+          done
+          python - <<'PY'
+          import json,os,pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"capped"
+          rows=[]
+          for n in (8,12):
+              report=json.loads((root/f"capped_{n}.json").read_text())
+              gate=json.loads((root/f"research_gate_{n}.json").read_text())
+              q=report["final_geometry_quality"]
+              rows.append({
+                  "panels":n,"cap_pieces":2,"status":gate["status"],
+                  "mean_gap_mm":report["final"]["mean_gap_mm"],
+                  "target_rms_mm":q["target_shape"]["rigid_aligned_correspondence_rms_mm"],
+                  "p95_abs_principal_strain":q["strain"]["p95_abs_principal_strain"],
+                  "orientation_reversals":q["strain"]["orientation_reversed_vs_initial"]
+              })
+          (root/"capped_comparison.json").write_text(json.dumps({
+              "status":"RESEARCH_EVIDENCE_NOT_MATERIAL_APPROVAL","cases":rows},indent=2))
+          print("CAPPED_STUDY",json.dumps(rows))
+          PY
+      - name: Preserve geometry evidence without any private assets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-explicit-pole-cap-experiment
+          path: ${{ runner.temp }}/capped/
+          if-no-files-found: warn
+          retention-days: 7

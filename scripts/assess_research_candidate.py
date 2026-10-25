@@ -20,7 +20,11 @@ STUDY_LIMITS = {
 
 
 def assess(report, limits=STUDY_LIMITS):
-    if report.get("status") != "ACTUAL_CLOTH_SEWING_SPRINGS_NUMERICAL_TRIAL":
+    supported={
+        "ACTUAL_CLOTH_SEWING_SPRINGS_NUMERICAL_TRIAL",
+        "ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY",
+    }
+    if report.get("status") not in supported:
         raise ValueError("Unknown trial report status")
     q=report.get("final_geometry_quality")
     if not isinstance(q,dict) or q.get("status")!="NUMERICAL_DIAGNOSTICS_NOT_MANUFACTURING_APPROVAL":
@@ -43,11 +47,23 @@ def assess(report, limits=STUDY_LIMITS):
             raise ValueError("Nonfinite or invalid diagnostic: "+name)
         if value>bound:
             failed.append({"metric":name, "measured":float(value), "study_limit":float(bound)})
+    # A capped trial must additionally demonstrate that its *analytically
+    # paired* mesh has one oriented genus-zero closed component. This does
+    # not assert physical sewing, sealed fabric or absence of self-collision.
+    if report.get("status")=="ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY":
+        topology=report.get("analytical_stitch_weld_topology") or {}
+        topology_pass=topology.get("research_topological_sphere_screen_pass") is True
+        observed["topological_sphere_proxy_required"]=int(topology_pass)
+        if not topology_pass:
+            failed.append({"metric":"topological_sphere_proxy_required",
+                           "measured":0.0,"study_limit":1.0})
     return {
         "status":"RESEARCH_CANDIDATE_REJECTED" if failed else "RESEARCH_GEOMETRY_SCREEN_PASSED",
-        "placement":report.get("preposition_mode"),
-        "target_assisted_prepositioning":bool(report.get("reference_assisted_initialization")),
-        "panel_count":report.get("synthetic_panel_count"),
+        "placement":report.get("preposition_mode",report.get("prepositioning")),
+        "target_assisted_prepositioning":bool(
+            report.get("reference_assisted_initialization",
+                       report.get("status")=="ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY")),
+        "panel_count":report.get("synthetic_panel_count",report.get("panels")),
         "passed":not failed,
         "limits":dict(limits),
         "observed":observed,
