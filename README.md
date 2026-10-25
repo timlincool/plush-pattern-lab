@@ -72,6 +72,10 @@ blender --disable-autoexec -b input.blend --python scripts/audit_physical_shell.
 
 实验使用明确合成目标辅助三维初始化和原生 Blender Sewing Springs；不包含真实面料/聚酯填棉、自碰撞、最终拓扑焊接或工厂安全验证。**研究筛选通过≠可制作/可量产。** 12片要求更多缝线，是否最优须待面料和实际缝制成本证据。
 
+## 当前自碰撞实验的限制
+
+在[12片＋双帽片的真实 Cloth A/B](docs/SELF_COLLISION_AB.md)中，开启1mm**假设**厚度的自碰撞后，对合成目标的刚体对齐RMS从0.216mm升至1.284mm；研究几何门禁仍通过。但未进行真实三角面自相交检查，也未测实际布料与纤维棉参数。**不能把Blender的自碰撞开关等同于完成物理可制造性验证。**
+
 ## 专业工作流与论文
 
 - <https://doi.org/10.1145/1276377.1276433> — *Plushie* (2007)，2D 模板与模拟协同设计。
