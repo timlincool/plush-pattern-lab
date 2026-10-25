@@ -11,6 +11,7 @@ def main():
     for key in ("spec","output","report"):
         p.add_argument("--"+key,type=Path,required=True)
     p.add_argument("--frames",type=int,default=48)
+    p.add_argument("--placement",choices=("legacy","reference_offset"),default="legacy")
     a=p.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else [])
     if not a.spec.is_file() or a.output.exists() or a.report.exists():
         raise RuntimeError("Input absent / outputs exist")
@@ -45,13 +46,22 @@ def main():
             # Use a 0.035mm numerical cap; this is NOT an approved seam allowance.
             half_width=.035 if j in (0,N-1) else abs(right[j][0])
             for slot,x in enumerate((-half_width,0.,half_width)):
-                pos=radius*outward+x*.001*tangent+np.array([0,0,half*(1-2*f)])
+                angle=az+(slot-1)*np.pi/n
+                goal=np.array((rad*np.sin(theta)*np.cos(angle),
+                               rad*np.sin(theta)*np.sin(angle),
+                               half*np.cos(theta)),dtype=float)
+                if a.placement=="reference_offset":
+                    # Known target assists *pre-positioning*; not independent
+                    # reconstruction. Small panel radial displacement gives
+                    # sewing springs a real gap to close.
+                    pos=goal + .004*outward
+                    if j in (0,N-1):
+                        pos=pos + x*.001*tangent  # non-degenerate pole cap
+                else:
+                    pos=radius*outward+x*.001*tangent+np.array([0,0,half*(1-2*f)])
                 vertices.append(tuple(pos))
                 rest.append((x*.001+i*.20,yy*.001,0.))
-                angle=az+(slot-1)*np.pi/n
-                reference.append((rad*np.sin(theta)*np.cos(angle),
-                                  rad*np.sin(theta)*np.sin(angle),
-                                  half*np.cos(theta)))
+                reference.append(tuple(goal))
         for j in range(N-1):
             v=start+3*j;w=v+3
             faces.append((v,w,w+1,v+1))
@@ -137,6 +147,8 @@ def main():
         "blender":bpy.app.version_string,
         "frames":a.frames,
         "synthetic_panel_count":n,
+        "preposition_mode":a.placement,
+        "reference_assisted_initialization":a.placement=="reference_offset",
         "seam_spring_edges":len(seams),
         "mesh_vertices":len(vertices),
         "mesh_faces":len(faces),
@@ -150,6 +162,7 @@ def main():
         "gap_reduction_ratio":1-final["mean_gap_mm"]/initial["mean_gap_mm"],
         "limitations":[
             "Synthetic ellipsoid, not an alpaca model",
+            "Reference-offset placement uses known synthetic target for initialization",
             "No final welded shell, tension/contact certification",
             "No measured material, stuffing or manufacturability validation",
             "Rigid-aligned error is measured to synthetic geometry, not the user's plush"]}
