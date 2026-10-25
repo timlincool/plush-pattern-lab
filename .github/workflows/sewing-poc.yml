@@ -44,6 +44,12 @@ jobs:
           B="$RUNNER_TEMP/blender-4.3.2-linux-x64/blender"
           [[ "$("$B" --version)" == *"Blender 4.3.2"* ]]
           echo "BLENDER=$B" >> "$GITHUB_ENV"
+      - name: Verify numerical Cloth solver responds to gravity
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \\
+            --python scripts/cloth_solver_canary.py -- "$RUNNER_TEMP/sewing/solver_canary.json"
       - name: Actual Cloth sewing-springs numerical experiment (not stuffing)
         shell: bash
         run: |
