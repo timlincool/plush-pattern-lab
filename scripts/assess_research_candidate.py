@@ -20,7 +20,11 @@ STUDY_LIMITS = {
 
 
 def assess(report, limits=STUDY_LIMITS):
-    if report.get("status") != "ACTUAL_CLOTH_SEWING_SPRINGS_NUMERICAL_TRIAL":
+    supported={
+        "ACTUAL_CLOTH_SEWING_SPRINGS_NUMERICAL_TRIAL",
+        "ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY",
+    }
+    if report.get("status") not in supported:
         raise ValueError("Unknown trial report status")
     q=report.get("final_geometry_quality")
     if not isinstance(q,dict) or q.get("status")!="NUMERICAL_DIAGNOSTICS_NOT_MANUFACTURING_APPROVAL":
@@ -45,9 +49,11 @@ def assess(report, limits=STUDY_LIMITS):
             failed.append({"metric":name, "measured":float(value), "study_limit":float(bound)})
     return {
         "status":"RESEARCH_CANDIDATE_REJECTED" if failed else "RESEARCH_GEOMETRY_SCREEN_PASSED",
-        "placement":report.get("preposition_mode"),
-        "target_assisted_prepositioning":bool(report.get("reference_assisted_initialization")),
-        "panel_count":report.get("synthetic_panel_count"),
+        "placement":report.get("preposition_mode",report.get("prepositioning")),
+        "target_assisted_prepositioning":bool(
+            report.get("reference_assisted_initialization",
+                       report.get("status")=="ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY")),
+        "panel_count":report.get("synthetic_panel_count",report.get("panels")),
         "passed":not failed,
         "limits":dict(limits),
         "observed":observed,
