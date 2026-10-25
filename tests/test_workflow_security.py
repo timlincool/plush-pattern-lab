@@ -12,7 +12,18 @@ import yaml
 BASE = Path(__file__).resolve().parents[1]
 ROOT = BASE / ".github" / "workflows"
 EXPECTED = {"ci.yml", "sewing-poc.yml", "capped-sewing.yml", "selfcollision-ab.yml"}
-MAIN_REF = "github.ref == 'refs/heads/main'"
+ALLOWED_IF = {
+    "ci.yml": "github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')",
+    "sewing-poc.yml": "github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')",
+    "capped-sewing.yml": "github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')",
+    "selfcollision-ab.yml": "github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')",
+}
+ALLOWED_JOBS = {
+    "ci.yml": {"python-tests"},
+    "sewing-poc.yml": {"blender-sewing"},
+    "capped-sewing.yml": {"sewn-caps"},
+    "selfcollision-ab.yml": {"collision-study"},
+}
 BLENDER_SHA256 = "4da1c956673c0485e63054e563ee69198cc8f80d8157dd7592dffc8a6a5592e6"
 PIN = re.compile(r"^actions/[A-Za-z0-9_.-]+@[0-9a-f]{40}$")
 
@@ -36,11 +47,11 @@ def check_workflows(files: dict[str, str]) -> None:
             assert BLENDER_SHA256 in content, (filename, "Blender SHA256")
             assert "sha256sum -c -" in content, (filename, "Blender hash check")
         jobs = cfg.get("jobs")
-        assert isinstance(jobs, dict) and jobs, (filename, "jobs")
+        assert isinstance(jobs, dict) and set(jobs) == ALLOWED_JOBS[filename], (filename, "jobs")
         for job_name, job in jobs.items():
             assert isinstance(job, dict), (filename, job_name)
             assert job.get("runs-on") == "ubuntu-24.04", (filename, job_name, "runner")
-            assert MAIN_REF in str(job.get("if", "")), (filename, job_name, "main-only")
+            assert job.get("if") == ALLOWED_IF[filename], (filename, job_name, "main-only")
             assert "environment" not in job and "container" not in job, (filename, job_name)
             assert job.get("permissions", {"contents": "read"}) == {"contents": "read"}, filename
             steps = job.get("steps")
@@ -99,6 +110,11 @@ def test_reject_write_token():
 
 def test_reject_self_hosted_runner():
     _reject("ci.yml", "runs-on: ubuntu-24.04", "runs-on: self-hosted")
+
+
+def test_reject_malicious_or_true_job_condition():
+    guard = ALLOWED_IF["ci.yml"]
+    _reject("ci.yml", "if: " + guard, "if: " + guard + " || true")
 
 
 def test_reject_unpinned_action():
