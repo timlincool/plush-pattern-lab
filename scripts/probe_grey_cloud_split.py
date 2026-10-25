@@ -2,10 +2,13 @@
 
 输出全世界坐标几何 JSON + 切割后的边界拓扑统计，用于选择两片式裁片试点。
 """
-import argparse, json, sys, math
+import argparse
+import json
+import sys
 from pathlib import Path
 from collections import defaultdict
-import bpy, bmesh
+import bpy
+import bmesh
 import numpy as np
 
 PART="Grey flank cloud -1"
@@ -72,7 +75,7 @@ def main():
                 loops=[]
                 for v in deg:
                     if v in visited: continue
-                    q=[v]; visited.add(v);points=0;perim=0.0
+                    q=[v]; visited.add(v);points=0
                     while q:
                         p0=q.pop();points+=1
                         for p1 in nei[p0]:

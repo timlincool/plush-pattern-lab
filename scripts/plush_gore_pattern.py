@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Research-only axisymmetric plush gore with matched meridian seam segments."""
-import argparse, json, math
+import argparse
+import json
+import math
 from pathlib import Path
 import numpy as np
 from shapely.geometry import Polygon

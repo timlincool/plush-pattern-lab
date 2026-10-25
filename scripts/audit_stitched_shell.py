@@ -12,7 +12,7 @@ from collections import Counter, defaultdict
 import numpy as np
 
 
-def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
+def _validated_inputs(vertices, faces, sewing_pairs, max_vertices):
     xyz=np.asarray(vertices,dtype=np.float64)
     if xyz.ndim!=2 or xyz.shape[1]!=3 or not np.isfinite(xyz).all():
         raise ValueError("vertices must be finite 3D positions")
@@ -35,6 +35,12 @@ def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
         pairs=pairs.astype(np.int64,copy=False)
     ff=ff.astype(np.int64,copy=False)
 
+    return xyz, ff, pairs
+
+
+def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
+    xyz, ff, pairs = _validated_inputs(vertices, faces, sewing_pairs, max_vertices)
+    n = len(xyz)
     parent=np.arange(n,dtype=np.int64)
     size=np.ones(n,dtype=np.int64)
     def root(x):

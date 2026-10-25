@@ -1,33 +1,14 @@
 """Blender 4.3.2: 2D rest-gore cloth + loose-edge sewing springs; synthetic, NOT production."""
-import argparse, json, sys
+import argparse
+import json
+import sys
 from pathlib import Path
 import bpy
 import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sewing_quality import evaluate
 
-def main():
-    p=argparse.ArgumentParser(description=__doc__)
-    for key in ("spec","output","report"):
-        p.add_argument("--"+key,type=Path,required=True)
-    p.add_argument("--frames",type=int,default=48)
-    p.add_argument("--placement",choices=("legacy","reference_offset"),default="legacy")
-    a=p.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else [])
-    if not a.spec.is_file() or a.output.exists() or a.report.exists():
-        raise RuntimeError("Input absent / outputs exist")
-    if not 20<=a.frames<=144:raise ValueError("Invalid frame count")
-    data=json.loads(a.spec.read_text())
-    if data.get("status")!="UNVALIDATED_GEOMETRIC_RESEARCH_PATTERN":
-        raise RuntimeError("Not a synthetic research pattern")
-    par=data["parameters"]
-    n=int(par["panels"])
-    left=data["panel"]["seam_left"]; right=data["panel"]["seam_right"]
-    N=len(left)
-    if n<6 or n>24 or not 25<=N<=257 or len(right)!=N:
-        raise RuntimeError("Unexpected pattern topology")
-    if len(data["sewing_pairs"])!=n:
-        raise RuntimeError("Stitch pairing graph incomplete")
-    bpy.ops.wm.read_factory_settings(use_empty=True)
+def _prepare_geometry(a, par, right, n, N):
     vertices,rest,faces,loose,seams,reference=[],[],[],[],[],[]
     rad=par["radius_mm"]*.001
     half=par["half_height_mm"]*.001
@@ -80,6 +61,32 @@ def main():
         raise RuntimeError(f"Degenerate faces before cloth: {np.count_nonzero(a3 < 1e-12)}")
     print("SEW_GEOMETRY",len(vertices),len(faces),
           "minimum_quad_half_area_m2",float(a3.min()),flush=True)
+    return vertices, rest, faces, loose, seams, reference
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    for key in ("spec","output","report"):
+        p.add_argument("--"+key,type=Path,required=True)
+    p.add_argument("--frames",type=int,default=48)
+    p.add_argument("--placement",choices=("legacy","reference_offset"),default="legacy")
+    a=p.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else [])
+    if not a.spec.is_file() or a.output.exists() or a.report.exists():
+        raise RuntimeError("Input absent / outputs exist")
+    if not 20<=a.frames<=144:raise ValueError("Invalid frame count")
+    data=json.loads(a.spec.read_text())
+    if data.get("status")!="UNVALIDATED_GEOMETRIC_RESEARCH_PATTERN":
+        raise RuntimeError("Not a synthetic research pattern")
+    par=data["parameters"]
+    n=int(par["panels"])
+    left=data["panel"]["seam_left"]; right=data["panel"]["seam_right"]
+    N=len(left)
+    if n<6 or n>24 or not 25<=N<=257 or len(right)!=N:
+        raise RuntimeError("Unexpected pattern topology")
+    if len(data["sewing_pairs"])!=n:
+        raise RuntimeError("Stitch pairing graph incomplete")
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    vertices,rest,faces,loose,seams,reference = _prepare_geometry(a, par, right, n, N)
     mesh=bpy.data.meshes.new("SYNTHETIC_2D_GORE_MESH")
     mesh.from_pydata(vertices,loose,faces)
     mesh.update()

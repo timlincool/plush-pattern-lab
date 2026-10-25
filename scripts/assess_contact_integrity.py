@@ -7,7 +7,6 @@ manufacturing approval. It never modifies model or simulation results.
 import argparse
 import hashlib
 import json
-import math
 from pathlib import Path
 
 

@@ -20,6 +20,33 @@ def file_hash(path):
         for b in iter(lambda:f.read(1<<20),b""):h.update(b)
     return h.hexdigest()
 
+def _scan_properties(inspected, findings, flag):
+    for obj in bpy.data.objects:
+        inspected["objects"]+=1
+        for k,v in obj.items():
+            inspected["custom_properties"]+=1
+            if any(x in k.lower() for x in SENSITIVE_PROPS):
+                findings.append({"level":"review","category":"sensitive_prop_name","location":obj.name+":"+k})
+            if isinstance(v,(str,int,float)):
+                flag("object_property",obj.name+":"+k,v)
+        animation=obj.animation_data
+        if animation is not None:
+            for driver in animation.drivers:
+                inspected["drivers"]+=1
+                flag("driver_expression",obj.name+":"+str(driver.data_path),driver.driver.expression)
+    for scene in bpy.data.scenes:
+        for k,v in scene.items():
+            inspected["custom_properties"]+=1
+            if any(x in k.lower() for x in SENSITIVE_PROPS):
+                findings.append({"level":"review","category":"sensitive_prop_name","location":"scene:"+k})
+            if isinstance(v,(str,int,float)):
+                flag("scene_property",k,v)
+    for world in bpy.data.worlds:
+        for k,v in world.items():
+            inspected["custom_properties"]+=1
+            if isinstance(v,(str,int,float)):flag("world_property",k,v)
+
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--input",type=Path,required=True)
@@ -52,30 +79,7 @@ def main():
     for library in bpy.data.libraries:
         inspected["libraries"]+=1
         flag("library_path",library.name,library.filepath)
-    for obj in bpy.data.objects:
-        inspected["objects"]+=1
-        for k,v in obj.items():
-            inspected["custom_properties"]+=1
-            if any(x in k.lower() for x in SENSITIVE_PROPS):
-                findings.append({"level":"review","category":"sensitive_prop_name","location":obj.name+":"+k})
-            if isinstance(v,(str,int,float)):
-                flag("object_property",obj.name+":"+k,v)
-        animation=obj.animation_data
-        if animation is not None:
-            for driver in animation.drivers:
-                inspected["drivers"]+=1
-                flag("driver_expression",obj.name+":"+str(driver.data_path),driver.driver.expression)
-    for scene in bpy.data.scenes:
-        for k,v in scene.items():
-            inspected["custom_properties"]+=1
-            if any(x in k.lower() for x in SENSITIVE_PROPS):
-                findings.append({"level":"review","category":"sensitive_prop_name","location":"scene:"+k})
-            if isinstance(v,(str,int,float)):
-                flag("scene_property",k,v)
-    for world in bpy.data.worlds:
-        for k,v in world.items():
-            inspected["custom_properties"]+=1
-            if isinstance(v,(str,int,float)):flag("world_property",k,v)
+    _scan_properties(inspected, findings, flag)
     # 保存和报告只包含统计信息 + 位置，避免把可疑 token 再复制到 CI 日志。
     level=Counter(x["level"] for x in findings)
     report={
