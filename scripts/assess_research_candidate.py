@@ -47,6 +47,16 @@ def assess(report, limits=STUDY_LIMITS):
             raise ValueError("Nonfinite or invalid diagnostic: "+name)
         if value>bound:
             failed.append({"metric":name, "measured":float(value), "study_limit":float(bound)})
+    # A capped trial must additionally demonstrate that its *analytically
+    # paired* mesh has one oriented genus-zero closed component. This does
+    # not assert physical sewing, sealed fabric or absence of self-collision.
+    if report.get("status")=="ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY":
+        topology=report.get("analytical_stitch_weld_topology") or {}
+        topology_pass=topology.get("research_topological_sphere_screen_pass") is True
+        observed["topological_sphere_proxy_required"]=int(topology_pass)
+        if not topology_pass:
+            failed.append({"metric":"topological_sphere_proxy_required",
+                           "measured":0.0,"study_limit":1.0})
     return {
         "status":"RESEARCH_CANDIDATE_REJECTED" if failed else "RESEARCH_GEOMETRY_SCREEN_PASSED",
         "placement":report.get("preposition_mode",report.get("prepositioning")),
