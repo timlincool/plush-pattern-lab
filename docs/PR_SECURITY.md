@@ -12,7 +12,7 @@
 
 1. **Settings → Actions → General → Approval for running fork pull request workflows from contributors**：选择 **Require approval for all external contributors**。不能停留在仅首位贡献者批准；被合并过一次的恶意用户有机会绕过“首次贡献者”限定。即使 PR 修改或新建工作流，也应拒绝未经审查的自动执行。
 2. 同页 **Workflow permissions**：默认 `Read repository contents permission`；取消允许 GitHub Actions 创建或批准 PR。当前 YAML 还显式使用 `contents: read`。
-3. **Settings → Rules → Rulesets**：为 `main` 新建 **Active** 规则，禁止强制推送/删除，要求经 PR 合并及必需 CI（`python-tests`）。单人维护者开启“必须另一人批准”可能导致自己的 PR 无法合并；增加协作者后再开启强制至少一位非作者审阅，或者仅由仓库所有者人工合并。当前 Rulesets API 读到空数组，分支保护 API 对此 GitHub App 返回 403，**无法证明其他 Branch protection 已启用**。
+3. **Settings → Rules → Rulesets**：为 `main` 新建 **Active** 规则，禁止强制推送/删除，并要求经 PR 合并。**注意：为了安全，`python-tests` 只在代码到达 `main` 后运行，它没有 PR 提交的预合并检查结果，不能直接配置为 PR 必需状态检查；否则 PR 可能一直无法合并。** 将来如需预合并门禁，应另行设计先经维护者审查的可信测试流程，而不是恢复执行陌生 PR 代码。单人维护者开启“必须另一人批准”可能导致自己的 PR 无法合并；增加协作者后再开启强制至少一位非作者审阅，或者仅由仓库所有者人工合并。当前 Rulesets API 读到空数组，分支保护 API 对此 GitHub App 返回 403，**无法证明其他 Branch protection 已启用**。
 4. 建议启用 Secret scanning / Dependabot alerts / Code scanning（如果仓库计划开放第三方贡献）。敏感信息使用 GitHub 私密漏洞报告，绝不贴公开 Issue。
 
 ## 收到 PR 时做什么
