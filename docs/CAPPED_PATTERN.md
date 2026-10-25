@@ -31,3 +31,29 @@
 - [Blender 官方缝合弹簧与 Rest Shape Key](https://docs.blender.org/manual/en/5.3/physics/cloth/settings/shape.html)
 - [Jin et al., Component-based Plush Pattern Design, CAD 2020](https://doi.org/10.1016/j.cad.2020.102911)
 - [Pietroni et al., Computational Pattern Making, SIGGRAPH 2022](https://igl.ethz.ch/projects/computational-patternmaking/)
+
+## 已实际跑过的 Blender 48 帧 A/B（2026-10-25）
+
+[公开 Actions：12片与8片双帽片实际求解、研究筛选和产物](https://github.com/timlincool/plush-pattern-lab/actions/runs/40169745123)
+
+| 结果 | 8片侧片 + 2帽片 | 12片侧片 + 2帽片 |
+|---|---:|---:|
+| 实际独立缝合弹簧 | 552 | 828 |
+| 平均缝口间隙 | 0.000253mm | **0.000221mm** |
+| 合成目标刚体对齐 RMS | 0.325mm | **0.216mm** |
+| 主伸长偏差 P95 | 13.25% | **7.64%** |
+| 相对初始法向翻面警告 | **0** | **0** |
+| 零面积三角片 | **0** | **0** |
+| 当前研究几何筛选 | 拒绝（应变） | **通过** |
+
+这证明在已知合成目标预定位的受控算例中，两个圆形帽片避免了原先尖角汇聚造成的翻面；12片版本同时通过 *研究约束*。它不是独立的反向照片建模结果，没有使用真实布料物性或纤维棉，布片也没有焊接为真正闭合整体；不能宣称能够生产。
+
+**研究用 SVG 输出：**
+
+```bash
+python scripts/capped_gore_pattern.py --panels 12 --pole-cut-deg 8 --out output/12caps.json
+python scripts/export_capped_svg.py --input output/12caps.json --output output/12caps.svg
+```
+
+SVG采用毫米实体尺寸、净缝线虚线、暂定裁切线实线和简易对位标记，展示一片侧片（重复12次）以及一片顶盖/底盖；**禁止将研究标记当作工厂切割指令或定版材料公差**。
+
