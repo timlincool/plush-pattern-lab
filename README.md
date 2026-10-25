@@ -94,3 +94,8 @@ blender --disable-autoexec -b input.blend --python scripts/audit_physical_shell.
 ## 第三方 PR 安全策略
 
 陌生人的 PR **不会自动执行**依赖安装、Python 测试或 Blender 模拟。仅信任维护者推送到 `main` 的代码；PR 必须先人工审核，运行陌生模型前禁用 Blender 自动执行。详见 [PR 安全与维护者设置](docs/PR_SECURITY.md)。
+
+
+## 物理穿插风险（研究现状）
+
+已对真实保存的合成布壳运行独立 **Blender BVH 非相邻三角面相交检查**。即使缝口和闭壳拓扑的研究门禁通过，开启 Cloth 自碰撞的版本仍检测到穿插，因此新的接触晋升门禁会明确**拒绝**它；详见 [接触审计与当前失败证据](docs/CONTACT_INTERSECTION_SCREEN.md)。不能将可运行的 `.blend` 当作经验证的生产纸样。
