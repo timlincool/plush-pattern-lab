@@ -31,6 +31,8 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - name: Install geometry tools
         run: python -m pip install -r requirements-dev.txt
+      - name: Refuse fake contact pass, corrupt input, and missing evidence
+        run: python -m pytest -q tests/test_contact_integrity.py
       - name: Synthesize clean 12-gore + two-cap rest pattern
         shell: bash
         run: |
@@ -83,6 +85,16 @@ jobs:
               --case-report "$RUNNER_TEMP/collision/$MODE.json" \
               --output "$RUNNER_TEMP/collision/$MODE.triangles.json"
           done
+      - name: Independent contact veto (execution can succeed but research candidate can fail)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for MODE in disabled enabled; do
+            python scripts/assess_contact_integrity.py \
+              --simulation-report "$RUNNER_TEMP/collision/$MODE.json" \
+              --triangle-report "$RUNNER_TEMP/collision/$MODE.triangles.json" \
+              --output "$RUNNER_TEMP/collision/$MODE.contact_gate.json"
+          done
       - name: Write directly comparable parameter/quality report
         shell: bash
         run: |
@@ -96,7 +108,10 @@ jobs:
               gate=json.loads((root/(mode+".research_gate.json")).read_text())
               q=r["final_geometry_quality"]
               tri=json.loads((root/(mode+".triangles.json")).read_text())
+              contact=json.loads((root/(mode+".contact_gate.json")).read_text())
               rows.append({
+                "contact_gate":contact["status"],
+                "research_contact_screen_pass":contact["finite_zero_thickness_screen_pass"],
                 "finite_nonadjacent_seam_related":tri["nonadjacent_seam_related_pair_count"],
                 "finite_nonadjacent_other":tri["nonadjacent_other_pair_count"],
                 "mode":mode,"blender":r["blender"],
