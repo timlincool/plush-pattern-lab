@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Blender 自动备份、模拟缓存
+*.blend1
+*.blend2
+*.blend@
+blendcache_*/
+cache_*/
+*.bphys
+*.abc
+
+# 私有配置与系统文件
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+*.key
+.DS_Store
+Thumbs.db
+
+# 大型本地模型/渲染/归档输出：发布到验证后的 Release，不直接 git add
+/local-assets/
+/local-output/
+/outputs/
+/artifacts/
+/renders/
+/scratch/
+/private/
+*.zip
+*.tar.gz
+*.tar.xz
