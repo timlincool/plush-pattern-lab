@@ -38,7 +38,10 @@ def main():
             yy=right[j][1]
             f=yy/height
             radius=(.30+.70*np.sin(np.pi*f))*rad
-            for x in (left[j][0],0.,right[j][0]):
+            # Pole rows otherwise contain coincident vertices and zero-area quads.
+            # Use a 0.035mm numerical cap; this is NOT an approved seam allowance.
+            half_width=.035 if j in (0,N-1) else abs(right[j][0])
+            for x in (-half_width,0.,half_width):
                 pos=radius*outward+x*.001*tangent+np.array([0,0,half*(1-2*f)])
                 vertices.append(tuple(pos))
                 rest.append((x*.001+i*.20,yy*.001,0.))
@@ -52,6 +55,14 @@ def main():
             a2=((i+1)%n)*N*3+j*3
             loose.append((a1,a2))
             seams.append((a1,a2))
+    points_array=np.asarray(vertices,dtype=float)
+    a3=np.asarray([np.linalg.norm(np.cross(points_array[f[1]]-points_array[f[0]],
+                                           points_array[f[3]]-points_array[f[0]]))/2
+                   for f in faces])
+    if np.count_nonzero(a3 < 1e-12):
+        raise RuntimeError(f"Degenerate faces before cloth: {np.count_nonzero(a3 < 1e-12)}")
+    print("SEW_GEOMETRY",len(vertices),len(faces),
+          "minimum_quad_half_area_m2",float(a3.min()),flush=True)
     mesh=bpy.data.meshes.new("SYNTHETIC_2D_GORE_MESH")
     mesh.from_pydata(vertices,loose,faces)
     mesh.update()
