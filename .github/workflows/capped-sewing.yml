@@ -4,6 +4,7 @@ on:
     branches: [work/explicit-pole-caps-20261025]
     paths:
       - 'scripts/capped_gore_pattern.py'
+      - 'scripts/export_capped_svg.py'
       - 'scripts/sewing_capped_poc_blender.py'
       - 'scripts/assess_research_candidate.py'
       - '.github/workflows/capped-sewing.yml'
@@ -36,6 +37,9 @@ jobs:
           for N in 8 12; do
             python scripts/capped_gore_pattern.py --panels "$N" --pole-cut-deg 8 \
               --out "$RUNNER_TEMP/capped/pattern_${N}caps.json"
+            python scripts/export_capped_svg.py \
+              --input "$RUNNER_TEMP/capped/pattern_${N}caps.json" \
+              --output "$RUNNER_TEMP/capped/pattern_${N}caps.svg"
           done
       - name: Download exact Blender 4.3.2
         shell: bash
