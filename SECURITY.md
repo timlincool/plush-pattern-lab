@@ -17,3 +17,9 @@
 
 ## 尚未做的安全认证
 实物打样、填棉、缝线拉力、洗涤、站立与儿童玩具法规测试均未通过。任何研究模型/数值输出不能当作合格玩具生产或销售依据。
+
+## 外部 PR 的默认处理方式（2026-10-25）
+
+**不会自动执行 Fork PR 的 Python、依赖安装、Blender 文件或脚本**。项目 Actions 只运行已提交至维护者 `main` 的代码，或维护者在 `main` 明确手动触发的实验。仅扫描代码差异不代表代码无害；`GITHUB_TOKEN` 设置为只读，Checkout 不持久化凭据。
+
+维护者仍须在 GitHub 网页设置 **Require approval for all external contributors**，并为 `main` 配置 Ruleset；这些账户设置不能由仓库里的 YAML 自动生效。完整步骤见 [PR_SECURITY.md](docs/PR_SECURITY.md)。

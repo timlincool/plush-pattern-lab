@@ -1,0 +1,36 @@
+# 公开仓库 PR 安全边界（2026-10-25）
+
+## 结论
+
+**陌生人的 PR 不可信。** 公开仓库接受讨论和代码差异，但不会自动执行 PR 里的 Python、测试、依赖安装、Blender 脚本或二进制模型。只有维护者提交到 main（或在 main 上手动启动）才运行项目数值实验。
+
+以前 `ci.yml` 曾在 `pull_request` 时 `checkout` 合并代码，接着 `pip install` 与 `pytest`。这可以让恶意代码在 **GitHub 托管的临时 Runner** 上执行。GitHub 对 Fork PR 默认限制为只读 Token 且不提供 Secrets，但不能把这当作“不可能被滥用”的证明；更不能给工作流加 `pull_request_target` / `workflow_run` 后执行外部源码。
+
+2026-10-25 当前检查结果：公开库 4 个 Actions 工作流使用 GitHub-hosted `ubuntu-24.04`；修复后不允许 PR 事件执行代码，主分支上只有只读权限、不可持久化 Checkout 凭据、经过 SHA 固定的 GitHub 官方 Actions。不是对 GitHub Runner、Python 包或 Blender 本身漏洞的形式化认证。
+
+## 维护者必须在 GitHub 设置的门禁（无法通过当前 Chat 连接更改）
+
+1. **Settings → Actions → General → Approval for running fork pull request workflows from contributors**：选择 **Require approval for all external contributors**。不能停留在仅首位贡献者批准；被合并过一次的恶意用户有机会绕过“首次贡献者”限定。即使 PR 修改或新建工作流，也应拒绝未经审查的自动执行。
+2. 同页 **Workflow permissions**：默认 `Read repository contents permission`；取消允许 GitHub Actions 创建或批准 PR。当前 YAML 还显式使用 `contents: read`。
+3. **Settings → Rules → Rulesets**：为 `main` 新建 **Active** 规则，禁止强制推送/删除，要求经 PR 合并及必需 CI（`python-tests`）。单人维护者开启“必须另一人批准”可能导致自己的 PR 无法合并；增加协作者后再开启强制至少一位非作者审阅，或者仅由仓库所有者人工合并。当前 Rulesets API 读到空数组，分支保护 API 对此 GitHub App 返回 403，**无法证明其他 Branch protection 已启用**。
+4. 建议启用 Secret scanning / Dependabot alerts / Code scanning（如果仓库计划开放第三方贡献）。敏感信息使用 GitHub 私密漏洞报告，绝不贴公开 Issue。
+
+## 收到 PR 时做什么
+
+- 先看 **Files changed**，关注 `.github/workflows/**`、`requirements-dev.txt`、`scripts/`、`tests/`、`.blend` / ZIP 和异常网络访问代码。不要先点击“Approve workflows to run”。
+- 不在自己的 Windows/macOS/WSL 电脑运行陌生 PR 里的脚本。确认可信后，以隔离 GitHub Hosted Runner / 一次性容器运行，永远不要挂载私人 GitHub/公司凭据。
+- 如果 PR 改动 Action 工作流或依赖，确认其来源与完整 SHA，以及是否增加写权限、Secrets、缓存复用或远程下载命令。
+- 不使用 `pull_request_target`、`workflow_run`、`issue_comment` 去 checkout 和执行 PR 内容；不要自动把 PR 工件交给高权限任务。
+- 对新上传的 Blender `.blend` 使用 `--disable-autoexec`，仍需检查外部依赖、内嵌驱动和原始 ZIP。它不是可执行风险为零的保证。
+
+## 实施的自动回归门禁
+
+`tests/test_workflow_security.py` 检查：没有 PR/高权限事件、四个工作流的 Token 仅只读、Checkout 凭据不持久化、官方 Actions 按固定 40 位 SHA 绑定、重型计算只允许 main 推送/手动触发。
+
+**限制**：这些检查仅在被维护者信任的代码执行之后运行；攻击者如控制了主分支，能同时改测试和工作流。所以 GitHub 账号 MFA、访问权限、Rulesets 和审阅是不可替代的边界。
+
+GitHub 官方资料：
+- https://docs.github.com/en/actions/reference/security/secure-use
+- https://docs.github.com/en/actions/reference/security/securely-using-pull_request_target
+- https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository
+- https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets

@@ -89,3 +89,8 @@ blender --disable-autoexec -b input.blend --python scripts/audit_physical_shell.
 ## 参与贡献
 
 请提交可复现测试、输入来源、计算误差、失败反例及制造限制。外部 PR 使用只读 CI；包含大模型的仿真由维护者在可信输入上手动触发。参考 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+
+## 第三方 PR 安全策略
+
+陌生人的 PR **不会自动执行**依赖安装、Python 测试或 Blender 模拟。仅信任维护者推送到 `main` 的代码；PR 必须先人工审核，运行陌生模型前禁用 Blender 自动执行。详见 [PR 安全与维护者设置](docs/PR_SECURITY.md)。

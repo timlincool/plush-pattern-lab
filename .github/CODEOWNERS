@@ -1,0 +1,7 @@
+# Advisory only until the repository's main ruleset requires code owner reviews.
+/.github/workflows/ @timlincool
+/requirements-dev.txt @timlincool
+/scripts/ @timlincool
+/tests/ @timlincool
+/SECURITY.md @timlincool
+/.github/CODEOWNERS @timlincool
