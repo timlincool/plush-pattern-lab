@@ -8,6 +8,7 @@ on:
       - 'scripts/cloth_solver_canary.py'
       - 'scripts/plush_gore_pattern.py'
       - 'scripts/sewing_quality.py'
+      - 'scripts/assess_research_candidate.py'
       - '.github/workflows/sewing-poc.yml'
 permissions:
   contents: read
@@ -76,6 +77,15 @@ jobs:
             --output "$RUNNER_TEMP/sewing/2d_sewing_reference_12.blend" \
             --report "$RUNNER_TEMP/sewing/sewing_report_reference_12.json" \
             --frames 48 --placement reference_offset
+      - name: Evaluate selection gate; failed candidates are preserved as research evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          for NAME in legacy reference_offset reference_12; do
+            python scripts/assess_research_candidate.py \
+              --report "$RUNNER_TEMP/sewing/sewing_report_${NAME}.json" \
+              --output "$RUNNER_TEMP/sewing/candidate_gate_${NAME}.json"
+          done
       - name: Record seam-versus-shape A/B; research execution is not shape approval
         shell: bash
         run: |
@@ -87,8 +97,11 @@ jobs:
           for name in ("legacy","reference_offset","reference_12"):
               d=json.loads((out/("sewing_report_"+name+".json")).read_text())
               q=d["final_geometry_quality"]
+              decision=json.loads((out/("candidate_gate_"+name+".json")).read_text())
               rows.append({
                   "variant":name,
+                  "research_gate":decision["status"],
+                  "failed_metrics":[f["metric"] for f in decision["failed_checks"]],
                   "panel_count":d["synthetic_panel_count"],
                   "seam_mean_gap_mm":d["final"]["mean_gap_mm"],
                   "aligned_target_rms_mm":q["target_shape"]["rigid_aligned_correspondence_rms_mm"],
