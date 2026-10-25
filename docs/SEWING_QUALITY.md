@@ -34,3 +34,28 @@
 - [Blender Cloth Shape / Sewing / Rest Shape Key 官方文档](https://docs.blender.org/manual/en/5.3/physics/cloth/settings/shape.html)——缝合弹簧只会把点拉近，Rest Shape Key 定义自然长度。
 - [Inverse Garment and Pattern Modeling with a Differentiable Simulator (CGF 2024)](https://doi.org/10.1111/cgf.15249)——由模拟后形状偏差反向约束纸样；3D 评价采用 Chamfer 与法线角误差。
 - [Computational Pattern Making from 3D Garment Models (SIGGRAPH 2022)](https://igl.ethz.ch/projects/computational-patternmaking/)——缝线对称、布纹方向、各向异性展开应变有界。
+
+## 真实 A/B 实验（Blender 4.3.2，48帧，2026-10-25）
+
+[GitHub Actions 实跑与独立产物](https://github.com/timlincool/plush-pattern-lab/actions/runs/40169028928)
+
+| 指标 | 旧8片预定位 | 目标辅助8片 | 目标辅助12片 |
+|---|---:|---:|---:|
+| 缝合对应边数 | 520 | 520 | 780 |
+| 平均接缝间隙（mm） | 0.000312 | 0.000247 | 0.000308 |
+| 对合成目标的刚体对齐 RMS（mm） | 18.932 | **0.266** | 0.469 |
+| 主伸长绝对偏差 P95 | 25.54% | 14.23% | **8.07%** |
+| 翻面警告三角形 | 12 | 23 | 25 |
+| 发生在首末5%裁片行 | 0 | 23 | 25 |
+| 裁片内部翻面警告 | 12 | **0** | **0** |
+| 显式研究候选门禁 | **拒绝** | **拒绝** | **拒绝** |
+
+**数据结论**：
+
+1. 将已知合成目标辅助用于三维预定位，显著减少成形误差；这是**有已知目标的受辅助初始化**，不是从照片盲重建成功。
+2. 12片相对8片把 P95 几何应变从14.23%降低至8.07%，但增加50%缝合对应边，刚体对齐RMS从0.266mm增至0.469mm。因此不能按“片数越多越好”排序。
+3. 两种目标辅助方案的翻面均仅出现在靠近极点的网格最前/最后裁片行，说明下一步应**明确设计顶部与底部闭合帽片、对位缺口及对应缝线**；直接把多个尖角强拉成一个极点会引入数值扭结。
+4. **所有候选均被研究质量门禁明确拒绝晋升**，原因见工件里的 `candidate_gate_*.json`。实验工作流绿灯只证明运行/报告完整，不表示形状或材料合格。真实使用需增加碰撞、自交检验和测量样布。
+
+研究门禁 `scripts/assess_research_candidate.py` 的 2mm 形状RMS、10%几何应变、0翻面等阈值都是项目**测试默认值**，不是工厂布料安全标准。只有手动选用 `--require-pass` 时拒绝结果才返回非零，适合未来的候选晋升/发行任务。
+
