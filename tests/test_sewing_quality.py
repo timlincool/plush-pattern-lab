@@ -61,6 +61,8 @@ def test_triangle_flip_warning_is_not_self_collision_claim():
     flipped[4:8,1]=.01-flipped[4:8,1]
     d=quality.evaluate(flipped,rest,faces,pairs,xyz,xyz)
     assert d["strain"]["orientation_reversed_vs_initial"]>=2
+    assert d["strain"]["interior_region_flips"]>=2
+    assert d["strain"]["endpoint_region_flips"]==0
     assert any("self-intersection" in s or "intersections" in s for s in d["limitations"])
 
 
