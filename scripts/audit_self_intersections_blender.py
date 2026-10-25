@@ -124,6 +124,7 @@ def main():
     report = audit_geometry(coords, triangles, sewing_edges)
     report.update({
         "case_sha256": sha256(args.input),
+        "source_report_sha256": sha256(args.case_report),
         "research_trial_self_collision_enabled": expected.get("self_collision_enabled"),
         "saved_blender_version": bpy.app.version_string,
         "numerical_evidence_only": True,
