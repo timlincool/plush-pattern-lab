@@ -1,28 +1,35 @@
-name: Public lightweight tests
+name: Trusted Python tests
+# SECURITY: Never execute contributor-controlled pull_request code.
+# External PRs are reviewed as diffs in the GitHub UI, not executed in Actions.
+# Only maintainer-pushed main commits or explicit maintainer dispatch run code.
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
-  group: tests-${{ github.workflow }}-${{ github.ref }}
+  group: trusted-tests-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   python-tests:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: pip
           cache-dependency-path: requirements-dev.txt
-      - name: Dependencies
+      - name: Dependencies from maintainer-reviewed main only
         run: python -m pip install -r requirements-dev.txt
-      - name: Syntax and tests
+      - name: Syntax and tests on trusted main
         run: |
           python -m compileall -q scripts tests
           python -m pytest -q
