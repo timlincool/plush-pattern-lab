@@ -49,7 +49,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \\
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
             --python scripts/cloth_solver_canary.py -- "$RUNNER_TEMP/sewing/solver_canary.json"
       - name: Actual Cloth sewing-springs numerical experiment (not stuffing)
         shell: bash
