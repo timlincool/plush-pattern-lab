@@ -104,11 +104,22 @@ def evaluate(vertices, flat_rest, faces, sewing_pairs, target, initial_vertices)
     collapsed_count = int(np.count_nonzero(face_area < 1e-12))
     # Actionable evidence: identify where the fold warnings occur rather than
     # presenting a bare count. Indices use the two-triangle-per-quad layout.
+    # Identify a separate failure mode at each tip of a gore. A singular
+    # point where many panels meet needs explicit cap design; do not erase
+    # these failures from the overall count or call the shell watertight.
+    longitudinal=rest[tri[:, (0, 1, 2)], 1].mean(axis=1)
+    span=float(np.ptp(rest[:, 1]))
+    if span <= 1e-8:
+        raise ValueError("Flat rest longitudinal span collapsed")
+    frac=(longitudinal-rest[:, 1].min())/span
+    end_flips=int(np.count_nonzero((oriented < -1e-15) &
+        ((frac < 0.05) | (frac > 0.95))))
     reverse_samples = [
         {
             "quad_face_index": int(t % len(quad)),
             "triangle_of_quad": int(t // len(quad)),
-            "rest_longitudinal_center_mm": float(rest[tri[t], 1].mean() * 1000)
+            "rest_longitudinal_center_mm": float(longitudinal[t] * 1000),
+            "at_first_or_last_5pct": bool(frac[t]<0.05 or frac[t]>0.95),
         }
         for t in reverse_indices[:40]
     ]
@@ -145,6 +156,9 @@ def evaluate(vertices, flat_rest, faces, sewing_pairs, target, initial_vertices)
             "p95_abs_principal_strain": float(np.quantile(abs_strain, .95)),
             "area_3d_over_flat_rest": float(face_area.sum() / rest_area),
             "orientation_reversed_vs_initial": reverse_count,
+            "endpoint_region_flips": end_flips,
+            "interior_region_flips": reverse_count - end_flips,
+            "endpoint_region_definition": "first/last 5% of 2D rest longitudinal extent",
             "orientation_reversal_samples": reverse_samples,
             "near_zero_area_triangles": collapsed_count,
         },
