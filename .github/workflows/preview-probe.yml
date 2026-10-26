@@ -157,6 +157,29 @@ jobs:
             "cases":rows},indent=2))
           print("SELF_COLLISION_AB",json.dumps(rows))
           PY
+      - name: Capture exact formatter output for trusted review
+        if: always()
+        shell: bash
+        run: |
+          python -m ruff format .
+          python - <<'PY'
+          import base64
+          import pathlib
+          import subprocess
+          paths = subprocess.check_output(["git","diff","--name-only","-z"]).split(b"\0")
+          for raw in paths:
+              if not raw:
+                  continue
+              path = pathlib.Path(raw.decode("utf-8"))
+              if path.suffix != ".py":
+                  continue
+              print("FMT_FILE_BEGIN:" + path.as_posix())
+              encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+              for offset in range(0, len(encoded), 400):
+                  print("FMT_B64:" + encoded[offset:offset + 400])
+              print("FMT_FILE_END")
+          print("FMT_COMPLETE")
+          PY
       - name: Preserve numerical evidence and editable scenes
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
