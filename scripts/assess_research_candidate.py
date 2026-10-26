@@ -1,99 +1,19 @@
-"""Promotion gate for *research* cloth candidates; never a product safety certificate.
+"""Compatibility entrypoint for assess_research_candidate; implementation is in the package."""
 
-A successful Blender simulation run is not an accepted shape. This module
-separates execution success from geometric acceptance; selected/released
-patterns must explicitly pass all declared study bounds.
-"""
-import argparse
-import json
-import math
+from importlib import import_module
 from pathlib import Path
+import sys
 
-STUDY_LIMITS = {
-    "seam_mean_gap_mm_max": 0.10,
-    "seam_max_gap_mm_max": 1.00,
-    "aligned_target_rms_mm_max": 2.00,
-    "principal_strain_p95_max": 0.10,
-    "orientation_reversals_max": 0,
-    "zero_area_triangles_max": 0,
-}
+_SRC = str(Path(__file__).resolve().parents[1] / "src")
+if _SRC not in sys.path:
+    sys.path.insert(0, _SRC)
+_impl = import_module("plush_pattern_lab.validation.assess_research_candidate")
 
 
-def assess(report, limits=STUDY_LIMITS):
-    supported={
-        "ACTUAL_CLOTH_SEWING_SPRINGS_NUMERICAL_TRIAL",
-        "ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY",
-    }
-    if report.get("status") not in supported:
-        raise ValueError("Unknown trial report status")
-    q=report.get("final_geometry_quality")
-    if not isinstance(q,dict) or q.get("status")!="NUMERICAL_DIAGNOSTICS_NOT_MANUFACTURING_APPROVAL":
-        raise ValueError("Missing independently defined shape/strain metrics")
-    shape=q["target_shape"]
-    strain=q["strain"]
-    seam=q["seam"]
-    observed={
-        "seam_mean_gap_mm_max":seam["mean_gap_mm"],
-        "seam_max_gap_mm_max":seam["max_gap_mm"],
-        "aligned_target_rms_mm_max":shape["rigid_aligned_correspondence_rms_mm"],
-        "principal_strain_p95_max":strain["p95_abs_principal_strain"],
-        "orientation_reversals_max":strain["orientation_reversed_vs_initial"],
-        "zero_area_triangles_max":strain["near_zero_area_triangles"],
-    }
-    failed=[]
-    for name,bound in limits.items():
-        value=observed[name]
-        if not isinstance(value,(int,float)) or not math.isfinite(value) or value<0:
-            raise ValueError("Nonfinite or invalid diagnostic: "+name)
-        if value>bound:
-            failed.append({"metric":name, "measured":float(value), "study_limit":float(bound)})
-    # A capped trial must additionally demonstrate that its *analytically
-    # paired* mesh has one oriented genus-zero closed component. This does
-    # not assert physical sewing, sealed fabric or absence of self-collision.
-    if report.get("status")=="ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY":
-        topology=report.get("analytical_stitch_weld_topology") or {}
-        topology_pass=topology.get("research_topological_sphere_screen_pass") is True
-        observed["topological_sphere_proxy_required"]=int(topology_pass)
-        if not topology_pass:
-            failed.append({"metric":"topological_sphere_proxy_required",
-                           "measured":0.0,"study_limit":1.0})
-    return {
-        "status":"RESEARCH_CANDIDATE_REJECTED" if failed else "RESEARCH_GEOMETRY_SCREEN_PASSED",
-        "placement":report.get("preposition_mode",report.get("prepositioning")),
-        "target_assisted_prepositioning":bool(
-            report.get("reference_assisted_initialization",
-                       report.get("status")=="ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY")),
-        "panel_count":report.get("synthetic_panel_count",report.get("panels")),
-        "passed":not failed,
-        "limits":dict(limits),
-        "observed":observed,
-        "failed_checks":failed,
-        "noncertified_requirements":[
-            "No guarantee of a watertight top/bottom closure or collision-free assembled surface",
-            "No measured textile grain, bending, embroidery, sewing strength or filling",
-            "Synthetic correspondence/rigid alignment not a real plush likeness check",
-            "These thresholds are engineering study defaults, NOT fabric limits",
-        ]
-    }
+def __getattr__(name):
+    """Preserve existing script imports during the package migration."""
+    return getattr(_impl, name)
 
 
-def main():
-    p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--report",type=Path,required=True)
-    p.add_argument("--output",type=Path,required=True)
-    p.add_argument("--require-pass",action="store_true",
-                   help="Exit 2 on rejected candidate; for explicit selection/promotion only")
-    a=p.parse_args()
-    if not a.report.is_file() or a.output.exists() or a.report.resolve()==a.output.resolve():
-        raise RuntimeError("Source missing or would overwrite a report")
-    decision=assess(json.loads(a.report.read_text(encoding="utf8")))
-    a.output.parent.mkdir(parents=True,exist_ok=True)
-    a.output.write_text(json.dumps(decision,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
-    print(json.dumps({"status":decision["status"],"failed_checks":decision["failed_checks"]},
-                     ensure_ascii=False))
-    if a.require_pass and not decision["passed"]:
-        raise SystemExit(2)
-
-
-if __name__=="__main__":
-    main()
+if __name__ == "__main__":
+    _impl.main()
