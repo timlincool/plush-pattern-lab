@@ -19,13 +19,7 @@ from plush_pattern_lab.validation.audit_stitched_shell import inspect_welded_she
 from plush_pattern_lab.validation.sewing_quality import evaluate
 
 
-def _build_geometry(spec, n, N, H, radial, z, right):
-    verts, rest, reference, faces, loose, pairs, face_class = [], [], [], [], [], [], []
-    outward_offset = 0.003  # 3mm *known-reference assisted* initial panel separation
-
-    def gore_index(panel, row, slot):
-        return (panel * N + row) * 3 + slot
-
+def _append_gores(n, N, radial, z, right, verts, rest, reference, faces, face_class, outward_offset):
     for i in range(n):
         az = 2 * math.pi * i / n
         outward = np.array([math.cos(az), math.sin(az), 0.0], dtype=float)
@@ -50,6 +44,9 @@ def _build_geometry(spec, n, N, H, radial, z, right):
             faces.append((v + 1, w + 1, w + 2, v + 2))
             face_class.append("gore")
 
+
+
+def _append_caps(spec, n, H, radial, z, verts, rest, reference, faces, face_class):
     caps = {}
     for position, cap_spec in (
         ("upper", spec["caps"]["upper"]),
@@ -94,8 +91,13 @@ def _build_geometry(spec, n, N, H, radial, z, right):
             "faces": n,
         }
 
-    # The first/last gore transverse edges now sew into the explicit caps.
-    # Side gores are sewn along interior rows; end vertices join via caps.
+    return caps
+
+
+def _pair_seams(n, N, caps, loose, pairs):
+    def gore_index(panel, row, slot):
+        return (panel * N + row) * 3 + slot
+
     for i in range(n):
         for j in range(1, N - 1):
             a1 = gore_index(i, j, 2)
@@ -110,6 +112,9 @@ def _build_geometry(spec, n, N, H, radial, z, right):
                 loose.append((a1, a2))
                 pairs.append((a1, a2))
 
+
+
+def _validate_trial_geometry(n, N, verts, faces, pairs):
     if len(pairs) != n * (N - 2) + 6 * n:
         raise RuntimeError("Incomplete cap and side sewing spring graph")
     arr = np.asarray(verts, dtype=float)
@@ -121,6 +126,18 @@ def _build_geometry(spec, n, N, H, radial, z, right):
         if np.linalg.norm(np.cross(v1 - v0, v3 - v0)) < 1e-12:
             raise RuntimeError("Degenerate initial mesh face at index " + str(f))
 
+
+
+def _build_geometry(spec, n, N, H, radial, z, right):
+    verts, rest, reference, faces, loose, pairs, face_class = [], [], [], [], [], [], []
+    outward_offset = 0.003  # 3mm *known-reference assisted* initial panel separation
+
+    _append_gores(n, N, radial, z, right, verts, rest, reference, faces, face_class, outward_offset)
+    caps = _append_caps(spec, n, H, radial, z, verts, rest, reference, faces, face_class)
+    # The first/last gore transverse edges now sew into the explicit caps.
+    # Side gores are sewn along interior rows; end vertices join via caps.
+    _pair_seams(n, N, caps, loose, pairs)
+    _validate_trial_geometry(n, N, verts, faces, pairs)
     return verts, rest, reference, faces, loose, pairs, face_class
 
 
