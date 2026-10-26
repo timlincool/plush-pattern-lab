@@ -95,7 +95,12 @@ def _audit_member(source: zipfile.ZipFile, info: zipfile.ZipInfo) -> tuple[str, 
 def _zip_members(archive: zipfile.ZipFile, expected: dict) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
-    members = [info for info in archive.infolist() if not info.is_dir()]
+    all_entries = archive.infolist()
+    members = [info for info in all_entries if not info.is_dir()]
+    if any(not _safe_name(info.filename) for info in all_entries):
+        errors.append("Unsafe directory or member path")
+    if any(_is_symlink(info) for info in all_entries):
+        errors.append("Symlink archive entry is prohibited")
     total = sum(info.file_size for info in members)
     if len(members) > MAX_FILES or total > MAX_TOTAL_BYTES:
         return ["Archive exceeds bounded size/count"], warnings

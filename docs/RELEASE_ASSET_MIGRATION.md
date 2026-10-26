@@ -15,6 +15,8 @@
 ```bash
 # 首先在当前环境确认 gh CLI 已连接你自己的 GitHub 账户：
 gh auth status
+python -m pip install --only-binary=:all: -r requirements-dev.txt
+python -m pip install --no-deps --no-build-isolation -e .
 
 # 从现有私有归档仅下载6份选中包，到 .gitignore 保护的本地目录：
 python scripts/prepare_legacy_release.py --download

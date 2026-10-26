@@ -116,7 +116,7 @@ def test_embedded_secret_is_rejected_without_printing_actual_value(tmp_path):
     archive = _fake_archive(tmp_path, {"secrets.py": b"API='" + token + b"' \n"})
     result = audit_one(tmp_path, archive)
     assert result["status"] == "BLOCKED"
-    assert "Potential embedded secret" in result["errors"]
+    assert any("Potential embedded secret" in error for error in result["errors"])
     assert token.decode() not in json.dumps(result)
 
 
