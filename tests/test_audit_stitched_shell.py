@@ -1,15 +1,11 @@
 """Topological closure checks must reject almost-closed/doubled-up cloth."""
 
-import importlib.util
-from pathlib import Path
+
 
 import numpy as np
 import pytest
 
-p = Path(__file__).resolve().parents[1] / "scripts" / "audit_stitched_shell.py"
-spec = importlib.util.spec_from_file_location("weld", p)
-weld = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(weld)
+from plush_pattern_lab.validation import audit_stitched_shell as weld
 
 
 def cube():

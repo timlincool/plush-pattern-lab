@@ -1,6 +1,5 @@
 """Cap pattern study tests: correct stitch matching is necessary, not sufficient."""
 
-import importlib.util
 import json
 import math
 from pathlib import Path
@@ -9,9 +8,7 @@ import numpy as np
 import pytest
 
 SOURCE = Path(__file__).resolve().parents[1] / "scripts" / "capped_gore_pattern.py"
-s = importlib.util.spec_from_file_location("cap", SOURCE)
-m = importlib.util.module_from_spec(s)
-s.loader.exec_module(m)
+from plush_pattern_lab.patterns import capped_gore_pattern as m
 
 
 @pytest.mark.parametrize("count", [6, 8, 12, 16, 24])

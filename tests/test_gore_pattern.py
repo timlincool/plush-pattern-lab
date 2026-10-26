@@ -1,13 +1,9 @@
-import importlib.util
 from pathlib import Path
 
 import pytest
 
 SOURCE = Path(__file__).resolve().parents[1] / "scripts" / "plush_gore_pattern.py"
-module = importlib.util.module_from_spec(
-    importlib.util.spec_from_file_location("gore", SOURCE)
-)
-module.__loader__.exec_module(module)
+from plush_pattern_lab.patterns import plush_gore_pattern as module
 
 
 def test_seam_correspondence_and_segment_lengths():

@@ -1,6 +1,5 @@
 """Research SVG should be a true-scale readable pattern, not a production release."""
 
-import importlib.util
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -9,15 +8,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def module(path, name):
-    spec = importlib.util.spec_from_file_location(name, ROOT / "scripts" / path)
-    instance = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(instance)
-    return instance
-
-
-caps = module("capped_gore_pattern.py", "gorecaps")
-svg = module("export_capped_svg.py", "goresvg")
+from plush_pattern_lab.patterns import capped_gore_pattern as caps
+from plush_pattern_lab.patterns import export_capped_svg as svg
 
 
 @pytest.mark.parametrize("panels", [8, 12, 16])

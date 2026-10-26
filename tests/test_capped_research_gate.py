@@ -1,11 +1,4 @@
-import importlib.util
-from pathlib import Path
-
-P = Path(__file__).resolve().parents[1] / "scripts" / "assess_research_candidate.py"
-m = importlib.util.module_from_spec(
-    importlib.util.spec_from_file_location("capgate", P)
-)
-m.__loader__.exec_module(m)
+from plush_pattern_lab.validation import assess_research_candidate as m
 
 
 def capped_report(flips, p95):
