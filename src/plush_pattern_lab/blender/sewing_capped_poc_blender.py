@@ -141,7 +141,7 @@ def _build_geometry(spec, n, N, H, radial, z, right):
     return verts, rest, reference, faces, loose, pairs, face_class
 
 
-def main():
+def _parse_trial():
     p = argparse.ArgumentParser(description=__doc__)
     for key in ("spec", "output", "report"):
         p.add_argument("--" + key, type=Path, required=True)
@@ -176,10 +176,10 @@ def main():
         raise RuntimeError("Tip ring is not a symmetric non-zero open section")
     if par["pole_cut_deg"] <= 0:
         raise RuntimeError("Untrimmed zero-radius pole forbidden")
-    bpy.ops.wm.read_factory_settings(use_empty=True)
-    verts, rest, reference, faces, loose, pairs, face_class = _build_geometry(
-        spec, n, N, H, radial, z, right
-    )
+    return a, spec, n, N, H, radial, z, right
+
+
+def _setup_scene(a, verts, rest, faces, loose):
     mesh = bpy.data.meshes.new("SYNTHETIC_CAPPED_2D_REST_CLOTH")
     mesh.from_pydata(verts, loose, faces)
     mesh.update()
@@ -221,6 +221,10 @@ def main():
     mod.point_cache.frame_end = a.frames
     dep = bpy.context.evaluated_depsgraph_get()
 
+    return obj, collision, scene, dep
+
+
+def _simulate_frames(a, scene, obj, dep, verts, pairs):
     def gaps(q):
         g = (
             np.linalg.norm(
@@ -257,13 +261,24 @@ def main():
             print("CAPPED_SEW_FRAME", frame, gaps(xyz), flush=True)
         final = xyz
     simulation_elapsed_s = round(time.monotonic() - started, 3)
+    end = gaps(final)
+    return start, init, final, trail, simulation_elapsed_s, end
+
+
+def main():
+    a, spec, n, N, H, radial, z, right = _parse_trial()
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    verts, rest, reference, faces, loose, pairs, face_class = _build_geometry(
+        spec, n, N, H, radial, z, right
+    )
+    obj, collision, scene, dep = _setup_scene(a, verts, rest, faces, loose)
+    start, init, final, trail, simulation_elapsed_s, end = _simulate_frames(a, scene, obj, dep, verts, pairs)
     initial_quality = evaluate(
         start, np.asarray(rest), faces, pairs, np.asarray(reference), start
     )
     final_quality = evaluate(
         final, np.asarray(rest), faces, pairs, np.asarray(reference), start
     )
-    end = gaps(final)
     # Read-only *analytical* seam weld: never overwrite any real Cloth vertices.
     # It verifies graph closure and winding, NOT collision-free sealed material.
     analytical_shell = inspect_welded_shell(final, faces, pairs)
