@@ -100,6 +100,67 @@ jobs:
               --triangle-report "$RUNNER_TEMP/collision/$MODE.triangles.json" \
               --output "$RUNNER_TEMP/collision/$MODE.contact_gate.json"
           done
+      - name: Controlled pole-cut study at 6 and 12 degrees (same panel/solver parameters)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for ANGLE in 6 12; do
+            PREFIX="$RUNNER_TEMP/collision/pole$ANGLE"
+            python scripts/capped_gore_pattern.py --panels 12 --pole-cut-deg "$ANGLE" \
+              --out "$PREFIX.pattern.json"
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+              --python scripts/sewing_capped_poc_blender.py -- \
+              --spec "$PREFIX.pattern.json" \
+              --output "$PREFIX.blend" \
+              --report "$PREFIX.json" --frames 48
+            python scripts/assess_research_candidate.py \
+              --report "$PREFIX.json" --output "$PREFIX.research_gate.json"
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+              --python scripts/audit_self_intersections_blender.py -- \
+              --input "$PREFIX.blend" --case-report "$PREFIX.json" \
+              --output "$PREFIX.triangles.json"
+            python scripts/assess_contact_integrity.py \
+              --simulation-report "$PREFIX.json" \
+              --triangle-report "$PREFIX.triangles.json" \
+              --output "$PREFIX.contact_gate.json"
+          done
+      - name: Compare the pole-cut diagnostic and archive unchanged baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          folder = Path(os.environ["RUNNER_TEMP"]) / "collision"
+          results = []
+          for label, angle in (("disabled", 8), ("pole6", 6), ("pole12", 12)):
+              report = json.loads((folder / (label + ".json")).read_text())
+              triangles = json.loads((folder / (label + ".triangles.json")).read_text())
+              gate = json.loads((folder / (label + ".research_gate.json")).read_text())
+              contact = json.loads((folder / (label + ".contact_gate.json")).read_text())
+              diagnostic = triangles["localization"]
+              groups = diagnostic["by_zone_pair"]
+              results.append({
+                  "pole_cut_degrees": angle,
+                  "panel_count": report["panels"],
+                  "self_collision_enabled": report["self_collision_enabled"],
+                  "seam_gap_mean_mm": report["final"]["mean_gap_mm"],
+                  "target_rms_mm": report["final_geometry_quality"]["target_shape"]["rigid_aligned_correspondence_rms_mm"],
+                  "strain_p95": report["final_geometry_quality"]["strain"]["p95_abs_principal_strain"],
+                  "geometry_gate": gate["status"],
+                  "contact_gate": contact["status"],
+                  "seam_related": contact["seam_related_intersections"],
+                  "nonseam": contact["other_nonadjacent_intersections"],
+                  "nonseam_zone_pairs": [g for g in groups if g["category"] == "other"],
+                  "nonseam_witnesses": diagnostic["witnesses"]["other"],
+              })
+          (folder / "pole_cut_ab.json").write_text(
+              json.dumps({"status": "SYNTHETIC_RESEARCH_NOT_APPROVED", "cases": results}, indent=2)
+          )
+          print("POLE_CUT_AB", json.dumps([{k: v for k, v in item.items() if k != "nonseam_witnesses"} for item in results]))
+          PY
       - name: Write directly comparable parameter/quality report
         shell: bash
         run: |
