@@ -94,7 +94,7 @@ def _prepare_geometry(a, par, right, n, N):
     return vertices, rest, faces, loose, seams, reference
 
 
-def main():
+def _parse_pattern():
     p = argparse.ArgumentParser(description=__doc__)
     for key in ("spec", "output", "report"):
         p.add_argument("--" + key, type=Path, required=True)
@@ -119,10 +119,10 @@ def main():
         raise RuntimeError("Unexpected pattern topology")
     if len(data["sewing_pairs"]) != n:
         raise RuntimeError("Stitch pairing graph incomplete")
-    bpy.ops.wm.read_factory_settings(use_empty=True)
-    vertices, rest, faces, loose, seams, reference = _prepare_geometry(
-        a, par, right, n, N
-    )
+    return a, par, n, right, N
+
+
+def _setup_cloth(a, vertices, rest, faces, loose):
     mesh = bpy.data.meshes.new("SYNTHETIC_2D_GORE_MESH")
     mesh.from_pydata(vertices, loose, faces)
     mesh.update()
@@ -157,6 +157,10 @@ def main():
     modifier.point_cache.frame_end = a.frames
     deps = bpy.context.evaluated_depsgraph_get()
 
+    return obj, setting, scene, deps
+
+
+def _run_solver(a, scene, obj, deps, vertices, seams):
     def gap(points):
         values = np.array([np.linalg.norm(points[p] - points[q]) for p, q in seams])
         return {
@@ -186,6 +190,17 @@ def main():
         if frame % 12 == 0:
             print("SEW_FRAME", frame, gap(xyz), flush=True)
     final = gap(last)
+    return initial, trace, last, final
+
+
+def main():
+    a, par, n, right, N = _parse_pattern()
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    vertices, rest, faces, loose, seams, reference = _prepare_geometry(
+        a, par, right, n, N
+    )
+    obj, setting, scene, deps = _setup_cloth(a, vertices, rest, faces, loose)
+    initial, trace, last, final = _run_solver(a, scene, obj, deps, vertices, seams)
     rest_xy = np.asarray(rest, dtype=float)[:, :2]
     reference_xyz = np.asarray(reference, dtype=float)
     initial_quality = evaluate(
