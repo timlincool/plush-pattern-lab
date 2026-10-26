@@ -77,9 +77,7 @@ def _seam_loop_profile(seam_edges):
                     q.append(p1)
         loops.append(points)
     valid = (
-        len(seam_edges) >= 12
-        and len(loops) == 1
-        and all(v == 2 for v in deg.values())
+        len(seam_edges) >= 12 and len(loops) == 1 and all(v == 2 for v in deg.values())
     )
     return deg, loops, valid
 
@@ -125,9 +123,7 @@ def _scan_axis(bm, axis, xvals, zvals):
                 }
             )
         except Exception as e:
-            candidates.append(
-                {"axis": axis, "fraction": frac, "exception": repr(e)}
-            )
+            candidates.append({"axis": axis, "fraction": frac, "exception": repr(e)})
         finally:
             work.free()
     return candidates

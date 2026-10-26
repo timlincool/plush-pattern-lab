@@ -26,11 +26,7 @@ def _cap_ring(half_width, panels, allowance_mm, top):
     points = np.c_[radius * np.cos(angles), radius * np.sin(angles)]
     polygon = Polygon(points)
     allowance = polygon.buffer(allowance_mm, join_style=1, quad_segs=12)
-    if (
-        not polygon.is_valid
-        or polygon.area <= 0
-        or allowance.geom_type != "Polygon"
-    ):
+    if not polygon.is_valid or polygon.area <= 0 or allowance.geom_type != "Polygon":
         raise ValueError("Cap shape invalid")
     edge_length = np.linalg.norm(np.roll(points, -1, axis=0) - points, axis=1)
     if np.max(np.abs(edge_length - width)) > 1e-8:
@@ -45,8 +41,6 @@ def _cap_ring(half_width, panels, allowance_mm, top):
         "edge_length_max_mismatch_mm": float(np.max(abs(edge_length - width))),
         "end_gore_halfwidth_mm": width,
     }
-
-
 
 
 def make(

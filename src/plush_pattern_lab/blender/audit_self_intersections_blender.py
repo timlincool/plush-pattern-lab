@@ -91,7 +91,9 @@ def audit_geometry(vertices, triangles, seam_edges=()):
     candidates = {tuple(sorted((i, j))) for i, j in raw if i != j}
     if len(candidates) > MAX_PAIRS:
         raise RuntimeError("Intersection witness budget exceeded")
-    shared, seam_related, nonseam, seam_witnesses, nonseam_witnesses = _classify_pairs(candidates, faces, neighbors)
+    shared, seam_related, nonseam, seam_witnesses, nonseam_witnesses = _classify_pairs(
+        candidates, faces, neighbors
+    )
     return {
         "status": "FINITE_ZERO_THICKNESS_TRIANGLE_INTERSECTION_SCREEN",
         "vertex_count": len(coords),

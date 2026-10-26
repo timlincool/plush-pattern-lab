@@ -143,7 +143,9 @@ def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
     remapped = _merge_seam_vertices(n, pairs)
     faces_after = remapped[ff]
 
-    degenerate, edge_occurrence, graph, boundary, overfull, orientation_bad = _edge_counts(faces_after)
+    degenerate, edge_occurrence, graph, boundary, overfull, orientation_bad = (
+        _edge_counts(faces_after)
+    )
     # Include isolated vertices in connectivity, since they make a mesh
     # unsuitable for a watertight shell even if all its used faces are fine.
     active, components = _connectivity(faces_after, graph)

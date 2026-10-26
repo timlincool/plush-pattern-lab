@@ -19,7 +19,9 @@ def _inspect_path(path: Path, root: Path, limit: int) -> list[str]:
     with path.open("r", encoding="utf-8") as stream:
         count = sum(1 for _ in stream)
     if count > limit:
-        return [f"{relative}: {count} lines exceeds hard limit {limit}; split the module"]
+        return [
+            f"{relative}: {count} lines exceeds hard limit {limit}; split the module"
+        ]
     return []
 
 

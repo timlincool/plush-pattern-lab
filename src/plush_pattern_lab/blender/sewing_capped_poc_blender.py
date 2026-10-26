@@ -19,7 +19,9 @@ from plush_pattern_lab.validation.audit_stitched_shell import inspect_welded_she
 from plush_pattern_lab.validation.sewing_quality import evaluate
 
 
-def _append_gores(n, N, radial, z, right, verts, rest, reference, faces, face_class, outward_offset):
+def _append_gores(
+    n, N, radial, z, right, verts, rest, reference, faces, face_class, outward_offset
+):
     for i in range(n):
         az = 2 * math.pi * i / n
         outward = np.array([math.cos(az), math.sin(az), 0.0], dtype=float)
@@ -43,7 +45,6 @@ def _append_gores(n, N, radial, z, right, verts, rest, reference, faces, face_cl
             face_class.append("gore")
             faces.append((v + 1, w + 1, w + 2, v + 2))
             face_class.append("gore")
-
 
 
 def _append_caps(spec, n, H, radial, z, verts, rest, reference, faces, face_class):
@@ -113,7 +114,6 @@ def _pair_seams(n, N, caps, loose, pairs):
                 pairs.append((a1, a2))
 
 
-
 def _validate_trial_geometry(n, N, verts, faces, pairs):
     if len(pairs) != n * (N - 2) + 6 * n:
         raise RuntimeError("Incomplete cap and side sewing spring graph")
@@ -127,13 +127,26 @@ def _validate_trial_geometry(n, N, verts, faces, pairs):
             raise RuntimeError("Degenerate initial mesh face at index " + str(f))
 
 
-
 def _build_geometry(spec, n, N, H, radial, z, right):
     verts, rest, reference, faces, loose, pairs, face_class = [], [], [], [], [], [], []
     outward_offset = 0.003  # 3mm *known-reference assisted* initial panel separation
 
-    _append_gores(n, N, radial, z, right, verts, rest, reference, faces, face_class, outward_offset)
-    caps = _append_caps(spec, n, H, radial, z, verts, rest, reference, faces, face_class)
+    _append_gores(
+        n,
+        N,
+        radial,
+        z,
+        right,
+        verts,
+        rest,
+        reference,
+        faces,
+        face_class,
+        outward_offset,
+    )
+    caps = _append_caps(
+        spec, n, H, radial, z, verts, rest, reference, faces, face_class
+    )
     # The first/last gore transverse edges now sew into the explicit caps.
     # Side gores are sewn along interior rows; end vertices join via caps.
     _pair_seams(n, N, caps, loose, pairs)
@@ -272,7 +285,9 @@ def main():
         spec, n, N, H, radial, z, right
     )
     obj, collision, scene, dep = _setup_scene(a, verts, rest, faces, loose)
-    start, init, final, trail, simulation_elapsed_s, end = _simulate_frames(a, scene, obj, dep, verts, pairs)
+    start, init, final, trail, simulation_elapsed_s, end = _simulate_frames(
+        a, scene, obj, dep, verts, pairs
+    )
     initial_quality = evaluate(
         start, np.asarray(rest), faces, pairs, np.asarray(reference), start
     )
