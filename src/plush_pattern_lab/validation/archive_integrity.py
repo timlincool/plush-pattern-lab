@@ -92,43 +92,54 @@ def _audit_member(source: zipfile.ZipFile, info: zipfile.ZipInfo) -> tuple[str, 
     return digest.hexdigest(), sorted(set(flags))
 
 
-def _zip_members(archive: zipfile.ZipFile, expected: dict) -> tuple[list[str], list[str]]:
-    errors: list[str] = []
-    warnings: list[str] = []
+def _inventory(archive: zipfile.ZipFile, required: dict) -> tuple[list[str], list]:
     all_entries = archive.infolist()
     members = [info for info in all_entries if not info.is_dir()]
+    errors: list[str] = []
+    if len(all_entries) > MAX_FILES or sum(i.file_size for i in members) > MAX_TOTAL_BYTES:
+        return ["Archive exceeds bounded size/count"], []
     if any(not _safe_name(info.filename) for info in all_entries):
         errors.append("Unsafe directory or member path")
     if any(_is_symlink(info) for info in all_entries):
         errors.append("Symlink archive entry is prohibited")
-    total = sum(info.file_size for info in members)
-    if len(members) > MAX_FILES or total > MAX_TOTAL_BYTES:
-        return ["Archive exceeds bounded size/count"], warnings
     names = [info.filename for info in members]
     if len(names) != len(set(name.casefold() for name in names)):
         errors.append("Duplicate or case-colliding archive entries")
-    required = expected["member_sha256"]
     if set(names) != set(required):
         errors.append("Archive member inventory differs from signed release manifest")
+    return errors, members
+
+
+def _member_checks(archive: zipfile.ZipFile, info: zipfile.ZipInfo,
+                   required: dict) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    if not _safe_name(info.filename) or _is_symlink(info):
+        return ["Unsafe archive member path or symlink"], warnings
+    if info.flag_bits & 1 or info.file_size > MAX_MEMBER_BYTES:
+        return ["Encrypted or unbounded archive member"], warnings
+    if info.filename not in required:
+        return errors, warnings
+    digest, flags = _audit_member(archive, info)
+    if digest != required[info.filename]:
+        errors.append("Unexpected SHA-256 of archived member")
+    if "POSSIBLE_CREDENTIAL" in flags:
+        errors.append("Potential embedded secret in text archive member")
+    if "POSSIBLE_PERSONAL_ABSOLUTE_PATH" in flags:
+        warnings.append("Possible personal absolute path in text member")
+    if PurePosixPath(info.filename).suffix.lower() in {".blend", ".npz", ".blend1"}:
+        warnings.append("Binary Blender/array asset needs isolated content review")
+    return errors, warnings
+
+
+def _zip_members(archive: zipfile.ZipFile, expected: dict) -> tuple[list[str], list[str]]:
+    required = expected["member_sha256"]
+    errors, members = _inventory(archive, required)
+    warnings: list[str] = []
     for info in members:
-        if not _safe_name(info.filename) or _is_symlink(info):
-            errors.append("Unsafe archive member path or symlink")
-            continue
-        if info.flag_bits & 1 or info.file_size > MAX_MEMBER_BYTES:
-            errors.append("Encrypted or unbounded archive member")
-            continue
-        # Only read manifest-known paths. Do not execute or extract any archive.
-        if info.filename not in required:
-            continue
-        digest, flags = _audit_member(archive, info)
-        if digest != required[info.filename]:
-            errors.append("Unexpected SHA-256 of archived member")
-        if "POSSIBLE_CREDENTIAL" in flags:
-            errors.append("Potential embedded secret in text archive member")
-        if "POSSIBLE_PERSONAL_ABSOLUTE_PATH" in flags:
-            warnings.append("Possible personal absolute path in text member")
-        if PurePosixPath(info.filename).suffix.lower() in {".blend", ".npz", ".blend1"}:
-            warnings.append("Binary Blender/array asset needs isolated content review")
+        problems, notes = _member_checks(archive, info, required)
+        errors.extend(problems)
+        warnings.extend(notes)
     return sorted(set(errors)), sorted(set(warnings))
 
 
