@@ -109,3 +109,14 @@ blender --disable-autoexec -b input.blend --python scripts/audit_physical_shell.
 ## 项目代码结构
 
 源代码按依赖方向分为 `patterns/`（纸样与材料）、`validation/`（纯数值验证）以及 `blender/`（Blender 适配/求解）。旧的 `python scripts/*.py` 和 Blender `--python scripts/*.py` 保留兼容；安装后也可用 `plush-capped-gore` 等命令。参见 [架构说明](docs/ARCHITECTURE.md) 与 [质量门禁](docs/QUALITY_GATES.md)。无需为了设计模式而增加抽象，重构不改变研发结果的制造边界。
+
+## AI 协作 Skills
+
+仓库根目录 [AGENTS.md](AGENTS.md) 描述 AI 协作、安全和代码边界；`.agents/skills/` 提供**任务触发、按需加载**的项目级 Skills：
+
+- [feature-map](.agents/skills/feature-map/SKILL.md)：功能、代码入口、命令及证据地图，参考三个简明资料页。
+- [pattern-engineering](.agents/skills/pattern-engineering/SKILL.md)：裁片、独立帽片、SVG、材料试片及反例。
+- [blender-evidence](.agents/skills/blender-evidence/SKILL.md)：Blender 4.3.2 对照实验、保存后审计、几何/接触门禁。
+- [pr-security-review](.agents/skills/pr-security-review/SKILL.md)：外部 PR、工作流、依赖、Blender 资产与所有者合并边界。
+
+Skills 是开发指引而非可信代码执行权限；**不自动执行外部 PR 的任何脚本**，不把合成研究结果当作量产验证。新功能开发首先更新源码、测试与证据；当已实现能力发生变化时，再同步更新对应 Skill 的入口/边界。

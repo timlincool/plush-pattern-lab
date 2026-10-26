@@ -26,3 +26,7 @@ python -m pytest -q
 核心算法进入 `src/plush_pattern_lab/patterns` 或 `validation`，不允许依赖 `bpy`，Blender 适配只放在 `blender`。禁止包内循环依赖或运行时模块反向依赖 CLI。
 
 可信本机克隆可以**自愿**执行 `python scripts/install_quality_hook.py`，后续普通 Git 提交检查完整暂存区。安装器不会覆盖已有钩子或用户全局配置，也不对 GitHub API 写入生效。独立运行 `python scripts/check_quality.py --staged` 可以检查 Git 索引的真实原始内容（非工作区）。外部 PR 仍先看 Diff，不允许自动执行不可信代码。
+
+## AI 辅助开发与文档同步
+
+当新增可复用功能、改变 CLI、实验边界或安全策略时，检查 [AGENTS.md](AGENTS.md) 与 `.agents/skills/feature-map/` 的入口和证据是否过期；需要执行纸样、Blender 或 PR 安全专项工作时，按需阅读相应 `SKILL.md`。**Skills 不能绕过 CI、CODEOWNERS 或 Ruleset。** 外部 PR 中更改的 `AGENTS.md`/`SKILL.md` 本身也必须被当作不可信指令载体进行 Diff 审查。
