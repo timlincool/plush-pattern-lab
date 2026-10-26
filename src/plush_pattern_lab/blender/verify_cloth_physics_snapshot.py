@@ -40,7 +40,7 @@ def volume(o, coords):
     return float(np.einsum("ij,ij->", a, np.cross(b, c)) / 6.0)
 
 
-def main():
+def _verified_trial_inputs():
     p = argparse.ArgumentParser()
     for k in ("input", "report", "output"):
         p.add_argument("--" + k, type=Path, required=True)
@@ -58,6 +58,10 @@ def main():
         or d.get("simulation_proxy", {}).get("proxy_faces") != 2400
     ):
         raise RuntimeError("当前只核验第72帧固定实验")
+    return a, d, case
+
+
+def _load_verified_scene(a, d, case):
     bpy.ops.wm.open_mainfile(filepath=str(a.input.resolve()), load_ui=False)
     sim = bpy.data.objects.get("PHYSICS_PROXY_MAIN_NOT_PATTERN")
     snap = bpy.data.objects.get("SNAPSHOT_" + case + "_NOT_SEWING_PATTERN")
@@ -88,6 +92,10 @@ def main():
         raise RuntimeError("气压设置丢失")
     if case != "gas_proxy" and cloth.settings.use_pressure:
         raise RuntimeError("非气压实验意外开启了压力")
+    return sim, snap
+
+
+def _verify_snapshot_metrics(sim, snap, d):
     rest = positions(sim)
     final = positions(snap)
     if not np.isfinite(final).all():
@@ -114,6 +122,13 @@ def main():
         rtol=0,
     ):
         raise RuntimeError("保存后轮廓包围盒漂移")
+    return rms, vl
+
+
+def main():
+    a, d, case = _verified_trial_inputs()
+    sim, snap = _load_verified_scene(a, d, case)
+    rms, vl = _verify_snapshot_metrics(sim, snap, d)
     report = {
         "status": "PASS_INDEPENDENT_PHYSICS_SNAPSHOT_SAVE_REOPEN",
         "case": case,
