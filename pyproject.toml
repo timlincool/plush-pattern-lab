@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plush-pattern-lab"
+version = "0.1.0"
+description = "Evidence-backed 2D plush pattern generation and Blender sewing experiments"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26,<3", "scipy>=1.12,<2", "shapely>=2.0,<3"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "PyYAML>=6.0.2,<7", "ruff==0.17.2"]
+
+[project.scripts]
+plush-gore = "plush_pattern_lab.patterns.plush_gore_pattern:main"
+plush-capped-gore = "plush_pattern_lab.patterns.capped_gore_pattern:main"
+plush-material-calibration = "plush_pattern_lab.patterns.material_calibration:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "scripts"]

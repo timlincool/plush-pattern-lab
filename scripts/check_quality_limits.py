@@ -33,6 +33,19 @@ def check_limits(root: Path, max_lines: int = MAX_PYTHON_LINES) -> list[str]:
                 violations.append(
                     f"{relative}: {line_count} lines exceeds hard limit {max_lines}; split the module"
                 )
+    # Synthetic fixtures omit src/; the architecture gate requires it for the repository.
+    source = root / "src"
+    if source.is_dir():
+        for path in sorted(source.rglob("*.py")):
+            if path.is_symlink():
+                violations.append(f"{path.relative_to(root)}: symlinked Python files are prohibited")
+                continue
+            with path.open("r", encoding="utf-8") as handle:
+                line_count = sum(1 for _ in handle)
+            if line_count > max_lines:
+                violations.append(
+                    f"{path.relative_to(root)}: {line_count} lines exceeds hard limit {max_lines}"
+                )
     return violations
 
 

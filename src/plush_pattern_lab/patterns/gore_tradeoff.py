@@ -5,7 +5,6 @@ This is NOT a fabric feasibility decision until actual textile data are availabl
 """
 import argparse
 import json
-import sys
 from pathlib import Path
 from plush_pattern_lab.patterns.plush_gore_pattern import generate
 
