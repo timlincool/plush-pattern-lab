@@ -16,9 +16,13 @@ MAX_WITNESSES = {"other": 64, "seam": 24}
 
 def _polygon_identity(polygon: int, panels: int, gores: int) -> tuple[str, str]:
     if polygon >= gores:
-        return ("UPPER", "upper_cap") if polygon < gores + panels else (
-            "LOWER",
-            "lower_cap",
+        return (
+            ("UPPER", "upper_cap")
+            if polygon < gores + panels
+            else (
+                "LOWER",
+                "lower_cap",
+            )
         )
     per_panel = gores // panels
     row = (polygon % per_panel) // 2
@@ -42,7 +46,9 @@ def polygon_identities(
         raise ValueError("Face layout does not match capped sewing evidence")
     if len(polygon_ids) != face_count * 2:
         raise ValueError("Expected two loop triangles for every capped quad")
-    if any(type(index) is not int or not 0 <= index < face_count for index in polygon_ids):
+    if any(
+        type(index) is not int or not 0 <= index < face_count for index in polygon_ids
+    ):
         raise ValueError("Invalid triangle to polygon attribution")
     identities = [_polygon_identity(index, panels, gore_faces) for index in polygon_ids]
     return [ident[0] for ident in identities], [ident[1] for ident in identities]
@@ -61,7 +67,9 @@ def _center_mm(vertices: list, triangle: tuple[int, ...]) -> list[float]:
     ]
 
 
-def _witness(pair: tuple[int, int], vertices: list, faces: list, labels: list, zones: list) -> dict:
+def _witness(
+    pair: tuple[int, int], vertices: list, faces: list, labels: list, zones: list
+) -> dict:
     a, b = pair
     return {
         "triangle_indices": [a, b],

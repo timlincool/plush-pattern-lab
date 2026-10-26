@@ -134,7 +134,9 @@ def audit_geometry(vertices, triangles, seam_edges=(), *, face_labels=None):
             or measured["seam"] != seam_related
             or measured["other"] != nonseam
         ):
-            raise RuntimeError("Localized contact counts disagree with original BVH audit")
+            raise RuntimeError(
+                "Localized contact counts disagree with original BVH audit"
+            )
         report["localization"] = localization
     return report
 
@@ -184,9 +186,7 @@ def main():
         gore_faces=expected["gore_face_count"],
         face_count=len(snap.data.polygons),
     )
-    report = audit_geometry(
-        coords, triangles, sewing_edges, face_labels=regions
-    )
+    report = audit_geometry(coords, triangles, sewing_edges, face_labels=regions)
     report.update(
         {
             "case_sha256": sha256(args.input),
@@ -225,6 +225,7 @@ def main():
         ),
         flush=True,
     )
+
 
 if __name__ == "__main__":
     main()
