@@ -20,10 +20,10 @@ from plush_pattern_lab.validation.preview_evidence import verify_snapshot
 SNAPSHOT = "CAP_FINAL_SHAPE_NOT_MANUFACTURING"
 TRIAL_SOURCE = "EXPERIMENT_EXPLICIT_CAP_SEWING_NOT_PRODUCTION"
 PALETTE = (
-    (0.75, 0.86, 0.91),
-    (0.70, 0.80, 0.87),
-    (0.79, 0.86, 0.84),
-    (0.73, 0.78, 0.86),
+    (0.26, 0.46, 0.54),
+    (0.22, 0.39, 0.51),
+    (0.32, 0.51, 0.46),
+    (0.28, 0.37, 0.51),
 )
 VIEWPOINTS = {
     "three_quarter": ((0.31, -0.35, 0.22), (0.0, 0.0, 0.0), 0.195),
@@ -59,9 +59,9 @@ def _apply_colors(snapshot, trial: dict, intersection: dict) -> None:
         raise RuntimeError("Saved mesh face identities disagree with trusted trial")
     for color in PALETTE:
         mesh.materials.append(_material("SYNTHETIC_BODY", color))
-    mesh.materials.append(_material("UPPER_CAP", (0.94, 0.69, 0.37)))
-    mesh.materials.append(_material("LOWER_CAP", (0.53, 0.63, 0.71)))
-    mesh.materials.append(_material("BVH_CROSSING_FACE", (0.97, 0.17, 0.37)))
+    mesh.materials.append(_material("UPPER_CAP", (0.72, 0.43, 0.18)))
+    mesh.materials.append(_material("LOWER_CAP", (0.30, 0.37, 0.52)))
+    mesh.materials.append(_material("BVH_CROSSING_FACE", (0.85, 0.02, 0.12)))
     faces_per_gore = gores // n
     for face in mesh.polygons:
         if face.index < gores:
@@ -103,14 +103,14 @@ def _lighting(scene) -> None:
     scene.render.film_transparent = False
     scene.view_settings.view_transform = "Standard"
     scene.view_settings.look = "Medium High Contrast"
-    scene.view_settings.exposure = 0.0
+    scene.view_settings.exposure = -0.35
     scene.world = bpy.data.worlds.new("SYNTHETIC_INSPECTION_WORLD")
     scene.world.use_nodes = True
     background = scene.world.node_tree.nodes.get("Background")
-    background.inputs["Color"].default_value = (0.90, 0.93, 0.96, 1.0)
-    background.inputs["Strength"].default_value = 0.7
+    background.inputs["Color"].default_value = (0.77, 0.84, 0.91, 1.0)
+    background.inputs["Strength"].default_value = 0.40
     light = bpy.data.lights.new("SYNTHETIC_INSPECTION_SOFTBOX", "AREA")
-    light.energy = 220
+    light.energy = 9
     light.shape = "DISK"
     light.size = 0.32
     obj = bpy.data.objects.new("SYNTHETIC_INSPECTION_SOFTBOX", light)
