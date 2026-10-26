@@ -127,9 +127,9 @@ def _validate_trial_geometry(n, N, verts, faces, pairs):
             raise RuntimeError("Degenerate initial mesh face at index " + str(f))
 
 
-def _build_geometry(spec, n, N, H, radial, z, right):
+def _build_geometry(spec, n, N, H, radial, z, right, outward_offset=0.003):
     verts, rest, reference, faces, loose, pairs, face_class = [], [], [], [], [], [], []
-    outward_offset = 0.003  # 3mm *known-reference assisted* initial panel separation
+
 
     _append_gores(
         n,
@@ -159,6 +159,7 @@ def _parse_trial():
     for key in ("spec", "output", "report"):
         p.add_argument("--" + key, type=Path, required=True)
     p.add_argument("--frames", type=int, default=48)
+    p.add_argument("--preposition-offset-mm", type=float, default=3.0)
     p.add_argument(
         "--self-collision",
         action="store_true",
@@ -169,6 +170,8 @@ def _parse_trial():
         raise RuntimeError("Source missing or protected output already exists")
     if not 24 <= a.frames <= 120:
         raise RuntimeError("Frame count outside research bounds")
+    if not math.isfinite(a.preposition_offset_mm) or not 0.5 <= a.preposition_offset_mm <= 8:
+        raise RuntimeError("Reference-assisted outward separation must be 0.5..8 mm")
     spec = json.loads(a.spec.read_text(encoding="utf8"))
     if spec.get("schema") != "synthetic-capped-plush-pattern-v1":
         raise RuntimeError("Not a verified capped research pattern")
@@ -282,7 +285,7 @@ def main():
     a, spec, n, N, H, radial, z, right = _parse_trial()
     bpy.ops.wm.read_factory_settings(use_empty=True)
     verts, rest, reference, faces, loose, pairs, face_class = _build_geometry(
-        spec, n, N, H, radial, z, right
+        spec, n, N, H, radial, z, right, a.preposition_offset_mm * 0.001
     )
     obj, collision, scene, dep = _setup_scene(a, verts, rest, faces, loose)
     start, init, final, trail, simulation_elapsed_s, end = _simulate_frames(
@@ -322,7 +325,8 @@ def main():
         if a.self_collision
         else None,
         "solver_elapsed_seconds": simulation_elapsed_s,
-        "prepositioning": "analytic target assisted, gores offset 3mm",
+        "prepositioning": f"analytic target assisted, gores offset {a.preposition_offset_mm:g}mm",
+        "preposition_offset_mm": a.preposition_offset_mm,
         "initial": init,
         "final": end,
         "trace": trail,
