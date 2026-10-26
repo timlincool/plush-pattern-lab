@@ -1,8 +1,9 @@
 import json
 from pathlib import Path
 
-from plush_pattern_lab.patterns import material_calibration as mat
 import pytest
+
+from plush_pattern_lab.patterns import material_calibration as mat
 
 ROOT = Path(__file__).resolve().parents[1]
 

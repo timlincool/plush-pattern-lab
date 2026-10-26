@@ -1,7 +1,8 @@
 from pathlib import Path
 
-from plush_pattern_lab.patterns import plush_gore_pattern as module
 import pytest
+
+from plush_pattern_lab.patterns import plush_gore_pattern as module
 
 SOURCE = Path(__file__).resolve().parents[1] / "scripts" / "plush_gore_pattern.py"
 

@@ -5,8 +5,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-from plush_pattern_lab.validation import assess_research_candidate as gate
 import pytest
+
+from plush_pattern_lab.validation import assess_research_candidate as gate
 
 PATH = Path(__file__).resolve().parents[1] / "scripts" / "assess_research_candidate.py"
 

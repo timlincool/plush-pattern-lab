@@ -3,13 +3,12 @@
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from plush_pattern_lab.patterns import capped_gore_pattern as caps
-from plush_pattern_lab.patterns import export_capped_svg as svg
 import pytest
 
+from plush_pattern_lab.patterns import capped_gore_pattern as caps
+from plush_pattern_lab.patterns import export_capped_svg as svg
+
 ROOT = Path(__file__).resolve().parents[1]
-
-
 
 
 @pytest.mark.parametrize("panels", [8, 12, 16])

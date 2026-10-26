@@ -43,7 +43,10 @@ def check_workflows(files: dict[str, str]) -> None:
             "branch",
         )
         if filename != "ci.yml":
-            assert "src/plush_pattern_lab/**" in push.get("paths", []), (filename, "src trigger")
+            assert "src/plush_pattern_lab/**" in push.get("paths", []), (
+                filename,
+                "src trigger",
+            )
         assert cfg["permissions"] == {"contents": "read"}, (filename, "token")
         assert not any(
             key in content

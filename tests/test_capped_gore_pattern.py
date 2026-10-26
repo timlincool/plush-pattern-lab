@@ -5,8 +5,9 @@ import math
 from pathlib import Path
 
 import numpy as np
-from plush_pattern_lab.patterns import capped_gore_pattern as m
 import pytest
+
+from plush_pattern_lab.patterns import capped_gore_pattern as m
 
 SOURCE = Path(__file__).resolve().parents[1] / "scripts" / "capped_gore_pattern.py"
 
