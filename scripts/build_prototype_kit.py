@@ -1,8 +1,8 @@
 """Thin compatibility entrypoint for the printable synthetic-toile kit."""
 
+import sys
 from importlib import import_module
 from pathlib import Path
-import sys
 
 _SOURCE = str(Path(__file__).resolve().parents[1] / "src")
 if _SOURCE not in sys.path:

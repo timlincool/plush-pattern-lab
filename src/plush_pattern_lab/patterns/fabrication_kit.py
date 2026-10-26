@@ -10,7 +10,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -59,6 +58,19 @@ def _piece(name: str, cut, stitch, kind: str) -> dict:
     }
 
 
+def _verified_cap(spec: dict, end: str, index: int, n: int,
+                  left: np.ndarray, right: np.ndarray) -> dict:
+    cap = spec["caps"][end]
+    ring = _array(cap["stitch_ring_2d_mm"], end + " ring")
+    if len(ring) != 2 * n:
+        raise ValueError("Cap ring must have 2 vertices for each panel")
+    length = np.linalg.norm(np.roll(ring, -1, axis=0) - ring, axis=1)
+    width = float(right[index, 0] - left[index, 0])
+    if np.max(abs(length - width / 2)) > 1e-5:
+        raise ValueError("Cap-to-gore transverse stitch segments do not match")
+    return _piece(end.upper(), cap["cut_outline_2d_mm"], ring, "cap")
+
+
 def _spec_pieces(spec: dict) -> tuple[list[dict], int, float, float]:
     if not isinstance(spec, dict) or spec.get("schema") != "synthetic-capped-plush-pattern-v1":
         raise ValueError("Expected the audited synthetic capped pattern schema")
@@ -86,16 +98,8 @@ def _spec_pieces(spec: dict) -> tuple[list[dict], int, float, float]:
         _piece(f"P{i:02d}", spec["gore"]["cut_outline_2d_mm"], stitch, "gore")
         for i in range(1, n + 1)
     ]
-    for end, end_row in (("upper", 0), ("lower", -1)):
-        cap = spec["caps"][end]
-        ring = _array(cap["stitch_ring_2d_mm"], end + " ring")
-        if len(ring) != 2 * n:
-            raise ValueError("Cap ring must have 2 vertices for each panel")
-        length = np.linalg.norm(np.roll(ring, -1, axis=0) - ring, axis=1)
-        width = float(right[end_row, 0] - left[end_row, 0])
-        if np.max(abs(length - width / 2)) > 1e-5:
-            raise ValueError("Cap-to-gore transverse stitch segments do not match")
-        pieces.append(_piece(end.upper(), cap["cut_outline_2d_mm"], ring, "cap"))
+    for end, index in (("upper", 0), ("lower", -1)):
+        pieces.append(_verified_cap(spec, end, index, n, left, right))
     return pieces, n, float(allowance), seam_length
 
 
@@ -191,7 +195,7 @@ def _gore_marks(identifier: str, spec: dict, count: int) -> list[str]:
 
 
 def _page_svg(page: list[dict], pieces: dict, paper_mm: tuple, number: int, total: int,
-              spec: dict, panel_count: int) -> str:
+              spec: dict, panel_count: int, paper: str) -> str:
     width, height = paper_mm
     lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width:g}mm" '
@@ -260,7 +264,7 @@ def build(spec: dict, paper: str = "A4", source_sha256: str | None = None) -> tu
     pages, size = _placement(pieces, paper)
     by_id = {piece["id"]: piece for piece in pieces}
     output_pages = [
-        _page_svg(page, by_id, size, i, len(pages), spec, n)
+        _page_svg(page, by_id, size, i, len(pages), spec, n, paper)
         for i, page in enumerate(pages, 1)
     ]
     if source_sha256 is not None and (
