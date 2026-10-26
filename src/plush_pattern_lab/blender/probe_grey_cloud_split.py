@@ -17,12 +17,7 @@ PART = "Grey flank cloud -1"
 TEMPLATE_SOURCE_SHA = "e3ae7befad526938fd85d1460c1febb284292fc50fb887dd13a188faffb70fc2"
 
 
-def main():
-    p = argparse.ArgumentParser()
-    p.add_argument("--input", type=Path, required=True)
-    p.add_argument("--output", type=Path, required=True)
-    p.add_argument("--mesh-output", type=Path, required=True)
-    a = p.parse_args(sys.argv[sys.argv.index("--") + 1 :])
+def _load_proxy(a):
     if not a.input.is_file() or a.output.exists() or a.mesh_output.exists():
         raise RuntimeError("缺源或目标路径已占用")
     bpy.ops.wm.open_mainfile(filepath=str(a.input.resolve()), load_ui=False)
@@ -53,80 +48,102 @@ def main():
         "max": [float(v * 1000) for v in (xvals.max(), yvals.max(), zvals.max())],
     }
     vol = float(bm.calc_volume(signed=True) * 1e6)
+    return bm, bb, vol, target_triangles, xvals, zvals
+
+
+def _seam_loop_profile(seam_edges):
+    deg = defaultdict(int)
+    nei = defaultdict(list)
+    for e in seam_edges:
+        v0, v1 = e.verts[:]
+        deg[v0] += 1
+        deg[v1] += 1
+        nei[v0].append(v1)
+        nei[v1].append(v0)
+    visited = set()
+    loops = []
+    for v in deg:
+        if v in visited:
+            continue
+        q = [v]
+        visited.add(v)
+        points = 0
+        while q:
+            p0 = q.pop()
+            points += 1
+            for p1 in nei[p0]:
+                if p1 not in visited:
+                    visited.add(p1)
+                    q.append(p1)
+        loops.append(points)
+    valid = (
+        len(seam_edges) >= 12
+        and len(loops) == 1
+        and all(v == 2 for v in deg.values())
+    )
+    return deg, loops, valid
+
+
+def _scan_axis(bm, axis, xvals, zvals):
+    candidates = []
+    coord_idx = 0 if axis == "X" else 2
+    vals = xvals if axis == "X" else zvals
+    for frac in (0.3, 0.4, 0.5, 0.6, 0.7):
+        t = float(np.min(vals) + frac * (np.max(vals) - np.min(vals)))
+        work = bm.copy()
+        try:
+            geom = list(work.verts) + list(work.edges) + list(work.faces)
+            normal = (1, 0, 0) if axis == "X" else (0, 0, 1)
+            point = [0.0, 0.0, 0.0]
+            point[coord_idx] = t
+            bmesh.ops.bisect_plane(
+                work, geom=geom, dist=1e-7, plane_co=point, plane_no=normal
+            )
+            work.faces.ensure_lookup_table()
+            side = {f: (f.calc_center_median()[coord_idx] >= t) for f in work.faces}
+            seam_edges = [
+                e
+                for e in work.edges
+                if len(e.link_faces) == 2
+                and side[e.link_faces[0]] != side[e.link_faces[1]]
+            ]
+            deg, loops, valid = _seam_loop_profile(seam_edges)
+            sidecounts = [
+                sum(1 for v in side.values() if v == k) for k in (False, True)
+            ]
+            candidates.append(
+                {
+                    "axis": axis,
+                    "fraction": frac,
+                    "coordinate_mm": round(t * 1000, 5),
+                    "seam_edges": len(seam_edges),
+                    "seam_components": len(loops),
+                    "loop_vertex_counts": loops,
+                    "all_seam_vertex_degree_2": all(v == 2 for v in deg.values()),
+                    "valid_single_cut": valid,
+                    "half_face_counts": sidecounts,
+                }
+            )
+        except Exception as e:
+            candidates.append(
+                {"axis": axis, "fraction": frac, "exception": repr(e)}
+            )
+        finally:
+            work.free()
+    return candidates
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--input", type=Path, required=True)
+    p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--mesh-output", type=Path, required=True)
+    a = p.parse_args(sys.argv[sys.argv.index("--") + 1 :])
+    bm, bb, vol, target_triangles, xvals, zvals = _load_proxy(a)
+    candidates = []
     candidates = []
     for axis in ("X", "Z"):
-        coord_idx = 0 if axis == "X" else 2
-        vals = xvals if axis == "X" else zvals
-        for frac in (0.3, 0.4, 0.5, 0.6, 0.7):
-            t = float(np.min(vals) + frac * (np.max(vals) - np.min(vals)))
-            work = bm.copy()
-            try:
-                geom = list(work.verts) + list(work.edges) + list(work.faces)
-                normal = (1, 0, 0) if axis == "X" else (0, 0, 1)
-                point = [0.0, 0.0, 0.0]
-                point[coord_idx] = t
-                bmesh.ops.bisect_plane(
-                    work, geom=geom, dist=1e-7, plane_co=point, plane_no=normal
-                )
-                work.faces.ensure_lookup_table()
-                side = {f: (f.calc_center_median()[coord_idx] >= t) for f in work.faces}
-                seam_edges = [
-                    e
-                    for e in work.edges
-                    if len(e.link_faces) == 2
-                    and side[e.link_faces[0]] != side[e.link_faces[1]]
-                ]
-                deg = defaultdict(int)
-                nei = defaultdict(list)
-                for e in seam_edges:
-                    v0, v1 = e.verts[:]
-                    deg[v0] += 1
-                    deg[v1] += 1
-                    nei[v0].append(v1)
-                    nei[v1].append(v0)
-                visited = set()
-                loops = []
-                for v in deg:
-                    if v in visited:
-                        continue
-                    q = [v]
-                    visited.add(v)
-                    points = 0
-                    while q:
-                        p0 = q.pop()
-                        points += 1
-                        for p1 in nei[p0]:
-                            if p1 not in visited:
-                                visited.add(p1)
-                                q.append(p1)
-                    loops.append(points)
-                valid = (
-                    len(seam_edges) >= 12
-                    and len(loops) == 1
-                    and all(v == 2 for v in deg.values())
-                )
-                sidecounts = [
-                    sum(1 for v in side.values() if v == k) for k in (False, True)
-                ]
-                candidates.append(
-                    {
-                        "axis": axis,
-                        "fraction": frac,
-                        "coordinate_mm": round(t * 1000, 5),
-                        "seam_edges": len(seam_edges),
-                        "seam_components": len(loops),
-                        "loop_vertex_counts": loops,
-                        "all_seam_vertex_degree_2": all(v == 2 for v in deg.values()),
-                        "valid_single_cut": valid,
-                        "half_face_counts": sidecounts,
-                    }
-                )
-            except Exception as e:
-                candidates.append(
-                    {"axis": axis, "fraction": frac, "exception": repr(e)}
-                )
-            finally:
-                work.free()
+        candidates.extend(_scan_axis(bm, axis, xvals, zvals))
     # 尝试准确提取几何用于后续数值审计与断面图。
     bm.verts.ensure_lookup_table()
     bm.faces.ensure_lookup_table()
