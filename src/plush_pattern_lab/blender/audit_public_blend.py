@@ -94,24 +94,24 @@ def _scan_properties(inspected, findings, flag):
 
 
 def _make_flag(findings):
-def flag(category, loc, value):
-    s = str(value)
-    if FLAGGED.search(s):
-        findings.append(
-            {
-                "level": "block",
-                "category": category + ":possible_secret",
-                "location": loc,
-            }
-        )
-    if PATH_PRIVATE.search(s):
-        findings.append(
-            {
-                "level": "review",
-                "category": category + ":private_path",
-                "location": loc,
-            }
-        )
+    def flag(category, loc, value):
+        s = str(value)
+        if FLAGGED.search(s):
+            findings.append(
+                {
+                    "level": "block",
+                    "category": category + ":possible_secret",
+                    "location": loc,
+                }
+            )
+        if PATH_PRIVATE.search(s):
+            findings.append(
+                {
+                    "level": "review",
+                    "category": category + ":private_path",
+                    "location": loc,
+                }
+            )
 
     return flag
 
