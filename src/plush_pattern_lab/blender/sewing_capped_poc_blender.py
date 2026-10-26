@@ -16,7 +16,6 @@ import bpy
 import numpy as np
 
 from plush_pattern_lab.patterns.ellipsoid_geometry import ellipsoid_normal
-from plush_pattern_lab.patterns.transition_profile import cap_offset_weight
 from plush_pattern_lab.validation.audit_stitched_shell import inspect_welded_shell
 from plush_pattern_lab.validation.sewing_quality import evaluate
 
@@ -36,7 +35,6 @@ def _append_gores(
     direction,
     radius,
     half_height,
-    cap_transition_rows,
 ):
     for i in range(n):
         az = 2 * math.pi * i / n
@@ -55,8 +53,7 @@ def _append_gores(
                     if direction == "normal"
                     else outward
                 )
-                factor = cap_offset_weight(j, N, cap_transition_rows)
-                verts.append(tuple(target + outward_offset * factor * vector))
+                verts.append(tuple(target + outward_offset * vector))
                 reference.append(tuple(target))
                 rest.append((x * 0.001 + i * 0.20, yy * 0.001))
         start = i * N * 3
@@ -150,16 +147,7 @@ def _validate_trial_geometry(n, N, verts, faces, pairs):
 
 
 def _build_geometry(
-    spec,
-    n,
-    N,
-    H,
-    radial,
-    z,
-    right,
-    outward_offset=0.003,
-    direction="radial",
-    cap_transition_rows=0,
+    spec, n, N, H, radial, z, right, outward_offset=0.003, direction="radial"
 ):
     verts, rest, reference, faces, loose, pairs, face_class = [], [], [], [], [], [], []
 
@@ -178,7 +166,6 @@ def _build_geometry(
         direction,
         float(spec["parameters"]["radius_mm"]) * 0.001,
         H,
-        cap_transition_rows,
     )
     caps = _append_caps(
         spec, n, H, radial, z, verts, rest, reference, faces, face_class
@@ -190,18 +177,12 @@ def _build_geometry(
     return verts, rest, reference, faces, loose, pairs, face_class
 
 
-def _validate_cap_transition_argument(rows: int) -> None:
-    if not 0 <= rows <= 8:
-        raise RuntimeError("Cap transition must use 0..8 rows")
-
-
 def _parse_trial():
     p = argparse.ArgumentParser(description=__doc__)
     for key in ("spec", "output", "report"):
         p.add_argument("--" + key, type=Path, required=True)
     p.add_argument("--frames", type=int, default=48)
     p.add_argument("--preposition-offset-mm", type=float, default=3.0)
-    p.add_argument("--cap-transition-rows", type=int, default=0)
     p.add_argument(
         "--preposition-direction", choices=("radial", "normal"), default="radial"
     )
@@ -215,7 +196,6 @@ def _parse_trial():
         raise RuntimeError("Source missing or protected output already exists")
     if not 24 <= a.frames <= 120:
         raise RuntimeError("Frame count outside research bounds")
-    _validate_cap_transition_argument(a.cap_transition_rows)
     if (
         not math.isfinite(a.preposition_offset_mm)
         or not 0.5 <= a.preposition_offset_mm <= 8
@@ -343,7 +323,6 @@ def main():
         right,
         a.preposition_offset_mm * 0.001,
         a.preposition_direction,
-        a.cap_transition_rows,
     )
     obj, collision, scene, dep = _setup_scene(a, verts, rest, faces, loose)
     start, init, final, trail, simulation_elapsed_s, end = _simulate_frames(
@@ -386,7 +365,6 @@ def main():
         "prepositioning": f"analytic target assisted, gores offset {a.preposition_offset_mm:g}mm",
         "preposition_offset_mm": a.preposition_offset_mm,
         "preposition_direction": a.preposition_direction,
-        "cap_transition_rows": a.cap_transition_rows,
         "initial": init,
         "final": end,
         "trace": trail,
