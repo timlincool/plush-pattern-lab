@@ -6,6 +6,7 @@ on:
       - 'scripts/sewing_capped_poc_blender.py'
       - 'scripts/audit_self_intersections_blender.py'
       - 'scripts/verify_bvh_intersection_canary.py'
+      - 'src/plush_pattern_lab/**'
       - '.github/workflows/selfcollision-ab.yml'
   workflow_dispatch:
 permissions:
