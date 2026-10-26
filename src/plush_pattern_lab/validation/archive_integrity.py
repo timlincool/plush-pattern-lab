@@ -41,7 +41,7 @@ def load_manifest(path: Path) -> dict:
     if len(names) != 6 or len(set(names)) != 6:
         raise ValueError("Expected precisely six selected source assets")
     for entry in data["assets"]:
-        if not re.fullmatch(r"0[1-6]-[a-z0-9-]+\.zip", entry["name"]):
+        if not re.fullmatch(r"0[1-6]-[A-Za-z0-9-]+\.zip", entry["name"]):
             raise ValueError("Unrecognized archive file name")
         if not SHA.fullmatch(entry.get("published_sha256", "")):
             raise ValueError("Missing published SHA-256")

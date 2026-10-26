@@ -77,7 +77,9 @@ def test_verified_synthetic_zip_never_claims_publication(tmp_path):
 def test_tamper_of_outer_zip_is_blocked(tmp_path):
     asset = _fake_archive(tmp_path, {"design.json": b'{"format":"v1"}'})
     archive = tmp_path / asset["name"]
-    archive.write_bytes(archive.read_bytes() + b"malicious")
+    poisoned = bytearray(archive.read_bytes())
+    poisoned[-10] ^= 1  # Same file size: prove digest check, not just length.
+    archive.write_bytes(poisoned)
     result = audit_one(tmp_path, asset)
     assert result["status"] == "BLOCKED"
     assert "SHA-256" in result["errors"][0]
