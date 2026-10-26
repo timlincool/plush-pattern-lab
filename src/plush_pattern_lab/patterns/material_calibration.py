@@ -22,12 +22,7 @@ def phase(points, gauge, kind):
     return np.c_[(length - gauge) / gauge, force]
 
 
-def calculate(spec):
-    if spec.get("schema") != "plush-material-swatches-v1":
-        raise ValueError("Unsupported schema")
-    origin = spec.get("data_origin")
-    if origin not in ("synthetic_demo", "measured"):
-        raise ValueError("Explicit provenance required")
+def _validated_material(spec):
     material = spec.get("material", {})
     for key in ("material_id", "batch", "fabric_type", "test_condition"):
         if not isinstance(material.get(key), str) or not material[key].strip():
@@ -38,9 +33,10 @@ def calculate(spec):
             raise ValueError("Invalid " + key)
     if material["mass_gsm"] > 2500 or material["thickness_mm"] > 25:
         raise ValueError("Check material units")
-    result = {}
-    for axis in ("warp", "weft"):
-        t = spec.get("tests", {}).get(axis)
+    return material
+
+
+def _validated_axis(t):
         if not isinstance(t, dict):
             raise ValueError("Both directions required")
         gauge, width = t.get("gauge_length_mm"), t.get("width_mm")
@@ -56,6 +52,10 @@ def calculate(spec):
             raise ValueError("Loading and unloading endpoints differ")
         if up[0, 1] > 0.05 or down[-1, 1] > 0.05 or up[-1, 1] <= 0:
             raise ValueError("End-point forces nonphysical")
+    return gauge, width, up, down
+
+
+def _axis_properties(gauge, width, up, down):
         lo, hi = 0.02, min(0.10, up[-1, 0])
         if hi <= lo:
             raise ValueError("Insufficient calibration strain range")
@@ -72,7 +72,7 @@ def calculate(spec):
         hysteresis = (work_load - work_unload) / work_load
         if not -0.01 <= hysteresis <= 1:
             raise ValueError("Invalid unload hysteresis")
-        result[axis] = {
+    return {
             "gauge_mm": gauge,
             "width_mm": width,
             "max_engineering_strain": float(up[-1, 0]),
@@ -82,6 +82,21 @@ def calculate(spec):
             "unloading_work_J": work_unload,
             "hysteresis_ratio": float(hysteresis),
         }
+
+
+def calculate(spec):
+    if spec.get("schema") != "plush-material-swatches-v1":
+        raise ValueError("Unsupported schema")
+    origin = spec.get("data_origin")
+    if origin not in ("synthetic_demo", "measured"):
+        raise ValueError("Explicit provenance required")
+    material = _validated_material(spec)
+
+    result = {}
+    for axis in ("warp", "weft"):
+        t = spec.get("tests", {}).get(axis)
+        gauge, width, up, down = _validated_axis(t)
+        result[axis] = _axis_properties(gauge, width, up, down)
     return {
         "status": "SWATCH_CURVES_VALIDATED_NOT_STUFFING_CALIBRATED",
         "data_origin": origin,

@@ -16,6 +16,39 @@ import numpy as np
 from shapely.geometry import Polygon
 
 
+def _cap_ring(half_width, panels, allowance_mm, top):
+    """Construct and validate one independent top/bottom stitch cap."""
+    width = float(half_width[0 if top else -1])
+    radius = width / (2 * math.sin(math.pi / (2 * panels)))
+    if radius <= 0:
+        raise ValueError("Cap radius collapsed")
+    angles = (np.arange(2 * panels) - 1) * math.pi / panels
+    points = np.c_[radius * np.cos(angles), radius * np.sin(angles)]
+    polygon = Polygon(points)
+    allowance = polygon.buffer(allowance_mm, join_style=1, quad_segs=12)
+    if (
+        not polygon.is_valid
+        or polygon.area <= 0
+        or allowance.geom_type != "Polygon"
+    ):
+        raise ValueError("Cap shape invalid")
+    edge_length = np.linalg.norm(np.roll(points, -1, axis=0) - points, axis=1)
+    if np.max(np.abs(edge_length - width)) > 1e-8:
+        raise ValueError("Cap and gore stitch segment mismatch")
+    return {
+        "stitch_ring_2d_mm": points.tolist(),
+        "cut_outline_2d_mm": np.asarray(allowance.exterior.coords).tolist(),
+        "stitch_perimeter_mm": float(edge_length.sum()),
+        "cut_area_mm2": float(allowance.area),
+        "net_area_mm2": float(polygon.area),
+        "radius_mm": radius,
+        "edge_length_max_mismatch_mm": float(np.max(abs(edge_length - width))),
+        "end_gore_halfwidth_mm": width,
+    }
+
+
+
+
 def make(
     radius_mm=55.0,
     half_height_mm=70.0,
@@ -53,41 +86,8 @@ def make(
     if cut.geom_type != "Polygon" or not cut.is_valid:
         raise ValueError("Gore seam allowance invalid")
 
-    # Cap ring has two straight segments for each gore end-edge:
-    # top/bottom gore horizontal rest edge is [-w,+w], split at x=0.
-    # Match every individual segment, not just the total perimeter.
-    # cap chord = 2*r_cap*sin(pi/(2*n)) = half_width.
-    def cap(top):
-        width = float(half_width[0 if top else -1])
-        radius = width / (2 * math.sin(math.pi / (2 * panels)))
-        if radius <= 0:
-            raise ValueError("Cap radius collapsed")
-        angles = (np.arange(2 * panels) - 1) * math.pi / panels
-        points = np.c_[radius * np.cos(angles), radius * np.sin(angles)]
-        polygon = Polygon(points)
-        allowance = polygon.buffer(allowance_mm, join_style=1, quad_segs=12)
-        if (
-            not polygon.is_valid
-            or polygon.area <= 0
-            or allowance.geom_type != "Polygon"
-        ):
-            raise ValueError("Cap shape invalid")
-        edge_length = np.linalg.norm(np.roll(points, -1, axis=0) - points, axis=1)
-        if np.max(np.abs(edge_length - width)) > 1e-8:
-            raise ValueError("Cap and gore stitch segment mismatch")
-        return {
-            "stitch_ring_2d_mm": points.tolist(),
-            "cut_outline_2d_mm": np.asarray(allowance.exterior.coords).tolist(),
-            "stitch_perimeter_mm": float(edge_length.sum()),
-            "cut_area_mm2": float(allowance.area),
-            "net_area_mm2": float(polygon.area),
-            "radius_mm": radius,
-            "edge_length_max_mismatch_mm": float(np.max(abs(edge_length - width))),
-            "end_gore_halfwidth_mm": width,
-        }
-
-    top = cap(True)
-    bottom = cap(False)
+    top = _cap_ring(half_width, panels, allowance_mm, True)
+    bottom = _cap_ring(half_width, panels, allowance_mm, False)
     joined = []
     length = float(ds.sum())
     for i in range(panels):
