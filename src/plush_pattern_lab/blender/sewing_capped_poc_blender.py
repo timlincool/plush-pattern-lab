@@ -130,7 +130,6 @@ def _validate_trial_geometry(n, N, verts, faces, pairs):
 def _build_geometry(spec, n, N, H, radial, z, right, outward_offset=0.003):
     verts, rest, reference, faces, loose, pairs, face_class = [], [], [], [], [], [], []
 
-
     _append_gores(
         n,
         N,
@@ -170,7 +169,10 @@ def _parse_trial():
         raise RuntimeError("Source missing or protected output already exists")
     if not 24 <= a.frames <= 120:
         raise RuntimeError("Frame count outside research bounds")
-    if not math.isfinite(a.preposition_offset_mm) or not 0.5 <= a.preposition_offset_mm <= 8:
+    if (
+        not math.isfinite(a.preposition_offset_mm)
+        or not 0.5 <= a.preposition_offset_mm <= 8
+    ):
         raise RuntimeError("Reference-assisted outward separation must be 0.5..8 mm")
     spec = json.loads(a.spec.read_text(encoding="utf8"))
     if spec.get("schema") != "synthetic-capped-plush-pattern-v1":
