@@ -98,10 +98,11 @@ def _spec_pieces(spec: dict) -> tuple[list[dict], int, float, float]:
         raise ValueError("Side seam indexing/order must match top to bottom")
     if not np.allclose(left[:, 1], right[:, 1], atol=1e-7):
         raise ValueError("Left and right stitch rows do not match")
-    seam_length = float(np.linalg.norm(np.diff(left, axis=0), axis=1).sum())
-    other_length = float(np.linalg.norm(np.diff(right, axis=0), axis=1).sum())
-    if abs(seam_length - other_length) > 1e-6:
-        raise ValueError("Side seams must have identical per-row lengths")
+    left_steps = np.linalg.norm(np.diff(left, axis=0), axis=1)
+    right_steps = np.linalg.norm(np.diff(right, axis=0), axis=1)
+    if np.max(abs(left_steps - right_steps)) > 1e-6:
+        raise ValueError("Side seams must match at every stitch-row segment")
+    seam_length = float(left_steps.sum())
     stitch = np.vstack((left, right[::-1]))
     pieces = [
         _piece(f"P{i:02d}", spec["gore"]["cut_outline_2d_mm"], stitch, "gore")
@@ -110,6 +111,20 @@ def _spec_pieces(spec: dict) -> tuple[list[dict], int, float, float]:
     for end, index in (("upper", 0), ("lower", -1)):
         pieces.append(_verified_cap(spec, end, index, n, left, right))
     return pieces, n, float(allowance), seam_length
+
+
+def _placed_piece(piece: dict, left: float, cut_top: float) -> dict:
+    pw, ph = map(float, piece["size"])
+    return {
+        "id": piece["id"],
+        "cut_bounds_mm": [
+            round(z, 5) for z in (left, cut_top, left + pw, cut_top + ph)
+        ],
+        "translation_mm": [
+            round(left - float(piece["minimum"][0]), 6),
+            round(cut_top - float(piece["minimum"][1]), 6),
+        ],
+    }
 
 
 def _placement(pieces: list[dict], paper: str) -> tuple[list[list[dict]], tuple]:
@@ -125,20 +140,20 @@ def _placement(pieces: list[dict], paper: str) -> tuple[list[list[dict]], tuple]
         slot_width, slot_height = pw + GUTTER_MM, ph + LABEL_MM
         if slot_width > width - 2 * MARGIN_MM or slot_height > bottom - top:
             raise ValueError("Piece exceeds one physical page: refusing to scale it")
+        if piece["id"] == "LOWER" and pages[-1] and pages[-1][-1]["id"] == "UPPER":
+            previous = pages[-1][-1]["cut_bounds_mm"]
+            beside_x = previous[0]
+            below_y = previous[3] + GUTTER_MM + LABEL_MM
+            if beside_x + pw <= width - MARGIN_MM and below_y + ph <= bottom:
+                pages[-1].append(_placed_piece(piece, beside_x, below_y))
+                row_end = max(row_end, below_y + ph)
+                continue
         if x + slot_width > width - MARGIN_MM + 1e-8:
             x, y = MARGIN_MM, row_end + GUTTER_MM
         if y + slot_height > bottom + 1e-8:
             pages.append([])
             x, y, row_end = MARGIN_MM, top, top
-        start_y = y + LABEL_MM
-        placement = {
-            "id": piece["id"],
-            "cut_bounds_mm": [round(z, 5) for z in (x, start_y, x + pw, start_y + ph)],
-            "translation_mm": [
-                round(x - float(piece["minimum"][0]), 6),
-                round(start_y - float(piece["minimum"][1]), 6),
-            ],
-        }
+        placement = _placed_piece(piece, x, y + LABEL_MM)
         pages[-1].append(placement)
         x += slot_width
         row_end = max(row_end, y + slot_height)
@@ -177,6 +192,10 @@ def _piece_svg(piece: dict, placement: dict, spec: dict, n: int) -> list[str]:
                 parts.append(
                     f'<circle class="notch" cx="{xx:.4f}" cy="{yy:.4f}" r="0.75"/>'
                 )
+        xx, yy = piece["stitch"][0]
+        parts.append(
+            f'<circle class="cap-start" cx="{xx:.4f}" cy="{yy:.4f}" r="1.2"/>'
+        )
     parts.append("</g>")
     return parts
 
@@ -226,7 +245,7 @@ def _page_svg(
         "<style>"
         ".cut{stroke:#232323;stroke-width:.35;fill:#f1f4f3}"
         ".stitch{stroke:#26769a;stroke-width:.28;fill:none;stroke-dasharray:2 1}"
-        ".notch{fill:#b4472d}.opening{fill:none;stroke:#952f99;stroke-width:.55}"
+        ".notch{fill:#b4472d}.opening{fill:none;stroke:#952f99;stroke-width:.55}.cap-start{fill:#3458aa}"
         ".nap{stroke:#297647;fill:none;stroke-width:.4}"
         "text{font-family:Arial,sans-serif;fill:#222}"
         ".piece-label{font-size:3.1px;font-weight:bold}</style>",
@@ -245,7 +264,7 @@ def _page_svg(
             f'<text x="{MARGIN_MM + 14:g}" y="{footer_y + 4:g}" font-size="3">'
             "10 x 10 mm calibration - verify printed dimension</text>",
             f'<text x="{MARGIN_MM + 14:g}" y="{footer_y + 8:g}" font-size="2.8">'
-            "red = seam match | purple = temporary turning gap | green = assumed nap</text>",
+            "red seam dot | purple gap | green nap | blue cap P01 start</text>",
             "</svg>",
         ]
     )
@@ -264,7 +283,7 @@ def _guide(n: int, allowance: float, seam_length: float, paper: str) -> str:
 1. 打印 sheet-*.svg，纸张设为 {paper}，**实际尺寸/100%**，禁止“适应页面”；先用尺测量每张纸上的 10 × 10 mm 方框。若不准确，停止。
 2. 剪黑色实线：侧片 P01…P{n:02d} 各 1 件、UPPER/LOWER 各 1 件，总计 {n + 2} 片。蓝色虚线是缝纫线，外圈临时缝份 {allowance:g} mm；使用前确认试布是否适配。
 3. 将红色圆点转描到布料缝线两侧作对位标记，**不能剪到蓝色缝线**。绿色箭头是待实物验证的毛向假设；所有侧片统一朝向，不是自动实测的材料经纬方向。
-4. 保留镜像/正反面标记；帽片每两段边对应一个侧片横向端缝线。P 编号只是裁片身份，不是贴在外表面的装饰。
+4. 保留镜像/正反面标记；帽片蓝色起点对应 P01 上/下边的第一个拼接顶点，往后每两段对应下一侧片。P 编号只是裁片身份，不是贴在外表面的装饰。
 
 ## 试缝顺序
 
