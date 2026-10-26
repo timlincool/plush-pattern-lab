@@ -1,9 +1,9 @@
 """Audit v25 public reference data without running legacy reconstruction code."""
 
-from collections import Counter
 import json
-from pathlib import Path
 import re
+from collections import Counter
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = ROOT / "design" / "reference-v25"
