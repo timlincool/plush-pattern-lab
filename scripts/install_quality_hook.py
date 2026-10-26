@@ -15,7 +15,9 @@ def git(root: Path, *args: str) -> str:
 def install(root: Path) -> None:
     current = subprocess.run(
         ["git", "config", "--get", "core.hooksPath"],
-        cwd=root, text=True, capture_output=True
+        cwd=root,
+        text=True,
+        capture_output=True,
     )
     if current.returncode not in {0, 1}:
         raise ValueError(current.stderr)

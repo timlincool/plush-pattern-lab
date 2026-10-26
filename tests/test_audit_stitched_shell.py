@@ -1,7 +1,5 @@
 """Topological closure checks must reject almost-closed/doubled-up cloth."""
 
-
-
 import numpy as np
 import pytest
 

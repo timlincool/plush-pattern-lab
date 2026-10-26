@@ -148,7 +148,9 @@ def check_staged(root: Path) -> None:
             raise ValueError("quality checker is missing from staged index")
         process = subprocess.run(
             [sys.executable, str(quality), "--root", str(staged)],
-            cwd=staged, capture_output=True, text=True
+            cwd=staged,
+            capture_output=True,
+            text=True,
         )
         print(process.stdout, end="")
         if process.stderr:
@@ -159,7 +161,9 @@ def check_staged(root: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument(
+        "--root", type=Path, default=Path(__file__).resolve().parents[1]
+    )
     parser.add_argument("--staged", action="store_true")
     args = parser.parse_args()
     try:
@@ -168,7 +172,13 @@ def main() -> int:
             check_staged(root)
         else:
             check(root)
-    except (OSError, ValueError, SyntaxError, UnicodeError, subprocess.CalledProcessError) as exc:
+    except (
+        OSError,
+        ValueError,
+        SyntaxError,
+        UnicodeError,
+        subprocess.CalledProcessError,
+    ) as exc:
         print(f"QUALITY_GATE_FAIL: {exc}", file=sys.stderr)
         return 1
     return 0

@@ -21,9 +21,11 @@ def fixture(tmp_path):
     git(tmp_path, "config", "user.name", "Synthetic Test")
     git(tmp_path, "config", "user.email", "fixture@example.invalid")
     for name in (
-        "pyproject.toml", "ruff.toml",
-        "scripts/check_quality.py", "scripts/check_quality_limits.py",
-        "src/plush_pattern_lab/__init__.py"
+        "pyproject.toml",
+        "ruff.toml",
+        "scripts/check_quality.py",
+        "scripts/check_quality_limits.py",
+        "src/plush_pattern_lab/__init__.py",
     ):
         dest = tmp_path / name
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -35,9 +37,16 @@ def fixture(tmp_path):
 
 def quality(root):
     return subprocess.run(
-        [sys.executable, str(ROOT / "scripts/check_quality.py"),
-         "--root", str(root), "--staged"],
-        cwd=root, text=True, capture_output=True
+        [
+            sys.executable,
+            str(ROOT / "scripts/check_quality.py"),
+            "--root",
+            str(root),
+            "--staged",
+        ],
+        cwd=root,
+        text=True,
+        capture_output=True,
     )
 
 

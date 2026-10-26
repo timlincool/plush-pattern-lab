@@ -1,7 +1,5 @@
 """Negative controls: seam closure must not masquerade as a correct sewn shape."""
 
-
-
 import numpy as np
 import pytest
 

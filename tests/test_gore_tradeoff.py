@@ -1,5 +1,3 @@
-
-
 import pytest
 
 from plush_pattern_lab.patterns import gore_tradeoff as m
