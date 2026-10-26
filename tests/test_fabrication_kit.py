@@ -31,6 +31,8 @@ def test_actual_size_nesting_and_marked_pieces(format_name, panels):
     assert manifest["status"] == kit.STATUS
     assert len(pages) == len(manifest["sheets"])
     assert len(pages) >= 1
+    if panels == 12:
+        assert len(pages) == 4  # Both separate caps fit beside the final gores.
     assert manifest["total_cut_area_cm2"] > 0
     found = []
     regions = []
@@ -81,6 +83,7 @@ def test_notches_and_turning_opening_are_matched():
     all_pages = "\n".join(pages)
     assert all_pages.count('class="opening"') == 4
     assert all_pages.count('class="notch"') == 6 * count + 2 * count
+    assert all_pages.count('class="cap-start"') == 2
     assert all_pages.count('class="nap"') == 2 * count
 
 
@@ -123,6 +126,13 @@ def test_reject_incompatible_source(change):
     source = capped.make()
     source[change[0]] = change[1]
     with pytest.raises(ValueError):
+        kit.build(source)
+
+
+def test_reject_locally_unequal_seams_even_with_matched_row_heights():
+    source = capped.make()
+    source["gore"]["right_stitch_2d_mm"][10][0] += 0.8
+    with pytest.raises(ValueError, match="every stitch-row segment"):
         kit.build(source)
 
 
