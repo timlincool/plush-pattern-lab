@@ -21,8 +21,20 @@ from plush_pattern_lab.validation.sewing_quality import evaluate
 
 
 def _append_gores(
-    n, N, radial, z, right, verts, rest, reference, faces, face_class,
-    outward_offset, direction, radius, half_height
+    n,
+    N,
+    radial,
+    z,
+    right,
+    verts,
+    rest,
+    reference,
+    faces,
+    face_class,
+    outward_offset,
+    direction,
+    radius,
+    half_height,
 ):
     for i in range(n):
         az = 2 * math.pi * i / n
@@ -134,7 +146,9 @@ def _validate_trial_geometry(n, N, verts, faces, pairs):
             raise RuntimeError("Degenerate initial mesh face at index " + str(f))
 
 
-def _build_geometry(spec, n, N, H, radial, z, right, outward_offset=0.003, direction="radial"):
+def _build_geometry(
+    spec, n, N, H, radial, z, right, outward_offset=0.003, direction="radial"
+):
     verts, rest, reference, faces, loose, pairs, face_class = [], [], [], [], [], [], []
 
     _append_gores(
@@ -169,7 +183,9 @@ def _parse_trial():
         p.add_argument("--" + key, type=Path, required=True)
     p.add_argument("--frames", type=int, default=48)
     p.add_argument("--preposition-offset-mm", type=float, default=3.0)
-    p.add_argument("--preposition-direction", choices=("radial", "normal"), default="radial")
+    p.add_argument(
+        "--preposition-direction", choices=("radial", "normal"), default="radial"
+    )
     p.add_argument(
         "--self-collision",
         action="store_true",
@@ -298,8 +314,15 @@ def main():
     a, spec, n, N, H, radial, z, right = _parse_trial()
     bpy.ops.wm.read_factory_settings(use_empty=True)
     verts, rest, reference, faces, loose, pairs, face_class = _build_geometry(
-        spec, n, N, H, radial, z, right, a.preposition_offset_mm * 0.001,
-        a.preposition_direction
+        spec,
+        n,
+        N,
+        H,
+        radial,
+        z,
+        right,
+        a.preposition_offset_mm * 0.001,
+        a.preposition_direction,
     )
     obj, collision, scene, dep = _setup_scene(a, verts, rest, faces, loose)
     start, init, final, trail, simulation_elapsed_s, end = _simulate_frames(

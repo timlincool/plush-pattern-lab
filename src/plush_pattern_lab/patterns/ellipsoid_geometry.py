@@ -5,7 +5,9 @@ from __future__ import annotations
 import numpy as np
 
 
-def ellipsoid_normal(point, equatorial_radius: float, polar_radius: float) -> np.ndarray:
+def ellipsoid_normal(
+    point, equatorial_radius: float, polar_radius: float
+) -> np.ndarray:
     """Unit outward gradient of (x²+y²)/R² + z²/H² = 1.
 
     Synthetic 3D initial placement only. This is not a constitutive material law
