@@ -116,6 +116,64 @@ jobs:
             test -s "$RUNNER_TEMP/collision/$MODE.preview/side.png"
             test -s "$RUNNER_TEMP/collision/$MODE.preview/lower_join.png"
           done
+      - name: Controlled cap-end transition experiment (2 and 4 rows)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for ROWS in 2 4; do
+            PREFIX="$RUNNER_TEMP/collision/captransition$ROWS"
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+              --python scripts/sewing_capped_poc_blender.py -- \
+              --spec "$RUNNER_TEMP/collision/pattern.json" \
+              --output "$PREFIX.blend" --report "$PREFIX.json" \
+              --frames 48 --cap-transition-rows "$ROWS"
+            python scripts/assess_research_candidate.py \
+              --report "$PREFIX.json" --output "$PREFIX.research_gate.json"
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+              --python scripts/audit_self_intersections_blender.py -- \
+              --input "$PREFIX.blend" --case-report "$PREFIX.json" \
+              --output "$PREFIX.triangles.json"
+            python scripts/assess_contact_integrity.py \
+              --simulation-report "$PREFIX.json" \
+              --triangle-report "$PREFIX.triangles.json" \
+              --output "$PREFIX.contact_gate.json"
+          done
+      - name: Record local cap transition A-B including unchanged 0-row baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          directory = Path(os.environ["RUNNER_TEMP"]) / "collision"
+          rows = []
+          for name, taper in (("disabled", 0), ("captransition2", 2), ("captransition4", 4)):
+              trial = json.loads((directory / (name + ".json")).read_text())
+              triangles = json.loads((directory / (name + ".triangles.json")).read_text())
+              decision = json.loads((directory / (name + ".contact_gate.json")).read_text())
+              geometry = json.loads((directory / (name + ".research_gate.json")).read_text())
+              if trial.get("cap_transition_rows") != taper:
+                  raise RuntimeError("Mismatched controlled cap-transition experiment")
+              rows.append({
+                  "transition_rows": taper,
+                  "nonseam_intersections": decision["other_nonadjacent_intersections"],
+                  "seam_related_intersections": decision["seam_related_intersections"],
+                  "target_rms_mm": trial["final_geometry_quality"]["target_shape"]["rigid_aligned_correspondence_rms_mm"],
+                  "strain_p95": trial["final_geometry_quality"]["strain"]["p95_abs_principal_strain"],
+                  "seam_gap_mean_mm": trial["final"]["mean_gap_mm"],
+                  "geometry_gate": geometry["status"],
+                  "contact_gate": decision["status"],
+                  "nonseam_regions": [
+                      row for row in triangles["localization"]["by_zone_pair"] if row["category"] == "other"
+                  ],
+              })
+          (directory / "cap_transition_ab.json").write_text(
+              json.dumps({"status": "RESEARCH_ONLY", "cases": rows}, indent=2)
+          )
+          print("CAP_TRANSITION_AB", json.dumps(rows))
+          PY
       - name: Write directly comparable parameter/quality report
         shell: bash
         run: |
