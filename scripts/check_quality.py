@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import argparse
 import ast
 import graphlib
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 from check_quality_limits import check_limits
@@ -84,36 +86,91 @@ def run(root: Path, *args: str) -> None:
         raise ValueError(f"Ruff {args[0]} failed ({result.returncode})")
 
 
-def main() -> int:
-    root = Path(__file__).resolve().parents[1]
-    try:
-        run(root, "check", ".")
-        run(root, "format", "--check", ".")
-        run(
-            root,
-            "check",
-            "--isolated",
-            "--select",
-            "C901,PLR0912,PLR0915",
-            "--ignore-noqa",
-            "--config",
-            "lint.mccabe.max-complexity=10",
-            "--config",
-            "lint.pylint.max-branches=12",
-            "--config",
-            "lint.pylint.max-statements=50",
-            "src",
-            "scripts",
-            "tests",
-        )
-        errors = check_limits(root) + architecture_errors(root)
-        if errors:
-            raise ValueError("\n".join(errors))
-    except (OSError, SyntaxError, ValueError) as exc:
-        print(f"QUALITY_GATE_FAIL: {exc}", file=sys.stderr)
-        return 1
+def check(root: Path) -> None:
+    """Validate the complete trusted source tree, not just changed files."""
+    run(root, "check", ".")
+    run(root, "format", "--check", ".")
+    run(
+        root,
+        "check",
+        "--isolated",
+        "--select",
+        "C901,PLR0912,PLR0915",
+        "--ignore-noqa",
+        "--config",
+        "lint.mccabe.max-complexity=10",
+        "--config",
+        "lint.pylint.max-branches=12",
+        "--config",
+        "lint.pylint.max-statements=50",
+        "src",
+        "scripts",
+        "tests",
+    )
+    errors = check_limits(root) + architecture_errors(root)
+    if errors:
+        raise ValueError("\n".join(errors))
     print("QUALITY_GATE_PASS: Ruff style, C901<=10, branches<=12, statements<=50,")
     print("  2000 lines and acyclic core imports")
+
+
+def export_index(root: Path, destination: Path) -> None:
+    """Write Git's indexed blobs as-is; no smudge filter or working-tree fallback."""
+    listed = subprocess.run(
+        ["git", "ls-files", "--stage", "-z"], cwd=root, check=True, capture_output=True
+    ).stdout
+    for record in filter(None, listed.split(b"\0")):
+        metadata, encoded = record.split(b"\t", 1)
+        mode, sha, stage = metadata.decode("ascii").split()
+        if mode not in {"100644", "100755"} or stage != "0":
+            raise ValueError("staged index contains symlink, submodule or conflict")
+        name = encoded.decode("utf-8")
+        path = Path(name)
+        if path.is_absolute() or ".." in path.parts:
+            raise ValueError("staged path escapes repository")
+        blob = subprocess.run(
+            ["git", "cat-file", "blob", sha],
+            cwd=root,
+            check=True,
+            capture_output=True,
+        ).stdout
+        target = destination / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(blob)
+
+
+def check_staged(root: Path) -> None:
+    with tempfile.TemporaryDirectory(prefix="plush-quality-index-") as name:
+        staged = Path(name)
+        export_index(root, staged)
+        quality = staged / "scripts" / "check_quality.py"
+        if not quality.is_file():
+            raise ValueError("quality checker is missing from staged index")
+        process = subprocess.run(
+            [sys.executable, str(quality), "--root", str(staged)],
+            cwd=staged, capture_output=True, text=True
+        )
+        print(process.stdout, end="")
+        if process.stderr:
+            print(process.stderr, end="", file=sys.stderr)
+        if process.returncode:
+            raise ValueError("staged index quality gate failed")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--staged", action="store_true")
+    args = parser.parse_args()
+    try:
+        root = args.root.resolve()
+        if args.staged:
+            check_staged(root)
+        else:
+            check(root)
+    except (OSError, ValueError, SyntaxError, UnicodeError, subprocess.CalledProcessError) as exc:
+        print(f"QUALITY_GATE_FAIL: {exc}", file=sys.stderr)
+        return 1
     return 0
 
 
