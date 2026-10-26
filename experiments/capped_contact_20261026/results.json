@@ -1,0 +1,1068 @@
+{
+  "schema": "plush-capped-contact-parameter-campaign-v1",
+  "status": "SYNTHETIC_RESEARCH_CONTACT_SCREEN_REJECTED",
+  "source_repo": "timlincool/plush-pattern-lab",
+  "source_commit": "8c8ba2ce0a3664654625b11c9a45a568b08efd8a",
+  "github_actions_run": 40278382515,
+  "github_actions_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/40278382515",
+  "blender": "4.3.2",
+  "controls": {
+    "panel_count": 12,
+    "frames": 48,
+    "gravity": "zero",
+    "radius_mm": 55,
+    "half_height_mm": 70,
+    "segments": 64,
+    "clamped_candidate_promotions": false,
+    "reference_assisted_3d_initialization": true
+  },
+  "baseline_self_collision": [
+    {
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "research_contact_screen_pass": false,
+      "finite_nonadjacent_seam_related": 900,
+      "finite_nonadjacent_other": 4,
+      "localization_zone_counts": [
+        {
+          "category": "seam",
+          "region_pair": [
+            "body",
+            "body"
+          ],
+          "intersecting_pairs": 813
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "lower_cap",
+            "lower_join"
+          ],
+          "intersecting_pairs": 38
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 14
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "upper_cap",
+            "upper_join"
+          ],
+          "intersecting_pairs": 14
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "body",
+            "lower_join"
+          ],
+          "intersecting_pairs": 8
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 8
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "body",
+            "upper_join"
+          ],
+          "intersecting_pairs": 5
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 4
+        }
+      ],
+      "localization_panel_pairs_top": [
+        {
+          "category": "seam",
+          "region_pair": [
+            "P01",
+            "P02"
+          ],
+          "intersecting_pairs": 96
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P04",
+            "P05"
+          ],
+          "intersecting_pairs": 84
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P09",
+            "P10"
+          ],
+          "intersecting_pairs": 79
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P08",
+            "P09"
+          ],
+          "intersecting_pairs": 76
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P06",
+            "P07"
+          ],
+          "intersecting_pairs": 69
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P01",
+            "P12"
+          ],
+          "intersecting_pairs": 68
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P07",
+            "P08"
+          ],
+          "intersecting_pairs": 68
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P11",
+            "P12"
+          ],
+          "intersecting_pairs": 68
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P10",
+            "P11"
+          ],
+          "intersecting_pairs": 65
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P05",
+            "P06"
+          ],
+          "intersecting_pairs": 62
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P03",
+            "P04"
+          ],
+          "intersecting_pairs": 57
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P02",
+            "P03"
+          ],
+          "intersecting_pairs": 56
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "LOWER",
+            "P04"
+          ],
+          "intersecting_pairs": 5
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "LOWER",
+            "P10"
+          ],
+          "intersecting_pairs": 5
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "LOWER",
+            "P03"
+          ],
+          "intersecting_pairs": 4
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "LOWER",
+            "P06"
+          ],
+          "intersecting_pairs": 4
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "LOWER",
+            "P07"
+          ],
+          "intersecting_pairs": 4
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P07",
+            "UPPER"
+          ],
+          "intersecting_pairs": 4
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P12",
+            "UPPER"
+          ],
+          "intersecting_pairs": 4
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "LOWER",
+            "P01"
+          ],
+          "intersecting_pairs": 3
+        }
+      ],
+      "nonseam_position_witnesses": [
+        {
+          "triangle_indices": [
+            1278,
+            1532
+          ],
+          "panel_names": [
+            "P05",
+            "P06"
+          ],
+          "zones": [
+            "lower_join",
+            "lower_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              -4.71694,
+              6.88369,
+              -69.00069
+            ],
+            [
+              -6.34433,
+              5.41468,
+              -68.95364
+            ]
+          ]
+        },
+        {
+          "triangle_indices": [
+            1534,
+            1788
+          ],
+          "panel_names": [
+            "P06",
+            "P07"
+          ],
+          "zones": [
+            "lower_join",
+            "lower_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              -7.54129,
+              3.58954,
+              -68.82206
+            ],
+            [
+              -8.22308,
+              1.51844,
+              -68.73521
+            ]
+          ]
+        },
+        {
+          "triangle_indices": [
+            1790,
+            2044
+          ],
+          "panel_names": [
+            "P07",
+            "P08"
+          ],
+          "zones": [
+            "lower_join",
+            "lower_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              -8.33544,
+              -0.67257,
+              -68.73217
+            ],
+            [
+              -7.88322,
+              -2.806,
+              -68.83997
+            ]
+          ]
+        },
+        {
+          "triangle_indices": [
+            2558,
+            2812
+          ],
+          "panel_names": [
+            "P10",
+            "P11"
+          ],
+          "zones": [
+            "lower_join",
+            "lower_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              0.70207,
+              -8.37208,
+              -69.0681
+            ],
+            [
+              2.8481,
+              -7.91926,
+              -69.0778
+            ]
+          ]
+        }
+      ],
+      "mode": "disabled",
+      "blender": "4.3.2",
+      "self_collision_enabled": false,
+      "collision_distance_mm": null,
+      "solver_seconds": 2.249,
+      "seam_gap_mean_mm": 0.00022142971230258558,
+      "seam_gap_max_mm": 0.0012077642540329683,
+      "aligned_shape_rms_mm": 0.21583984530066488,
+      "p95_principal_strain": 0.07637810677979667,
+      "reversed_triangles": 0,
+      "weld_topology_pass": true,
+      "screen_result": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "failed_checks": []
+    },
+    {
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "research_contact_screen_pass": false,
+      "finite_nonadjacent_seam_related": 851,
+      "finite_nonadjacent_other": 7,
+      "localization_zone_counts": [
+        {
+          "category": "seam",
+          "region_pair": [
+            "body",
+            "body"
+          ],
+          "intersecting_pairs": 804
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 22
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 13
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "body",
+            "upper_join"
+          ],
+          "intersecting_pairs": 6
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 4
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "body",
+            "lower_join"
+          ],
+          "intersecting_pairs": 4
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 3
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "lower_cap",
+            "lower_join"
+          ],
+          "intersecting_pairs": 2
+        }
+      ],
+      "localization_panel_pairs_top": [
+        {
+          "category": "seam",
+          "region_pair": [
+            "P05",
+            "P06"
+          ],
+          "intersecting_pairs": 101
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P11",
+            "P12"
+          ],
+          "intersecting_pairs": 96
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P08",
+            "P09"
+          ],
+          "intersecting_pairs": 86
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P06",
+            "P07"
+          ],
+          "intersecting_pairs": 85
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P10",
+            "P11"
+          ],
+          "intersecting_pairs": 75
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P02",
+            "P03"
+          ],
+          "intersecting_pairs": 70
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P04",
+            "P05"
+          ],
+          "intersecting_pairs": 70
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P07",
+            "P08"
+          ],
+          "intersecting_pairs": 67
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P09",
+            "P10"
+          ],
+          "intersecting_pairs": 67
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P03",
+            "P04"
+          ],
+          "intersecting_pairs": 63
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P01",
+            "P12"
+          ],
+          "intersecting_pairs": 42
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "P01",
+            "P02"
+          ],
+          "intersecting_pairs": 27
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "P01",
+            "P12"
+          ],
+          "intersecting_pairs": 2
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "P11",
+            "P12"
+          ],
+          "intersecting_pairs": 2
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "P01",
+            "P02"
+          ],
+          "intersecting_pairs": 1
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "P05",
+            "P06"
+          ],
+          "intersecting_pairs": 1
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "P07",
+            "P08"
+          ],
+          "intersecting_pairs": 1
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "LOWER",
+            "P10"
+          ],
+          "intersecting_pairs": 1
+        },
+        {
+          "category": "seam",
+          "region_pair": [
+            "LOWER",
+            "P11"
+          ],
+          "intersecting_pairs": 1
+        }
+      ],
+      "nonseam_position_witnesses": [
+        {
+          "triangle_indices": [
+            1,
+            2819
+          ],
+          "panel_names": [
+            "P01",
+            "P12"
+          ],
+          "zones": [
+            "upper_join",
+            "upper_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              7.72321,
+              0.00967,
+              65.80064
+            ],
+            [
+              7.76241,
+              -1.704,
+              66.49256
+            ]
+          ]
+        },
+        {
+          "triangle_indices": [
+            252,
+            3070
+          ],
+          "panel_names": [
+            "P01",
+            "P12"
+          ],
+          "zones": [
+            "lower_join",
+            "lower_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              9.15275,
+              -5.60751,
+              -69.4099
+            ],
+            [
+              8.5512,
+              -7.65751,
+              -69.02249
+            ]
+          ]
+        },
+        {
+          "triangle_indices": [
+            254,
+            508
+          ],
+          "panel_names": [
+            "P01",
+            "P02"
+          ],
+          "zones": [
+            "lower_join",
+            "lower_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              9.19898,
+              -3.47583,
+              -69.09887
+            ],
+            [
+              9.01572,
+              -1.57629,
+              -69.44457
+            ]
+          ]
+        },
+        {
+          "triangle_indices": [
+            1027,
+            1281
+          ],
+          "panel_names": [
+            "P05",
+            "P06"
+          ],
+          "zones": [
+            "upper_join",
+            "upper_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              -5.56871,
+              6.85451,
+              66.32814
+            ],
+            [
+              -6.93579,
+              5.36868,
+              66.53627
+            ]
+          ]
+        },
+        {
+          "triangle_indices": [
+            1539,
+            1793
+          ],
+          "panel_names": [
+            "P07",
+            "P08"
+          ],
+          "zones": [
+            "upper_join",
+            "upper_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              -7.93486,
+              -0.67722,
+              67.37808
+            ],
+            [
+              -7.34734,
+              -2.75418,
+              67.4119
+            ]
+          ]
+        },
+        {
+          "triangle_indices": [
+            2563,
+            2817
+          ],
+          "panel_names": [
+            "P11",
+            "P12"
+          ],
+          "zones": [
+            "upper_join",
+            "upper_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              5.38364,
+              -5.22538,
+              67.31873
+            ],
+            [
+              6.84431,
+              -3.64469,
+              67.03065
+            ]
+          ]
+        },
+        {
+          "triangle_indices": [
+            2814,
+            3068
+          ],
+          "panel_names": [
+            "P11",
+            "P12"
+          ],
+          "zones": [
+            "lower_join",
+            "lower_join"
+          ],
+          "triangle_centroids_mm": [
+            [
+              5.83397,
+              -10.73366,
+              -69.26408
+            ],
+            [
+              7.36039,
+              -9.48878,
+              -69.08606
+            ]
+          ]
+        }
+      ],
+      "mode": "enabled",
+      "blender": "4.3.2",
+      "self_collision_enabled": true,
+      "collision_distance_mm": 1,
+      "solver_seconds": 1.663,
+      "seam_gap_mean_mm": 0.009629934967436445,
+      "seam_gap_max_mm": 0.18819075916694122,
+      "aligned_shape_rms_mm": 1.2840280976985192,
+      "p95_principal_strain": 0.0765578237520475,
+      "reversed_triangles": 0,
+      "weld_topology_pass": true,
+      "screen_result": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "failed_checks": []
+    }
+  ],
+  "pole_cut_ab": [
+    {
+      "pole_cut_degrees": 8,
+      "panel_count": 12,
+      "self_collision_enabled": false,
+      "seam_gap_mean_mm": 0.00022142971230258558,
+      "target_rms_mm": 0.21583984530066488,
+      "strain_p95": 0.07637810677979667,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "seam_related": 900,
+      "nonseam": 4,
+      "nonseam_zone_pairs": [
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 4
+        }
+      ]
+    },
+    {
+      "pole_cut_degrees": 6,
+      "panel_count": 12,
+      "self_collision_enabled": false,
+      "seam_gap_mean_mm": 0.00024123328143058707,
+      "target_rms_mm": 0.45315903853873996,
+      "strain_p95": 0.07810763680453474,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "seam_related": 964,
+      "nonseam": 10,
+      "nonseam_zone_pairs": [
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 7
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 3
+        }
+      ]
+    },
+    {
+      "pole_cut_degrees": 12,
+      "panel_count": 12,
+      "self_collision_enabled": false,
+      "seam_gap_mean_mm": 0.00027834142533663113,
+      "target_rms_mm": 1.9446077302819773,
+      "strain_p95": 0.07460321007484064,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "seam_related": 1052,
+      "nonseam": 4,
+      "nonseam_zone_pairs": [
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 4
+        }
+      ]
+    }
+  ],
+  "radial_offset_ab": [
+    {
+      "preposition_offset_mm": 1,
+      "seam_gap_mean_mm": 0.0001442082083128717,
+      "target_rms_mm": 0.035310574706941183,
+      "principal_strain_p95": 0.07648112572388506,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam": 8,
+      "seam_related": 507,
+      "nonseam_zone_counts": [
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 6
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 2
+        }
+      ]
+    },
+    {
+      "preposition_offset_mm": 3,
+      "seam_gap_mean_mm": 0.00022142971230258558,
+      "target_rms_mm": 0.21583984530066488,
+      "principal_strain_p95": 0.07637810677979667,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam": 4,
+      "seam_related": 900,
+      "nonseam_zone_counts": [
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 4
+        }
+      ]
+    },
+    {
+      "preposition_offset_mm": 5,
+      "seam_gap_mean_mm": 0.00023018336914144656,
+      "target_rms_mm": 0.7847880099503377,
+      "principal_strain_p95": 0.07722241287718354,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam": 6,
+      "seam_related": 1189,
+      "nonseam_zone_counts": [
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 5
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 1
+        }
+      ]
+    }
+  ],
+  "normal_vs_radial_ab": [
+    {
+      "offset_mm": 1,
+      "direction": "radial",
+      "seam_gap_mean_mm": 0.0001442082083128717,
+      "rms_mm": 0.035310574706941183,
+      "strain_p95": 0.07648112572388506,
+      "nonseam": 8,
+      "seam_related": 507,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam_zone_counts": [
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 6
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 2
+        }
+      ]
+    },
+    {
+      "offset_mm": 3,
+      "direction": "radial",
+      "seam_gap_mean_mm": 0.00022142971230258558,
+      "rms_mm": 0.21583984530066488,
+      "strain_p95": 0.07637810677979667,
+      "nonseam": 4,
+      "seam_related": 900,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam_zone_counts": [
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 4
+        }
+      ]
+    },
+    {
+      "offset_mm": 1,
+      "direction": "normal",
+      "seam_gap_mean_mm": 0.0013610887523769761,
+      "rms_mm": 0.9721049465332047,
+      "strain_p95": 0.09955965988500538,
+      "nonseam": 24,
+      "seam_related": 1176,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam_zone_counts": [
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 12
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 12
+        }
+      ]
+    },
+    {
+      "offset_mm": 3,
+      "direction": "normal",
+      "seam_gap_mean_mm": 0.0033549734835684225,
+      "rms_mm": 2.7721949134132657,
+      "strain_p95": 0.14821520826467963,
+      "nonseam": 24,
+      "seam_related": 1369,
+      "geometry_gate": "RESEARCH_CANDIDATE_REJECTED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam_zone_counts": [
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 12
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 12
+        }
+      ]
+    }
+  ],
+  "constraints": [
+    "All parameter experiments change one named variable at a time; no real measured textile.",
+    "Triangle centroids are representative positions, not exact surface intersection locations.",
+    "BVH triangle overlap is a bounded zero-thickness sample and does not certify continuous finite-thickness contacts.",
+    "Any nonadjacent witness keeps the independent contact veto rejected; no run is a production or child-toy safety approval.",
+    "The default 8deg 3mm radial solver remains unmodified until another candidate passes both independent screening and manufacturing verification."
+  ]
+}

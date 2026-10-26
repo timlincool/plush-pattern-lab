@@ -131,3 +131,8 @@ python scripts/build_prototype_kit.py --input /tmp/plush-input.json --output-dir
 ~~~
 
 试布、返口、填充与实体反馈记录见 [实体试缝操作指南](docs/PHYSICAL_PROTOTYPE.md)。输出目录不可预先存在，避免覆盖历史试验。
+
+
+## 当前硬问题：帽片交汇处仍穿插
+
+新增有来源哈希/裁片标识的 [顶底交汇处定位与失败对照](docs/CONTACT_LOCALIZATION_20261026.md)。2026-10-26 Blender 4.3.2 实测：默认 12+2 合成布壳非缝线穿插关闭自碰撞为底部4对、开启为上4+下3；6°/12° 帽片切角及 1/3/5mm 初始化位移、法向位移都未消除接触否决。**现有 1:1 纸样仍是廉价试布材料，绝不自动变成已验证生产纸样。**
