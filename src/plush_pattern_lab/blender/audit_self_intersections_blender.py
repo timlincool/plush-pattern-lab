@@ -19,6 +19,11 @@ from pathlib import Path
 import bpy
 from mathutils.bvhtree import BVHTree
 
+from plush_pattern_lab.validation.contact_localization import (
+    describe_contacts,
+    polygon_identities,
+)
+
 MAX_TRIANGLES = 12000
 MAX_PAIRS = 100000
 SNAPSHOT_NAME = "CAP_FINAL_SHAPE_NOT_MANUFACTURING"
@@ -79,7 +84,7 @@ def _classify_pairs(candidates, faces, neighbors):
     return shared, seam_related, nonseam, seam_witnesses, nonseam_witnesses
 
 
-def audit_geometry(vertices, triangles, seam_edges=()):
+def audit_geometry(vertices, triangles, seam_edges=(), *, face_labels=None):
     coords, faces = _validated_mesh(vertices, triangles)
     neighbors, seam_list = _seam_adjacency(seam_edges, coords)
     tree = BVHTree.FromPolygons(coords, faces, all_triangles=True, epsilon=0.0)
@@ -94,7 +99,7 @@ def audit_geometry(vertices, triangles, seam_edges=()):
     shared, seam_related, nonseam, seam_witnesses, nonseam_witnesses = _classify_pairs(
         candidates, faces, neighbors
     )
-    return {
+    report = {
         "status": "FINITE_ZERO_THICKNESS_TRIANGLE_INTERSECTION_SCREEN",
         "vertex_count": len(coords),
         "triangle_count": len(faces),
@@ -118,6 +123,20 @@ def audit_geometry(vertices, triangles, seam_edges=()):
             "Geometry is duplicated stitched panels; not a physically welded/filled shell",
         ],
     }
+    if face_labels is not None:
+        labels, zones = face_labels
+        localization = describe_contacts(
+            candidates, coords, faces, neighbors, labels, zones
+        )
+        measured = localization["counts"]
+        if (
+            measured["shared"] != shared
+            or measured["seam"] != seam_related
+            or measured["other"] != nonseam
+        ):
+            raise RuntimeError("Localized contact counts disagree with original BVH audit")
+        report["localization"] = localization
+    return report
 
 
 def main():
@@ -157,7 +176,17 @@ def main():
         raise RuntimeError(
             f"Expected {expected.get('total_sewing_springs')} sewing links, got {len(sewing_edges)}"
         )
-    report = audit_geometry(coords, triangles, sewing_edges)
+    if len(snap.data.polygons) != expected.get("total_face_count"):
+        raise RuntimeError("Source face count no longer matches the saved trial")
+    regions = polygon_identities(
+        [int(face.polygon_index) for face in snap.data.loop_triangles],
+        panels=expected["panels"],
+        gore_faces=expected["gore_face_count"],
+        face_count=len(snap.data.polygons),
+    )
+    report = audit_geometry(
+        coords, triangles, sewing_edges, face_labels=regions
+    )
     report.update(
         {
             "case_sha256": sha256(args.input),
@@ -185,6 +214,17 @@ def main():
         flush=True,
     )
 
+    print(
+        "CONTACT_LOCALIZATION",
+        json.dumps(
+            {
+                "top_panel_pairs": report["localization"]["by_panel_pair"][:8],
+                "zone_pairs": report["localization"]["by_zone_pair"],
+            },
+            ensure_ascii=False,
+        ),
+        flush=True,
+    )
 
 if __name__ == "__main__":
     main()
