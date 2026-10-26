@@ -1,0 +1,327 @@
+{
+  "status": "Geometric registration check only, not a sewn joint or pull-strength validation",
+  "host_geometry": "Frozen structural12 clouds, read from appearance20",
+  "construction": "Cut8mm, fold both long edges2mm inward to4mm finished. Add6mm embedding at each end. Render shows the visible bridge; seam embedding is engineering allowance.",
+  "drops": [
+    {
+      "id": 0,
+      "anchor_mm": [
+        -47.45,
+        -73.34,
+        224.44
+      ],
+      "drop_top_mm": [
+        -60,
+        -80,
+        212
+      ],
+      "color": "blue",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 18.884167901519085,
+      "tab_cut_length_mm": 30.884167901519085,
+      "nearest_host": "Varied ivory forehead cloud",
+      "closest_host_point_mm": [
+        -47.96039581298828,
+        -73.32005310058594,
+        223.9637908935547
+      ],
+      "host_normal": [
+        -0.7140930891036987,
+        0.006193479523062706,
+        -0.700023353099823
+      ],
+      "anchor_surface_distance_mm": 0.698339194059372,
+      "anchor_signed_distance_mm": -0.6979518065293178,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    },
+    {
+      "id": 1,
+      "anchor_mm": [
+        53,
+        -70,
+        224
+      ],
+      "drop_top_mm": [
+        56,
+        -80,
+        215
+      ],
+      "color": "blue",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 13.784048752090222,
+      "tab_cut_length_mm": 25.78404875209022,
+      "nearest_host": "Varied ivory forehead cloud",
+      "closest_host_point_mm": [
+        55.499916076660156,
+        -73.00959777832031,
+        221.40338134765625
+      ],
+      "host_normal": [
+        0.5452873110771179,
+        -0.6051857471466064,
+        -0.5800103545188904
+      ],
+      "anchor_surface_distance_mm": 4.695712588727474,
+      "anchor_signed_distance_mm": -4.690607427619398,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    },
+    {
+      "id": 2,
+      "anchor_mm": [
+        -60,
+        -42,
+        187
+      ],
+      "drop_top_mm": [
+        -66,
+        -49,
+        180
+      ],
+      "color": "slate",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 11.575836902790225,
+      "tab_cut_length_mm": 23.575836902790225,
+      "nearest_host": "Grey head cloud halo",
+      "closest_host_point_mm": [
+        -62.44797897338867,
+        -42.92093276977539,
+        187.70713806152344
+      ],
+      "host_normal": [
+        -0.9035146832466125,
+        -0.33993858098983765,
+        0.26096561551094055
+      ],
+      "anchor_surface_distance_mm": 2.709380816668272,
+      "anchor_signed_distance_mm": -2.7093809039797634,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    },
+    {
+      "id": 3,
+      "anchor_mm": [
+        -37.96,
+        -71.79,
+        133.15
+      ],
+      "drop_top_mm": [
+        -46,
+        -85,
+        125
+      ],
+      "color": "aqua",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 17.48050606665011,
+      "tab_cut_length_mm": 29.48050606665011,
+      "nearest_host": "Asymmetric flowing ivory bib",
+      "closest_host_point_mm": [
+        -38.57109069824219,
+        -72.12206268310547,
+        133.12925720214844
+      ],
+      "host_normal": [
+        -0.8667938113212585,
+        -0.4963674247264862,
+        -0.047833412885665894
+      ],
+      "anchor_surface_distance_mm": 0.695789058227092,
+      "anchor_signed_distance_mm": -0.6955030131621243,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    },
+    {
+      "id": 4,
+      "anchor_mm": [
+        34,
+        -76,
+        130
+      ],
+      "drop_top_mm": [
+        39,
+        -84,
+        122
+      ],
+      "color": "blue",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 12.36931687685298,
+      "tab_cut_length_mm": 24.36931687685298,
+      "nearest_host": "Asymmetric flowing ivory bib",
+      "closest_host_point_mm": [
+        34.272308349609375,
+        -76.43631744384766,
+        129.70494079589844
+      ],
+      "host_normal": [
+        0.362641841173172,
+        -0.674932599067688,
+        -0.6426172256469727
+      ],
+      "anchor_surface_distance_mm": 0.5929492181167006,
+      "anchor_signed_distance_mm": -0.5828511348227039,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    },
+    {
+      "id": 5,
+      "anchor_mm": [
+        -53,
+        20,
+        105
+      ],
+      "drop_top_mm": [
+        -61,
+        17,
+        97
+      ],
+      "color": "blue",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 11.704699910719626,
+      "tab_cut_length_mm": 23.704699910719626,
+      "nearest_host": "Grey flank cloud -1",
+      "closest_host_point_mm": [
+        -58.759822845458984,
+        19.288618087768555,
+        106.3033676147461
+      ],
+      "host_normal": [
+        -0.954201877117157,
+        -0.11449240893125534,
+        0.2763877213001251
+      ],
+      "anchor_surface_distance_mm": 5.948137491941452,
+      "anchor_signed_distance_mm": -5.937712252489291,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    },
+    {
+      "id": 6,
+      "anchor_mm": [
+        -50.08,
+        -19.31,
+        104.01
+      ],
+      "drop_top_mm": [
+        -60,
+        -29,
+        96
+      ],
+      "color": "aqua",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 16.014449985478812,
+      "tab_cut_length_mm": 28.014449985478812,
+      "nearest_host": "Grey flank cloud -1",
+      "closest_host_point_mm": [
+        -50.73102951049805,
+        -19.545711517333984,
+        103.98016357421875
+      ],
+      "host_normal": [
+        -0.9415709972381592,
+        -0.33038949966430664,
+        0.0654747411608696
+      ],
+      "anchor_surface_distance_mm": 0.6930243689566851,
+      "anchor_signed_distance_mm": -0.6889075534672884,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    },
+    {
+      "id": 7,
+      "anchor_mm": [
+        7,
+        -88,
+        91
+      ],
+      "drop_top_mm": [
+        9,
+        -98,
+        82
+      ],
+      "color": "slate",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 13.601470508735444,
+      "tab_cut_length_mm": 25.601470508735446,
+      "nearest_host": "Asymmetric flowing ivory bib",
+      "closest_host_point_mm": [
+        6.824202060699463,
+        -89.42100524902344,
+        91.5555419921875
+      ],
+      "host_normal": [
+        -0.17222434282302856,
+        -0.9489606022834778,
+        0.2642205059528351
+      ],
+      "anchor_surface_distance_mm": 1.5358254313468933,
+      "anchor_signed_distance_mm": -1.5255314119713148,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    },
+    {
+      "id": 8,
+      "anchor_mm": [
+        -25,
+        -82,
+        153
+      ],
+      "drop_top_mm": [
+        -29,
+        -88,
+        146
+      ],
+      "color": "slate",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 10.04987562112089,
+      "tab_cut_length_mm": 22.04987562112089,
+      "nearest_host": "Asymmetric flowing ivory bib",
+      "closest_host_point_mm": [
+        -25.42229461669922,
+        -84.78326416015625,
+        153.88743591308594
+      ],
+      "host_normal": [
+        -0.15768294036388397,
+        -0.9409019351005554,
+        0.29973235726356506
+      ],
+      "anchor_surface_distance_mm": 2.9516767244786024,
+      "anchor_signed_distance_mm": -2.9513540139305405,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    },
+    {
+      "id": 9,
+      "anchor_mm": [
+        39,
+        -66,
+        95
+      ],
+      "drop_top_mm": [
+        44,
+        -75,
+        88
+      ],
+      "color": "blue",
+      "tab_finished_width_mm": 4,
+      "tab_cut_width_mm": 8,
+      "tab_centerline_length_mm": 12.449899597988733,
+      "tab_cut_length_mm": 24.449899597988733,
+      "nearest_host": "Asymmetric flowing ivory bib",
+      "closest_host_point_mm": [
+        41.26076126098633,
+        -66.10372161865234,
+        94.63605499267578
+      ],
+      "host_normal": [
+        0.9606592059135437,
+        -0.2103337049484253,
+        -0.18136602640151978
+      ],
+      "anchor_surface_distance_mm": 2.2922158241271973,
+      "anchor_signed_distance_mm": -2.25964382661914,
+      "anchor_inside_nearest_surface_by_normal_test": true
+    }
+  ]
+}

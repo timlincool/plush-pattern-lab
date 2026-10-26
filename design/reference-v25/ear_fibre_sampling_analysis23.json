@@ -1,0 +1,73 @@
+{
+  "interpretation": "Indexed differences compare different sampled strands. Nearest-control-point comparison measures distribution differences, not continuous-curve distance or a physical tolerance. The final source package uses reviewed reference ear samples to remove this variability.",
+  "records": [
+    {
+      "name": "Curved clumped fleece | Slender upright ivory ear -1",
+      "symmetric_nearest_control_sample_p95_mm": 0.9488306823186576,
+      "symmetric_nearest_control_sample_max_mm": 3.4186390694230795,
+      "symmetric_nearest_control_sample_rms_mm": 0.5324306432059919,
+      "candidate_bounds_mm": [
+        [
+          -77.43587344884872,
+          -44.69381645321846
+        ],
+        [
+          -46.38063535094261,
+          -33.68842229247093
+        ],
+        [
+          231.30187392234802,
+          284.09355878829956
+        ]
+      ],
+      "uncached_rebuild_bounds_mm": [
+        [
+          -77.00435817241669,
+          -45.00420764088631
+        ],
+        [
+          -46.21870070695877,
+          -33.69825333356857
+        ],
+        [
+          230.21629452705383,
+          283.1452786922455
+        ]
+      ]
+    },
+    {
+      "name": "Curved clumped fleece | Slender upright ivory ear 1",
+      "symmetric_nearest_control_sample_p95_mm": 0.9608471300452948,
+      "symmetric_nearest_control_sample_max_mm": 3.159937681630254,
+      "symmetric_nearest_control_sample_rms_mm": 0.537702171580248,
+      "candidate_bounds_mm": [
+        [
+          36.48402914404869,
+          69.40144300460815
+        ],
+        [
+          -70.37889212369919,
+          -29.87615577876568
+        ],
+        [
+          232.9927682876587,
+          271.4460790157318
+        ]
+      ],
+      "uncached_rebuild_bounds_mm": [
+        [
+          36.66524216532707,
+          69.59179043769836
+        ],
+        [
+          -70.95614075660706,
+          -30.750423669815063
+        ],
+        [
+          232.3085516691208,
+          271.6919779777527
+        ]
+      ]
+    }
+  ]
+}
