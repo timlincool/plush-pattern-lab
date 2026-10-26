@@ -193,9 +193,7 @@ def _piece_svg(piece: dict, placement: dict, spec: dict, n: int) -> list[str]:
                     f'<circle class="notch" cx="{xx:.4f}" cy="{yy:.4f}" r="0.75"/>'
                 )
         xx, yy = piece["stitch"][0]
-        parts.append(
-            f'<circle class="cap-start" cx="{xx:.4f}" cy="{yy:.4f}" r="1.2"/>'
-        )
+        parts.append(f'<circle class="cap-start" cx="{xx:.4f}" cy="{yy:.4f}" r="1.2"/>')
     parts.append("</g>")
     return parts
 
