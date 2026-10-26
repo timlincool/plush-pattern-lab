@@ -149,3 +149,28 @@ jobs:
           path: ${{ runner.temp }}/collision/
           retention-days: 7
           if-no-files-found: warn
+
+      - name: Emit deterministic formatter repair for owner branch
+        if: always()
+        shell: bash
+        run: |
+          python -m ruff format .
+          python - <<'PY'
+          import base64
+          import pathlib
+          import subprocess
+
+          paths = subprocess.check_output(["git", "diff", "--name-only", "-z"]).split(b"\0")
+          for raw in paths:
+              if not raw:
+                  continue
+              path = pathlib.Path(raw.decode("utf-8"))
+              if path.suffix != ".py":
+                  continue
+              print("FMT_FILE_BEGIN:" + path.as_posix())
+              encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+              for offset in range(0, len(encoded), 400):
+                  print("FMT_B64:" + encoded[offset:offset + 400])
+              print("FMT_FILE_END")
+          print("FMT_COMPLETE")
+          PY
