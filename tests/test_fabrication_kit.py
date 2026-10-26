@@ -90,10 +90,12 @@ def test_translation_keeps_shape_exactly_same_size():
     root = ET.fromstring(pages[0])
     group = root.find(f"{SVG}g")
     outline = group.findall(f"{SVG}polygon")[0]
-    transformed = np.array([
-        [float(value) for value in pair.split(",")]
-        for pair in outline.attrib["points"].split()
-    ])
+    transformed = np.array(
+        [
+            [float(value) for value in pair.split(",")]
+            for pair in outline.attrib["points"].split()
+        ]
+    )
     reference = np.asarray(source["gore"]["cut_outline_2d_mm"])
     assert transformed.shape == reference.shape
     assert np.max(abs(transformed - reference)) < 1e-4
@@ -143,8 +145,14 @@ def test_cli_creates_non_overwriting_prototype_kit(tmp_path):
     target = tmp_path / "paper-sheets"
     spec.write_text(json.dumps(capped.make(panels=12)))
     command = [
-        sys.executable, str(ROOT / "scripts/build_prototype_kit.py"),
-        "--input", str(spec), "--output-dir", str(target), "--paper", "A4",
+        sys.executable,
+        str(ROOT / "scripts/build_prototype_kit.py"),
+        "--input",
+        str(spec),
+        "--output-dir",
+        str(target),
+        "--paper",
+        "A4",
     ]
     result = subprocess.run(command, capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr

@@ -58,8 +58,9 @@ def _piece(name: str, cut, stitch, kind: str) -> dict:
     }
 
 
-def _verified_cap(spec: dict, end: str, index: int, n: int,
-                  left: np.ndarray, right: np.ndarray) -> dict:
+def _verified_cap(
+    spec: dict, end: str, index: int, n: int, left: np.ndarray, right: np.ndarray
+) -> dict:
     cap = spec["caps"][end]
     ring = _array(cap["stitch_ring_2d_mm"], end + " ring")
     if len(ring) != 2 * n:
@@ -72,9 +73,15 @@ def _verified_cap(spec: dict, end: str, index: int, n: int,
 
 
 def _spec_pieces(spec: dict) -> tuple[list[dict], int, float, float]:
-    if not isinstance(spec, dict) or spec.get("schema") != "synthetic-capped-plush-pattern-v1":
+    if (
+        not isinstance(spec, dict)
+        or spec.get("schema") != "synthetic-capped-plush-pattern-v1"
+    ):
         raise ValueError("Expected the audited synthetic capped pattern schema")
-    if spec.get("status") != "NET_PATTERN_GEOMETRY_ONLY_NO_SEWING_OR_STUFFING_CERTIFICATION":
+    if (
+        spec.get("status")
+        != "NET_PATTERN_GEOMETRY_ONLY_NO_SEWING_OR_STUFFING_CERTIFICATION"
+    ):
         raise ValueError("Unrecognized input research geometry status")
     params = spec.get("parameters", {})
     n = params.get("panels")
@@ -82,7 +89,9 @@ def _spec_pieces(spec: dict) -> tuple[list[dict], int, float, float]:
     if isinstance(n, bool) or not isinstance(n, int) or not 6 <= n <= 24:
         raise ValueError("Panel count must be an integer between 6 and 24")
     if not isinstance(allowance, (int, float)) or not 3 <= allowance <= 12:
-        raise ValueError("Prototype needs an explicit 3..12 mm tentative seam allowance")
+        raise ValueError(
+            "Prototype needs an explicit 3..12 mm tentative seam allowance"
+        )
     left = _array(spec["gore"]["left_stitch_2d_mm"], "left stitch")
     right = _array(spec["gore"]["right_stitch_2d_mm"], "right stitch")
     if left.shape != right.shape or not np.all(np.diff(left[:, 1]) > 0):
@@ -165,7 +174,9 @@ def _piece_svg(piece: dict, placement: dict, spec: dict, n: int) -> list[str]:
     else:
         for idx, (xx, yy) in enumerate(piece["stitch"]):
             if idx % 2:
-                parts.append(f'<circle class="notch" cx="{xx:.4f}" cy="{yy:.4f}" r="0.75"/>')
+                parts.append(
+                    f'<circle class="notch" cx="{xx:.4f}" cy="{yy:.4f}" r="0.75"/>'
+                )
     parts.append("</g>")
     return parts
 
@@ -182,20 +193,32 @@ def _gore_marks(identifier: str, spec: dict, count: int) -> list[str]:
         row = left if identifier == "P01" else right
         for at in OPENING:
             xx, yy = _seam_at_fraction(row, at)
-            marks.append(f'<circle class="opening" cx="{xx:.4f}" cy="{yy:.4f}" r="1.15"/>')
+            marks.append(
+                f'<circle class="opening" cx="{xx:.4f}" cy="{yy:.4f}" r="1.15"/>'
+            )
     center = 0.5 * (left[len(left) // 2, 0] + right[len(right) // 2, 0])
     y1 = float(left[len(left) // 3, 1])
     y2 = float(left[2 * len(left) // 3, 1])
-    marks.extend([
-        f'<line class="nap" x1="{center:.4f}" y1="{y1:.4f}" x2="{center:.4f}" y2="{y2:.4f}"/>',
-        f'<path class="nap" d="M{center - 1.3:.4f},{y2 - 2:.4f} '
-        f'L{center:.4f},{y2:.4f} L{center + 1.3:.4f},{y2 - 2:.4f}"/>',
-    ])
+    marks.extend(
+        [
+            f'<line class="nap" x1="{center:.4f}" y1="{y1:.4f}" x2="{center:.4f}" y2="{y2:.4f}"/>',
+            f'<path class="nap" d="M{center - 1.3:.4f},{y2 - 2:.4f} '
+            f'L{center:.4f},{y2:.4f} L{center + 1.3:.4f},{y2 - 2:.4f}"/>',
+        ]
+    )
     return marks
 
 
-def _page_svg(page: list[dict], pieces: dict, paper_mm: tuple, number: int, total: int,
-              spec: dict, panel_count: int, paper: str) -> str:
+def _page_svg(
+    page: list[dict],
+    pieces: dict,
+    paper_mm: tuple,
+    number: int,
+    total: int,
+    spec: dict,
+    panel_count: int,
+    paper: str,
+) -> str:
     width, height = paper_mm
     lines = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width:g}mm" '
@@ -210,20 +233,22 @@ def _page_svg(page: list[dict], pieces: dict, paper_mm: tuple, number: int, tota
         f'<rect width="{width:g}" height="{height:g}" fill="white"/>',
         f'<text x="{MARGIN_MM:g}" y="13" font-size="4">SYNTHETIC TOILE / STUDY ONLY / NOT APPROVED</text>',
         f'<text x="{MARGIN_MM:g}" y="20" font-size="3.2">'
-        f'{paper} {number}/{total} / print 100% / seam blue dashed / cut black</text>',
+        f"{paper} {number}/{total} / print 100% / seam blue dashed / cut black</text>",
     ]
     for item in page:
         lines.extend(_piece_svg(pieces[item["id"]], item, spec, panel_count))
     footer_y = height - 13
-    lines.extend([
-        f'<rect x="{MARGIN_MM:g}" y="{footer_y:g}" width="10" height="10" '
-        'fill="none" stroke="black" stroke-width=".3"/>',
-        f'<text x="{MARGIN_MM + 14:g}" y="{footer_y + 4:g}" font-size="3">'
-        '10 x 10 mm calibration - verify printed dimension</text>',
-        f'<text x="{MARGIN_MM + 14:g}" y="{footer_y + 8:g}" font-size="2.8">'
-        'red = seam match | purple = temporary turning gap | green = assumed nap</text>',
-        "</svg>",
-    ])
+    lines.extend(
+        [
+            f'<rect x="{MARGIN_MM:g}" y="{footer_y:g}" width="10" height="10" '
+            'fill="none" stroke="black" stroke-width=".3"/>',
+            f'<text x="{MARGIN_MM + 14:g}" y="{footer_y + 4:g}" font-size="3">'
+            "10 x 10 mm calibration - verify printed dimension</text>",
+            f'<text x="{MARGIN_MM + 14:g}" y="{footer_y + 8:g}" font-size="2.8">'
+            "red = seam match | purple = temporary turning gap | green = assumed nap</text>",
+            "</svg>",
+        ]
+    )
     return "\n".join(lines) + "\n"
 
 
@@ -259,7 +284,9 @@ def _guide(n: int, allowance: float, seam_length: float, paper: str) -> str:
 """
 
 
-def build(spec: dict, paper: str = "A4", source_sha256: str | None = None) -> tuple[dict, list[str], str]:
+def build(
+    spec: dict, paper: str = "A4", source_sha256: str | None = None
+) -> tuple[dict, list[str], str]:
     pieces, n, allowance, seam_length = _spec_pieces(spec)
     pages, size = _placement(pieces, paper)
     by_id = {piece["id"]: piece for piece in pieces}
@@ -268,7 +295,8 @@ def build(spec: dict, paper: str = "A4", source_sha256: str | None = None) -> tu
         for i, page in enumerate(pages, 1)
     ]
     if source_sha256 is not None and (
-        len(source_sha256) != 64 or any(c not in "0123456789abcdef" for c in source_sha256)
+        len(source_sha256) != 64
+        or any(c not in "0123456789abcdef" for c in source_sha256)
     ):
         raise ValueError("Expected lowercase SHA-256 provenance")
     manifest = {
@@ -284,7 +312,9 @@ def build(spec: dict, paper: str = "A4", source_sha256: str | None = None) -> tu
         "gore_count": n,
         "top_cap_count": 1,
         "bottom_cap_count": 1,
-        "total_cut_area_cm2": round(sum(piece["cut_area_mm2"] for piece in pieces) / 100, 3),
+        "total_cut_area_cm2": round(
+            sum(piece["cut_area_mm2"] for piece in pieces) / 100, 3
+        ),
         "turning_opening": {
             "seam": f"P{n:02d}.right <-> P01.left",
             "from_top_fraction": OPENING[0],
@@ -312,7 +342,11 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--paper", choices=tuple(PAPER_MM), default="A4")
     args = parser.parse_args()
-    if not args.input.is_file() or args.output_dir.exists() or args.output_dir.is_symlink():
+    if (
+        not args.input.is_file()
+        or args.output_dir.exists()
+        or args.output_dir.is_symlink()
+    ):
         raise RuntimeError("Input absent or output directory already exists")
     data = args.input.read_bytes()
     manifest, pages, guide = build(
@@ -325,10 +359,17 @@ def main() -> None:
     (args.output_dir / "sewing-guide.md").write_text(guide, encoding="utf-8")
     for page, entry in zip(pages, manifest["sheets"]):
         (args.output_dir / entry["file"]).write_text(page, encoding="utf-8")
-    print("PROTOTYPE_KIT_PREPARED", json.dumps({
-        "paper": args.paper, "pieces": manifest["piece_count"],
-        "sheets": len(pages), "status": STATUS,
-    }))
+    print(
+        "PROTOTYPE_KIT_PREPARED",
+        json.dumps(
+            {
+                "paper": args.paper,
+                "pieces": manifest["piece_count"],
+                "sheets": len(pages),
+                "status": STATUS,
+            }
+        ),
+    )
 
 
 if __name__ == "__main__":
