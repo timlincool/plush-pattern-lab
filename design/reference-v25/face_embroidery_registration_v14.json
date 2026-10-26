@@ -1,0 +1,98 @@
+{
+  "revision": "surface14",
+  "structural_target": "geometry_iteration12/clean_target_full_mm.json",
+  "structural_target_sha256": "85efc884ebcfa6a079b5189cf4f8dca182c0210d08af109e0cc37238fa14bf61",
+  "units": "mm",
+  "placement_coordinates": "World X/Z plane, front surface negative Y. Cast ray from Y=-200 toward positive Y to locate structural face. Fit embroidery to that surface; do not treat this X/Z chart as an already flattened sewing pattern.",
+  "eyes": [
+    {
+      "name": "near",
+      "center_xz": [
+        -33,
+        194
+      ],
+      "ellipse_radii_xz": [
+        8.5,
+        10.4
+      ]
+    },
+    {
+      "name": "far",
+      "center_xz": [
+        33,
+        194
+      ],
+      "ellipse_radii_xz": [
+        8.0,
+        10.4
+      ]
+    }
+  ],
+  "y_nose_xz": [
+    [
+      -6.5,
+      192.9
+    ],
+    [
+      0,
+      189
+    ],
+    [
+      5.2,
+      194.2
+    ]
+  ],
+  "mouth_stem_xz": [
+    [
+      0,
+      189
+    ],
+    [
+      0,
+      182.5
+    ]
+  ],
+  "mouth_left_xz": [
+    [
+      0,
+      182.5
+    ],
+    [
+      -2.6,
+      179.9
+    ],
+    [
+      -6.5,
+      179.9
+    ],
+    [
+      -9.1,
+      182.5
+    ]
+  ],
+  "mouth_right_xz": [
+    [
+      0,
+      182.5
+    ],
+    [
+      2.6,
+      179.9
+    ],
+    [
+      6.5,
+      179.9
+    ],
+    [
+      9.1,
+      182.5
+    ]
+  ],
+  "surface_offsets_mm": {
+    "eye_applique_center": 0.6,
+    "eye_border_center": 0.9,
+    "nose_mouth_lash_center": 0.65
+  },
+  "status": "Visual registration candidate; actual embroidery digitization, backing, stretch and stitch density require sampling",
+  "note": "Eye X/Z radii are registration coordinates. Surface conformance changes apparent camera width; do not substitute these radii for flattened fabric dimensions."
+}

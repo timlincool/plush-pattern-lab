@@ -1,0 +1,80 @@
+{
+  "reference": "geometry_iteration12/clean_target_full_mm.json",
+  "appearance": "appearance_candidate_iteration25.blend",
+  "all_frozen_core_and_cloud_modules_identical": true,
+  "modules": [
+    {
+      "name": "Rounded hoof base",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Rounded hoof base.001",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Rounded hoof base.002",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Rounded hoof base.003",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "PRIMARY continuous sculpt | new anatomy",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Grey head cloud halo",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Ivory crown ridge",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Varied ivory forehead cloud",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Asymmetric flowing ivory bib",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Grey flank cloud -1",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Grey flank cloud 1",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    },
+    {
+      "name": "Grey cascading left chest cloud",
+      "same_vertex_count": true,
+      "same_triangles_ignoring_order": true,
+      "max_vertex_difference_mm": 0.0
+    }
+  ],
+  "scope": "Frozen core and cloud modules only. Secondary ear revision23 and secondary tail25, decorative embroidery and fleece are excluded; ears have a separate versioned export."
+}

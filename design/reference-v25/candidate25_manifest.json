@@ -1,0 +1,72 @@
+{
+  "version": "appearance25",
+  "status": "Qualified reference-based visual prototype. Clean same-view and front pair reviewed. Sewing and filling validation remain separate.",
+  "structural_reference_sha256": "85efc884ebcfa6a079b5189cf4f8dca182c0210d08af109e0cc37238fa14bf61",
+  "material_requirement": "No animal products. Synthetic pile, polyester fill and non-animal backing, thread and accessories.",
+  "files": {
+    "appearance_candidate_iteration25.blend": {
+      "sha256": "adc95fbf77715876a9a066bc3505dcdf076671fe02db51f185db08200702484c",
+      "bytes": 49315195
+    },
+    "best_reviewed_appearance_iteration25.blend": {
+      "sha256": "adc95fbf77715876a9a066bc3505dcdf076671fe02db51f185db08200702484c",
+      "bytes": 49315195
+    },
+    "iteration25.py": {
+      "sha256": "83b053a0dc0d6cfcfed0a297d4dafc2e25769bcfaed00965d48c98b0b782c4e2",
+      "bytes": 24287
+    },
+    "rebuild_appearance.py": {
+      "sha256": "b444db10dc0aa1f12776a93eaa344c75289b4163a690fe2d7f9380c3934d8cd3",
+      "bytes": 27185
+    },
+    "embroidered_eye_detail.py": {
+      "sha256": "553629b9fc81bb8fdc61d29cc75b429427d171c933b62b04da5b8d42ae08818c",
+      "bytes": 1407
+    },
+    "ear_fleece_reference23.zip": {
+      "sha256": "237cf3746784c8eece074f517a6d985e043499a7855becd57e40790209fe68be",
+      "bytes": 755476
+    },
+    "secondary_tail25.json": {
+      "sha256": "01ab77073f04e27c9aae6f532135b9ac6929f7905951c2ea65e7453ae62b0ce1",
+      "bytes": 921911
+    },
+    "secondary_ears23.json": {
+      "sha256": "21ce385894f9ac17066d5d476299e8349899e54df7bb4aec780e754f57c2c83b",
+      "bytes": 236578
+    },
+    "drop_tab_registration23.json": {
+      "sha256": "273cdf254aa909d3e2df692bff963551f77964ed79672a18dfb2699103084430",
+      "bytes": 8539
+    },
+    "face_embroidery_registration_v14.json": {
+      "sha256": "67094dba7f9dc5ffbcaf7ddecf6867609144cca3842fb24bd49d6831db94993f",
+      "bytes": 1759
+    },
+    "reproduction_verification25.json": {
+      "sha256": "fef0279f19b19813adf94e5c6a1aad820932e5b1ced37fe856018352d1739293",
+      "bytes": 341
+    },
+    "structural_invariance_25_vs12.json": {
+      "sha256": "04d51539615538dafdd330db6091528f30673d4ccaa687619588e96b695253e8",
+      "bytes": 2425
+    },
+    "review25_sameview.png": {
+      "sha256": "6bea45ec002059c872ad3202ab06a2946fc4d03c810b5d940af4600d251f4992",
+      "bytes": 1315059
+    },
+    "review25_front.png": {
+      "sha256": "71e682cb7f734826aa89ecbc5aff6b9b487aa85e68113f122d2463e31c4ea697",
+      "bytes": 1162239
+    },
+    "APPEARANCE_CONTRACT_v25.md": {
+      "sha256": "e23065e153a018bb4b937bd52d781bcbcbc40c22f02f18fa092e72572162e7c1",
+      "bytes": 5484
+    },
+    "README.md": {
+      "sha256": "3350abcf5fb0708d8e3318643c84ca79ddecb5678261467e62696801acb80a0c",
+      "bytes": 1089
+    }
+  }
+}

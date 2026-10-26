@@ -1,0 +1,11 @@
+{
+  "candidate": "appearance_candidate_iteration25.blend",
+  "rebuild": "reproduction_check25/cloud_alpaca_appearance_v3.blend",
+  "missing_objects": [],
+  "different_geometry_or_transform_objects": [],
+  "same_camera": true,
+  "same_world_strength": true,
+  "same_material_nodes_and_links": true,
+  "object_count": 461,
+  "status": "PASS"
+}
