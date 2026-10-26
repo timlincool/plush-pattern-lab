@@ -15,12 +15,14 @@ from pathlib import Path
 import bpy
 import numpy as np
 
+from plush_pattern_lab.patterns.ellipsoid_geometry import ellipsoid_normal
 from plush_pattern_lab.validation.audit_stitched_shell import inspect_welded_shell
 from plush_pattern_lab.validation.sewing_quality import evaluate
 
 
 def _append_gores(
-    n, N, radial, z, right, verts, rest, reference, faces, face_class, outward_offset
+    n, N, radial, z, right, verts, rest, reference, faces, face_class,
+    outward_offset, direction, radius, half_height
 ):
     for i in range(n):
         az = 2 * math.pi * i / n
@@ -34,7 +36,12 @@ def _append_gores(
                     (radial[j] * math.cos(angle), radial[j] * math.sin(angle), z[j]),
                     dtype=float,
                 )
-                verts.append(tuple(target + outward_offset * outward))
+                vector = (
+                    ellipsoid_normal(target, radius, half_height)
+                    if direction == "normal"
+                    else outward
+                )
+                verts.append(tuple(target + outward_offset * vector))
                 reference.append(tuple(target))
                 rest.append((x * 0.001 + i * 0.20, yy * 0.001))
         start = i * N * 3
@@ -127,7 +134,7 @@ def _validate_trial_geometry(n, N, verts, faces, pairs):
             raise RuntimeError("Degenerate initial mesh face at index " + str(f))
 
 
-def _build_geometry(spec, n, N, H, radial, z, right, outward_offset=0.003):
+def _build_geometry(spec, n, N, H, radial, z, right, outward_offset=0.003, direction="radial"):
     verts, rest, reference, faces, loose, pairs, face_class = [], [], [], [], [], [], []
 
     _append_gores(
@@ -142,6 +149,9 @@ def _build_geometry(spec, n, N, H, radial, z, right, outward_offset=0.003):
         faces,
         face_class,
         outward_offset,
+        direction,
+        float(spec["parameters"]["radius_mm"]) * 0.001,
+        H,
     )
     caps = _append_caps(
         spec, n, H, radial, z, verts, rest, reference, faces, face_class
@@ -159,6 +169,7 @@ def _parse_trial():
         p.add_argument("--" + key, type=Path, required=True)
     p.add_argument("--frames", type=int, default=48)
     p.add_argument("--preposition-offset-mm", type=float, default=3.0)
+    p.add_argument("--preposition-direction", choices=("radial", "normal"), default="radial")
     p.add_argument(
         "--self-collision",
         action="store_true",
@@ -287,7 +298,8 @@ def main():
     a, spec, n, N, H, radial, z, right = _parse_trial()
     bpy.ops.wm.read_factory_settings(use_empty=True)
     verts, rest, reference, faces, loose, pairs, face_class = _build_geometry(
-        spec, n, N, H, radial, z, right, a.preposition_offset_mm * 0.001
+        spec, n, N, H, radial, z, right, a.preposition_offset_mm * 0.001,
+        a.preposition_direction
     )
     obj, collision, scene, dep = _setup_scene(a, verts, rest, faces, loose)
     start, init, final, trail, simulation_elapsed_s, end = _simulate_frames(
@@ -329,6 +341,7 @@ def main():
         "solver_elapsed_seconds": simulation_elapsed_s,
         "prepositioning": f"analytic target assisted, gores offset {a.preposition_offset_mm:g}mm",
         "preposition_offset_mm": a.preposition_offset_mm,
+        "preposition_direction": a.preposition_direction,
         "initial": init,
         "final": end,
         "trace": trail,
