@@ -8,6 +8,7 @@ on:
       - 'scripts/sewing_capped_poc_blender.py'
       - 'scripts/audit_stitched_shell.py'
       - 'scripts/assess_research_candidate.py'
+      - 'src/plush_pattern_lab/**'
       - '.github/workflows/capped-sewing.yml'
   workflow_dispatch:
 permissions:

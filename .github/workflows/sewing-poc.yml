@@ -9,6 +9,7 @@ on:
       - 'scripts/plush_gore_pattern.py'
       - 'scripts/sewing_quality.py'
       - 'scripts/assess_research_candidate.py'
+      - 'src/plush_pattern_lab/**'
       - '.github/workflows/sewing-poc.yml'
 permissions:
   contents: read

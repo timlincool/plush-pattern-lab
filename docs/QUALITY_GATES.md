@@ -1,39 +1,33 @@
-# 代码质量硬门禁（2026-10-25）
+# Python 质量硬门禁
 
-## 第一性原则
+参考私有项目 Metric Foundry 的严格质量理念；这些数值是本工程约定，不是玩具制造认证。
 
-复杂度门禁需要可自动复现、可证伪的硬指标，而不是靠行数或 AI 审查意见替代程序验证。所有门禁只在维护者信任的执行环境运行。
-
-| 规则 | 上限与触发后果 | 实现 |
+| 条目 | 阈值 / 规则 | 机制 |
 | --- | --- | --- |
-| 圈复杂度 | 每个 Python 函数 McCabe **≤20**，超限直接失败 | Ruff C901，禁用 `noqa` 绕过 |
-| 文件大小 | `scripts/` 和 `tests/` 每个 Python 文件 **≤2000 物理行** | 零依赖 `scripts/check_quality_limits.py` |
-| 静态检查 | E4/E9/F 及 S102/S307/S602，违规失败 | Ruff 0.17.2 |
-| 正确性 | 全量 pytest 与 compileall 必须成功 | GitHub 托管的 Python 3.11 |
-| 工作流安全 | 只读令牌、固定 Action SHA、受信事件、官方 Blender SHA256 校验 | `tests/test_workflow_security.py` |
+| 圈复杂度 | C901 ≤10 | Ruff 独立配置、拒绝 noqa |
+| 函数分支数 | PLR0912 ≤12 | Ruff 独立配置、拒绝 noqa |
+| 函数语句数 | PLR0915 ≤50 | Ruff 独立配置、拒绝 noqa |
+| Python 单文件 | ≤2000 物理行 | `scripts/check_quality_limits.py`，覆盖 scripts/tests/src |
+| 代码规范 | Ruff E4/E7/E9/F/I、S102/S307/S602、格式检查 | `scripts/check_quality.py` |
+| 包依赖 | 不允许环；纯计算不依赖 Blender 或 CLI | Python AST + TopologicalSorter |
 
-未强行要求使用任何设计模式。设计模式不是质量指标；应当根据重复、可测试性和变化轴来决定抽象。避免为了过门禁盲目拆函数，原有几何数值与仿真结果必须保持。
+工具 Ruff 固定 **0.17.2**。内核只解析源码并执行安全的静态程序；不会主动导入项目的 `bpy` 或执行任何外部 PR 代码。
 
-本轮将既有四个超限的复杂函数拆分数据准备与主流程，不改变求解参数或纸样研究阈值。
-
-## 本地可信开发检查
-
-从仓库根目录：
+## 可信开发
 
 ```bash
-python -m pip install -r requirements-dev.txt
-python scripts/check_quality_limits.py
-ruff check scripts tests --ignore-noqa
-python -m compileall -q scripts tests
+python -m pip install --only-binary=:all: -r requirements-dev.txt
+python -m pip install --no-deps --no-build-isolation -e .
+python scripts/check_quality.py
 python -m pytest -q
 ```
 
-`--ignore-noqa` 确保在行内写 `# noqa: C901` 也不能豁免复杂度。CI 安装采用 `--only-binary=:all:` 禁止构建源码包；不保证第三方 wheel 无漏洞。
+本地**可选** `python scripts/install_quality_hook.py`，不会覆盖既有钩子；`python scripts/check_quality.py --staged` 用 `git ls-files --stage -z` + `git cat-file blob` 解析整个暂存索引，拒绝符号链接、子模块、冲突路径；不使用已经更改但尚未暂存的工作区数据，不能被 `# noqa` 绕过函数硬阈值。已有反例测试覆盖这些限制。无真实克隆时不宣称预提交钩子已安装；GitHub 连接器提交也不会运行该钩子。
 
-## PR 安全边界
+## 受信 GitHub CI 与 PR 安全
 
-公开 Fork PR **不自动运行**上述命令。审查者先检查 Files changed，尤其 `.github/workflows`、`requirements-dev.txt`、`ruff.toml`、`scripts/`、`tests/`、`.blend` 与外部下载脚本。确认可信后才可在无机密信息的隔离环境验证。
+`ci.yml` 仍**仅**针对 `main` 的 push 和 workflow_dispatch 执行，使用 GitHub 托管临时 Runner、只读 GITHUB_TOKEN、SHA 固定的官方 Action，安装依赖限制为 wheels；运行统一质量检查、完整 pytest、打包 wheel。三个 Blender 任务仍只在 main 或维护者手动触发，现在也监听 `src/plush_pattern_lab/**` 修改。不能把 main 提交之后的绿灯称为对不可信 PR 的预合并状态检查；Fork PR 执行必须先审查和符合仓库设置。外部 `.blend` 始终可能包含恶意资源，禁止在有密钥的本机直接打开。
 
-注意：当前 CI 只在已进入 `main` 的可信代码上执行，因此该质量检查虽会使 CI 失败，**并未形成 GitHub 级别的预合并状态门禁**。只有配置 Ruleset、人工确认安全，并为预合并建立经审核的可信验证路径后，才能声称存在完整的合并保护。详情见 [PR_SECURITY.md](PR_SECURITY.md)。
+## 适用边界
 
-如果质量规则未来需要进一步收紧，须先运行整个仓库基线并修复历史超限项；不得因为一次质量门禁报错就大幅调高复杂度阈值。
+单测绿灯不证明数值等价，也不是织物、填充料、缝线寿命或儿童玩具安全认证。重构必须对照 Blender 4.3.2 的实际求解产物与接触反例证据。质量约束不能通过提高阈值或新建任意豁免文件掩盖风险。

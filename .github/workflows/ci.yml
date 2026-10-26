@@ -29,11 +29,13 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - name: Dependencies from maintainer-reviewed main only
         run: 'python -m pip install --only-binary=:all: -r requirements-dev.txt'
-      - name: Static lint and hard quality limits
+      - name: Install trusted package
+        run: python -m pip install --no-deps --no-build-isolation -e .
+      - name: Unified static, format, complexity and architecture checks
+        run: python scripts/check_quality.py
+      - name: Syntax and full tests on trusted main
         run: |
-          python scripts/check_quality_limits.py
-          ruff check scripts tests --ignore-noqa
-      - name: Syntax and tests on trusted main
-        run: |
-          python -m compileall -q scripts tests
+          python -m compileall -q src scripts tests
           python -m pytest -q
+      - name: Build distributable package
+        run: python -m pip wheel --no-deps --no-build-isolation --wheel-dir "$RUNNER_TEMP/wheels" .
