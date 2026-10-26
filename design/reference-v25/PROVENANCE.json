@@ -1,0 +1,39 @@
+{
+  "schema": "plush-design-public-reference-v1",
+  "status": "TEXT_ONLY_FULL_MODEL_ASSETS_PENDING",
+  "public_repo": "timlincool/plush-pattern-lab",
+  "licensed_data": "CC0-1.0, to extent rights held",
+  "actual_blend_included": false,
+  "original_png_included": false,
+  "release_archives_migrated": false,
+  "files": [
+    {
+      "file": "APPEARANCE_CONTRACT_v25.md",
+      "source_blob_sha": "a8412c9b4842afb257a30c6f1079c856b567585c"
+    },
+    {
+      "file": "candidate25_manifest.json",
+      "source_blob_sha": "6c5cf8216977032535ce3719e01fd4687bc01c15"
+    },
+    {
+      "file": "drop_tab_registration23.json",
+      "source_blob_sha": "d99b6962ef9a70200e675c671703df90315c8af8"
+    },
+    {
+      "file": "face_embroidery_registration_v14.json",
+      "source_blob_sha": "58ea28c6ea02671d5b5d08925787e0f0fa77a6b7"
+    },
+    {
+      "file": "ear_fibre_sampling_analysis23.json",
+      "source_blob_sha": "5cbe3d4ff55f023a2c3dc87ee01ddba94e19a9bb"
+    },
+    {
+      "file": "structural_invariance_25_vs12.json",
+      "source_blob_sha": "56780398709810ceaf15cce025b271c8050289a5"
+    },
+    {
+      "file": "reproduction_verification25.json",
+      "source_blob_sha": "3ffa78e6f5887cd95d257a503b4994002e0bee98"
+    }
+  ]
+}
