@@ -1,0 +1,102 @@
+{
+  "schema": "plush-local-cap-transition-experiment-v1",
+  "status": "LOCAL_CAP_TRANSITION_REJECTED_RETAIN_DEFAULT",
+  "source_commit": "d7ebc95b4edf7b131398b754d8c0ed6bda203b1f",
+  "github_actions_run": 40283704780,
+  "github_actions_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/40283704780",
+  "blender": "4.3.2",
+  "controls": {
+    "panels": 12,
+    "caps": 2,
+    "frames": 48,
+    "gravity": 0,
+    "radial_offset_mm": 3,
+    "pole_cut_degrees": 8,
+    "self_collision_enabled": false
+  },
+  "tested_variable": "cap_transition_rows",
+  "cases": [
+    {
+      "transition_rows": 0,
+      "nonseam_intersections": 4,
+      "seam_related_intersections": 900,
+      "target_rms_mm": 0.21583984530066488,
+      "strain_p95": 0.07637810677979667,
+      "seam_gap_mean_mm": 0.00022142971230258558,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam_regions": [
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 4
+        }
+      ]
+    },
+    {
+      "transition_rows": 2,
+      "nonseam_intersections": 6,
+      "seam_related_intersections": 1092,
+      "target_rms_mm": 1.11701633986773,
+      "strain_p95": 0.07665058864228436,
+      "seam_gap_mean_mm": 0.0002939858325629838,
+      "geometry_gate": "RESEARCH_GEOMETRY_SCREEN_PASSED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam_regions": [
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 4
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 2
+        }
+      ]
+    },
+    {
+      "transition_rows": 4,
+      "nonseam_intersections": 10,
+      "seam_related_intersections": 1072,
+      "target_rms_mm": 1.3301610236665211,
+      "strain_p95": 0.333929436859125,
+      "seam_gap_mean_mm": 0.0003542661802177706,
+      "geometry_gate": "RESEARCH_CANDIDATE_REJECTED",
+      "contact_gate": "RESEARCH_CONTACT_SCREEN_REJECTED",
+      "nonseam_regions": [
+        {
+          "category": "other",
+          "region_pair": [
+            "lower_join",
+            "lower_join"
+          ],
+          "intersecting_pairs": 5
+        },
+        {
+          "category": "other",
+          "region_pair": [
+            "upper_join",
+            "upper_join"
+          ],
+          "intersecting_pairs": 5
+        }
+      ]
+    }
+  ],
+  "decision": "Do not adopt taper. The original default has fewer nonseam intersections and a better target RMS; 4-row variant also fails geometry screening.",
+  "limitations": [
+    "The scene is a synthetic ellipsoid with target-assisted 3D prepositioning.",
+    "Triangle overlaps are finite zero-thickness tests, not fabric certification.",
+    "Do not discard seam-related witnesses or loosen research contact veto."
+  ]
+}

@@ -98,6 +98,21 @@ jobs:
               --triangle-report "$RUNNER_TEMP/collision/$MODE.triangles.json" \
               --output "$RUNNER_TEMP/collision/$MODE.contact_gate.json"
           done
+      - name: Render actual saved synthetic shell and local intersection witnesses
+        shell: bash
+        run: |
+          set -euo pipefail
+          for MODE in disabled enabled; do
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+              --python scripts/render_synthetic_evidence.py -- \
+              --input "$RUNNER_TEMP/collision/$MODE.blend" \
+              --simulation-report "$RUNNER_TEMP/collision/$MODE.json" \
+              --triangle-report "$RUNNER_TEMP/collision/$MODE.triangles.json" \
+              --output-dir "$RUNNER_TEMP/collision/$MODE.preview"
+            test -s "$RUNNER_TEMP/collision/$MODE.preview/three_quarter.png"
+            test -s "$RUNNER_TEMP/collision/$MODE.preview/side.png"
+            test -s "$RUNNER_TEMP/collision/$MODE.preview/lower_join.png"
+          done
       - name: Write directly comparable parameter/quality report
         shell: bash
         run: |
