@@ -43,15 +43,11 @@ def _fake_archive(root: Path, members: dict[str, bytes]) -> dict:
 def test_six_source_release_archives_and_published_hashes_are_frozen():
     m = load_manifest(MANIFEST)
     assert m["source_repo"] == "timlincool/cloud-alpaca-plush"
-    assert [x["name"][:2] for x in m["assets"]] == [
-        "01", "02", "03", "04", "05", "06"
-    ]
+    assert [x["name"][:2] for x in m["assets"]] == ["01", "02", "03", "04", "05", "06"]
     assert sum(e["member_count"] for e in m["assets"]) == 252
     assert all(len(e["member_sha256"]) == e["member_count"] for e in m["assets"])
     # Original archives 03..06 were repacked with documentation normalization.
-    assert all(
-        e["source_sha256"] != e["published_sha256"] for e in m["assets"][2:]
-    )
+    assert all(e["source_sha256"] != e["published_sha256"] for e in m["assets"][2:])
 
 
 def test_manifest_refuses_route_or_wrong_sha(tmp_path):
@@ -95,11 +91,19 @@ def test_member_provenance_is_checked_even_if_outer_hash_matches(tmp_path):
     assert "archived member" in result["errors"][0]
 
 
-@pytest.mark.parametrize("name", [
-    "../escape.txt", "src/../../escape", "/etc/passwd", r"C:\Users\secret.txt",
-    "folder//file.txt", "folder/./file.txt", "folder\\escape.txt",
-    "folder/token:\nhidden",
-])
+@pytest.mark.parametrize(
+    "name",
+    [
+        "../escape.txt",
+        "src/../../escape",
+        "/etc/passwd",
+        r"C:\Users\secret.txt",
+        "folder//file.txt",
+        "folder/./file.txt",
+        "folder\\escape.txt",
+        "folder/token:\nhidden",
+    ],
+)
 def test_zip_path_is_never_allowed(name):
     assert not _safe_name(name)
 
@@ -124,7 +128,9 @@ def test_binary_blend_remains_pending_independent_review(tmp_path):
     archive = _fake_archive(tmp_path, {"mesh.blend": b"BLENDER fake binary"})
     result = audit_one(tmp_path, archive)
     assert result["status"] == "INTEGRITY_VERIFIED_NEEDS_CONTENT_AND_LICENSE_REVIEW"
-    assert "Binary Blender/array asset needs isolated content review" in result["warnings"]
+    assert (
+        "Binary Blender/array asset needs isolated content review" in result["warnings"]
+    )
 
 
 def test_refuses_zip_symlink_member(tmp_path):

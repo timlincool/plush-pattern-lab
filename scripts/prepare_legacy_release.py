@@ -34,8 +34,16 @@ def fetch_missing(directory: Path, manifest: dict) -> None:
         if target.exists():
             continue
         command = [
-            "gh", "release", "download", manifest["source_tag"],
-            "-R", SOURCE, "-D", str(directory), "--pattern", entry["name"]
+            "gh",
+            "release",
+            "download",
+            manifest["source_tag"],
+            "-R",
+            SOURCE,
+            "-D",
+            str(directory),
+            "--pattern",
+            entry["name"],
         ]
         subprocess.run(command, check=True)
 
@@ -43,12 +51,10 @@ def fetch_missing(directory: Path, manifest: dict) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--archive-dir", type=Path,
-        default=ROOT / "local-assets" / "legacy-release-v25"
+        "--archive-dir", type=Path, default=ROOT / "local-assets" / "legacy-release-v25"
     )
     parser.add_argument(
-        "--report", type=Path,
-        default=ROOT / "local-output" / "legacy-asset-audit.json"
+        "--report", type=Path, default=ROOT / "local-output" / "legacy-asset-audit.json"
     )
     parser.add_argument("--download", action="store_true")
     args = parser.parse_args()
@@ -70,10 +76,18 @@ def main() -> int:
     except (OSError, ValueError, subprocess.CalledProcessError) as exc:
         print(f"MIGRATION_AUDIT_BLOCKED: {type(exc).__name__}", file=sys.stderr)
         return 1
-    print("ARCHIVE_INTEGRITY_AUDIT", json.dumps({
-        "status": report["status"], "verified": report["verified"],
-        "total": report["total"], "report": str(args.report)
-    }, ensure_ascii=False))
+    print(
+        "ARCHIVE_INTEGRITY_AUDIT",
+        json.dumps(
+            {
+                "status": report["status"],
+                "verified": report["verified"],
+                "total": report["total"],
+                "report": str(args.report),
+            },
+            ensure_ascii=False,
+        ),
+    )
     return 0 if report["verified"] == report["total"] else 1
 
 

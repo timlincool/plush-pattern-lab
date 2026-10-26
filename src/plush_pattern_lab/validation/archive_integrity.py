@@ -23,7 +23,9 @@ SECRET = re.compile(
     rb"sk-[A-Za-z0-9_-]{20,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----",
     re.IGNORECASE,
 )
-LOCAL_PATH = re.compile(rb"[A-Za-z]:\\Users\\[^\\\r\n]+|/home/[^/\r\n]+/|/Users/[^/\r\n]+/")
+LOCAL_PATH = re.compile(
+    rb"[A-Za-z]:\\Users\\[^\\\r\n]+|/home/[^/\r\n]+/|/Users/[^/\r\n]+/"
+)
 SHA = re.compile(r"[0-9a-f]{64}\Z")
 SOURCE = "timlincool/cloud-alpaca-plush"
 TARGET = "timlincool/plush-pattern-lab"
@@ -73,7 +75,9 @@ def _is_symlink(info: zipfile.ZipInfo) -> bool:
     return stat.S_IFMT(info.external_attr >> 16) == stat.S_IFLNK
 
 
-def _audit_member(source: zipfile.ZipFile, info: zipfile.ZipInfo) -> tuple[str, list[str]]:
+def _audit_member(
+    source: zipfile.ZipFile, info: zipfile.ZipInfo
+) -> tuple[str, list[str]]:
     digest = hashlib.sha256()
     flags: list[str] = []
     text_only = PurePosixPath(info.filename).suffix.lower() in TEXT_SUFFIXES
@@ -96,7 +100,10 @@ def _inventory(archive: zipfile.ZipFile, required: dict) -> tuple[list[str], lis
     all_entries = archive.infolist()
     members = [info for info in all_entries if not info.is_dir()]
     errors: list[str] = []
-    if len(all_entries) > MAX_FILES or sum(i.file_size for i in members) > MAX_TOTAL_BYTES:
+    if (
+        len(all_entries) > MAX_FILES
+        or sum(i.file_size for i in members) > MAX_TOTAL_BYTES
+    ):
         return ["Archive exceeds bounded size/count"], []
     if any(not _safe_name(info.filename) for info in all_entries):
         errors.append("Unsafe directory or member path")
@@ -110,8 +117,9 @@ def _inventory(archive: zipfile.ZipFile, required: dict) -> tuple[list[str], lis
     return errors, members
 
 
-def _member_checks(archive: zipfile.ZipFile, info: zipfile.ZipInfo,
-                   required: dict) -> tuple[list[str], list[str]]:
+def _member_checks(
+    archive: zipfile.ZipFile, info: zipfile.ZipInfo, required: dict
+) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
     if not _safe_name(info.filename) or _is_symlink(info):
@@ -132,7 +140,9 @@ def _member_checks(archive: zipfile.ZipFile, info: zipfile.ZipInfo,
     return errors, warnings
 
 
-def _zip_members(archive: zipfile.ZipFile, expected: dict) -> tuple[list[str], list[str]]:
+def _zip_members(
+    archive: zipfile.ZipFile, expected: dict
+) -> tuple[list[str], list[str]]:
     required = expected["member_sha256"]
     errors, members = _inventory(archive, required)
     warnings: list[str] = []
@@ -177,7 +187,8 @@ def audit(directory: Path, manifest: dict) -> dict:
     return {
         "schema": "alpaca-public-release-audit-v1",
         "status": "INTEGRITY_CHECKED_NOT_PUBLICATION_AUTHORIZED"
-        if verified == 6 else "BLOCKED",
+        if verified == 6
+        else "BLOCKED",
         "verified": verified,
         "total": 6,
         "public_release_uploaded": False,
