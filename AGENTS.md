@@ -24,3 +24,8 @@
 - 自动合并仅限 GitHub 实际认证为仓库所有者 `timlincool`，且 PR 作者为 `timlincool`、源仓库确为 `timlincool/plush-pattern-lab`、审查 Diff 与验证已完成。外部 PR 绝不自动使用所有者旁路合并。
 
 任何一项未验证，报告“未执行/未验证”，不编造实验、测试数量、来源或安全结论。
+
+
+## 冻结的参数负结果
+
+`docs/CONTACT_LOCALIZATION_20261026.md` 及 `experiments/capped_contact_20261026/results.json` 保留 6/8/12°、1/3/5mm 和径向/法向 48 帧 A/B。现阶段默认仍是 **8° + 3mm 径向**；严禁为减少单一碰撞计数而调高研究阈值、忽略残余缝线交叉或在未执行新 A/B 时宣称已修复。真正的下一步是帽片与侧片顶底端局部拼片/约束结构调整，之后是实物试布反馈。

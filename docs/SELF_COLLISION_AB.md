@@ -54,3 +54,8 @@
 完整证据、反例、算法界限：[CONTACT_INTERSECTION_SCREEN.md](CONTACT_INTERSECTION_SCREEN.md)，[实际 Blender 测试（含10项安全/篡改负测）](https://github.com/timlincool/plush-pattern-lab/actions/runs/40173337532)。
 
 **重要修订**：任何“接缝拓扑通过”都不能推导为无面片穿插；此前通过的候选在新增严格接触筛选下均被拒绝。工作流执行成功只说明采样、计算和报告成功。剩余问题是定位实际穿插在何处、排查帽片和缝口预定位，之后才适合讨论真实布料厚度、材料试样与填充。
+
+
+## 后续区域定位结果
+
+2026-10-26 已借助 Blender 4.3 的 `polygon_index` 和独立 BVH 见证，在 48 帧保存模型中定位到 **关闭时4对均属底部侧片交汇、开启时4对顶部+3对底部**。裁片和坐标见 [CONTACT_LOCALIZATION_20261026.md](CONTACT_LOCALIZATION_20261026.md)；此前本页“尚未独立检查面片交叉”的描述属于引入BVH之前的历史阶段，现有接触门禁仍全部拒绝。

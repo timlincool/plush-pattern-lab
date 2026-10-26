@@ -35,3 +35,8 @@
 
 - https://docs.blender.org/api/4.4/mathutils.bvhtree.html
 - https://github.com/blender/blender/blob/main/source/blender/python/mathutils/mathutils_bvhtree.cc
+
+
+## 2026-10-26 面片身份与交汇区域定位
+
+现已对真实保存重开的 12+2 布壳做 **裁片编号与交叉区域**审计：4个关闭自碰撞时的非缝线穿插均在底部端缝附近，开启时为顶部4、底部3。冻结结果及不同帽片角度/偏移变量的失败对照见 [定位与反例实验](CONTACT_LOCALIZATION_20261026.md)。这不改 BVH 原计数、不免除任何缝线相关穿插、不构成真实玩具安全证明。
