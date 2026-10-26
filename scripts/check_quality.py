@@ -51,14 +51,18 @@ def architecture_errors(root: Path) -> list[str]:
     errors = []
     for module, path in paths.items():
         dependencies = imports(module, path)
-        graph[module] = {name for name in dependencies if name in paths and name != module}
+        graph[module] = {
+            name for name in dependencies if name in paths and name != module
+        }
         for name in dependencies:
             if name == "scripts" or name.startswith("scripts."):
                 errors.append(f"{module}: package must not import scripts CLI")
             if (
-                (module == PACKAGE or module.startswith(PACKAGE + ".patterns")
-                 or module.startswith(PACKAGE + ".validation"))
-                and (name == PACKAGE + ".blender" or name.startswith(PACKAGE + ".blender."))
+                module == PACKAGE
+                or module.startswith(PACKAGE + ".patterns")
+                or module.startswith(PACKAGE + ".validation")
+            ) and (
+                name == PACKAGE + ".blender" or name.startswith(PACKAGE + ".blender.")
             ):
                 errors.append(f"{module}: pure research code depends on Blender")
     try:
@@ -70,8 +74,7 @@ def architecture_errors(root: Path) -> list[str]:
 
 def run(root: Path, *args: str) -> None:
     result = subprocess.run(
-        [sys.executable, "-m", "ruff", *args],
-        cwd=root, text=True, capture_output=True
+        [sys.executable, "-m", "ruff", *args], cwd=root, text=True, capture_output=True
     )
     if result.stdout:
         print(result.stdout, end="")
@@ -87,10 +90,21 @@ def main() -> int:
         run(root, "check", ".")
         run(root, "format", "--check", ".")
         run(
-            root, "check", "--isolated", "--select", "C901,PLR0912,PLR0915",
-            "--ignore-noqa", "--config", "lint.mccabe.max-complexity=10",
-            "--config", "lint.pylint.max-branches=12",
-            "--config", "lint.pylint.max-statements=50", "src", "scripts", "tests"
+            root,
+            "check",
+            "--isolated",
+            "--select",
+            "C901,PLR0912,PLR0915",
+            "--ignore-noqa",
+            "--config",
+            "lint.mccabe.max-complexity=10",
+            "--config",
+            "lint.pylint.max-branches=12",
+            "--config",
+            "lint.pylint.max-statements=50",
+            "src",
+            "scripts",
+            "tests",
         )
         errors = check_limits(root) + architecture_errors(root)
         if errors:

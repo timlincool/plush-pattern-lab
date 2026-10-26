@@ -38,7 +38,9 @@ def check_limits(root: Path, max_lines: int = MAX_PYTHON_LINES) -> list[str]:
     if source.is_dir():
         for path in sorted(source.rglob("*.py")):
             if path.is_symlink():
-                violations.append(f"{path.relative_to(root)}: symlinked Python files are prohibited")
+                violations.append(
+                    f"{path.relative_to(root)}: symlinked Python files are prohibited"
+                )
                 continue
             with path.open("r", encoding="utf-8") as handle:
                 line_count = sum(1 for _ in handle)
@@ -51,7 +53,9 @@ def check_limits(root: Path, max_lines: int = MAX_PYTHON_LINES) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument(
+        "--root", type=Path, default=Path(__file__).resolve().parents[1]
+    )
     args = parser.parse_args()
     errors = check_limits(args.root.resolve())
     for error in errors:

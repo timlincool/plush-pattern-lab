@@ -32,7 +32,9 @@ def test_architecture_rejects_cycle(tmp_path):
 def test_architecture_rejects_blender_dependency(tmp_path):
     _write(tmp_path, "__init__.py", "")
     _write(tmp_path, "patterns/__init__.py", "")
-    _write(tmp_path, "patterns/a.py", "from plush_pattern_lab.blender import renderer\n")
+    _write(
+        tmp_path, "patterns/a.py", "from plush_pattern_lab.blender import renderer\n"
+    )
     assert any("depends on Blender" in issue for issue in architecture_errors(tmp_path))
 
 
@@ -40,7 +42,9 @@ def test_architecture_rejects_cli_dependency(tmp_path):
     _write(tmp_path, "__init__.py", "")
     _write(tmp_path, "validation/__init__.py", "")
     _write(tmp_path, "validation/a.py", "import scripts.sewing_quality\n")
-    assert any("must not import scripts" in issue for issue in architecture_errors(tmp_path))
+    assert any(
+        "must not import scripts" in issue for issue in architecture_errors(tmp_path)
+    )
 
 
 def test_relative_import_resolution(tmp_path):

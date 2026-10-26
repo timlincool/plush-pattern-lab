@@ -1,8 +1,8 @@
 """Compatibility entrypoint for simulate_main_shell_proxy; implementation is in the package."""
 
+import sys
 from importlib import import_module
 from pathlib import Path
-import sys
 
 _SRC = str(Path(__file__).resolve().parents[1] / "src")
 if _SRC not in sys.path:

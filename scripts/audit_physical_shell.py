@@ -1,8 +1,8 @@
 """Compatibility entrypoint for audit_physical_shell; implementation is in the package."""
 
+import sys
 from importlib import import_module
 from pathlib import Path
-import sys
 
 _SRC = str(Path(__file__).resolve().parents[1] / "src")
 if _SRC not in sys.path:

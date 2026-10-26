@@ -5,6 +5,7 @@ the Blender C implementation invokes isect_tri_tri_v3, but this is not a
 formal guarantee for coplanar degeneracies, near contacts, or finite-thickness
 fabric. No source model or candidate is modified.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -39,8 +40,10 @@ def audit_geometry(vertices, triangles, seam_edges=()):
         raise ValueError("Geometry outside finite screen budget")
     if any(len(v) != 3 or any(not math.isfinite(x) for x in v) for v in coords):
         raise ValueError("Non-finite coordinate or wrong dimension")
-    if any(len(t) != 3 or len(set(t)) != 3 or
-           any(i < 0 or i >= len(coords) for i in t) for t in faces):
+    if any(
+        len(t) != 3 or len(set(t)) != 3 or any(i < 0 or i >= len(coords) for i in t)
+        for t in faces
+    ):
         raise ValueError("Degenerate indexed triangle")
     neighbors = defaultdict(set)
     seam_list = [tuple(map(int, edge)) for edge in seam_edges]
@@ -52,7 +55,9 @@ def audit_geometry(vertices, triangles, seam_edges=()):
     tree = BVHTree.FromPolygons(coords, faces, all_triangles=True, epsilon=0.0)
     raw = tree.overlap(tree)
     if len(raw) > MAX_PAIRS * 2:
-        raise RuntimeError("Raw intersection witness budget exceeded: do not silently truncate")
+        raise RuntimeError(
+            "Raw intersection witness budget exceeded: do not silently truncate"
+        )
     candidates = {tuple(sorted((i, j))) for i, j in raw if i != j}
     if len(candidates) > MAX_PAIRS:
         raise RuntimeError("Intersection witness budget exceeded")
@@ -86,7 +91,8 @@ def audit_geometry(vertices, triangles, seam_edges=()):
         "sample_other_pairs": nonseam_witnesses,
         "zero_report_means": (
             "No intersection detected by Blender's finite triangle test for non-shared "
-            "vertex pairs; not a certified collision-free stuffed plush."),
+            "vertex pairs; not a certified collision-free stuffed plush."
+        ),
         "limitations": [
             "Shared-vertex triangle pairs are excluded even if they fold across their common vertex",
             "Seam-related pairs are reported separately, not automatically accepted as safe",
@@ -101,8 +107,14 @@ def main():
     parser = argparse.ArgumentParser()
     for key in ("input", "case-report", "output"):
         parser.add_argument("--" + key, type=Path, required=True)
-    args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else [])
-    if not args.input.is_file() or not args.case_report.is_file() or args.output.exists():
+    args = parser.parse_args(
+        sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
+    )
+    if (
+        not args.input.is_file()
+        or not args.case_report.is_file()
+        or args.output.exists()
+    ):
         raise RuntimeError("Saved source missing or target output already exists")
     expected = json.loads(args.case_report.read_text(encoding="utf8"))
     if expected.get("status") != "ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY":
@@ -116,26 +128,45 @@ def main():
         raise RuntimeError("Identity of cloth vertices changed")
     coords = [snap.matrix_world @ v.co for v in snap.data.vertices]
     snap.data.calc_loop_triangles()
-    triangles = [tuple(int(i) for i in face.vertices) for face in snap.data.loop_triangles]
-    sewing_edges = [tuple(int(v) for v in edge.vertices)
-                    for edge in source.data.edges if edge.is_loose]
+    triangles = [
+        tuple(int(i) for i in face.vertices) for face in snap.data.loop_triangles
+    ]
+    sewing_edges = [
+        tuple(int(v) for v in edge.vertices)
+        for edge in source.data.edges
+        if edge.is_loose
+    ]
     if len(sewing_edges) != expected.get("total_sewing_springs"):
-        raise RuntimeError(f"Expected {expected.get('total_sewing_springs')} sewing links, got {len(sewing_edges)}")
+        raise RuntimeError(
+            f"Expected {expected.get('total_sewing_springs')} sewing links, got {len(sewing_edges)}"
+        )
     report = audit_geometry(coords, triangles, sewing_edges)
-    report.update({
-        "case_sha256": sha256(args.input),
-        "source_report_sha256": sha256(args.case_report),
-        "research_trial_self_collision_enabled": expected.get("self_collision_enabled"),
-        "saved_blender_version": bpy.app.version_string,
-        "numerical_evidence_only": True,
-    })
+    report.update(
+        {
+            "case_sha256": sha256(args.input),
+            "source_report_sha256": sha256(args.case_report),
+            "research_trial_self_collision_enabled": expected.get(
+                "self_collision_enabled"
+            ),
+            "saved_blender_version": bpy.app.version_string,
+            "numerical_evidence_only": True,
+        }
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
-    print("NONADJACENT_TRIANGLE_SCREEN", json.dumps({
-        "triangles": report["triangle_count"],
-        "seam_related": report["nonadjacent_seam_related_pair_count"],
-        "other": report["nonadjacent_other_pair_count"],
-    }), flush=True)
+    args.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
+    )
+    print(
+        "NONADJACENT_TRIANGLE_SCREEN",
+        json.dumps(
+            {
+                "triangles": report["triangle_count"],
+                "seam_related": report["nonadjacent_seam_related_pair_count"],
+                "other": report["nonadjacent_other_pair_count"],
+            }
+        ),
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

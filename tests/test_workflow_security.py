@@ -3,8 +3,9 @@
 Regression checks only: repository Actions settings, branch protection and human
 review are separate mandatory controls.
 """
-from pathlib import Path
+
 import re
+from pathlib import Path
 
 import pytest
 import yaml
@@ -37,23 +38,45 @@ def check_workflows(files: dict[str, str]) -> None:
         assert isinstance(cfg.get("on"), dict), (filename, "trigger type")
         assert set(cfg["on"]) == {"push", "workflow_dispatch"}, (filename, "events")
         push = cfg["on"]["push"]
-        assert isinstance(push, dict) and push.get("branches") == ["main"], (filename, "branch")
+        assert isinstance(push, dict) and push.get("branches") == ["main"], (
+            filename,
+            "branch",
+        )
         assert cfg["permissions"] == {"contents": "read"}, (filename, "token")
-        assert not any(key in content for key in (
-            "github.event.pull_request", "github.event.issue",
-            "github.event.comment", "secrets.", "permissions: write-all")), filename
+        assert not any(
+            key in content
+            for key in (
+                "github.event.pull_request",
+                "github.event.issue",
+                "github.event.comment",
+                "secrets.",
+                "permissions: write-all",
+            )
+        ), filename
         if filename != "ci.yml":
             # The official Blender 4.3.2 binary must be checked before tar extraction.
             assert BLENDER_SHA256 in content, (filename, "Blender SHA256")
             assert "sha256sum -c -" in content, (filename, "Blender hash check")
         jobs = cfg.get("jobs")
-        assert isinstance(jobs, dict) and set(jobs) == ALLOWED_JOBS[filename], (filename, "jobs")
+        assert isinstance(jobs, dict) and set(jobs) == ALLOWED_JOBS[filename], (
+            filename,
+            "jobs",
+        )
         for job_name, job in jobs.items():
             assert isinstance(job, dict), (filename, job_name)
             assert job.get("runs-on") == "ubuntu-24.04", (filename, job_name, "runner")
-            assert job.get("if") == ALLOWED_IF[filename], (filename, job_name, "main-only")
-            assert "environment" not in job and "container" not in job, (filename, job_name)
-            assert job.get("permissions", {"contents": "read"}) == {"contents": "read"}, filename
+            assert job.get("if") == ALLOWED_IF[filename], (
+                filename,
+                job_name,
+                "main-only",
+            )
+            assert "environment" not in job and "container" not in job, (
+                filename,
+                job_name,
+            )
+            assert job.get("permissions", {"contents": "read"}) == {
+                "contents": "read"
+            }, filename
             steps = job.get("steps")
             assert isinstance(steps, list) and steps, filename
             checkouts = 0
@@ -62,18 +85,26 @@ def check_workflows(files: dict[str, str]) -> None:
                 if "uses" not in step:
                     continue
                 action = step["uses"]
-                assert isinstance(action, str) and PIN.fullmatch(action), (filename, action)
+                assert isinstance(action, str) and PIN.fullmatch(action), (
+                    filename,
+                    action,
+                )
                 if action.startswith("actions/checkout@"):
                     checkouts += 1
                     settings = step.get("with", {})
                     assert settings.get("persist-credentials") == "false", filename
-                    assert "ref" not in settings and "repository" not in settings, filename
+                    assert "ref" not in settings and "repository" not in settings, (
+                        filename
+                    )
             assert checkouts == 1, (filename, job_name, "checkout identity")
 
 
 def workflows_on_disk():
-    return {p.name: p.read_text(encoding="utf8")
-            for p in ROOT.iterdir() if p.suffix in {".yml", ".yaml"}}
+    return {
+        p.name: p.read_text(encoding="utf8")
+        for p in ROOT.iterdir()
+        if p.suffix in {".yml", ".yaml"}
+    }
 
 
 def test_workflows_fail_closed():
@@ -82,14 +113,22 @@ def test_workflows_fail_closed():
 
 def test_codeowner_review_scope():
     owners = (BASE / ".github" / "CODEOWNERS").read_text(encoding="utf8")
-    for path in ("/.github/workflows/", "/requirements-dev.txt",
-                 "/scripts/", "/tests/", "/.github/CODEOWNERS"):
+    for path in (
+        "/.github/workflows/",
+        "/requirements-dev.txt",
+        "/scripts/",
+        "/tests/",
+        "/.github/CODEOWNERS",
+    ):
         assert path in owners
     assert "@timlincool" in owners
     # GitHub resolves the *last* matching CODEOWNERS pattern.
     # Refuse both missing global ownership and delegated ownership overrides.
-    rules = [line.split("#", 1)[0].split() for line in owners.splitlines()
-             if line.strip() and not line.lstrip().startswith("#")]
+    rules = [
+        line.split("#", 1)[0].split()
+        for line in owners.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
     assert ["*", "@timlincool"] in rules
     assert all(fields[1:] == ["@timlincool"] for fields in rules)
 
