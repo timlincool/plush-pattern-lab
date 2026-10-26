@@ -5,10 +5,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+from plush_pattern_lab.validation import assess_research_candidate as gate
 import pytest
 
 PATH = Path(__file__).resolve().parents[1] / "scripts" / "assess_research_candidate.py"
-from plush_pattern_lab.validation import assess_research_candidate as gate
 
 
 def baseline():

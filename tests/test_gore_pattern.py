@@ -1,9 +1,9 @@
 from pathlib import Path
 
+from plush_pattern_lab.patterns import plush_gore_pattern as module
 import pytest
 
 SOURCE = Path(__file__).resolve().parents[1] / "scripts" / "plush_gore_pattern.py"
-from plush_pattern_lab.patterns import plush_gore_pattern as module
 
 
 def test_seam_correspondence_and_segment_lengths():

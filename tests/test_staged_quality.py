@@ -31,6 +31,7 @@ def fixture(tmp_path):
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(ROOT / name, dest)
     (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "__init__.py").write_text("")
     git(tmp_path, "add", ".")
     return tmp_path
 

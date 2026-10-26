@@ -5,10 +5,10 @@ import math
 from pathlib import Path
 
 import numpy as np
+from plush_pattern_lab.patterns import capped_gore_pattern as m
 import pytest
 
 SOURCE = Path(__file__).resolve().parents[1] / "scripts" / "capped_gore_pattern.py"
-from plush_pattern_lab.patterns import capped_gore_pattern as m
 
 
 @pytest.mark.parametrize("count", [6, 8, 12, 16, 24])

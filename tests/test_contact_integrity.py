@@ -7,10 +7,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+from plush_pattern_lab.validation import assess_contact_integrity as veto
 import pytest
 
 SOURCE = Path(__file__).resolve().parents[1] / "scripts" / "assess_contact_integrity.py"
-from plush_pattern_lab.validation import assess_contact_integrity as veto
 
 
 def fixture():
