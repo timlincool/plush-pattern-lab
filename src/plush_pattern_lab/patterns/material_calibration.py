@@ -37,51 +37,51 @@ def _validated_material(spec):
 
 
 def _validated_axis(t):
-        if not isinstance(t, dict):
-            raise ValueError("Both directions required")
-        gauge, width = t.get("gauge_length_mm"), t.get("width_mm")
-        if not isinstance(gauge, (int, float)) or not 20 <= gauge <= 500:
-            raise ValueError("Gauge must be 20..500 mm")
-        if not isinstance(width, (int, float)) or not 5 <= width <= 300:
-            raise ValueError("Width must be 5..300 mm")
-        up = phase(t.get("loading", []), gauge, "loading")
-        down = phase(t.get("unloading", []), gauge, "unloading")
-        if abs(up[0, 0]) > 1e-10 or not 0.04 <= up[-1, 0] <= 0.8:
-            raise ValueError("Missing zero or ≥4% loading endpoint")
-        if abs(up[-1, 0] - down[0, 0]) > 1e-6 or abs(down[-1, 0]) > 1e-6:
-            raise ValueError("Loading and unloading endpoints differ")
-        if up[0, 1] > 0.05 or down[-1, 1] > 0.05 or up[-1, 1] <= 0:
-            raise ValueError("End-point forces nonphysical")
+    if not isinstance(t, dict):
+        raise ValueError("Both directions required")
+    gauge, width = t.get("gauge_length_mm"), t.get("width_mm")
+    if not isinstance(gauge, (int, float)) or not 20 <= gauge <= 500:
+        raise ValueError("Gauge must be 20..500 mm")
+    if not isinstance(width, (int, float)) or not 5 <= width <= 300:
+        raise ValueError("Width must be 5..300 mm")
+    up = phase(t.get("loading", []), gauge, "loading")
+    down = phase(t.get("unloading", []), gauge, "unloading")
+    if abs(up[0, 0]) > 1e-10 or not 0.04 <= up[-1, 0] <= 0.8:
+        raise ValueError("Missing zero or ≥4% loading endpoint")
+    if abs(up[-1, 0] - down[0, 0]) > 1e-6 or abs(down[-1, 0]) > 1e-6:
+        raise ValueError("Loading and unloading endpoints differ")
+    if up[0, 1] > 0.05 or down[-1, 1] > 0.05 or up[-1, 1] <= 0:
+        raise ValueError("End-point forces nonphysical")
     return gauge, width, up, down
 
 
 def _axis_properties(gauge, width, up, down):
-        lo, hi = 0.02, min(0.10, up[-1, 0])
-        if hi <= lo:
-            raise ValueError("Insufficient calibration strain range")
-        force_low = np.interp(lo, up[:, 0], up[:, 1])
-        force_high = np.interp(hi, up[:, 0], up[:, 1])
-        stiffness = (force_high - force_low) / (hi - lo) / (width / 1000.0)
-        if stiffness <= 0:
-            raise ValueError("Nonpositive stiffness")
-        grid = np.linspace(0, up[-1, 0], 401)
-        loading = np.interp(grid, up[:, 0], up[:, 1])
-        unloading = np.interp(grid, down[::-1, 0], down[::-1, 1])
-        work_load = float(np.trapezoid(loading, grid) * gauge / 1000.0)
-        work_unload = float(np.trapezoid(unloading, grid) * gauge / 1000.0)
-        hysteresis = (work_load - work_unload) / work_load
-        if not -0.01 <= hysteresis <= 1:
-            raise ValueError("Invalid unload hysteresis")
+    lo, hi = 0.02, min(0.10, up[-1, 0])
+    if hi <= lo:
+        raise ValueError("Insufficient calibration strain range")
+    force_low = np.interp(lo, up[:, 0], up[:, 1])
+    force_high = np.interp(hi, up[:, 0], up[:, 1])
+    stiffness = (force_high - force_low) / (hi - lo) / (width / 1000.0)
+    if stiffness <= 0:
+        raise ValueError("Nonpositive stiffness")
+    grid = np.linspace(0, up[-1, 0], 401)
+    loading = np.interp(grid, up[:, 0], up[:, 1])
+    unloading = np.interp(grid, down[::-1, 0], down[::-1, 1])
+    work_load = float(np.trapezoid(loading, grid) * gauge / 1000.0)
+    work_unload = float(np.trapezoid(unloading, grid) * gauge / 1000.0)
+    hysteresis = (work_load - work_unload) / work_load
+    if not -0.01 <= hysteresis <= 1:
+        raise ValueError("Invalid unload hysteresis")
     return {
-            "gauge_mm": gauge,
-            "width_mm": width,
-            "max_engineering_strain": float(up[-1, 0]),
-            "secant_window": [lo, hi],
-            "effective_tensile_stiffness_N_per_m": float(stiffness),
-            "loading_work_J": work_load,
-            "unloading_work_J": work_unload,
-            "hysteresis_ratio": float(hysteresis),
-        }
+        "gauge_mm": gauge,
+        "width_mm": width,
+        "max_engineering_strain": float(up[-1, 0]),
+        "secant_window": [lo, hi],
+        "effective_tensile_stiffness_N_per_m": float(stiffness),
+        "loading_work_J": work_load,
+        "unloading_work_J": work_unload,
+        "hysteresis_ratio": float(hysteresis),
+    }
 
 
 def calculate(spec):
