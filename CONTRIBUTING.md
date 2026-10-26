@@ -13,9 +13,16 @@ PR 建议每次只解决一种可证伪的问题：缝线长度、展开畸变�
 ## 代码质量（合并前由维护者在可信环境执行）
 
 ```bash
-python scripts/check_quality_limits.py
-ruff check scripts tests --ignore-noqa
+python -m pip install --only-binary=:all: -r requirements-dev.txt
+python -m pip install --no-deps --no-build-isolation -e .
+python scripts/check_quality.py
 python -m pytest -q
 ```
 
-圈复杂度 **C901 ≤20**、Python 文件 **≤2000 行**是硬门槛，不接受 `noqa` 跳过检测；禁止为通过检查直接提高阈值。此项目不自动运行陌生 PR，必须先看完整 Diff，再在无私人密钥的隔离环境中做验证；主分支绿灯不是陌生 PR 的自动审查。完整说明见 [QUALITY_GATES.md](docs/QUALITY_GATES.md)。
+圈复杂度 **C901 ≤10**、函数分支 **≤12**、函数语句 **≤50**、Python 文件 **≤2000 行**是硬门槛，不接受 `noqa` 跳过检测；禁止为通过检查直接提高阈值。此项目不自动运行陌生 PR，必须先看完整 Diff，再在无私人密钥的隔离环境中做验证；主分支绿灯不是陌生 PR 的自动审查。完整说明见 [QUALITY_GATES.md](docs/QUALITY_GATES.md)。
+
+## 分层与本机暂存区校验
+
+核心算法进入 `src/plush_pattern_lab/patterns` 或 `validation`，不允许依赖 `bpy`，Blender 适配只放在 `blender`。禁止包内循环依赖或运行时模块反向依赖 CLI。
+
+可信本机克隆可以**自愿**执行 `python scripts/install_quality_hook.py`，后续普通 Git 提交检查完整暂存区。安装器不会覆盖已有钩子或用户全局配置，也不对 GitHub API 写入生效。独立运行 `python scripts/check_quality.py --staged` 可以检查 Git 索引的真实原始内容（非工作区）。外部 PR 仍先看 Diff，不允许自动执行不可信代码。

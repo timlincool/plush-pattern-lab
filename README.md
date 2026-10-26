@@ -39,9 +39,9 @@
 Python 3.11+：
 
 ```bash
-python -m pip install -r requirements-dev.txt
-python scripts/check_quality_limits.py
-ruff check scripts tests --ignore-noqa
+python -m pip install --only-binary=:all: -r requirements-dev.txt
+python -m pip install --no-deps --no-build-isolation -e .
+python scripts/check_quality.py
 python -m pytest -q
 ```
 
@@ -104,4 +104,8 @@ blender --disable-autoexec -b input.blend --python scripts/audit_physical_shell.
 
 ## 可维护性门禁
 
-所有受信任主分支 CI 执行 [静态质量门禁](docs/QUALITY_GATES.md)：Ruff 语法/未定义变量/危险动态执行检查、**McCabe 圈复杂度 ≤20**，以及 **Python 单文件 ≤2000 行**。这些限制会导致主分支 CI 失败，但由于不自动执行外部 PR，**不能将其误称为已强制阻止不可信 PR 合并**；预合并必须经人工检查及隔离验证。
+所有受信任主分支 CI 执行 [统一质量门禁](docs/QUALITY_GATES.md)：Ruff 格式、静态规则、**圈复杂度 ≤10、分支 ≤12、语句 ≤50、单文件 ≤2000 行**以及包内无循环依赖。主要实现已迁入可安装的 `src/plush_pattern_lab/`，`scripts/` 保留原命令行入口。这些限制会导致主分支 CI 失败，但由于不自动执行外部 PR，**不能将其误称为已强制阻止不可信 PR 合并**；预合并必须经人工检查及隔离验证。
+
+## 项目代码结构
+
+源代码按依赖方向分为 `patterns/`（纸样与材料）、`validation/`（纯数值验证）以及 `blender/`（Blender 适配/求解）。旧的 `python scripts/*.py` 和 Blender `--python scripts/*.py` 保留兼容；安装后也可用 `plush-capped-gore` 等命令。参见 [架构说明](docs/ARCHITECTURE.md) 与 [质量门禁](docs/QUALITY_GATES.md)。无需为了设计模式而增加抽象，重构不改变研发结果的制造边界。
