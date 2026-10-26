@@ -45,7 +45,9 @@ def _witnesses(intersection: dict, other: int, seam: int, faces: int) -> None:
     if counts.get("seam") != seam:
         raise ValueError("Localized seam collision counts disagree")
     witness_map = localization.get("witnesses")
-    if not isinstance(witness_map, dict) or not isinstance(witness_map.get("other"), list):
+    if not isinstance(witness_map, dict) or not isinstance(
+        witness_map.get("other"), list
+    ):
         raise ValueError("No inspectable nonseam witnesses")
     samples = witness_map["other"]
     if len(samples) != min(other, 64):
@@ -58,11 +60,16 @@ def _witnesses(intersection: dict, other: int, seam: int, faces: int) -> None:
             raise ValueError("Invalid saved-mesh triangle index")
 
 
-def verify_snapshot(trial: dict, intersection: dict, *, blend_sha: str, trial_sha: str) -> dict:
+def verify_snapshot(
+    trial: dict, intersection: dict, *, blend_sha: str, trial_sha: str
+) -> dict:
     """Never claim an inspection image is a physical or certified toy."""
     if trial.get("status") != "ACTUAL_CAPPED_CLOTH_SEWING_RESEARCH_ONLY":
         raise ValueError("Expected real capped Blender trial evidence")
-    if intersection.get("status") != "FINITE_ZERO_THICKNESS_TRIANGLE_INTERSECTION_SCREEN":
+    if (
+        intersection.get("status")
+        != "FINITE_ZERO_THICKNESS_TRIANGLE_INTERSECTION_SCREEN"
+    ):
         raise ValueError("Expected saved-mesh triangle audit evidence")
     if intersection.get("case_sha256") != blend_sha:
         raise ValueError("Saved .blend does not match audited model SHA-256")

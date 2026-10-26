@@ -20,8 +20,10 @@ from plush_pattern_lab.validation.preview_evidence import verify_snapshot
 SNAPSHOT = "CAP_FINAL_SHAPE_NOT_MANUFACTURING"
 TRIAL_SOURCE = "EXPERIMENT_EXPLICIT_CAP_SEWING_NOT_PRODUCTION"
 PALETTE = (
-    (0.75, 0.86, 0.91), (0.70, 0.80, 0.87),
-    (0.79, 0.86, 0.84), (0.73, 0.78, 0.86),
+    (0.75, 0.86, 0.91),
+    (0.70, 0.80, 0.87),
+    (0.79, 0.86, 0.84),
+    (0.73, 0.78, 0.86),
 )
 VIEWPOINTS = {
     "three_quarter": ((0.31, -0.35, 0.22), (0.0, 0.0, 0.0), 0.195),
@@ -78,7 +80,9 @@ def _apply_colors(snapshot, trial: dict, intersection: dict) -> None:
 def _camera(scene, position: tuple, target: tuple, scale: float) -> None:
     camera = bpy.data.objects.get("SYNTHETIC_INSPECTION_CAMERA")
     if camera is None:
-        camera = bpy.data.objects.new("SYNTHETIC_INSPECTION_CAMERA", bpy.data.cameras.new("inspection"))
+        camera = bpy.data.objects.new(
+            "SYNTHETIC_INSPECTION_CAMERA", bpy.data.cameras.new("inspection")
+        )
         scene.collection.objects.link(camera)
     camera.location = position
     vector = Vector(target) - camera.location
@@ -114,7 +118,9 @@ def _lighting(scene) -> None:
     scene.collection.objects.link(obj)
 
 
-def _render_views(scene, snapshot, output: Path, trial: dict, intersection: dict) -> list[str]:
+def _render_views(
+    scene, snapshot, output: Path, trial: dict, intersection: dict
+) -> list[str]:
     all_images = []
     diagnostic_faces: set[int] = set()
     mesh = snapshot.data
@@ -144,11 +150,12 @@ def main() -> None:
     for key in ("input", "simulation-report", "triangle-report", "output-dir"):
         parser.add_argument("--" + key, type=Path, required=True)
     args = parser.parse_args(
-        sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+        sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     )
-    if any(not path.is_file() for path in (
-        args.input, args.simulation_report, args.triangle_report
-    )):
+    if any(
+        not path.is_file()
+        for path in (args.input, args.simulation_report, args.triangle_report)
+    ):
         raise RuntimeError("Missing a required trusted synthetic trial file")
     if args.output_dir.exists() or args.output_dir.is_symlink():
         raise RuntimeError("Refusing to overwrite a prior diagnostic render")
@@ -156,8 +163,10 @@ def main() -> None:
     trial = json.loads(trial_bytes)
     intersection = json.loads(args.triangle_report.read_text(encoding="utf-8"))
     evidence = verify_snapshot(
-        trial, intersection, blend_sha=_hash(args.input),
-        trial_sha=hashlib.sha256(trial_bytes).hexdigest()
+        trial,
+        intersection,
+        blend_sha=_hash(args.input),
+        trial_sha=hashlib.sha256(trial_bytes).hexdigest(),
     )
     bpy.ops.wm.open_mainfile(filepath=str(args.input.resolve()), load_ui=False)
     snapshot = bpy.data.objects.get(SNAPSHOT)
@@ -171,17 +180,25 @@ def main() -> None:
     _apply_colors(snapshot, trial, intersection)
     _lighting(bpy.context.scene)
     args.output_dir.mkdir(parents=True, exist_ok=False)
-    views = _render_views(bpy.context.scene, snapshot, args.output_dir, trial, intersection)
+    views = _render_views(
+        bpy.context.scene, snapshot, args.output_dir, trial, intersection
+    )
     evidence["render_views"] = views
     evidence["render_view_centers_are_aligned_to_synthetic_origin"] = True
     (args.output_dir / "manifest.json").write_text(
         json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print("SAVED_SYNTHETIC_PREVIEW", json.dumps({
-        "status": evidence["status"], "views": views,
-        "nonseam_intersections": evidence["finite_nonseam_intersections"],
-        "annotated_faces": snapshot["SYNTHETIC_COLLISION_DIAGNOSTIC"],
-    }))
+    print(
+        "SAVED_SYNTHETIC_PREVIEW",
+        json.dumps(
+            {
+                "status": evidence["status"],
+                "views": views,
+                "nonseam_intersections": evidence["finite_nonseam_intersections"],
+                "annotated_faces": snapshot["SYNTHETIC_COLLISION_DIAGNOSTIC"],
+            }
+        ),
+    )
 
 
 if __name__ == "__main__":
