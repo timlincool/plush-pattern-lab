@@ -1,7 +1,5 @@
 """Synthetic visual inspection must preserve real Blender evidence and vetoes."""
 
-import copy
-
 import pytest
 
 from plush_pattern_lab.validation.preview_evidence import verify_snapshot
