@@ -29,21 +29,29 @@ def test_migration_provenance_is_precise_and_does_not_claim_binary_copy():
     assert not origin["actual_blend_included"]
     assert not origin["original_png_included"]
     assert not origin["release_archives_migrated"]
-    assert all(re.fullmatch(r"[0-9a-f]{40}", item["source_blob_sha"]) for item in origin["files"])
+    assert all(
+        re.fullmatch(r"[0-9a-f]{40}", item["source_blob_sha"])
+        for item in origin["files"]
+    )
 
 
 def test_ten_drops_and_embroidery_contract_not_machine_ready():
     drops = load("drop_tab_registration23.json")
     assert len(drops["drops"]) == 10
     assert Counter(item["color"] for item in drops["drops"]) == {
-        "blue": 5, "slate": 3, "aqua": 2
+        "blue": 5,
+        "slate": 3,
+        "aqua": 2,
     }
     assert [item["id"] for item in drops["drops"]] == list(range(10))
     assert all(item["tab_cut_width_mm"] == 8 for item in drops["drops"])
     embroidery = load("face_embroidery_registration_v14.json")
     assert embroidery["units"] == "mm"
     assert len(embroidery["eyes"]) == 2
-    assert "not" in embroidery["status"].lower() or "require" in embroidery["status"].lower()
+    assert (
+        "not" in embroidery["status"].lower()
+        or "require" in embroidery["status"].lower()
+    )
 
 
 def test_historical_rebuild_report_not_current_production_certificate():
