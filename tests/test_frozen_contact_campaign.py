@@ -37,9 +37,10 @@ def test_default_witnesses_are_concentrated_at_cap_junction():
     data = campaign()["baseline_self_collision"]
     disabled = next(row for row in data if row["mode"] == "disabled")
     enabled = next(row for row in data if row["mode"] == "enabled")
-    assert (disabled["finite_nonadjacent_other"], enabled["finite_nonadjacent_other"]) == (
-        4, 7
-    )
+    assert (
+        disabled["finite_nonadjacent_other"],
+        enabled["finite_nonadjacent_other"],
+    ) == (4, 7)
     assert all(
         witness["zones"] == ["lower_join", "lower_join"]
         for witness in disabled["nonseam_position_witnesses"]
@@ -55,10 +56,20 @@ def test_default_witnesses_are_concentrated_at_cap_junction():
 def test_default_8_degree_3mm_radial_remains_the_frozen_baseline():
     evidence = campaign()
     angle = next(i for i in evidence["pole_cut_ab"] if i["pole_cut_degrees"] == 8)
-    offset = next(i for i in evidence["radial_offset_ab"] if i["preposition_offset_mm"] == 3)
-    original = next(i for i in evidence["normal_vs_radial_ab"] if
-                    i["offset_mm"] == 3 and i["direction"] == "radial")
-    assert angle["seam_related"] == offset["seam_related"] == original["seam_related"] == 900
+    offset = next(
+        i for i in evidence["radial_offset_ab"] if i["preposition_offset_mm"] == 3
+    )
+    original = next(
+        i
+        for i in evidence["normal_vs_radial_ab"]
+        if i["offset_mm"] == 3 and i["direction"] == "radial"
+    )
+    assert (
+        angle["seam_related"]
+        == offset["seam_related"]
+        == original["seam_related"]
+        == 900
+    )
     assert angle["nonseam"] == offset["nonseam"] == original["nonseam"] == 4
     assert angle["target_rms_mm"] == offset["target_rms_mm"] == original["rms_mm"]
 
