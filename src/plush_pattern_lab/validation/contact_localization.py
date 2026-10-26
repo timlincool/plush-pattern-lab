@@ -51,7 +51,7 @@ def polygon_identities(
 def _category(a: tuple[int, ...], b: tuple[int, ...], neighbors: dict) -> str:
     if set(a) & set(b):
         return "shared"
-    return "seam" if any(v in neighbors[u] for u in a for v in b) else "other"
+    return "seam" if any(v in neighbors.get(u, ()) for u in a for v in b) else "other"
 
 
 def _center_mm(vertices: list, triangle: tuple[int, ...]) -> list[float]:
