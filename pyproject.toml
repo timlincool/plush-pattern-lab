@@ -16,6 +16,7 @@ dev = ["pytest>=8,<10", "PyYAML>=6.0.2,<7", "ruff==0.17.2"]
 plush-gore = "plush_pattern_lab.patterns.plush_gore_pattern:main"
 plush-capped-gore = "plush_pattern_lab.patterns.capped_gore_pattern:main"
 plush-material-calibration = "plush_pattern_lab.patterns.material_calibration:main"
+plush-prototype-kit = "plush_pattern_lab.patterns.fabrication_kit:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
