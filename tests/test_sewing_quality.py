@@ -1,15 +1,11 @@
 """Negative controls: seam closure must not masquerade as a correct sewn shape."""
 
-import importlib.util
-from pathlib import Path
+
 
 import numpy as np
 import pytest
 
-MODULE = Path(__file__).resolve().parents[1] / "scripts" / "sewing_quality.py"
-spec = importlib.util.spec_from_file_location("quality", MODULE)
-quality = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(quality)
+from plush_pattern_lab.validation import sewing_quality as quality
 
 
 def joined_square():

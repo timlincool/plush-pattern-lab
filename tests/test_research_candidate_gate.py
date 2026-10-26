@@ -1,6 +1,5 @@
 """Hard rejection tests: no 'green Blender job => accepted plush' shortcut."""
 
-import importlib.util
 import json
 import subprocess
 import sys
@@ -9,9 +8,7 @@ from pathlib import Path
 import pytest
 
 PATH = Path(__file__).resolve().parents[1] / "scripts" / "assess_research_candidate.py"
-spec = importlib.util.spec_from_file_location("candidate", PATH)
-gate = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(gate)
+from plush_pattern_lab.validation import assess_research_candidate as gate
 
 
 def baseline():

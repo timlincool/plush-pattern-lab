@@ -1,11 +1,8 @@
-import importlib.util
-from pathlib import Path
+
 
 import pytest
 
-P = Path(__file__).resolve().parents[1] / "scripts" / "gore_tradeoff.py"
-m = importlib.util.module_from_spec(importlib.util.spec_from_file_location("trade", P))
-m.__loader__.exec_module(m)
+from plush_pattern_lab.patterns import gore_tradeoff as m
 
 
 def test_strain_vs_seam_and_cut_tradeoff():
