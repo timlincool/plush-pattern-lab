@@ -161,6 +161,60 @@ jobs:
           )
           print("POLE_CUT_AB", json.dumps([{k: v for k, v in item.items() if k != "nonseam_witnesses"} for item in results]))
           PY
+      - name: Controlled 1mm and 5mm reference-offset trials (same 8-degree cap)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for MM in 1 5; do
+            PREFIX="$RUNNER_TEMP/collision/offset$MM"
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+              --python scripts/sewing_capped_poc_blender.py -- \
+              --spec "$RUNNER_TEMP/collision/pattern.json" \
+              --output "$PREFIX.blend" --report "$PREFIX.json" \
+              --frames 48 --preposition-offset-mm "$MM"
+            python scripts/assess_research_candidate.py \
+              --report "$PREFIX.json" --output "$PREFIX.research_gate.json"
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+              --python scripts/audit_self_intersections_blender.py -- \
+              --input "$PREFIX.blend" --case-report "$PREFIX.json" \
+              --output "$PREFIX.triangles.json"
+            python scripts/assess_contact_integrity.py \
+              --simulation-report "$PREFIX.json" \
+              --triangle-report "$PREFIX.triangles.json" \
+              --output "$PREFIX.contact_gate.json"
+          done
+      - name: Compare reference-offset research without relaxing contact veto
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          folder = Path(os.environ["RUNNER_TEMP"]) / "collision"
+          results = []
+          for label, offset in (("offset1", 1), ("disabled", 3), ("offset5", 5)):
+              trial = json.loads((folder / (label + ".json")).read_text())
+              contact = json.loads((folder / (label + ".contact_gate.json")).read_text())
+              gate = json.loads((folder / (label + ".research_gate.json")).read_text())
+              localization = json.loads((folder / (label + ".triangles.json")).read_text())["localization"]
+              results.append({
+                  "preposition_offset_mm": offset,
+                  "seam_gap_mean_mm": trial["final"]["mean_gap_mm"],
+                  "target_rms_mm": trial["final_geometry_quality"]["target_shape"]["rigid_aligned_correspondence_rms_mm"],
+                  "principal_strain_p95": trial["final_geometry_quality"]["strain"]["p95_abs_principal_strain"],
+                  "geometry_gate": gate["status"],
+                  "contact_gate": contact["status"],
+                  "nonseam": contact["other_nonadjacent_intersections"],
+                  "seam_related": contact["seam_related_intersections"],
+                  "nonseam_zone_counts": [z for z in localization["by_zone_pair"] if z["category"] == "other"],
+              })
+          (folder / "offset_ab.json").write_text(json.dumps({
+              "status": "SYNTHETIC_RESEARCH_NOT_APPROVED", "cases": results
+          }, indent=2))
+          print("OFFSET_AB", json.dumps(results))
+          PY
       - name: Write directly comparable parameter/quality report
         shell: bash
         run: |
