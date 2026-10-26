@@ -51,9 +51,7 @@ def _validated_inputs(vertices, faces, sewing_pairs, max_vertices):
     return xyz, ff, pairs
 
 
-def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
-    xyz, ff, pairs = _validated_inputs(vertices, faces, sewing_pairs, max_vertices)
-    n = len(xyz)
+def _merge_seam_vertices(n, pairs):
     parent = np.arange(n, dtype=np.int64)
     size = np.ones(n, dtype=np.int64)
 
@@ -72,8 +70,10 @@ def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
             parent[b] = a
             size[a] += size[b]
     remapped = np.asarray([root(i) for i in range(n)], dtype=np.int64)
-    faces_after = remapped[ff]
+    return remapped
 
+
+def _edge_counts(faces_after):
     degenerate = int(sum(len(set(f.tolist())) != len(f) for f in faces_after))
     edge_occurrence = Counter()
     directed = defaultdict(Counter)
@@ -96,8 +96,10 @@ def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
         for (a, b), count in edge_occurrence.items()
         for dir_counts in (directed[(a, b)],)
     )
-    # Include isolated vertices in connectivity, since they make a mesh
-    # unsuitable for a watertight shell even if all its used faces are fine.
+    return degenerate, edge_occurrence, graph, boundary, overfull, orientation_bad
+
+
+def _connectivity(faces_after, graph):
     active = set(int(x) for x in np.unique(faces_after))
     unseen = active.copy()
     components = []
@@ -114,14 +116,10 @@ def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
                     unseen.remove(other)
                     stack.append(other)
         components.append(count)
-    # Conservatively report all collapsed equivalence classes as coordinates
-    # of representative root vertices. This is a topological construction:
-    # physical seam endpoints may still be separated by non-zero gaps.
-    roots = set(int(x) for x in np.unique(remapped))
-    unused_roots = roots - active
+    return active, components
 
-    # Volume on remapped reference coordinates is diagnostic only. Mean
-    # endpoint coordinates reduce spurious volume dependence on union order.
+
+def _volume_proxy(n, remapped, xyz, roots, faces_after):
     averaged = np.zeros((n, 3), dtype=np.float64)
     counts = np.zeros(n, dtype=np.int64)
     np.add.at(averaged, remapped, xyz)
@@ -136,6 +134,28 @@ def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
             b = averaged[f[i]]
             c = averaged[f[i + 1]]
             signed_volume += float(np.dot(a, np.cross(b, c)) / 6.0)
+    return signed_volume
+
+
+def inspect_welded_shell(vertices, faces, sewing_pairs, *, max_vertices=12000):
+    xyz, ff, pairs = _validated_inputs(vertices, faces, sewing_pairs, max_vertices)
+    n = len(xyz)
+    remapped = _merge_seam_vertices(n, pairs)
+    faces_after = remapped[ff]
+
+    degenerate, edge_occurrence, graph, boundary, overfull, orientation_bad = _edge_counts(faces_after)
+    # Include isolated vertices in connectivity, since they make a mesh
+    # unsuitable for a watertight shell even if all its used faces are fine.
+    active, components = _connectivity(faces_after, graph)
+    # Conservatively report all collapsed equivalence classes as coordinates
+    # of representative root vertices. This is a topological construction:
+    # physical seam endpoints may still be separated by non-zero gaps.
+    roots = set(int(x) for x in np.unique(remapped))
+    unused_roots = roots - active
+
+    # Volume on remapped reference coordinates is diagnostic only. Mean
+    # endpoint coordinates reduce spurious volume dependence on union order.
+    signed_volume = _volume_proxy(n, remapped, xyz, roots, faces_after)
     max_distance_m = (
         float(np.max(np.linalg.norm(xyz[pairs[:, 0]] - xyz[pairs[:, 1]], axis=1)))
         if len(pairs)

@@ -12,6 +12,17 @@ MAX_PYTHON_LINES = 2000
 SOURCE_DIRS = ("scripts", "tests")
 
 
+def _inspect_path(path: Path, root: Path, limit: int) -> list[str]:
+    relative = path.relative_to(root)
+    if path.is_symlink():
+        return [f"{relative}: symlinked Python files are prohibited"]
+    with path.open("r", encoding="utf-8") as stream:
+        count = sum(1 for _ in stream)
+    if count > limit:
+        return [f"{relative}: {count} lines exceeds hard limit {limit}; split the module"]
+    return []
+
+
 def check_limits(root: Path, max_lines: int = MAX_PYTHON_LINES) -> list[str]:
     """Report all oversized Python files, without importing contributor code."""
     if max_lines < 1:
@@ -23,31 +34,12 @@ def check_limits(root: Path, max_lines: int = MAX_PYTHON_LINES) -> list[str]:
             violations.append(f"missing required source directory: {folder}/")
             continue
         for path in sorted(source.rglob("*.py")):
-            relative = path.relative_to(root)
-            if path.is_symlink():
-                violations.append(f"{relative}: symlinked Python files are prohibited")
-                continue
-            with path.open("r", encoding="utf-8") as handle:
-                line_count = sum(1 for _ in handle)
-            if line_count > max_lines:
-                violations.append(
-                    f"{relative}: {line_count} lines exceeds hard limit {max_lines}; split the module"
-                )
-    # Synthetic fixtures omit src/; the architecture gate requires it for the repository.
+            violations.extend(_inspect_path(path, root, max_lines))
+    # Synthetic unit fixtures do not contain src/; package presence is checked separately.
     source = root / "src"
     if source.is_dir():
         for path in sorted(source.rglob("*.py")):
-            if path.is_symlink():
-                violations.append(
-                    f"{path.relative_to(root)}: symlinked Python files are prohibited"
-                )
-                continue
-            with path.open("r", encoding="utf-8") as handle:
-                line_count = sum(1 for _ in handle)
-            if line_count > max_lines:
-                violations.append(
-                    f"{path.relative_to(root)}: {line_count} lines exceeds hard limit {max_lines}"
-                )
+            violations.extend(_inspect_path(path, root, max_lines))
     return violations
 
 
