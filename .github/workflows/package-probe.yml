@@ -37,6 +37,7 @@ jobs:
           python -m compileall -q src scripts tests
           python -m pytest -q
       - name: Export deterministic formatting patch for review (no write token)
+        if: always()
         shell: bash
         run: |
           python -m ruff check . --fix || true
