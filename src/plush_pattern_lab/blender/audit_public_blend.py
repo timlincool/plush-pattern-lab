@@ -37,7 +37,7 @@ def file_hash(path):
     return h.hexdigest()
 
 
-def _scan_properties(inspected, findings, flag):
+def _scan_objects(inspected, findings, flag):
     for obj in bpy.data.objects:
         inspected["objects"] += 1
         for k, v in obj.items():
@@ -61,6 +61,9 @@ def _scan_properties(inspected, findings, flag):
                     obj.name + ":" + str(driver.data_path),
                     driver.driver.expression,
                 )
+
+
+def _scan_scenes(inspected, findings, flag):
     for scene in bpy.data.scenes:
         for k, v in scene.items():
             inspected["custom_properties"] += 1
@@ -74,11 +77,61 @@ def _scan_properties(inspected, findings, flag):
                 )
             if isinstance(v, (str, int, float)):
                 flag("scene_property", k, v)
+
+
+def _scan_worlds(inspected, flag):
     for world in bpy.data.worlds:
         for k, v in world.items():
             inspected["custom_properties"] += 1
             if isinstance(v, (str, int, float)):
                 flag("world_property", k, v)
+
+
+def _scan_properties(inspected, findings, flag):
+    _scan_objects(inspected, findings, flag)
+    _scan_scenes(inspected, findings, flag)
+    _scan_worlds(inspected, flag)
+
+
+def _make_flag(findings):
+def flag(category, loc, value):
+    s = str(value)
+    if FLAGGED.search(s):
+        findings.append(
+            {
+                "level": "block",
+                "category": category + ":possible_secret",
+                "location": loc,
+            }
+        )
+    if PATH_PRIVATE.search(s):
+        findings.append(
+            {
+                "level": "review",
+                "category": category + ":private_path",
+                "location": loc,
+            }
+        )
+
+    return flag
+
+
+def _scan_asset_refs(inspected, flag):
+    for text in bpy.data.texts:
+        inspected["texts"] += 1
+        raw = text.as_string()
+        if raw.strip():
+            inspected["scripts"] += 1
+        flag("embedded_text", text.name, raw)
+    for image in bpy.data.images:
+        inspected["images"] += 1
+        if image.packed_file:
+            inspected["packed_files"] += 1
+        flag("image_filepath", image.name, image.filepath)
+        flag("image_name", image.name, image.name)
+    for library in bpy.data.libraries:
+        inspected["libraries"] += 1
+        flag("library_path", library.name, library.filepath)
 
 
 def main():
@@ -105,40 +158,8 @@ def main():
         "packed_files": 0,
     }
 
-    def flag(category, loc, value):
-        s = str(value)
-        if FLAGGED.search(s):
-            findings.append(
-                {
-                    "level": "block",
-                    "category": category + ":possible_secret",
-                    "location": loc,
-                }
-            )
-        if PATH_PRIVATE.search(s):
-            findings.append(
-                {
-                    "level": "review",
-                    "category": category + ":private_path",
-                    "location": loc,
-                }
-            )
-
-    for text in bpy.data.texts:
-        inspected["texts"] += 1
-        raw = text.as_string()
-        if raw.strip():
-            inspected["scripts"] += 1
-        flag("embedded_text", text.name, raw)
-    for image in bpy.data.images:
-        inspected["images"] += 1
-        if image.packed_file:
-            inspected["packed_files"] += 1
-        flag("image_filepath", image.name, image.filepath)
-        flag("image_name", image.name, image.name)
-    for library in bpy.data.libraries:
-        inspected["libraries"] += 1
-        flag("library_path", library.name, library.filepath)
+    flag = _make_flag(findings)
+    _scan_asset_refs(inspected, flag)
     _scan_properties(inspected, findings, flag)
     # 保存和报告只包含统计信息 + 位置，避免把可疑 token 再复制到 CI 日志。
     level = Counter(x["level"] for x in findings)

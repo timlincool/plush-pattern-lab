@@ -33,7 +33,7 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def audit_geometry(vertices, triangles, seam_edges=()):
+def _validated_mesh(vertices, triangles):
     coords = [tuple(map(float, p)) for p in vertices]
     faces = [tuple(map(int, f)) for f in triangles]
     if not (4 <= len(coords) <= 30000 and 2 <= len(faces) <= MAX_TRIANGLES):
@@ -45,6 +45,10 @@ def audit_geometry(vertices, triangles, seam_edges=()):
         for t in faces
     ):
         raise ValueError("Degenerate indexed triangle")
+    return coords, faces
+
+
+def _seam_adjacency(seam_edges, coords):
     neighbors = defaultdict(set)
     seam_list = [tuple(map(int, edge)) for edge in seam_edges]
     for u, v in seam_list:
@@ -52,15 +56,10 @@ def audit_geometry(vertices, triangles, seam_edges=()):
             raise ValueError("Invalid sewing pair")
         neighbors[u].add(v)
         neighbors[v].add(u)
-    tree = BVHTree.FromPolygons(coords, faces, all_triangles=True, epsilon=0.0)
-    raw = tree.overlap(tree)
-    if len(raw) > MAX_PAIRS * 2:
-        raise RuntimeError(
-            "Raw intersection witness budget exceeded: do not silently truncate"
-        )
-    candidates = {tuple(sorted((i, j))) for i, j in raw if i != j}
-    if len(candidates) > MAX_PAIRS:
-        raise RuntimeError("Intersection witness budget exceeded")
+    return neighbors, seam_list
+
+
+def _classify_pairs(candidates, faces, neighbors):
     shared = seam_related = nonseam = 0
     seam_witnesses, nonseam_witnesses = [], []
     for i, j in sorted(candidates):
@@ -77,6 +76,22 @@ def audit_geometry(vertices, triangles, seam_edges=()):
             nonseam += 1
             if len(nonseam_witnesses) < 20:
                 nonseam_witnesses.append([i, j])
+    return shared, seam_related, nonseam, seam_witnesses, nonseam_witnesses
+
+
+def audit_geometry(vertices, triangles, seam_edges=()):
+    coords, faces = _validated_mesh(vertices, triangles)
+    neighbors, seam_list = _seam_adjacency(seam_edges, coords)
+    tree = BVHTree.FromPolygons(coords, faces, all_triangles=True, epsilon=0.0)
+    raw = tree.overlap(tree)
+    if len(raw) > MAX_PAIRS * 2:
+        raise RuntimeError(
+            "Raw intersection witness budget exceeded: do not silently truncate"
+        )
+    candidates = {tuple(sorted((i, j))) for i, j in raw if i != j}
+    if len(candidates) > MAX_PAIRS:
+        raise RuntimeError("Intersection witness budget exceeded")
+    shared, seam_related, nonseam, seam_witnesses, nonseam_witnesses = _classify_pairs(candidates, faces, neighbors)
     return {
         "status": "FINITE_ZERO_THICKNESS_TRIANGLE_INTERSECTION_SCREEN",
         "vertex_count": len(coords),
