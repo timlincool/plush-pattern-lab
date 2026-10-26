@@ -215,6 +215,64 @@ jobs:
           }, indent=2))
           print("OFFSET_AB", json.dumps(results))
           PY
+      - name: Controlled outward-surface-normal versus horizontal radial placement
+        shell: bash
+        run: |
+          set -euo pipefail
+          for MM in 1 3; do
+            PREFIX="$RUNNER_TEMP/collision/normal$MM"
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+              --python scripts/sewing_capped_poc_blender.py -- \
+              --spec "$RUNNER_TEMP/collision/pattern.json" \
+              --output "$PREFIX.blend" --report "$PREFIX.json" \
+              --frames 48 --preposition-offset-mm "$MM" \
+              --preposition-direction normal
+            python scripts/assess_research_candidate.py \
+              --report "$PREFIX.json" --output "$PREFIX.research_gate.json"
+            "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+              --python scripts/audit_self_intersections_blender.py -- \
+              --input "$PREFIX.blend" --case-report "$PREFIX.json" \
+              --output "$PREFIX.triangles.json"
+            python scripts/assess_contact_integrity.py \
+              --simulation-report "$PREFIX.json" \
+              --triangle-report "$PREFIX.triangles.json" \
+              --output "$PREFIX.contact_gate.json"
+          done
+      - name: Compare cap-junction contact under radial and ellipsoid-normal placement
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          folder = Path(os.environ["RUNNER_TEMP"]) / "collision"
+          rows = []
+          for label, offset, direction in (
+              ("offset1", 1, "radial"), ("disabled", 3, "radial"),
+              ("normal1", 1, "normal"), ("normal3", 3, "normal"),
+          ):
+              trial = json.loads((folder / (label + ".json")).read_text())
+              contact = json.loads((folder / (label + ".contact_gate.json")).read_text())
+              gate = json.loads((folder / (label + ".research_gate.json")).read_text())
+              tri = json.loads((folder / (label + ".triangles.json")).read_text())
+              assert trial["preposition_direction"] == direction
+              rows.append({
+                  "offset_mm": offset, "direction": direction,
+                  "seam_gap_mean_mm": trial["final"]["mean_gap_mm"],
+                  "rms_mm": trial["final_geometry_quality"]["target_shape"]["rigid_aligned_correspondence_rms_mm"],
+                  "strain_p95": trial["final_geometry_quality"]["strain"]["p95_abs_principal_strain"],
+                  "nonseam": contact["other_nonadjacent_intersections"],
+                  "seam_related": contact["seam_related_intersections"],
+                  "geometry_gate": gate["status"], "contact_gate": contact["status"],
+                  "nonseam_zone_counts": [x for x in tri["localization"]["by_zone_pair"] if x["category"] == "other"],
+              })
+          (folder / "normal_vs_radial.json").write_text(json.dumps(
+              {"status": "SYNTHETIC_RESEARCH_NOT_APPROVED", "cases": rows}, indent=2
+          ))
+          print("NORMAL_VS_RADIAL", json.dumps(rows))
+          PY
       - name: Write directly comparable parameter/quality report
         shell: bash
         run: |
