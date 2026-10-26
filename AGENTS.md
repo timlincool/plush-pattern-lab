@@ -15,6 +15,7 @@
 
 ## 代码与验证契约
 
+- 从数字研究转向实体打样时，优先交付能实尺打印的逐片纸样、缝线/对位/返口说明、试布测量记录；当前 [试缝套件](docs/PHYSICAL_PROTOTYPE.md) 只覆盖合成椭球而非真实角色。
 - 新逻辑优先放 `src/plush_pattern_lab/patterns`（纯纸样/材料）、`validation`（纯数值/验收）、`blender`（需 bpy 的求解和审计）；`scripts` 主要保留兼容 CLI/工具，不复制核心逻辑。
 - 保持现有 CLI、输入输出 JSON 字段/单位、研究门限与模拟参数；若改变，须明确列出契约差异、负例和 A/B 证据。不要为了设计模式引入无价值抽象。
 - 可信源码的合并前检查：`python scripts/check_quality.py` 和 `python -m pytest -q`；Blender 变更还需要隔离 Runner 的实际 4.3.2 回归。质量限制详见 `docs/QUALITY_GATES.md`。

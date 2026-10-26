@@ -120,3 +120,14 @@ blender --disable-autoexec -b input.blend --python scripts/audit_physical_shell.
 - [pr-security-review](.agents/skills/pr-security-review/SKILL.md)：外部 PR、工作流、依赖、Blender 资产与所有者合并边界。
 
 Skills 是开发指引而非可信代码执行权限；**不自动执行外部 PR 的任何脚本**，不把合成研究结果当作量产验证。新功能开发首先更新源码、测试与证据；当已实现能力发生变化时，再同步更新对应 Skill 的入口/边界。
+
+## 首个实体试缝包（合成椭球，不是量产定版）
+
+生成 12 个编号侧片 + 顶盖、底盖的 A4/Letter 原尺寸 SVG；包含缝线与裁切线、对位红点、返口标记、统一毛向假设、10×10mm 尺寸校准和逐步手工缝合说明。**必须打印 100% 并测量校准框**。仅用于廉价试布，不能替代真实面料/填棉及当前失败的接触门禁。
+
+~~~bash
+python scripts/capped_gore_pattern.py --panels 12 --pole-cut-deg 8 --out /tmp/plush-input.json
+python scripts/build_prototype_kit.py --input /tmp/plush-input.json --output-dir /tmp/plush-kit --paper A4
+~~~
+
+试布、返口、填充与实体反馈记录见 [实体试缝操作指南](docs/PHYSICAL_PROTOTYPE.md)。输出目录不可预先存在，避免覆盖历史试验。

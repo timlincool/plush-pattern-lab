@@ -35,3 +35,9 @@ blender --disable-autoexec -b --python scripts/sewing_capped_poc_blender.py -- -
 安装后可用入口例如 `plush-capped-gore --out /tmp/cap.json`；Blender 必须使用 `--disable-autoexec` 执行不可信资产检测。
 
 迁移不改原 JSON 对外证据契约、实验阈值、材料参数或目标初始化方式。必须用真实 Blender 仿真复验新代码，不能只靠纯 Python 单测。严格分层及质量门禁不是“已经能量产”的承诺。
+
+## 可打印试缝工具（物理样品阶段）
+
+src/plush_pattern_lab/patterns/fabrication_kit.py 从 capped_gore_pattern.py 合成 JSON 生成 1:1 A4/Letter SVG 分页、逐片身份、缝线对位、留返口、清单与试缝指南；兼容命令位于 scripts/build_prototype_kit.py，正式 CLI 为 plush-prototype-kit。核心纯计算不引入 bpy、网络或生产数据库；只在新目录写入，不修改原始 JSON。
+
+输出只能用于廉价试布测量回归；不能从几何研究通过推论布壳无自交、真实材料/填充合格或已经还原原始角色。
