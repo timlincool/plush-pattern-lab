@@ -18,15 +18,18 @@ def test_cap_transition_symmetric_and_unit_bounded(rows):
     assert all(0 <= value <= 1 for value in values)
 
 
-@pytest.mark.parametrize("j,total,transition", [
-    (0, 24, 4),
-    (65, 65, 2),
-    (-1, 65, 2),
-    (10, 65, -1),
-    (10, 65, 9),
-    (True, 65, 2),
-    (10, 65, False),
-])
+@pytest.mark.parametrize(
+    "j,total,transition",
+    [
+        (0, 24, 4),
+        (65, 65, 2),
+        (-1, 65, 2),
+        (10, 65, -1),
+        (10, 65, 9),
+        (True, 65, 2),
+        (10, 65, False),
+    ],
+)
 def test_reject_invalid_geometry_inputs(j, total, transition):
     with pytest.raises(ValueError):
         cap_offset_weight(j, total, transition)

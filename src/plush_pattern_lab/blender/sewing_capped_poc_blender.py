@@ -150,8 +150,16 @@ def _validate_trial_geometry(n, N, verts, faces, pairs):
 
 
 def _build_geometry(
-    spec, n, N, H, radial, z, right, outward_offset=0.003, direction="radial",
-    cap_transition_rows=0
+    spec,
+    n,
+    N,
+    H,
+    radial,
+    z,
+    right,
+    outward_offset=0.003,
+    direction="radial",
+    cap_transition_rows=0,
 ):
     verts, rest, reference, faces, loose, pairs, face_class = [], [], [], [], [], [], []
 

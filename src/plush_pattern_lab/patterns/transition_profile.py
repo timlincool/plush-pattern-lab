@@ -17,4 +17,6 @@ def cap_offset_weight(row: int, total_rows: int, transition_rows: int) -> float:
         raise ValueError("Transition exceeds bounded cap-join region")
     if transition_rows == 0:
         return 1.0
-    return float(min(1.0, row / transition_rows, (total_rows - 1 - row) / transition_rows))
+    return float(
+        min(1.0, row / transition_rows, (total_rows - 1 - row) / transition_rows)
+    )
