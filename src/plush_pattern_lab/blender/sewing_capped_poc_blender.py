@@ -182,6 +182,11 @@ def _build_geometry(
     return verts, rest, reference, faces, loose, pairs, face_class
 
 
+def _validate_cap_transition_argument(rows: int) -> None:
+    if not 0 <= rows <= 8:
+        raise RuntimeError("Cap transition must use 0..8 rows")
+
+
 def _parse_trial():
     p = argparse.ArgumentParser(description=__doc__)
     for key in ("spec", "output", "report"):
@@ -202,8 +207,7 @@ def _parse_trial():
         raise RuntimeError("Source missing or protected output already exists")
     if not 24 <= a.frames <= 120:
         raise RuntimeError("Frame count outside research bounds")
-    if not 0 <= a.cap_transition_rows <= 8:
-        raise RuntimeError("Cap transition must use 0..8 rows")
+    _validate_cap_transition_argument(a.cap_transition_rows)
     if (
         not math.isfinite(a.preposition_offset_mm)
         or not 0.5 <= a.preposition_offset_mm <= 8
