@@ -158,3 +158,7 @@ python scripts/prepare_legacy_release.py --download
 ~~~
 
 此命令只下载、校验到本地 `local-assets/`，**不会公开上传、不会解压执行 Blender 脚本，也不会修改旧私有仓库**。旧仓仍只是只读冷归档，后续代码开发只在这里进行。
+
+## 六阶段恢复源码的静态风险检查
+
+在模型归档完整性校验后，运行 `python scripts/inspect_legacy_archives.py`。该工具**不执行历史补丁、不导入旧代码、不反序列化Pickle**，使用 AST 和NumPy只读数组头识别风险，结果写到本地 `local-output/legacy-static-review.json`。实检归档包含 56份Python源码、20个NPZ和134个数值数组，以及7处需要专项审读的 `exec()` 调用；这些并不是已发现病毒。详细见 [静态审查报告](docs/STATIC_LEGACY_ASSET_RISKS.md)。
