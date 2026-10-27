@@ -27,7 +27,9 @@ def test_ast_detects_patch_execution_without_executing_it(tmp_path):
 
 
 def test_ast_detects_sensitive_process_without_source_leak():
-    code = b"import subprocess\nsubprocess.run(['false'])\nimport os\nos.system('true')\n"
+    code = (
+        b"import subprocess\nsubprocess.run(['false'])\nimport os\nos.system('true')\n"
+    )
     findings = inspect_python("rebuild.py", code)
     assert [row["risk"] for row in findings] == [
         "PROCESS_INVOCATION",
@@ -37,7 +39,9 @@ def test_ast_detects_sensitive_process_without_source_leak():
 
 
 def test_invalid_python_source_is_reported_not_executed():
-    assert inspect_python("broken.py", b"def nope(:\n")[0]["risk"] == "PYTHON_UNPARSEABLE"
+    assert (
+        inspect_python("broken.py", b"def nope(:\n")[0]["risk"] == "PYTHON_UNPARSEABLE"
+    )
 
 
 def test_numeric_npz_inspects_headers_without_array_deserialization():
@@ -55,9 +59,7 @@ def test_object_array_is_flagged_for_pickle_risk():
 
 
 def test_malformed_npz_is_rejected():
-    assert inspect_npz("bad.npz", b"fake ZIP")["risks"] == [
-        "CORRUPT_NPZ_ARCHIVE"
-    ]
+    assert inspect_npz("bad.npz", b"fake ZIP")["risks"] == ["CORRUPT_NPZ_ARCHIVE"]
 
 
 def test_unexpected_members_in_npz_do_not_get_deserialized():
@@ -78,9 +80,7 @@ def test_realistic_source_zip_can_be_scanned_without_running_patch(tmp_path):
     assert result["scripts_inspected"] == 1
     assert result["npz_archives_inspected"] == 1
     assert result["numeric_arrays_checked"] == 1
-    assert [row["risk"] for row in result["risk_findings"]] == [
-        "DYNAMIC_EXECUTION"
-    ]
+    assert [row["risk"] for row in result["risk_findings"]] == ["DYNAMIC_EXECUTION"]
 
 
 def test_source_zip_invalid_path_cannot_be_interpreted(tmp_path):

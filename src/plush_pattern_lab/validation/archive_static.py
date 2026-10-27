@@ -65,7 +65,9 @@ def inspect_python(name: str, content: bytes) -> list[dict]:
         if kind:
             risks.append({"file": name, "line": item.lineno, "risk": kind})
         if _pickle_enabled(item, called):
-            risks.append({"file": name, "line": item.lineno, "risk": "PICKLE_ENABLED_LOAD"})
+            risks.append(
+                {"file": name, "line": item.lineno, "risk": "PICKLE_ENABLED_LOAD"}
+            )
         if len(risks) > MAX_FINDINGS:
             raise ValueError("Python static risk finding budget exceeded")
     return risks
@@ -86,7 +88,9 @@ def _npy_header(stream) -> tuple[tuple, np.dtype, int]:
     return shape, np.dtype(dtype), stream.tell()
 
 
-def _array_risk(name: str, info: zipfile.ZipInfo, source: zipfile.ZipFile) -> str | None:
+def _array_risk(
+    name: str, info: zipfile.ZipInfo, source: zipfile.ZipFile
+) -> str | None:
     if not name.endswith(".npy") or info.is_dir():
         return "UNEXPECTED_NPZ_MEMBER"
     if info.file_size > MAX_ARRAY_BYTES or info.flag_bits & 1:
@@ -154,7 +158,9 @@ def inspect_archive(path) -> dict:
                 npz_count += 1
                 result = inspect_npz(name, source.read(member))
                 arrays += result["array_count"]
-                rows.extend({"file": name, "line": 0, "risk": code} for code in result["risks"])
+                rows.extend(
+                    {"file": name, "line": 0, "risk": code} for code in result["risks"]
+                )
             if len(rows) > MAX_FINDINGS:
                 raise ValueError("Risk report exceeds bounded diagnostic size")
     return {

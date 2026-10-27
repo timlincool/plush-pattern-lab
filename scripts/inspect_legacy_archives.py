@@ -15,12 +15,12 @@ ROOT = Path(__file__).resolve().parents[1]
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--archive-dir", type=Path,
-        default=ROOT / "local-assets" / "legacy-release-v25"
+        "--archive-dir", type=Path, default=ROOT / "local-assets" / "legacy-release-v25"
     )
     parser.add_argument(
-        "--report", type=Path,
-        default=ROOT / "local-output" / "legacy-static-review.json"
+        "--report",
+        type=Path,
+        default=ROOT / "local-output" / "legacy-static-review.json",
     )
     args = parser.parse_args()
     manifest = load_manifest(
@@ -46,13 +46,18 @@ def main() -> int:
     args.report.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print("ARCHIVE_STATIC_REVIEW", json.dumps({
-        "archives": len(results),
-        "scripts": sum(x["scripts_inspected"] for x in results),
-        "arrays": sum(x["numeric_arrays_checked"] for x in results),
-        "findings": sum(len(x["risk_findings"]) for x in results),
-        "status": report["status"],
-    }))
+    print(
+        "ARCHIVE_STATIC_REVIEW",
+        json.dumps(
+            {
+                "archives": len(results),
+                "scripts": sum(x["scripts_inspected"] for x in results),
+                "arrays": sum(x["numeric_arrays_checked"] for x in results),
+                "findings": sum(len(x["risk_findings"]) for x in results),
+                "status": report["status"],
+            }
+        ),
+    )
     return 0
 
 
