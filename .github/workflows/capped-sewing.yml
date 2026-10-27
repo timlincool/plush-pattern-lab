@@ -106,9 +106,9 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: synthetic-explicit-pole-cap-evidence
+          name: synthetic-explicit-pole-cap-experiment
           path: |
             ${{ runner.temp }}/capped/*.json
             ${{ runner.temp }}/capped/*.svg
           if-no-files-found: warn
-          retention-days: 3
+          retention-days: 7
