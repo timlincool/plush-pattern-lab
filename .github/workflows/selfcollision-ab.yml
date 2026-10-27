@@ -159,9 +159,9 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: capped-synthetic-selfcollision-evidence
+          name: capped-synthetic-selfcollision-ab
           path: |
             ${{ runner.temp }}/collision/*.json
             ${{ runner.temp }}/collision/*.preview/*.png
-          retention-days: 3
+          retention-days: 7
           if-no-files-found: warn
