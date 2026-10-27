@@ -1,0 +1,77 @@
+{
+  "schema": "alpaca-original-assets-readonly-proof-v1",
+  "source_repo": "timlincool/cloud-alpaca-plush",
+  "source_release_tag": "archive-20261023",
+  "proof_date": "2026-10-26",
+  "source_audit_run": 40310679635,
+  "source_audit_url": "https://github.com/timlincool/cloud-alpaca-plush/actions/runs/40310679635",
+  "verification": {
+    "selected_archives": 6,
+    "archive_sha256_verified": 6,
+    "zip_members_verified": 252,
+    "archive_errors": 0,
+    "archives_needing_binary_review": 5,
+    "publicly_published": false
+  },
+  "blender_preflight": {
+    "version": "4.3.2",
+    "status": "PASS_SCOPE_LIMITED",
+    "baseline_blend_sha256": "7076daa3af6a538ac45501b8f98d874e569a0378f577fbe77dd0b8677354542e",
+    "scene_objects": 465,
+    "embedded_texts": 0,
+    "embedded_scripts": 0,
+    "external_blender_libraries": 0,
+    "drivers": 0,
+    "image_datablocks": 1,
+    "packed_images": 0,
+    "findings": 0,
+    "limitations": [
+      "Finite datablock check, not a proof of absent malware.",
+      "Third-party rights and full geometry rebuild still require review."
+    ]
+  },
+  "image_candidates": [
+    {
+      "name": "original-design.png",
+      "git_blob_sha1": "aefcd9d06deb2cc6d54fd6d3a1bfcba0a7ad5299",
+      "source_sha256": "23cc45229a345b92c29077caf2a4c75dfd0459b36afc9a4656a0f74f02ff846a",
+      "prepared_sha256": "23cc45229a345b92c29077caf2a4c75dfd0459b36afc9a4656a0f74f02ff846a",
+      "metadata_stripped": false,
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "name": "selected-D-appearance.png",
+      "git_blob_sha1": "5c004facb337866e962d10ad0117d6eed2bef6ff",
+      "source_sha256": "123fe381ca5eea88090f2a67fe94c25ff4a33d1a0422678c82436d1784ae2a84",
+      "prepared_sha256": "e30839937f2d6525785806760bf6a74148b9abc1ca7f7b39cbd4e87c1c7b9513",
+      "metadata_stripped": true,
+      "width": 1000,
+      "height": 1000
+    },
+    {
+      "name": "single-hoof-seam-comparison.png",
+      "git_blob_sha1": "958153749683f15fb99879093a382d409f702552",
+      "source_sha256": "e1a6f22eecb48973ade1b20eda599ada1a47cf9d43700c32a5d38e3a9b8a65c4",
+      "prepared_sha256": "e1a6f22eecb48973ade1b20eda599ada1a47cf9d43700c32a5d38e3a9b8a65c4",
+      "metadata_stripped": false,
+      "width": 1202,
+      "height": 759
+    },
+    {
+      "name": "single-hoof-fleece-comparison.png",
+      "git_blob_sha1": "2467620202569a7c94979926eebb498f1fab1c64",
+      "source_sha256": "284913c42c93a726611bcf36e7d09cb230d563caeba0d9bab9190d7d62c1708a",
+      "prepared_sha256": "284913c42c93a726611bcf36e7d09cb230d563caeba0d9bab9190d7d62c1708a",
+      "metadata_stripped": false,
+      "width": 1202,
+      "height": 784
+    }
+  ],
+  "release_status": "UNPUBLISHED_REQUIRES_MANUAL_RIGHTS_AND_BLENDER_REVIEW",
+  "excluded": [
+    "Legacy high-privilege auto-merge workflows",
+    "Unknown third-party copyrighted assets",
+    "Personal logs and credentials"
+  ]
+}

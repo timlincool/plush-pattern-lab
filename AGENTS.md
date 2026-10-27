@@ -38,3 +38,10 @@
 ## 唯一长期开发主线与公开设计参考
 
 参照 [`design/reference-v25/`](design/reference-v25/README.md) 记录的原始25cm羊驼目标、短雨滴挂点及刺绣坐标；这些 **只是输入合同**，不是已完成纸样/真实可制造3D几何。旧私有项目只用于尚未搬运的Release历史文件，不再在那里提交日常开发；凡新功能、Bug修复、测试与新文档均提交本公开仓库。不要复制旧仓库高权限 `workflow_run` 自动合并或不受信任PR的自动执行设置；依据 [迁移说明](docs/PUBLIC_SOURCE_MIGRATION_20261026.md) 和 `ASSET_LICENSE.md` 审查即将发布的二进制。
+
+
+## 原始二进制的安全迁移
+
+`scripts/prepare_legacy_release.py` 及 `validation/archive_integrity.py` 固定六个恢复 ZIP 的发布版+成员 SHA，支持只读本地校验。2026-10-26 已完成实际 6/6=252 个成员的首次哈希校验与原始 .blend 有限预检，细节见 `design/archive-v25/audit-proof.json`；**不等于6阶段恢复/所有材质授权或完整恶意软件安全证明**。
+
+不要把旧 ZIP/渲染和模型直接自动发布或通过外部PR触发运行；须先通过 Blender 隔离审查、逐项授权、公开Release重下再验证。后续任何仓库内脚本不接受原仓高权限 `workflow_run` 的照搬。

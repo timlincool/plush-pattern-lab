@@ -22,4 +22,4 @@
 
 **不会自动执行 Fork PR 的 Python、依赖安装、Blender 文件或脚本**。项目 Actions 只运行已提交至维护者 `main` 的代码，或维护者在 `main` 明确手动触发的实验。仅扫描代码差异不代表代码无害；`GITHUB_TOKEN` 设置为只读，Checkout 不持久化凭据。
 
-维护者仍须在 GitHub 网页设置 **Require approval for all external contributors**，并为 `main` 配置 Ruleset；这些账户设置不能由仓库里的 YAML 自动生效。完整步骤见 [PR_SECURITY.md](docs/PR_SECURITY.md)。
+2026-10-26 GitHub API 已确认 `main` 受到 Active `Protect main` Ruleset 保护，个人 `timlincool` 仅有 PR 范围的豁免；外部 Actions 审批由用户在 GitHub UI 选择，当前连接无法读取管理员项的实时服务器值。仓库 YAML **不能替代真实设置**。详情见 [PR_SECURITY.md](docs/PR_SECURITY.md)。
