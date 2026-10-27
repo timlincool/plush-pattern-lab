@@ -154,11 +154,14 @@ jobs:
             "cases":rows},indent=2))
           print("SELF_COLLISION_AB",json.dumps(rows))
           PY
-      - name: Preserve numerical evidence and editable scenes
+      # 只留碰撞 JSON 和用于人工审阅的渲染截图，不上传 .blend。
+      - name: Preserve compact collision reports and previews
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: capped-synthetic-selfcollision-ab
-          path: ${{ runner.temp }}/collision/
-          retention-days: 7
+          name: capped-synthetic-selfcollision-evidence
+          path: |
+            ${{ runner.temp }}/collision/*.json
+            ${{ runner.temp }}/collision/*.preview/*.png
+          retention-days: 3
           if-no-files-found: warn
