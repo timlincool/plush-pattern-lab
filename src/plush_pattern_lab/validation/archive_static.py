@@ -29,32 +29,42 @@ def _called_name(node: ast.AST) -> str:
     return ""
 
 
+def _call_risk(called: str) -> str:
+    if called in {"exec", "eval"}:
+        return "DYNAMIC_EXECUTION"
+    if called in {"os.system", "subprocess.run", "subprocess.Popen", "subprocess.call"}:
+        return "PROCESS_INVOCATION"
+    if called in {"pickle.load", "pickle.loads", "marshal.load", "marshal.loads"}:
+        return "UNSAFE_DESERIALIZATION_REVIEW"
+    if called in {"requests.get", "requests.post", "urllib.request.urlopen"}:
+        return "NETWORK_ACCESS_REVIEW"
+    return ""
+
+
+def _pickle_enabled(item: ast.Call, called: str) -> bool:
+    return called.endswith(".load") and any(
+        kw.arg == "allow_pickle"
+        and isinstance(kw.value, ast.Constant)
+        and kw.value.value is True
+        for kw in item.keywords
+    )
+
+
 def inspect_python(name: str, content: bytes) -> list[dict]:
     """Locate dynamic execution and sensitive runtime operations by AST."""
     try:
         root = ast.parse(content.decode("utf-8-sig"), filename=name)
-    except (SyntaxError, UnicodeDecodeError) as exc:
+    except (SyntaxError, UnicodeDecodeError):
         return [{"file": name, "line": 0, "risk": "PYTHON_UNPARSEABLE"}]
     risks = []
     for item in ast.walk(root):
         if not isinstance(item, ast.Call):
             continue
         called = _called_name(item.func)
-        kind = ""
-        if called in {"exec", "eval"}:
-            kind = "DYNAMIC_EXECUTION"
-        elif called in {"os.system", "subprocess.run", "subprocess.Popen", "subprocess.call"}:
-            kind = "PROCESS_INVOCATION"
-        elif called in {"pickle.load", "pickle.loads", "marshal.load", "marshal.loads"}:
-            kind = "UNSAFE_DESERIALIZATION_REVIEW"
-        elif called in {"requests.get", "requests.post", "urllib.request.urlopen"}:
-            kind = "NETWORK_ACCESS_REVIEW"
+        kind = _call_risk(called)
         if kind:
             risks.append({"file": name, "line": item.lineno, "risk": kind})
-        if called.endswith(".load") and any(
-            kw.arg == "allow_pickle" and isinstance(kw.value, ast.Constant)
-            and kw.value.value is True for kw in item.keywords
-        ):
+        if _pickle_enabled(item, called):
             risks.append({"file": name, "line": item.lineno, "risk": "PICKLE_ENABLED_LOAD"})
         if len(risks) > MAX_FINDINGS:
             raise ValueError("Python static risk finding budget exceeded")
