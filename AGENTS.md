@@ -45,3 +45,7 @@
 `scripts/prepare_legacy_release.py` 及 `validation/archive_integrity.py` 固定六个恢复 ZIP 的发布版+成员 SHA，支持只读本地校验。2026-10-26 已完成实际 6/6=252 个成员的首次哈希校验与原始 .blend 有限预检，细节见 `design/archive-v25/audit-proof.json`；**不等于6阶段恢复/所有材质授权或完整恶意软件安全证明**。
 
 不要把旧 ZIP/渲染和模型直接自动发布或通过外部PR触发运行；须先通过 Blender 隔离审查、逐项授权、公开Release重下再验证。后续任何仓库内脚本不接受原仓高权限 `workflow_run` 的照搬。
+
+## 避免执行未审查的旧恢复脚本
+
+旧六阶段恢复源包含 `exec(compile(...))` 风格的补丁装载。 `archive_integrity.py` 先核验整ZIP与成员哈希，再由 `archive_static.py` 的AST/NPZ头检查记录执行风险；**对任何含执行入口的旧代码，只做静态审查，不复制到Actions自动执行**。2026-10-26 已实检 7处动态执行、134个非对象数值数组，完整规则见 `docs/STATIC_LEGACY_ASSET_RISKS.md`。

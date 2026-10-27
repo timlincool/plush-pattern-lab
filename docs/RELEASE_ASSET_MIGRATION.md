@@ -52,3 +52,7 @@ GitHub API 当前连接无法直接复制私有 Release 二进制到公开 Relea
 四张图也已从旧 Git 仓库以原始 Git blob SHA 验证并取得。原始 AI 设计图无图片元信息；旧选中 D 外观 PNG 含渲染元数据（相机、日期、文件等），已准备好**不改变像素但移除所有元数据**的发布候选，其他两张局部对照原图也无元数据。当前**仅在受控审查环境暂存，尚未上传公开 Release**。
 
 已冻结可公开核验的**非秘密证明摘要**至 [audit-proof.json](../design/archive-v25/audit-proof.json)。后续仍需要确认每份原始模型/贴图的复用许可、检查余下五包的 Blender/NPZ 数据并运行旧六阶段恢复；只有这些通过才能公开发布以及归档旧私有仓库。若当前客户端没有 Work 云端浏览器操作权限，可在已认证 `gh` 环境运行上方 CLI，不要在聊天里粘贴令牌。
+
+## 第二层静态源码、NPZ 检查
+
+基础验证 `prepare_legacy_release.py` 通过后，可运行 `python scripts/inspect_legacy_archives.py`。它只读仓库发布版哈希吻合的ZIP：使用AST扫描Python `exec/eval` 等调用，读取NPZ里每个NPY数组头，拒绝对象dtype与结构异常；既不运行历史脚本，也不调用任何 `np.load(allow_pickle=True)`。扫描结果保留在本地 `local-output/legacy-static-review.json`；**发现执行调用并不自动判恶意，必须单独审阅其来源哈希和受信环境**。详见 [STATIC_LEGACY_ASSET_RISKS](STATIC_LEGACY_ASSET_RISKS.md)。
