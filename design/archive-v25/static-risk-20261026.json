@@ -1,0 +1,60 @@
+{
+  "schema": "plush-legacy-static-risk-snapshot-v1",
+  "source": "exact released six ZIPs previously SHA-verified in private owner-controlled GitHub Actions 40310679635",
+  "review": "read-only local AST and NPZ header analysis; no recovery script or NumPy pickle execution",
+  "publication_approved": false,
+  "totals": {
+    "zip_archives": 6,
+    "python_scripts": 56,
+    "npz_archives": 20,
+    "npy_numeric_arrays": 134,
+    "object_arrays": 0,
+    "invalid_array_headers": 0,
+    "dynamic_exec_calls": 7
+  },
+  "stages": [
+    {
+      "name": "01-baseline-v25.zip",
+      "python_scripts": 0,
+      "npz": 0,
+      "numeric_arrays": 0,
+      "dynamic_exec": 0
+    },
+    {
+      "name": "02-selected-appearance-D.zip",
+      "python_scripts": 22,
+      "npz": 0,
+      "numeric_arrays": 0,
+      "dynamic_exec": 5
+    },
+    {
+      "name": "03-primary-engineering.zip",
+      "python_scripts": 7,
+      "npz": 2,
+      "numeric_arrays": 6,
+      "dynamic_exec": 0
+    },
+    {
+      "name": "04-single-hoof-geometry.zip",
+      "python_scripts": 11,
+      "npz": 4,
+      "numeric_arrays": 21,
+      "dynamic_exec": 1
+    },
+    {
+      "name": "05-single-hoof-fleece.zip",
+      "python_scripts": 4,
+      "npz": 2,
+      "numeric_arrays": 27,
+      "dynamic_exec": 0
+    },
+    {
+      "name": "06-four-hoof-v2.zip",
+      "python_scripts": 12,
+      "npz": 12,
+      "numeric_arrays": 80,
+      "dynamic_exec": 1
+    }
+  ],
+  "warning": "exec calls in legacy patch loaders are not a malware finding but demand source-digest pinning and isolated review before any execution. npz numeric dtype scan does not prove full .blend or tensor payload safety."
+}
