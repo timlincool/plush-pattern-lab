@@ -149,9 +149,13 @@ python scripts/build_prototype_kit.py --input /tmp/plush-input.json --output-dir
 **注意：** 原始设计PNG、完整可编辑 `.blend` 和六阶段模型恢复ZIP还没有搬入公开Release，所以暂时无法在本公开仓库一键还原原羊驼外观。详见 [迁移状态和剩余步骤](docs/PUBLIC_SOURCE_MIGRATION_20261026.md)。公开数据采用已列明范围的 [CC0](ASSET_LICENSE.md)，代码继续用MIT；视觉目标与当前椭球物理仿真不是同一项已完成成果。
 
 
+## 真实模型几何接口检查（不是纸样批准）
+
+新增 [主体与四蹄三维边界审计](docs/REAL_MODEL_INTERFACES.md)：在隔离的 Blender 4.3.2 中读取用户自行提供并验签的模型，检查四组 512 点环的有向配对、世界坐标和周长。算法只在仓库中保存代码与负例测试；原始私有模型仍不上传。几何接口成立不等于二维纸样、缝制或填棉合格。
+
 ## 历史真实羊驼模型资产审查（公开发布尚待完成）
 
-已实际从旧私有 Release 下载 **6个模型/工程恢复 ZIP**，用 `design/archive-v25/release-integrity-manifest.json` 校验发布版 SHA/文件大小与全部 **252 个成员哈希**。初步 Blender 场景元数据审查 `PASS_SCOPE_LIMITED`，并已准备去除敏感渲染元数据的原设计/外观对照图；**尚未完成第三方素材版权/六阶段恢复，因此不自动发布未经审查的二进制**。见 [迁移命令与证据](docs/RELEASE_ASSET_MIGRATION.md)。
+已实际从旧私有 Release 下载 **6个模型/工程恢复 ZIP**，用 `design/archive-v25/release-integrity-manifest.json` 校验发布版 SHA/文件大小与全部 **252 个成员哈希**。初步 Blender 场景元数据审查 `PASS_SCOPE_LIMITED`，并已准备去除敏感渲染元数据的原设计/外观对照图；**六阶段历史模型已在私有隔离环境完成恢复、保存重开和SHA-256校验，但第三方素材权限、真实缝制与量产验收仍未完成，因此不自动公开二进制**。见 [迁移命令与证据](docs/RELEASE_ASSET_MIGRATION.md)。
 
 ~~~bash
 python scripts/prepare_legacy_release.py --download
