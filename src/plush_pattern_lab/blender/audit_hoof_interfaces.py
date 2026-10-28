@@ -117,7 +117,12 @@ def build_report(source_hash):
     for obj, hoof, (index, gap) in zip(meshes[1:], hoof_rings, locations):
         result = verify_mating_loops(body_rings[index], hoof)
         matches.append(
-            {"hoof": obj.name, "body_ring_index": index, "centroid_gap_mm": gap, **result}
+            {
+                "hoof": obj.name,
+                "body_ring_index": index,
+                "centroid_gap_mm": gap,
+                **result,
+            }
         )
     return {
         "status": "REAL_MODEL_STAGE6_HOOF_INTERFACE_AUDIT",
