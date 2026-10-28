@@ -78,8 +78,7 @@ def stream_binary(
     if consumed != expected_bytes or digest.hexdigest() != expected_sha:
         raise ValueError(f"Public SHA-256 or size mismatch: {filename}")
     print(
-        f"ISSUE14_PUBLIC_BINARY_PASS {filename} "
-        f"bytes={consumed} sha256={expected_sha}"
+        f"ISSUE14_PUBLIC_BINARY_PASS {filename} bytes={consumed} sha256={expected_sha}"
     )
 
 
