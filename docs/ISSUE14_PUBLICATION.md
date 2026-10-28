@@ -24,3 +24,28 @@ ChatGPT 当前 GitHub 连接支持 PR、Issue、文本文件与只读历史二�
 若需要无人值守迁移，维护者可在**私有仓库** Actions Secrets 创建一个仅授权 `plush-pattern-lab` 的 fine-grained GitHub PAT，仓库权限仅设 **Contents: Read and write**，供受信、手动触发的单次发布工作流使用。**不要将 PAT 粘贴到 Issue、聊天、日志、仓库源码或 PR。** 也可使用自己已登录的 GitHub CLI 或 ChatGPT Work 云端浏览器实施跨仓附件搬运。
 
 本页不是 Release。由于权限、源文件内容及新发行包均需独立验收，只有发布后经实际下载验证的文件才可标记为公开完成。Open Source 不等于已验证可制造的玩偶；材料、缝制、填充和儿童安全仍属独立未完成课题。
+
+## 第一批：公开视觉模型与图片的匿名验收
+
+截至 2026-10-28，发布器位于私有仓库受信主分支，目标是公开预发布 `cloud-alpaca-stage6-visuals-20261028`。这个标签**在实际发布前不存在**，不能将私有 Release 当作公开成功。
+
+第一批只包含一个经过路径规范化和保存重开检验的 Stage 6 可编辑模型、四张去元数据 PNG、CC BY 4.0 说明、发行清单与 SHA256SUMS；**不包含六份历史恢复 ZIP**。那些 ZIP 的跨 CPU 严格重建仍在单独处理。
+
+在公开 Release 正式创建后，使用全新、无需 GitHub 登录的环境，从公开仓库根目录运行：
+
+~~~bash
+python scripts/verify_issue14_public_release.py
+~~~
+
+工具不依赖外部 Python 库，不传递 GitHub Token，逐文件流式下载但默认不落盘；检查五个二进制固定大小和 SHA-256、发行清单与 CC BY 4.0 许可、文件名称和 SHA256SUMS。想保留模型和图片时执行：
+
+~~~bash
+python scripts/verify_issue14_public_release.py \
+  --download-dir local-assets/issue14-verified-stage6
+~~~
+
+目标目录必须不存在，拒绝覆盖。出现缺失、重复、额外文件、身份或哈希错误时直接失败，不将公开模型当成未经检验的可执行资源。
+
+进一步使用 Blender 4.3.2 验证网格时，应在隔离环境里使用 `--disable-autoexec`，并执行 `scripts/audit_hoof_interfaces.py`。独立 SHA 与四蹄接口验证不等于二维布片、实体打样或制造放行。
+
+**完成条件分层：** 第一批视觉资产匿名验签通过，只能将“视觉资产公开”标记完成；六份源 ZIP 的可公开恢复、完整独立重建与旧私有仓库 Archived 仍保持未完成，Issue #14 不提前关闭。
