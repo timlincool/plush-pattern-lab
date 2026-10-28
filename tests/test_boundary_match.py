@@ -15,8 +15,11 @@ from plush_pattern_lab.validation.boundary_match import (
 def ellipse(center=(0, 0, 0), count=32):
     phase = np.arange(count, dtype=np.float64) * (2 * np.pi / count)
     return np.stack(
-        [np.cos(phase) * 13 + center[0], np.sin(phase) * 11 + center[1],
-         np.full(count, center[2])],
+        [
+            np.cos(phase) * 13 + center[0],
+            np.sin(phase) * 11 + center[1],
+            np.full(count, center[2]),
+        ],
         axis=1,
     )
 
