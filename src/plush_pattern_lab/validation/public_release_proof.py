@@ -70,18 +70,16 @@ def validate_manifest(raw: bytes) -> dict:
     if len(raw) > 32768:
         raise ValueError("Unbounded Release manifest")
     document = json.loads(raw.decode("utf-8"))
-    if (
-        document.get("schema") != "issue14-public-visual-release-v1"
-        or document.get("tag") != TAG
-        or document.get("status") != "ORIGINAL_ARTWORK_AND_SAVED_STAGE6_ONLY"
-        or document.get("license")
-        != "CC BY 4.0 for original artistic assets; MIT for owned source"
-        or document.get("original_private_model_sha256") != ORIGINAL_MODEL_SHA
-        or document.get("public_model_sha256")
-        != BINARIES["cloud-alpaca-stage6.blend"][1]
-        or document.get("historical_six_zips")
-        != "NOT_INCLUDED_STRICT_REPRODUCTION_GATE_PENDING"
-    ):
+    required = {
+        "schema": "issue14-public-visual-release-v1",
+        "tag": TAG,
+        "status": "ORIGINAL_ARTWORK_AND_SAVED_STAGE6_ONLY",
+        "license": "CC BY 4.0 for original artistic assets; MIT for owned source",
+        "original_private_model_sha256": ORIGINAL_MODEL_SHA,
+        "public_model_sha256": BINARIES["cloud-alpaca-stage6.blend"][1],
+        "historical_six_zips": "NOT_INCLUDED_STRICT_REPRODUCTION_GATE_PENDING",
+    }
+    if any(document.get(key) != expected for key, expected in required.items()):
         raise ValueError("Public Release provenance or license contract mismatch")
     assets = document.get("assets")
     if not isinstance(assets, list) or len(assets) != 5:
@@ -98,10 +96,10 @@ def validate_manifest(raw: bytes) -> dict:
         expected_kind = (
             "sanitized_blender" if name.endswith(".blend") else "lossless_png"
         )
-        if (
-            asset.get("bytes") != size
-            or asset.get("sha256") != sha
-            or asset.get("kind") != expected_kind
+        if (asset.get("bytes"), asset.get("sha256"), asset.get("kind")) != (
+            size,
+            sha,
+            expected_kind,
         ):
             raise ValueError("Release asset provenance mismatch")
     if seen != set(BINARIES):
