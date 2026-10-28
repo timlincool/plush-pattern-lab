@@ -116,7 +116,9 @@ def build_report(source_hash):
     matches = []
     for obj, hoof, (index, gap) in zip(meshes[1:], hoof_rings, locations):
         result = verify_mating_loops(body_rings[index], hoof)
-        matches.append({"hoof": obj.name, "body_ring_index": index, "centroid_gap_mm": gap, **result})
+        matches.append(
+            {"hoof": obj.name, "body_ring_index": index, "centroid_gap_mm": gap, **result}
+        )
     return {
         "status": "REAL_MODEL_STAGE6_HOOF_INTERFACE_AUDIT",
         "source_sha256": source_hash,
@@ -141,7 +143,9 @@ def main():
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--source-sha256", required=True)
     parser.add_argument("--output", type=Path, required=True)
-    a = parser.parse_args(sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else [])
+    a = parser.parse_args(
+        sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
+    )
     if not a.input.is_file() or a.input.suffix != ".blend" or a.output.exists():
         raise ValueError("源模型不存在、后缀错误或报告已存在")
     digest = sha256_file(a.input)
@@ -150,7 +154,9 @@ def main():
     bpy.ops.wm.open_mainfile(filepath=str(a.input.resolve()), load_ui=False)
     report = build_report(digest)
     a.output.parent.mkdir(parents=True, exist_ok=True)
-    a.output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf8")
+    a.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf8"
+    )
     print(
         "REAL_MODEL_HOOF_INTERFACE",
         json.dumps(
