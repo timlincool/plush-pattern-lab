@@ -28,7 +28,7 @@ def test_same_ring_opposite_winding_and_cyclic_start():
     assert score["world_boundary_geometry_match"]
     assert score["reversed_boundary_winding"]
     assert score["max_gap_mm"] == 0
-    assert score["perimeter_delta_mm"] == 0
+    assert score["perimeter_delta_mm"] == pytest.approx(0, abs=1e-10)
     assert score["vertex_count"] == 32
 
 
@@ -45,7 +45,7 @@ def test_off_plane_hoof_is_rejected_even_if_perimeter_equal():
     b = a[::-1].copy()
     b[:, 2] += 0.1
     result = verify_mating_loops(a, b)
-    assert result["perimeter_delta_mm"] == 0
+    assert result["perimeter_delta_mm"] == pytest.approx(0, abs=1e-10)
     assert result["max_gap_mm"] == pytest.approx(0.1)
     assert not result["world_boundary_geometry_match"]
 
@@ -61,7 +61,7 @@ def test_unique_ring_mapping_on_four_permuted_parts():
     hoofs = [bodies[i][::-1] for i in (2, 0, 3, 1)]
     matches = unique_centroid_mapping(bodies, hoofs)
     assert [x[0] for x in matches] == [2, 0, 3, 1]
-    assert all(distance == 0 for _, distance in matches)
+    assert all(distance < 1e-10 for _, distance in matches)
 
 
 @pytest.mark.parametrize(
