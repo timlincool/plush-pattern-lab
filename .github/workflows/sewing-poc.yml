@@ -121,11 +121,14 @@ jobs:
               "cases":rows},indent=2))
           print("SEWING_SHAPE_AB",json.dumps(rows))
           PY
-      - name: Preserve numerical evidence and generated Blender scene
+      # 仿真 .blend 为可重算的临时场景，不上传至 Actions 存储。
+      - name: Preserve compact numerical reports and 2D pattern previews
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: synthetic-plush-2d-sewing-experiment
-          path: ${{ runner.temp }}/sewing/
+          path: |
+            ${{ runner.temp }}/sewing/*.json
+            ${{ runner.temp }}/sewing/*.svg
           retention-days: 7
           if-no-files-found: warn

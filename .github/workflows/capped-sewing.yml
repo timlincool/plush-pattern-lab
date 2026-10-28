@@ -101,11 +101,14 @@ jobs:
               "status":"RESEARCH_EVIDENCE_NOT_MATERIAL_APPROVAL","cases":rows},indent=2))
           print("CAPPED_STUDY",json.dumps(rows))
           PY
-      - name: Preserve geometry evidence without any private assets
+      # 只留 JSON/SVG 对照，弃用可重算的 .blend 中间模型。
+      - name: Preserve compact geometry reports and SVG patterns
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: synthetic-explicit-pole-cap-experiment
-          path: ${{ runner.temp }}/capped/
+          path: |
+            ${{ runner.temp }}/capped/*.json
+            ${{ runner.temp }}/capped/*.svg
           if-no-files-found: warn
           retention-days: 7
