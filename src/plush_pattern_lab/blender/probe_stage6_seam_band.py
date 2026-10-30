@@ -34,10 +34,13 @@ def _patch_plane_metrics(obj, mesh, ring, faces):
     """Evaluate 3D triangle geometry against a seam-plane projection baseline."""
     used = sorted({vertex for face in faces for vertex in face})
     lookup = {value: index for index, value in enumerate(used)}
-    coords = np.array(
-        [tuple(obj.matrix_world @ mesh.verts[v].co) for v in used],
-        dtype=np.float64,
-    ) * 1000
+    coords = (
+        np.array(
+            [tuple(obj.matrix_world @ mesh.verts[v].co) for v in used],
+            dtype=np.float64,
+        )
+        * 1000
+    )
     triangles = [[lookup[v] for v in face] for face in faces]
     seam_indices = [lookup[v] for v in ring]
     return projection_screen(coords, triangles, seam_indices)
