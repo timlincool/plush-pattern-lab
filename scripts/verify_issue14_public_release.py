@@ -84,6 +84,7 @@ def stream_binary(
         raise
     print(f"STAGE6_PUBLIC_SHA256_PASS bytes={consumed} sha256={expected_sha}")
 
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
