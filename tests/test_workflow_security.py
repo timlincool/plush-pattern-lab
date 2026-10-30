@@ -42,6 +42,21 @@ STAGE6_PUBLIC_URL = (
 PIN = re.compile(r"^actions/[A-Za-z0-9_.-]+@[0-9a-f]{40}$")
 
 
+def _require_safe_stage6_blender(filename, step):
+    """Every Stage 6 Blender invocation must disable scene auto-execution."""
+    if filename != "stage6-hoof-seam-reference.yml":
+        return
+    script = step.get("run", "")
+    if not isinstance(script, str):
+        return
+    for command in script.splitlines():
+        if command.strip().startswith('"$BLENDER" '):
+            assert "--disable-autoexec" in command, (
+                filename,
+                "every Blender script must disable autoexec",
+            )
+
+
 def check_workflows(files: dict[str, str]) -> None:
     # Both extensions count; new workflow files must be reviewed explicitly.
     assert set(files) == EXPECTED, "Added/renamed workflow requires security review"
@@ -108,15 +123,7 @@ def check_workflows(files: dict[str, str]) -> None:
             checkouts = 0
             for step in steps:
                 assert isinstance(step, dict), (filename, "malformed step")
-                if filename == "stage6-hoof-seam-reference.yml":
-                    script = step.get("run", "")
-                    if isinstance(script, str):
-                        for command in script.splitlines():
-                            if command.strip().startswith('"$BLENDER" '):
-                                assert "--disable-autoexec" in command, (
-                                    filename,
-                                    "every Blender script must disable autoexec",
-                                )
+                _require_safe_stage6_blender(filename, step)
                 if "uses" not in step:
                     continue
                 action = step["uses"]
