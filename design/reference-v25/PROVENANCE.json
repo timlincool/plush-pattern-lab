@@ -1,10 +1,10 @@
 {
   "schema": "plush-design-public-reference-v1",
-  "status": "TEXT_ONLY_FULL_MODEL_ASSETS_PENDING",
+  "status": "REFERENCE_IMAGES_PUBLIC_STAGE6_PENDING",
   "public_repo": "timlincool/plush-pattern-lab",
   "licensed_data": "CC0-1.0, to extent rights held",
   "actual_blend_included": false,
-  "original_png_included": false,
+  "original_png_included": true,
   "release_archives_migrated": false,
   "files": [
     {
