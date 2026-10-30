@@ -1,6 +1,6 @@
 {
   "schema": "plush-design-public-reference-v1",
-  "status": "REFERENCE_IMAGES_PUBLIC_STAGE6_PENDING",
+  "status": "REFERENCE_IMAGES_AND_STAGE6_RELEASE_PUBLIC",
   "public_repo": "timlincool/plush-pattern-lab",
   "licensed_data": "CC0-1.0, to extent rights held",
   "actual_blend_included": false,
@@ -35,5 +35,13 @@
       "file": "reproduction_verification25.json",
       "source_blob_sha": "3ffa78e6f5887cd95d257a503b4994002e0bee98"
     }
-  ]
+  ],
+  "blend_location": "public_release_only_not_git",
+  "stage6_public_release": {
+    "tag": "cloud-alpaca-stage6-visuals-20261028",
+    "name": "cloud-alpaca-stage6.blend",
+    "url": "https://github.com/timlincool/plush-pattern-lab/releases/download/cloud-alpaca-stage6-visuals-20261028/cloud-alpaca-stage6.blend",
+    "size_bytes": 89853017,
+    "sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a"
+  }
 }

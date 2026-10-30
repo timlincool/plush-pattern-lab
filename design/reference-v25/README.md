@@ -11,6 +11,6 @@
 - `candidate25_manifest.json`：完整模型、数据、渲染的哈希及文件名，**不包含其二进制**；
 - `PROVENANCE.json`：七个原文Git blob SHA及迁移状态。
 
-目前[原始设计、选中 D 外观与两张单蹄工程对照 PNG](images/README.md)已全部迁入本公开仓库，各有 SHA-256 与 PNG 元数据校验；**Stage 6 可编辑 Blender 模型与完整六阶段恢复链仍未迁入**，不能据此宣称最终工程模型可独立复现或通过制造验收。
+[四张原型 PNG](images/README.md) 已进入公开 Git，SHA-256/PNG 元数据由测试保护；[Stage 6 四蹄可编辑 Blender 模型](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028) 已迁入本仓库 Release。**尚未迁入的是旧六阶段从零恢复 ZIP 和原始生成脚本**；这些不阻塞从 Stage 6 开始新研发，但不得将已保存模型误称为完整程序化重建或制造验收。
 
 [整合审查](../../docs/PUBLIC_SOURCE_MIGRATION_20261026.md) · [许可](../../ASSET_LICENSE.md)。

@@ -45,7 +45,12 @@
       "git_blob_sha1": "2467620202569a7c94979926eebb498f1fab1c64"
     }
   ],
-  "not_migrated": [
-    "cloud-alpaca-stage6.blend"
-  ]
+  "not_migrated": [],
+  "stage6_public_release": {
+    "name": "cloud-alpaca-stage6.blend",
+    "url": "https://github.com/timlincool/plush-pattern-lab/releases/download/cloud-alpaca-stage6-visuals-20261028/cloud-alpaca-stage6.blend",
+    "size_bytes": 89853017,
+    "sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a"
+  },
+  "historical_six_stage_zips_public": false
 }

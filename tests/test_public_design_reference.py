@@ -5,6 +5,8 @@ import re
 from collections import Counter
 from pathlib import Path
 
+from plush_pattern_lab.validation import public_release_proof as proof
+
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCE = ROOT / "design" / "reference-v25"
 EXPECTED = {
@@ -28,7 +30,13 @@ def test_migration_provenance_is_precise_and_does_not_claim_binary_copy():
     assert set(item["file"] for item in origin["files"]) == EXPECTED
     assert not origin["actual_blend_included"]
     assert origin["original_png_included"]
-    assert origin["status"] == "REFERENCE_IMAGES_PUBLIC_STAGE6_PENDING"
+    assert origin["status"] == "REFERENCE_IMAGES_AND_STAGE6_RELEASE_PUBLIC"
+    assert origin["blend_location"] == "public_release_only_not_git"
+    model = origin["stage6_public_release"]
+    assert model["url"] == proof.release_asset_url()
+    assert model["name"] == proof.MODEL_NAME
+    assert model["size_bytes"] == proof.MODEL_BYTES
+    assert model["sha256"] == proof.MODEL_SHA256
     assert not origin["release_archives_migrated"]
     assert all(
         re.fullmatch(r"[0-9a-f]{40}", item["source_blob_sha"])

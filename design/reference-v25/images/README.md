@@ -22,6 +22,6 @@
 - `tests/test_public_reference_images.py` 在本仓库内校验大小、SHA-256、Git blob 身份、PNG CRC 与元数据。无需接入旧私有仓库或在线鉴权。
 - 这四份已列名的原创视觉资产采用 [CC BY 4.0](../../../ASSET_LICENSE.md)；既有七份 JSON/合同资料仍按 CC0，代码按 MIT。
 
-**唯一剩余的原型核心二进制缺口**：Stage 6 可编辑四蹄模型 `cloud-alpaca-stage6.blend` 尚未进入本公开仓库。它不能用选中 D 渲染或合成椭球模拟替代。六份历史 ZIP 是独立的溯源/灾备事项，不是日常新功能的研发仓库。
+**Stage 6 四蹄可编辑模型已在[本公开仓库 Release](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028)**，与四张参考 PNG 分开存储，固定 SHA-256 为 `38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a`。旧六阶段恢复 ZIP/原始重建脚本仍在私有备份，后续日常开发只使用本仓库资产；D 阶段渲染与合成椭球不能替代真实 Stage 6 模型检查。
 
 [统一原型开发基线](../../../docs/原型开发基线.md) · [Issue #14](https://github.com/timlincool/plush-pattern-lab/issues/14)

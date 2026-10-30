@@ -52,7 +52,7 @@ blender --disable-autoexec -b input.blend --python scripts/audit_physical_shell.
   --input input.blend --output shell_audit.json
 ```
 
-**大型 H-compact 模型和原始设计图暂不在首批源码提交中发布。** 原始素材授权与嵌入资源仍需单独审查；现有私人研发档案不会复制或转为公开。所有需要真实模型的命令必须由使用者提供自己有权使用的输入，不存在时不可声称已复现。
+**四张真实参考 PNG 已在 Git；Stage 6 可编辑 Blender 模型已在[公开 Release](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028)。** 下载时须按固定 SHA-256 验签。历史 ZIP 与原始生成脚本仍是私有备份：可以编辑 Stage 6，却不代表能从零稳定复建全部旧阶段。
 
 ## 最新实验：缝线闭合不代表还原目标造型
 
@@ -140,25 +140,25 @@ python scripts/build_prototype_kit.py --input /tmp/plush-input.json --output-dir
 
 ## 当前样品真正长什么样？
 
-真实 Blender 布壳可以在 [合成样品与原设计差距说明](docs/SAMPLE_PROGRESS_20261026.md) 查看：仍然只是 **12片侧片 + 顶底2帽片的椭球**，不是已经做出来的云朵羊驼。新验证截图来自保存模型和独立 BVH 接触报告，颜色只用于定位裁片/穿插，不代表真实材质。第25轮视觉合同与坐标已由用户授权迁入公开 `design/reference-v25/`，但原始设计PNG与完整Blender外观二进制尚待单独校验、转移。
+真实 Blender 布壳可以在 [合成样品与原设计差距说明](docs/SAMPLE_PROGRESS_20261026.md) 查看：仍然只是 **12片侧片 + 顶底2帽片的椭球**，不是已经做出来的云朵羊驼。新验证截图来自保存模型和独立 BVH 接触报告，颜色只用于定位裁片/穿插，不代表真实材质。第25轮视觉合同、四张 PNG 和 Stage 6 可编辑模型已在本公开仓分别提供；该真实模型和此处的合成椭球实验仍是两种研究对象。
 
 ## 云朵羊驼的唯一公开开发仓库
 
-**后续研发先读：[原型开发基线（唯一入口）](docs/原型开发基线.md)。** 四张真实原型/工程图片已在[本仓库参考目录](design/reference-v25/images/README.md)；第25轮合同、当前合成布壳、Stage 6 尚缺模型的边界在基线中明确。所有新功能、测试和设计变更只在本仓库进行。
+**后续研发先读：[原型开发基线（唯一入口）](docs/原型开发基线.md)。** 四张真实原型/工程图片已在[本仓库参考目录](design/reference-v25/images/README.md)；第25轮合同、当前合成布壳、公开 Stage 6 模型与尚未迁移的历史恢复链均在基线中区分。所有新功能、测试和设计变更只在本仓库进行。
 
 
 过去私有项目的**7份经审查视觉与几何注册参考**现已迁入 [design/reference-v25](design/reference-v25/README.md)，包含原始25cm造型目标、面部刺绣、10枚雨滴挂点及历史模型SHA。新源码、模拟、纸样、测试和项目Skills今后都只维护本公开项目；原私有仓库暂作只读冷归档。
 
-**原始设计图、选中 D 外观和两张单蹄工程对照 PNG 均已迁入**[同仓库的原型图片目录](design/reference-v25/images/README.md)，有固定哈希与自动校验；Stage 6 最新四蹄 `.blend` 与六阶段灾备 ZIP 仍未进入本公开仓库，因此尚不能宣称最终四蹄原型可独立重建。详见 [迁移状态和剩余步骤](docs/PUBLIC_SOURCE_MIGRATION_20261026.md)。公开数据采用已列明范围的 [CC0](ASSET_LICENSE.md)，代码继续用MIT；视觉目标与当前椭球物理仿真不是同一项已完成成果。
+**四张参考 PNG 均在[本仓库图片目录](design/reference-v25/images/README.md)；Stage 6 四蹄可编辑 `.blend` 已进入[同仓库公开 Release](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028)**，可匿名下载验证。尚未迁入的是旧六阶段从零恢复 ZIP/原始生成脚本；这不影响从当前 Stage 6 继续研发，但不能宣称历史全链跨环境稳定重建或实体制造合格。详见[唯一开发基线](docs/原型开发基线.md)。四 PNG/Stage 6 原创视觉模型 CC BY 4.0，原七份参考 CC0，源码 MIT。
 
 
 ## 真实模型几何接口检查（不是纸样批准）
 
-新增 [主体与四蹄三维边界审计](docs/REAL_MODEL_INTERFACES.md)：在隔离的 Blender 4.3.2 中读取用户自行提供并验签的模型，检查四组 512 点环的有向配对、世界坐标和周长。算法只在仓库中保存代码与负例测试；原始私有模型仍不上传。几何接口成立不等于二维纸样、缝制或填棉合格。
+新增 [主体与四蹄三维边界审计](docs/REAL_MODEL_INTERFACES.md)：在隔离的 Blender 4.3.2 中读取用户自行提供并验签的模型，检查四组 512 点环的有向配对、世界坐标和周长。算法与负例测试存于本仓库；已验签的 Stage 6 模型通过同仓库 Release 提供，不写入 Git 历史。几何接口成立不等于二维纸样、缝制或填棉合格。
 
-## 历史真实羊驼模型资产审查（公开发布尚待完成）
+## 六阶段历史恢复 ZIP（私有备份，未迁入）
 
-已实际从旧私有 Release 下载 **6个模型/工程恢复 ZIP**，用 `design/archive-v25/release-integrity-manifest.json` 校验发布版 SHA/文件大小与全部 **252 个成员哈希**。初步 Blender 场景元数据审查 `PASS_SCOPE_LIMITED`，并已准备去除敏感渲染元数据的原设计/外观对照图；**六阶段历史模型已在私有隔离环境完成恢复、保存重开和SHA-256校验，但第三方素材权限、真实缝制与量产验收仍未完成，因此不自动公开二进制**。见 [迁移命令与证据](docs/RELEASE_ASSET_MIGRATION.md)。
+已实际从旧私有 Release 下载 **6个模型/工程恢复 ZIP**，用 `design/archive-v25/release-integrity-manifest.json` 校验发布版 SHA/文件大小与全部 **252 个成员哈希**。初步 Blender 元数据审查为 `PASS_SCOPE_LIMITED`，四张脱敏 PNG 与单独的 Stage 6 编辑模型现已公开。**旧六阶段 ZIP 不是这个已发布模型**：历史脱敏恢复至少成功过一次，但进一步隐私清理版的 H/C3 云绒签名跨 Runner 不稳定，因此旧 ZIP 继续私有留档；不存在实物缝制或量产通过的证据。见 [迁移命令与证据](docs/RELEASE_ASSET_MIGRATION.md)。
 
 ~~~bash
 python scripts/prepare_legacy_release.py --download

@@ -1,4 +1,6 @@
-# 旧版云朵羊驼：核心六个 ZIP 安全迁移步骤
+# 旧版云朵羊驼：核心六个 ZIP 安全迁移步骤（历史保留）
+
+> **2026-10-30 最新状态：** 四张参考 PNG 与 Stage 6 四蹄可编辑模型均已在唯一公开仓发布，模型见[公开 Release](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028)，SHA-256 `38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a`。本文的六份历史 ZIP **不是**该已公开模型：仍在私有仓，用于从零复建/溯源；脱敏全链曾恢复成功一次，但进一步隐私清理版跨 Runner H/C3 对象签名不稳定。下文 2026-10-26 的旧图片/发布待办记录仅保留当时证据，不应解释为当前未迁移。
 
 只把旧私有仓库当作**历史资产源**。所有新代码、设计映射与研究仍在公开的 `plush-pattern-lab` 进行。
 
