@@ -25,6 +25,22 @@ from plush_pattern_lab.validation.seam_band_topology import (
 from plush_pattern_lab.validation.triangle_band_topology import (
     analyze_triangle_patch,
 )
+from plush_pattern_lab.validation.triangle_band_projection import (
+    projection_screen,
+)
+
+
+def _patch_plane_metrics(obj, mesh, ring, faces):
+    """Evaluate 3D triangle geometry against a seam-plane projection baseline."""
+    used = sorted({vertex for face in faces for vertex in face})
+    lookup = {value: index for index, value in enumerate(used)}
+    coords = np.array(
+        [tuple(obj.matrix_world @ mesh.verts[v].co) for v in used],
+        dtype=np.float64,
+    ) * 1000
+    triangles = [[lookup[v] for v in face] for face in faces]
+    seam_indices = [lookup[v] for v in ring]
+    return projection_screen(coords, triangles, seam_indices)
 
 
 def inspect_object(obj):
@@ -55,15 +71,20 @@ def inspect_object(obj):
                 for vertex in ring
                 for face in bm.verts[vertex].link_faces
             }
+            patch_faces = list(incident.values())
             try:
                 report["vertex_one_ring_patch"] = analyze_triangle_patch(
-                    ring, list(incident.values())
+                    ring, patch_faces
                 )
             except ValueError as error:
                 report["vertex_one_ring_patch"] = {
                     "candidate_triangular_annulus": False,
                     "failure_reason": str(error),
                 }
+            if report["vertex_one_ring_patch"]["candidate_triangular_annulus"]:
+                report["plane_projection_baseline"] = _patch_plane_metrics(
+                    obj, bm, ring, patch_faces
+                )
             if report["regular_quad_strip"]:
                 outer = outer_ring_for_quads(ring, faces)
                 radial = np.array(
@@ -150,7 +171,9 @@ def main():
         json.dumps(
             {
                 "all_regular_quads": report["all_first_face_bands_regular_quads"],
-                "all_triangle_annuli": report["all_vertex_one_ring_patches_triangular_annuli"],
+                "all_triangle_annuli": report[
+                    "all_vertex_one_ring_patches_triangular_annuli"
+                ],
                 "objects": [
                     {
                         "name": x["object"],
