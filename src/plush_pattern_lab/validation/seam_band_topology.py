@@ -47,6 +47,7 @@ def outer_ring_for_quads(boundary, adjacent_faces):
         raise ValueError("outer ring merges vertices, not a regular quad strip")
     return outer
 
+
 def face_profile(boundary, adjacent_faces):
     """Bounded classification of the first face band without exporting geometry."""
     faces = [tuple(int(v) for v in face) for face in adjacent_faces]

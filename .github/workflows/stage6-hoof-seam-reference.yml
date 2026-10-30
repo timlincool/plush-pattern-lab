@@ -96,12 +96,14 @@ jobs:
           assert len(data['objects']) == 5
           assert [len(obj['rings']) for obj in data['objects']] == [4, 1, 1, 1, 1]
           assert all(ring['boundary_vertices'] == 512 for obj in data['objects'] for ring in obj['rings'])
+          assert all('vertex_one_ring_patch' in ring for obj in data['objects'] for ring in obj['rings'])
           print('STAGE6_REAL_ADJACENT_FACE_SURVEY', json.dumps([
               {'object': row['object'], 'rings': [{
                   'index': item['ring_index'],
                   'polygons': item['polygon_vertex_counts'],
                   'regular_quad_strip': item['regular_quad_strip'],
                   'reason': item.get('quad_strip_failure_reason', ''),
+                  'triangle_patch': item['vertex_one_ring_patch'],
               } for item in row['rings']]} for row in data['objects']]))
           PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)

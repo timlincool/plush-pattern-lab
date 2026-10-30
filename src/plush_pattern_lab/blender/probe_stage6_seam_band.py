@@ -22,6 +22,9 @@ from plush_pattern_lab.validation.seam_band_topology import (
     face_profile,
     outer_ring_for_quads,
 )
+from plush_pattern_lab.validation.triangle_band_topology import (
+    analyze_triangle_patch,
+)
 
 
 def inspect_object(obj):
@@ -31,6 +34,8 @@ def inspect_object(obj):
         bm.from_mesh(obj.data)
         bm.verts.ensure_lookup_table()
         bm.verts.index_update()
+        bm.faces.ensure_lookup_table()
+        bm.faces.index_update()
         rings = _walk_rings(_boundary_successors(bm))
         lookup = {}
         for edge in bm.edges:
@@ -45,6 +50,20 @@ def inspect_object(obj):
             faces = [lookup[frozenset((a, b))] for a, b in pairs]
             report = face_profile(ring, faces)
             report["ring_index"] = index
+            incident = {
+                face.index: tuple(vert.index for vert in face.verts)
+                for vertex in ring
+                for face in bm.verts[vertex].link_faces
+            }
+            try:
+                report["vertex_one_ring_patch"] = analyze_triangle_patch(
+                    ring, list(incident.values())
+                )
+            except ValueError as error:
+                report["vertex_one_ring_patch"] = {
+                    "candidate_triangular_annulus": False,
+                    "failure_reason": str(error),
+                }
             if report["regular_quad_strip"]:
                 outer = outer_ring_for_quads(ring, faces)
                 radial = np.array(
@@ -79,9 +98,7 @@ def generate_report(source_sha):
     objects = _source_objects()
     if len(objects) != 5:
         raise ValueError("missing body or four hoof objects")
-    entries = [
-        {"object": obj.name, "rings": inspect_object(obj)} for obj in objects
-    ]
+    entries = [{"object": obj.name, "rings": inspect_object(obj)} for obj in objects]
     return {
         "schema": "stage6-adjacent-face-topology-v1",
         "status": "TOPOLOGY_SURVEY_ONLY_NO_FLATTENING",
@@ -90,7 +107,10 @@ def generate_report(source_sha):
         "objects": entries,
         "all_original_3d_seams_match": True,
         "all_first_face_bands_regular_quads": all(
-            ring["regular_quad_strip"]
+            ring["regular_quad_strip"] for row in entries for ring in row["rings"]
+        ),
+        "all_vertex_one_ring_patches_triangular_annuli": all(
+            ring["vertex_one_ring_patch"]["candidate_triangular_annulus"]
             for row in entries
             for ring in row["rings"]
         ),
@@ -130,6 +150,7 @@ def main():
         json.dumps(
             {
                 "all_regular_quads": report["all_first_face_bands_regular_quads"],
+                "all_triangle_annuli": report["all_vertex_one_ring_patches_triangular_annuli"],
                 "objects": [
                     {
                         "name": x["object"],
