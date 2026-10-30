@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-from html import escape
 
 import numpy as np
 
@@ -51,7 +50,7 @@ def _flat_reference(ring):
         "max_out_of_plane_mm": float(np.max(np.abs(residual))),
         "perimeter_3d_mm": float(edges_3d.sum()),
         "perimeter_2d_projected_mm": float(edges_2d.sum()),
-        "projection_length_loss_mm": float(edges_3d.sum() - edges_2d.sum()),
+        "projection_length_loss_mm": float(max(0.0, edges_3d.sum() - edges_2d.sum())),
         "max_projected_edge_shortfall_ratio": float(
             np.max(np.maximum(0.0, 1.0 - edges_2d / edges_3d))
         ),
@@ -194,9 +193,9 @@ def _draw_chart(i, chart, cell_w, cell_h, gauge_start, pad=18.0):
         )
     diagnostic = row["projection_diagnostics"]
     loss = diagnostic["projection_length_loss_mm"]
-    label = escape(str(row["hoof"]))
+    label = f"H{i + 1} / body#{row['body_ring_index']} | loss {loss:.3f} mm"
     output.append(
-        f'<text x="{ox:.2f}" y="{oy - 5:.2f}" fill="#172c39" stroke="none" font-size="3.3">{label} | projected loss {loss:.3f}mm</text>'
+        f'<text x="{ox:.2f}" y="{oy - 5:.2f}" fill="#172c39" stroke="none" font-size="3.3">{label}</text>'
     )
     base = gauge_start + i * 13.0 + 7
     finish = pad + diagnostic["perimeter_3d_mm"]
@@ -210,6 +209,9 @@ def _draw_chart(i, chart, cell_w, cell_h, gauge_start, pad=18.0):
         x = pad + notch["arc_length_3d_mm"]
         output.append(
             f'<line x1="{x:.3f}" y1="{base - 1.5:.3f}" x2="{x:.3f}" y2="{base + 1.5:.3f}" stroke="#c35235" stroke-width="0.45"/>'
+        )
+        output.append(
+            f'<text x="{x + 0.5:.3f}" y="{base + 5:.3f}" fill="#8c3b2c" stroke="none" font-size="2.5">{notch["id"]}</text>'
         )
     return output
 
