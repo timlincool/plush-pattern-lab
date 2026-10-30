@@ -1,0 +1,62 @@
+{
+  "schema": "stage6-hoof-seam-summary-v1",
+  "status": "REAL_BLENDER_4_3_2_REFERENCE_ONLY",
+  "source": {
+    "repository": "timlincool/plush-pattern-lab",
+    "release_tag": "cloud-alpaca-stage6-visuals-20261028",
+    "asset": "cloud-alpaca-stage6.blend",
+    "sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "bytes": 89853017,
+    "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41070210345",
+    "initial_generator_commit": "d2c62206255242cb399d26cf7e210871fd6369d4",
+    "blender_version": "4.3.2"
+  },
+  "units": "mm",
+  "hoofs": [
+    {
+      "hoof": "Rounded hoof base",
+      "body_ring_index": 1,
+      "vertices": 512,
+      "perimeter_3d_mm": 101.64031956439274,
+      "projected_perimeter_mm": 101.64031956439274,
+      "out_of_plane_max_mm": 0,
+      "matched_3d_max_gap_mm": 0
+    },
+    {
+      "hoof": "Rounded hoof base.001",
+      "body_ring_index": 2,
+      "vertices": 512,
+      "perimeter_3d_mm": 119.10029534201928,
+      "projected_perimeter_mm": 119.10029534201928,
+      "out_of_plane_max_mm": 0,
+      "matched_3d_max_gap_mm": 0
+    },
+    {
+      "hoof": "Rounded hoof base.002",
+      "body_ring_index": 0,
+      "vertices": 512,
+      "perimeter_3d_mm": 93.30913910801577,
+      "projected_perimeter_mm": 93.30913910801577,
+      "out_of_plane_max_mm": 0,
+      "matched_3d_max_gap_mm": 0
+    },
+    {
+      "hoof": "Rounded hoof base.003",
+      "body_ring_index": 3,
+      "vertices": 512,
+      "perimeter_3d_mm": 119.10029707303761,
+      "projected_perimeter_mm": 119.10029707303762,
+      "out_of_plane_max_mm": 0,
+      "matched_3d_max_gap_mm": 0
+    }
+  ],
+  "quality": {
+    "all_3d_interfaces_match": true,
+    "reverse_winding_confirmed": true,
+    "planar_boundary_rings": true,
+    "surface_flattened": false,
+    "seam_allowance_defined": false,
+    "approved_cut_patterns": false
+  },
+  "note": "Projection length difference for the fourth ring was -1.4e-14 mm, numerical roundoff; no meaningful distortion. Boundary planarity does not establish flattenability of adjacent surface faces."
+}

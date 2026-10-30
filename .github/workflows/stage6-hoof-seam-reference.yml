@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'src/plush_pattern_lab/**'
       - 'src/plush_pattern_lab/patterns/hoof_seam_reference.py'
       - 'src/plush_pattern_lab/validation/boundary_match.py'
       - 'src/plush_pattern_lab/blender/export_stage6_hoof_seams.py'
