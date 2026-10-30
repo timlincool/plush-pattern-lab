@@ -13,12 +13,10 @@ for i in range(4):
     j = (i + 1) % 4
     FACE.extend([(i, j, j + 4), (i, j + 4, i + 4)])
 INNER = np.array(
-    [[-5.0, -5.0, 0.0], [5.0, -5.0, 0.0],
-     [5.0, 5.0, 0.0], [-5.0, 5.0, 0.0]]
+    [[-5.0, -5.0, 0.0], [5.0, -5.0, 0.0], [5.0, 5.0, 0.0], [-5.0, 5.0, 0.0]]
 )
 OUTER = np.array(
-    [[-10.0, -10.0, 0.0], [10.0, -10.0, 0.0],
-     [10.0, 10.0, 0.0], [-10.0, 10.0, 0.0]]
+    [[-10.0, -10.0, 0.0], [10.0, -10.0, 0.0], [10.0, 10.0, 0.0], [-10.0, 10.0, 0.0]]
 )
 
 
@@ -55,9 +53,7 @@ def test_vertical_mesh_band_projection_collapses_surface():
         (np.vstack([INNER, OUTER]), FACE, [0, 1, 2, 8]),
     ],
 )
-def test_invalid_geometry_must_not_be_silently_repaired(
-    bad_mesh, bad_faces, bad_seam
-):
+def test_invalid_geometry_must_not_be_silently_repaired(bad_mesh, bad_faces, bad_seam):
     with pytest.raises(ValueError):
         projection_screen(bad_mesh, bad_faces, bad_seam)
 
