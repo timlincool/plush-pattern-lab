@@ -69,15 +69,12 @@ def _triangle_metrics(vertices, projected, faces):
     fractions = np.zeros_like(length3)
     fractions[valid] = np.abs(1 - length2[valid] / length3[valid])
     area3 = 0.5 * np.linalg.norm(
-        np.cross(original[:, 1] - original[:, 0],
-                 original[:, 2] - original[:, 0]),
+        np.cross(original[:, 1] - original[:, 0], original[:, 2] - original[:, 0]),
         axis=1,
     )
     signed2 = 0.5 * (
-        (flat[:, 1, 0] - flat[:, 0, 0])
-        * (flat[:, 2, 1] - flat[:, 0, 1])
-        - (flat[:, 1, 1] - flat[:, 0, 1])
-        * (flat[:, 2, 0] - flat[:, 0, 0])
+        (flat[:, 1, 0] - flat[:, 0, 0]) * (flat[:, 2, 1] - flat[:, 0, 1])
+        - (flat[:, 1, 1] - flat[:, 0, 1]) * (flat[:, 2, 0] - flat[:, 0, 0])
     )
     return fractions, area3, signed2, zero3
 
@@ -102,9 +99,7 @@ def projection_screen(vertices_mm, faces, seam_ids):
         },
         "degenerate_3d_edges": zero3,
         "degenerate_3d_triangles": int(np.count_nonzero(area3 <= 1e-10)),
-        "collapsed_projected_triangles": int(
-            np.count_nonzero(ratio <= 1e-4)
-        ),
+        "collapsed_projected_triangles": int(np.count_nonzero(ratio <= 1e-4)),
         "projected_area_ratio": {
             "median": float(np.median(ratio)),
             "p05": float(np.quantile(ratio, 0.05)),
