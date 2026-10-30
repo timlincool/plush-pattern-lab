@@ -27,7 +27,8 @@ def test_migration_provenance_is_precise_and_does_not_claim_binary_copy():
     assert origin["public_repo"] == "timlincool/plush-pattern-lab"
     assert set(item["file"] for item in origin["files"]) == EXPECTED
     assert not origin["actual_blend_included"]
-    assert not origin["original_png_included"]
+    assert origin["original_png_included"]
+    assert origin["status"] == "REFERENCE_IMAGES_PUBLIC_STAGE6_PENDING"
     assert not origin["release_archives_migrated"]
     assert all(
         re.fullmatch(r"[0-9a-f]{40}", item["source_blob_sha"])

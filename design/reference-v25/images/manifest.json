@@ -1,9 +1,31 @@
 {
   "schema_version": 1,
-  "description": "已迁入本仓库的原型工程对照 PNG；历史阶段，不代表 Stage 6 最新渲染或实体制造验收。",
+  "description": "公开仓库原型开发所需的4张真实PNG，含来源/脱敏 SHA 和历史阶段边界；不代表实体制造验收。",
   "license": "CC BY 4.0",
   "attribution": "Cloud Alpaca / timlincool",
   "files": [
+    {
+      "path": "original-design.png",
+      "role": "原始约25cm云朵羊驼外形目标（设计图，不是实物）",
+      "width": 1254,
+      "height": 1254,
+      "size_bytes": 1970766,
+      "sha256": "0ecf0fb619b1295dc7301af799b2b8ac2ab22fc8918ffca6378b5136ae164afa",
+      "git_blob_sha1": "6e5aa9b6f4cd48cb18bf6e25f463d51acccff741",
+      "private_source_git_blob_sha1": "aefcd9d06deb2cc6d54fd6d3a1bfcba0a7ad5299",
+      "redaction": "removed one nonessential caBX ancillary chunk; retained original critical chunks and IDAT bytes"
+    },
+    {
+      "path": "selected-D-appearance.png",
+      "role": "H胸云＋E侧云＋D额云选中外观；不等于Stage6四蹄新渲染",
+      "width": 1000,
+      "height": 1000,
+      "size_bytes": 1299640,
+      "sha256": "af62d94229f0a1e556c94054d477bfe175ff6d5a8fa6a2b76afce6e6668de685",
+      "git_blob_sha1": "8ed68a52f3efed561465fa5950789fca7626e6a0",
+      "private_source_git_blob_sha1": "5c004facb337866e962d10ad0117d6eed2bef6ff",
+      "redaction": "removed EXIF, camera/date/file text, pixel offset and other ancillary chunks; original IDAT bytes retained"
+    },
     {
       "path": "single-hoof-seam-comparison.png",
       "role": "单蹄共享几何接缝历史对照",
@@ -24,8 +46,6 @@
     }
   ],
   "not_migrated": [
-    "original-design.png",
-    "selected-D-appearance.png",
     "cloud-alpaca-stage6.blend"
   ]
 }

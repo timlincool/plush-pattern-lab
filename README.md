@@ -144,12 +144,12 @@ python scripts/build_prototype_kit.py --input /tmp/plush-input.json --output-dir
 
 ## 云朵羊驼的唯一公开开发仓库
 
-**后续研发先读：[原型开发基线（唯一入口）](docs/原型开发基线.md)。** 这里集中区分原设计目标、第25轮外观、Stage 6 四蹄模型和目前的合成布壳；列明已经迁入的参数与尚缺少的二进制素材。所有新功能、测试和设计变更只在本仓库进行。
+**后续研发先读：[原型开发基线（唯一入口）](docs/原型开发基线.md)。** 四张真实原型/工程图片已在[本仓库参考目录](design/reference-v25/images/README.md)；第25轮合同、当前合成布壳、Stage 6 尚缺模型的边界在基线中明确。所有新功能、测试和设计变更只在本仓库进行。
 
 
 过去私有项目的**7份经审查视觉与几何注册参考**现已迁入 [design/reference-v25](design/reference-v25/README.md)，包含原始25cm造型目标、面部刺绣、10枚雨滴挂点及历史模型SHA。新源码、模拟、纸样、测试和项目Skills今后都只维护本公开项目；原私有仓库暂作只读冷归档。
 
-**注意：** 已补齐[两张单蹄工程对照 PNG](design/reference-v25/images/README.md)，但原始设计PNG、选中 D 外观PNG、完整可编辑 `.blend` 和六阶段模型恢复ZIP仍未全部搬入公开资源，因此暂时无法在本公开仓库一键还原原羊驼外观。详见 [迁移状态和剩余步骤](docs/PUBLIC_SOURCE_MIGRATION_20261026.md)。公开数据采用已列明范围的 [CC0](ASSET_LICENSE.md)，代码继续用MIT；视觉目标与当前椭球物理仿真不是同一项已完成成果。
+**原始设计图、选中 D 外观和两张单蹄工程对照 PNG 均已迁入**[同仓库的原型图片目录](design/reference-v25/images/README.md)，有固定哈希与自动校验；Stage 6 最新四蹄 `.blend` 与六阶段灾备 ZIP 仍未进入本公开仓库，因此尚不能宣称最终四蹄原型可独立重建。详见 [迁移状态和剩余步骤](docs/PUBLIC_SOURCE_MIGRATION_20261026.md)。公开数据采用已列明范围的 [CC0](ASSET_LICENSE.md)，代码继续用MIT；视觉目标与当前椭球物理仿真不是同一项已完成成果。
 
 
 ## 真实模型几何接口检查（不是纸样批准）
