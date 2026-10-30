@@ -77,10 +77,10 @@ def check_workflows(files: dict[str, str]) -> None:
             assert "sha256sum -c -" in content, (filename, "Blender hash check")
         if filename == "stage6-hoof-seam-reference.yml":
             assert STAGE6_PUBLIC_URL in content, (filename, "public input")
-            assert (
-                f'echo "{STAGE6_SHA256}  $RUNNER_TEMP/stage6.blend"'
-                in content
-            ), (filename, "pinned Stage6 sha256")
+            assert f'echo "{STAGE6_SHA256}  $RUNNER_TEMP/stage6.blend"' in content, (
+                filename,
+                "pinned Stage6 sha256",
+            )
             assert "--disable-autoexec" in content, (filename, "autoexec disabled")
             assert "cloud-alpaca-plush" not in content, (filename, "private source")
         jobs = cfg.get("jobs")
