@@ -231,3 +231,14 @@ def test_reject_stage6_autoexec():
         "--disable-autoexec --python-exit-code",
         "--python-exit-code",
     )
+
+
+def test_reject_second_stage6_blender_autoexec():
+    files = workflows_on_disk()
+    key = "stage6-hoof-seam-reference.yml"
+    original = "--disable-autoexec --python-exit-code"
+    assert files[key].count(original) == 2
+    prefix, tail = files[key].rsplit(original, 1)
+    files[key] = prefix + "--python-exit-code" + tail
+    with pytest.raises((AssertionError, yaml.YAMLError)):
+        check_workflows(files)
