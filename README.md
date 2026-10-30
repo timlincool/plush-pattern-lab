@@ -152,6 +152,10 @@ python scripts/build_prototype_kit.py --input /tmp/plush-input.json --output-dir
 **四张参考 PNG 均在[本仓库图片目录](design/reference-v25/images/README.md)；Stage 6 四蹄可编辑 `.blend` 已进入[同仓库公开 Release](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028)**，可匿名下载验证。尚未迁入的是旧六阶段从零恢复 ZIP/原始生成脚本；这不影响从当前 Stage 6 继续研发，但不能宣称历史全链跨环境稳定重建或实体制造合格。详见[唯一开发基线](docs/原型开发基线.md)。四 PNG/Stage 6 原创视觉模型 CC BY 4.0，原七份参考 CC0，源码 MIT。
 
 
+## Stage 6 四蹄的真实 3D→2D 接缝参考（研究阶段）
+
+[弧长对位与投影失真说明](docs/STAGE6_HOOF_SEAM_REFERENCE.md) 直接读取已公开的 Stage 6 可编辑 Blender 模型，生成四蹄与主体的一一拓扑配对、Q0～Q3 标记、真实三维缝线弧长与可检查的 1:1 SVG 参考。**SVG 是投影及弧长标尺，不是面片展平，更不是可剪裁的纸样。** 可信主分支 Blender 工作流负责下载后验签并保留研究证据。
+
 ## 真实模型几何接口检查（不是纸样批准）
 
 新增 [主体与四蹄三维边界审计](docs/REAL_MODEL_INTERFACES.md)：在隔离的 Blender 4.3.2 中读取用户自行提供并验签的模型，检查四组 512 点环的有向配对、世界坐标和周长。算法与负例测试存于本仓库；已验签的 Stage 6 模型通过同仓库 Release 提供，不写入 Git 历史。几何接口成立不等于二维纸样、缝制或填棉合格。
