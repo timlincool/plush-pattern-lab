@@ -26,6 +26,19 @@ blender --disable-autoexec --python-exit-code 1 -b -t 1 \
 
 主分支可信工作流 `.github/workflows/stage6-hoof-seam-reference.yml` 从公开 Release 匿名下载模型、核验 SHA 后在无凭据 Runner 上只读执行 Blender，保留 7 天 JSON/SVG 小证据，不上传 90MB `.blend`。不在 PR 中执行第三方代码或未经审核的模型。
 
+## 实际 Stage 6 Blender 4.3.2 结果（2026-10-30）
+
+[受信任 main 工作流 #41070210345](https://github.com/timlincool/plush-pattern-lab/actions/runs/41070210345) 从公开 Release 验证大小/SHA-256，实际以 `--disable-autoexec` 读取 469 对象中的四蹄边界，产生 4 份配对和 [JSON / SVG Artifact](https://github.com/timlincool/plush-pattern-lab/actions/runs/41070210345/artifacts/12984223064)。[长期留档的轻量结果](../experiments/stage6_hoof_seams_20261030/summary.json) 不依赖 7 天 Artifact 有效期。
+
+| 蹄部（H） | 主体环序号 | 三维缝线周长 | 投影后周长 | 离面最大值 |
+| --- | ---: | ---: | ---: | ---: |
+| H1 / base | 1 | 101.6403 mm | 101.6403 mm | 0 mm |
+| H2 / .001 | 2 | 119.1003 mm | 119.1003 mm | 0 mm |
+| H3 / .002 | 0 | 93.3091 mm | 93.3091 mm | 0 mm |
+| H4 / .003 | 3 | 119.1003 mm | 119.1003 mm | 0 mm |
+
+四蹄均 **512 点、有向反序、最大三维边界误差 0 mm**。四个闭合环本身恰好平面，投影长度损失约为 0（浮点舍入 `1.4e-14 mm` 不计）；**不能据此推断蹄部/主体相邻三维曲面可无应变展平**，更不能输出正式裁切轮廓。
+
 ## 下一关（尚未完成）
 
 需提取主体与蹄部**相邻网格面**，按裁片分区和面片三角形做真实 2D 静止面展平，才可将 2D 缝线从“投影参考”升级为“净缝线”；然后根据面朝向和布纹决定缝份方向、增加裁切外轮廓、逐三角形伸长/翻面检测、实体试布回测。单独的环长相同、3D 接口误差为 0，**不足以**证明任何二维布片可无畸变缝合。
