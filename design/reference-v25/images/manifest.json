@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "description": "已迁入本仓库的原型工程对照 PNG；历史阶段，不代表 Stage 6 最新渲染或实体制造验收。",
+  "license": "CC BY 4.0",
+  "attribution": "Cloud Alpaca / timlincool",
+  "files": [
+    {
+      "path": "single-hoof-seam-comparison.png",
+      "role": "单蹄共享几何接缝历史对照",
+      "width": 1202,
+      "height": 759,
+      "size_bytes": 749341,
+      "sha256": "e1a6f22eecb48973ade1b20eda599ada1a47cf9d43700c32a5d38e3a9b8a65c4",
+      "git_blob_sha1": "958153749683f15fb99879093a382d409f702552"
+    },
+    {
+      "path": "single-hoof-fleece-comparison.png",
+      "role": "单蹄毛根局部修整历史对照",
+      "width": 1202,
+      "height": 784,
+      "size_bytes": 732441,
+      "sha256": "284913c42c93a726611bcf36e7d09cb230d563caeba0d9bab9190d7d62c1708a",
+      "git_blob_sha1": "2467620202569a7c94979926eebb498f1fab1c64"
+    }
+  ],
+  "not_migrated": [
+    "original-design.png",
+    "selected-D-appearance.png",
+    "cloud-alpaca-stage6.blend"
+  ]
+}

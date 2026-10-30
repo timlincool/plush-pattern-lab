@@ -149,7 +149,7 @@ python scripts/build_prototype_kit.py --input /tmp/plush-input.json --output-dir
 
 过去私有项目的**7份经审查视觉与几何注册参考**现已迁入 [design/reference-v25](design/reference-v25/README.md)，包含原始25cm造型目标、面部刺绣、10枚雨滴挂点及历史模型SHA。新源码、模拟、纸样、测试和项目Skills今后都只维护本公开项目；原私有仓库暂作只读冷归档。
 
-**注意：** 原始设计PNG、完整可编辑 `.blend` 和六阶段模型恢复ZIP还没有搬入公开Release，所以暂时无法在本公开仓库一键还原原羊驼外观。详见 [迁移状态和剩余步骤](docs/PUBLIC_SOURCE_MIGRATION_20261026.md)。公开数据采用已列明范围的 [CC0](ASSET_LICENSE.md)，代码继续用MIT；视觉目标与当前椭球物理仿真不是同一项已完成成果。
+**注意：** 已补齐[两张单蹄工程对照 PNG](design/reference-v25/images/README.md)，但原始设计PNG、选中 D 外观PNG、完整可编辑 `.blend` 和六阶段模型恢复ZIP仍未全部搬入公开资源，因此暂时无法在本公开仓库一键还原原羊驼外观。详见 [迁移状态和剩余步骤](docs/PUBLIC_SOURCE_MIGRATION_20261026.md)。公开数据采用已列明范围的 [CC0](ASSET_LICENSE.md)，代码继续用MIT；视觉目标与当前椭球物理仿真不是同一项已完成成果。
 
 
 ## 真实模型几何接口检查（不是纸样批准）
