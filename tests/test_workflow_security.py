@@ -108,6 +108,15 @@ def check_workflows(files: dict[str, str]) -> None:
             checkouts = 0
             for step in steps:
                 assert isinstance(step, dict), (filename, "malformed step")
+                if filename == "stage6-hoof-seam-reference.yml":
+                    script = step.get("run", "")
+                    if isinstance(script, str):
+                        for command in script.splitlines():
+                            if command.strip().startswith('"$BLENDER" '):
+                                assert "--disable-autoexec" in command, (
+                                    filename,
+                                    "every Blender script must disable autoexec",
+                                )
                 if "uses" not in step:
                     continue
                 action = step["uses"]
