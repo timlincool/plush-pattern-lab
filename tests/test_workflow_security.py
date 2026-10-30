@@ -108,6 +108,15 @@ def check_workflows(files: dict[str, str]) -> None:
             checkouts = 0
             for step in steps:
                 assert isinstance(step, dict), (filename, "malformed step")
+                if filename == "stage6-hoof-seam-reference.yml":
+                    script = step.get("run", "")
+                    if isinstance(script, str):
+                        for command in script.splitlines():
+                            if command.strip().startswith('"$BLENDER" '):
+                                assert "--disable-autoexec" in command, (
+                                    filename,
+                                    "every Blender script must disable autoexec",
+                                )
                 if "uses" not in step:
                     continue
                 action = step["uses"]
@@ -222,3 +231,14 @@ def test_reject_stage6_autoexec():
         "--disable-autoexec --python-exit-code",
         "--python-exit-code",
     )
+
+
+def test_reject_second_stage6_blender_autoexec():
+    files = workflows_on_disk()
+    key = "stage6-hoof-seam-reference.yml"
+    original = "--disable-autoexec --python-exit-code"
+    assert files[key].count(original) == 2
+    prefix, tail = files[key].rsplit(original, 1)
+    files[key] = prefix + "--python-exit-code" + tail
+    with pytest.raises((AssertionError, yaml.YAMLError)):
+        check_workflows(files)
