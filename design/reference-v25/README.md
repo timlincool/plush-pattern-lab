@@ -11,6 +11,6 @@
 - `candidate25_manifest.json`：完整模型、数据、渲染的哈希及文件名，**不包含其二进制**；
 - `PROVENANCE.json`：七个原文Git blob SHA及迁移状态。
 
-目前[两张单蹄工程对照 PNG](images/README.md)已由私有来源按原字节迁入公开仓，并提供校验清单；**原始设计 PNG、选中 D 外观 PNG、Stage 6 可编辑 Blender 模型及完整恢复链仍未迁入**，不能据此宣称完整原型可复现或通过制造验收。
+目前[原始设计、选中 D 外观与两张单蹄工程对照 PNG](images/README.md)已全部迁入本公开仓库，各有 SHA-256 与 PNG 元数据校验；**Stage 6 可编辑 Blender 模型与完整六阶段恢复链仍未迁入**，不能据此宣称最终工程模型可独立复现或通过制造验收。
 
 [整合审查](../../docs/PUBLIC_SOURCE_MIGRATION_20261026.md) · [许可](../../ASSET_LICENSE.md)。
