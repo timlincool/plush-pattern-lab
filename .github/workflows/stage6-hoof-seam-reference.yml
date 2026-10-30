@@ -10,6 +10,7 @@ on:
       - 'src/plush_pattern_lab/blender/export_stage6_hoof_seams.py'
       - 'src/plush_pattern_lab/blender/audit_hoof_interfaces.py'
       - 'scripts/export_stage6_hoof_seams.py'
+      - 'scripts/probe_stage6_seam_band.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -75,6 +76,33 @@ jobs:
                'projection_loss_mm': h['projection_diagnostics']['projection_length_loss_mm'],
                'max_out_of_plane_mm': h['projection_diagnostics']['max_out_of_plane_mm']}
               for h in obj['hoofs']]))
+          PY
+      - name: Survey true Stage 6 boundary-adjacent mesh faces (no flattening)
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/probe_stage6_seam_band.py -- \
+            --input "$RUNNER_TEMP/stage6.blend" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --output "$RUNNER_TEMP/stage6-reference/adjacent_face_survey.json"
+          python - <<'PY'
+          import json, os, pathlib
+          file = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/adjacent_face_survey.json'
+          data = json.loads(file.read_text(encoding='utf8'))
+          assert data['schema'] == 'stage6-adjacent-face-topology-v1'
+          assert data['status'] == 'TOPOLOGY_SURVEY_ONLY_NO_FLATTENING'
+          assert data['all_original_3d_seams_match']
+          assert len(data['objects']) == 5
+          assert [len(obj['rings']) for obj in data['objects']] == [4, 1, 1, 1, 1]
+          assert all(ring['boundary_vertices'] == 512 for obj in data['objects'] for ring in obj['rings'])
+          print('STAGE6_REAL_ADJACENT_FACE_SURVEY', json.dumps([
+              {'object': row['object'], 'rings': [{
+                  'index': item['ring_index'],
+                  'polygons': item['polygon_vertex_counts'],
+                  'regular_quad_strip': item['regular_quad_strip'],
+                  'reason': item.get('quad_strip_failure_reason', ''),
+              } for item in row['rings']]} for row in data['objects']]))
           PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
