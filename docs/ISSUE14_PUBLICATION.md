@@ -49,3 +49,11 @@ python scripts/verify_issue14_public_release.py \
 进一步使用 Blender 4.3.2 验证网格时，应在隔离环境里使用 `--disable-autoexec`，并执行 `scripts/audit_hoof_interfaces.py`。独立 SHA 与四蹄接口验证不等于二维布片、实体打样或制造放行。
 
 **完成条件分层：** 第一批视觉资产匿名验签通过，只能将“视觉资产公开”标记完成；六份源 ZIP 的可公开恢复、完整独立重建与旧私有仓库 Archived 仍保持未完成，Issue #14 不提前关闭。
+
+## 2026-10-30 实际迁移进展（优先满足单仓库研发）
+
+原始设计、选中 D 阶段外观与两张单蹄工程对照 **四张 PNG 已提交至本公开仓库 Git 的 `design/reference-v25/images/`**，详情见 [图片与哈希清单](../design/reference-v25/images/README.md)。已在本仓库用字节大小、来源/目标哈希和 PNG CRC/元数据测试验签；不必再为图片额外建立一个 Release。
+
+剩余独立任务是把约 89.85 MB 的 `cloud-alpaca-stage6.blend` 放入**本公开仓库的 Release**，从公共地址独立下载验证其原始候选 SHA-256、Blender 禁用自动执行重开与几何守卫，然后让后续研发只取本公开仓库。六份历史 ZIP 仅用于溯源/灾备而非日常开发输入，保留安全门禁；旧私有仓不得在未保存唯一来源前删除。
+
+以上是对本文 2026-10-28 第一批五资产方案的**更新**；历史审批与验证记录保留，但不再需要重复公开四张已经入库的 PNG。
