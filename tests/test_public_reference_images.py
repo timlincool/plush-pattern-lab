@@ -50,7 +50,13 @@ def test_public_reference_image_inventory() -> None:
     manifest = json.loads((IMAGE_DIR / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["schema_version"] == 1
     assert manifest["license"] == "CC BY 4.0"
-    assert len(manifest["files"]) == 2
+    assert {item["path"] for item in manifest["files"]} == {
+        "original-design.png",
+        "selected-D-appearance.png",
+        "single-hoof-seam-comparison.png",
+        "single-hoof-fleece-comparison.png",
+    }
+    assert manifest["not_migrated"] == ["cloud-alpaca-stage6.blend"]
 
     for entry in manifest["files"]:
         path = IMAGE_DIR / entry["path"]
