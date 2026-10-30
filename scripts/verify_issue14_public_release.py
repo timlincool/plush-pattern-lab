@@ -37,6 +37,20 @@ def read_release_metadata() -> None:
     _proof.validate_release_metadata(raw)
 
 
+def hash_stream(response, output, expected_bytes: int) -> tuple[int, str]:
+    """Hash a remote stream with a hard byte ceiling and optional destination."""
+    digest = hashlib.sha256()
+    consumed = 0
+    while block := response.read(READ_BYTES):
+        consumed += len(block)
+        if consumed > expected_bytes:
+            raise ValueError("Stage 6 asset exceeds pinned size")
+        digest.update(block)
+        if output is not None:
+            output.write(block)
+    return consumed, digest.hexdigest()
+
+
 def stream_binary(
     filename: str,
     expected_bytes: int,
@@ -52,32 +66,23 @@ def stream_binary(
         _proof.release_asset_url(),
         headers={"User-Agent": "alpaca-anonymous-stage6-verifier"},
     )
-    digest = hashlib.sha256()
-    consumed = 0
     created = False
     try:
         with urllib.request.urlopen(request, timeout=90) as response:
             output = destination.open("xb") if destination is not None else None
             created = output is not None
             try:
-                while block := response.read(READ_BYTES):
-                    consumed += len(block)
-                    if consumed > expected_bytes:
-                        raise ValueError("Stage 6 asset exceeds pinned size")
-                    digest.update(block)
-                    if output is not None:
-                        output.write(block)
+                consumed, actual_sha = hash_stream(response, output, expected_bytes)
             finally:
                 if output is not None:
                     output.close()
-        if consumed != expected_bytes or digest.hexdigest() != expected_sha:
+        if consumed != expected_bytes or actual_sha != expected_sha:
             raise ValueError("Stage 6 SHA-256 or size mismatch")
     except Exception:
         if created and destination is not None:
             destination.unlink(missing_ok=True)
         raise
     print(f"STAGE6_PUBLIC_SHA256_PASS bytes={consumed} sha256={expected_sha}")
-
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
