@@ -1,4 +1,6 @@
-# 单一公开仓库迁移审查 · 2026-10-26
+# 单一公开仓库迁移审查 · 2026-10-26（历史时点）
+
+> **当前状态（2026-10-30）：** 四张 PNG 已在公开 Git；Stage 6 `.blend` 已在[本公开仓库 Release](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028)，并由维护者完成匿名验签及 Blender 禁用自动执行的重开。后文 2026-10-26 的“尚未迁入”仅描述当时状态。六阶段恢复 ZIP 与原始生成源码继续作为私有灾备；请优先阅读[原型开发基线](原型开发基线.md)。
 
 **唯一持续开发仓库：`timlincool/plush-pattern-lab`。** 旧私有 `cloud-alpaca-plush` 暂作为只读冷归档，转移并复验唯一模型后才可归档冻结；不把其整条Git历史复制到公开库。
 
@@ -30,3 +32,10 @@
 此文上文记录 **2026-10-26 当时状态**。现已通过一次性只读源导出、源 SHA-256 及脱敏后 SHA-256 验证，将原始设计、选中 D 外观和两张单蹄对照 PNG 纳入 [design/reference-v25/images/](../design/reference-v25/images/README.md)；维护者后续无需回旧私有仓库寻找原设计及这三张历史参考。脱敏只移除非必要 PNG 辅助块，原 IDAT 数据未变。
 
 **仍缺 Stage 6 四蹄可编辑模型**及六阶段恢复档案的公共可用副本；因此尚不能独立从公开仓重开最终 Stage 6 模型。两图/四图可用不等于整链复现。后续研发仍只在本公开仓库，旧仓作为一次性迁移来源与灾备。
+
+
+## 2026-10-30 资产归一后的最新状态
+
+- **四张参考 PNG 已在 Git；Stage 6 四蹄可编辑模型已在 [Release](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028)，89,853,017 字节、SHA-256 `38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a`**。维护者报告公开匿名下载通过、Blender 4.3.2 禁用自动执行重开成功，469 对象、四蹄配准 4/4、最大误差 0 mm。这个结果只证明模型迁移及几何接口，不代表已完成纸样/实物。
+- **仍在私有仓：** `archive-20261023` 19 份 ZIP 中的六阶段恢复原件、`issue14-zip-staging-20261028` 六份脱敏候选 ZIP、`source/` 中的旧外观/工程重建脚本和历史 `.blend`/Artifact。完整六阶段严格恢复曾通过一次，但增强隐私清理版跨 Runner H/C3 云绒对象签名存在非稳定性。因此可以从已公开 Stage 6 开发，不能宣称从零稳定复现旧全链。
+- **不迁移：** 旧高权限自动合并、凭据、私有日志/路径、未经核准的第三方素材。旧私有仓留冷备、不再开发；归档与备份治理单独处理。

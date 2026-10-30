@@ -40,7 +40,7 @@
 **原型、所选外观、Stage 6 几何、当前可用输入与待迁入资产的权威入口：**[原型开发基线](docs/原型开发基线.md)。后续开发只以本仓库的源码、设计资料和已验证的本仓库 Release 为输入；旧私有项目仅用于一次性迁移/灾备，不保持第二条研发主线。
 
 
-参照 [`design/reference-v25/`](design/reference-v25/README.md) 记录的原始25cm羊驼目标、短雨滴挂点及刺绣坐标；这些 **只是输入合同**，不是已完成纸样/真实可制造3D几何。旧私有项目只用于尚未搬运的Release历史文件，不再在那里提交日常开发；凡新功能、Bug修复、测试与新文档均提交本公开仓库。不要复制旧仓库高权限 `workflow_run` 自动合并或不受信任PR的自动执行设置；依据 [迁移说明](docs/PUBLIC_SOURCE_MIGRATION_20261026.md) 和 `ASSET_LICENSE.md` 审查即将发布的二进制。
+参照 [`design/reference-v25/`](design/reference-v25/README.md) 记录的原始25cm羊驼目标、短雨滴挂点及刺绣坐标；这些 **只是输入合同**，不是已完成纸样/真实可制造3D几何。四张参考 PNG 和 Stage 6 四蹄可编辑模型均已公开（[Stage 6 Release](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028)，SHA-256 `38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a`）。旧私有项目仅存未迁移的六阶段历史恢复 ZIP、旧生成脚本与灾备，不再在那里提交日常开发；凡新功能、Bug修复、测试与新文档均提交本公开仓库。不要复制旧仓库高权限 `workflow_run` 自动合并或不受信任PR的自动执行设置；依据 [迁移说明](docs/PUBLIC_SOURCE_MIGRATION_20261026.md) 和 `ASSET_LICENSE.md` 审查即将发布的二进制。
 
 
 ## 原始二进制的安全迁移

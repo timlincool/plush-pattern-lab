@@ -8,6 +8,8 @@ import struct
 import zlib
 from pathlib import Path
 
+from plush_pattern_lab.validation import public_release_proof as proof
+
 ROOT = Path(__file__).resolve().parents[1]
 IMAGE_DIR = ROOT / "design" / "reference-v25" / "images"
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
@@ -56,7 +58,13 @@ def test_public_reference_image_inventory() -> None:
         "single-hoof-seam-comparison.png",
         "single-hoof-fleece-comparison.png",
     }
-    assert manifest["not_migrated"] == ["cloud-alpaca-stage6.blend"]
+    assert manifest["not_migrated"] == []
+    assert manifest["historical_six_stage_zips_public"] is False
+    model = manifest["stage6_public_release"]
+    assert model["url"] == proof.release_asset_url()
+    assert model["name"] == proof.MODEL_NAME
+    assert model["size_bytes"] == proof.MODEL_BYTES
+    assert model["sha256"] == proof.MODEL_SHA256
 
     for entry in manifest["files"]:
         path = IMAGE_DIR / entry["path"]

@@ -25,9 +25,9 @@
 - 许可全文：https://creativecommons.org/licenses/by/4.0/legalcode
 - 授权方/署名：Cloud Alpaca / timlincool。
 - 建议署名：「Cloud Alpaca visual design and model © timlincool, licensed under CC BY 4.0」；再分发须提供许可链接、标记改动，不得暗示作者为改动背书。
-- 适用范围：**本仓库已经实际提交的四张原型 PNG（见下方清单）**，以及未来经逐项核准并在本仓库 Release 列名的原创视觉与 Blender 资产。**不自动把未列名的旧私有历史附件视为已公开资产**。
+- 适用范围：**本仓库实际提交的四张原型 PNG，以及已在[Stage 6 公开 Release](https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028) 发布的原创 `cloud-alpaca-stage6.blend`（SHA-256 `38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a`）**。以后新增视觉或模型须逐项核准。**不自动把未列名的旧私有历史附件视为已公开资产**。
 - Python 源码在拥有相应权利的范围内遵循仓库 MIT 代码许可证。恢复包若同时包含源代码与艺术资产，应在发行说明中列出两类许可；第三方依赖/素材始终使用其各自许可，未核准的部分必须排除。
 - 先前明确 CC0 的七份 `design/reference-v25/` 参考文件保留 CC0，不追溯改成 CC BY 4.0。对公开发行版的额外清理与改写应保留清单中的源文件 SHA、发行版 SHA、清理类型和出处。
 - 非生产声明：许可允许商业再利用，但不构成实体玩具、缝制纸样、材料、填充、儿童产品安全或量产验收保证。
 
-**当前发布状态（2026-10-30）：** 已有四张经来源与元数据审查的 PNG 进入本公开仓库的 `design/reference-v25/images/`，其具体文件和哈希由 [manifest.json](design/reference-v25/images/manifest.json) 固定：`original-design.png`、`selected-D-appearance.png`、`single-hoof-seam-comparison.png`、`single-hoof-fleece-comparison.png`。这四张适用上述 CC BY 4.0，且与先前七份 CC0 资料分别授权。**Stage 6 可编辑 `.blend` 与六阶段 ZIP 仍未在本仓库公开**；不得以本声明代替二进制发布、安全审查或物理制造验收。
+**当前发布状态（2026-10-30）：** 已有四张经来源与元数据审查的 PNG 进入本公开仓库的 `design/reference-v25/images/`，其具体文件和哈希由 [manifest.json](design/reference-v25/images/manifest.json) 固定：`original-design.png`、`selected-D-appearance.png`、`single-hoof-seam-comparison.png`、`single-hoof-fleece-comparison.png`。这四张适用上述 CC BY 4.0，且与先前七份 CC0 资料分别授权。**Stage 6 可编辑 `.blend` 已在上述 Release 公开，但六阶段历史恢复 ZIP 仍未公开**；不得以本声明代替二进制发布、安全审查或物理制造验收。
