@@ -1,0 +1,207 @@
+{
+  "schema": "stage6-real-triangle-plane-projection-proof-v1",
+  "status": "MEASURED_PLANAR_PROJECTION_NEGATIVE_CONTROL_NOT_CUT_PATTERN",
+  "source": {
+    "repository": "timlincool/plush-pattern-lab",
+    "release_tag": "cloud-alpaca-stage6-visuals-20261028",
+    "model": "cloud-alpaca-stage6.blend",
+    "size_bytes": 89853017,
+    "sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "trusted_run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41080431215",
+    "source_commit": "cf53dcb6b01a142c1ae87329545038bc31ebee85",
+    "blender_version": "4.3.2"
+  },
+  "units": "mm",
+  "rows": [
+    {
+      "mesh": "PRIMARY continuous sculpt | new anatomy",
+      "ring_index": 0,
+      "topology": {
+        "seam_vertices": 512,
+        "outer_vertices": 256,
+        "triangles": 768,
+        "connected_components": 1,
+        "boundary_loops": 2,
+        "euler": 0,
+        "nonmanifold_edges": 0
+      },
+      "projection": {
+        "edge_relative_loss_mean": 0.18013889229050667,
+        "edge_relative_loss_p95": 0.2993776303385489,
+        "edge_relative_loss_max": 0.31503107353312043,
+        "median_projected_area_over_3d_area": 0.7076786209885337,
+        "projected_triangles_positive": 768,
+        "projected_triangles_negative": 0,
+        "projected_triangles_collapsed": 0,
+        "seam_max_out_of_plane_mm": 0
+      }
+    },
+    {
+      "mesh": "PRIMARY continuous sculpt | new anatomy",
+      "ring_index": 1,
+      "topology": {
+        "seam_vertices": 512,
+        "outer_vertices": 256,
+        "triangles": 768,
+        "connected_components": 1,
+        "boundary_loops": 2,
+        "euler": 0,
+        "nonmanifold_edges": 0
+      },
+      "projection": {
+        "edge_relative_loss_mean": 0.16164039584925347,
+        "edge_relative_loss_p95": 0.2702894674588377,
+        "edge_relative_loss_max": 0.2834890671225767,
+        "median_projected_area_over_3d_area": 0.7364158677862015,
+        "projected_triangles_positive": 768,
+        "projected_triangles_negative": 0,
+        "projected_triangles_collapsed": 0,
+        "seam_max_out_of_plane_mm": 0
+      }
+    },
+    {
+      "mesh": "PRIMARY continuous sculpt | new anatomy",
+      "ring_index": 2,
+      "topology": {
+        "seam_vertices": 512,
+        "outer_vertices": 256,
+        "triangles": 768,
+        "connected_components": 1,
+        "boundary_loops": 2,
+        "euler": 0,
+        "nonmanifold_edges": 0
+      },
+      "projection": {
+        "edge_relative_loss_mean": 0.14010362687301509,
+        "edge_relative_loss_p95": 0.2860782187062227,
+        "edge_relative_loss_max": 0.3125333244044489,
+        "median_projected_area_over_3d_area": 0.7493803622846171,
+        "projected_triangles_positive": 768,
+        "projected_triangles_negative": 0,
+        "projected_triangles_collapsed": 0,
+        "seam_max_out_of_plane_mm": 0
+      }
+    },
+    {
+      "mesh": "PRIMARY continuous sculpt | new anatomy",
+      "ring_index": 3,
+      "topology": {
+        "seam_vertices": 512,
+        "outer_vertices": 256,
+        "triangles": 768,
+        "connected_components": 1,
+        "boundary_loops": 2,
+        "euler": 0,
+        "nonmanifold_edges": 0
+      },
+      "projection": {
+        "edge_relative_loss_mean": 0.14049656529968965,
+        "edge_relative_loss_p95": 0.2871712123361322,
+        "edge_relative_loss_max": 0.3133362511994693,
+        "median_projected_area_over_3d_area": 0.7467553259339175,
+        "projected_triangles_positive": 768,
+        "projected_triangles_negative": 0,
+        "projected_triangles_collapsed": 0,
+        "seam_max_out_of_plane_mm": 0
+      }
+    },
+    {
+      "mesh": "Rounded hoof base",
+      "ring_index": 0,
+      "topology": {
+        "seam_vertices": 512,
+        "outer_vertices": 256,
+        "triangles": 768,
+        "connected_components": 1,
+        "boundary_loops": 2,
+        "euler": 0,
+        "nonmanifold_edges": 0
+      },
+      "projection": {
+        "edge_relative_loss_mean": 0.14738010317117267,
+        "edge_relative_loss_p95": 0.25270179517477115,
+        "edge_relative_loss_max": 0.2615961939245721,
+        "median_projected_area_over_3d_area": 0.7563033946432923,
+        "projected_triangles_positive": 768,
+        "projected_triangles_negative": 0,
+        "projected_triangles_collapsed": 0,
+        "seam_max_out_of_plane_mm": 0
+      }
+    },
+    {
+      "mesh": "Rounded hoof base.001",
+      "ring_index": 0,
+      "topology": {
+        "seam_vertices": 512,
+        "outer_vertices": 256,
+        "triangles": 768,
+        "connected_components": 1,
+        "boundary_loops": 2,
+        "euler": 0,
+        "nonmanifold_edges": 0
+      },
+      "projection": {
+        "edge_relative_loss_mean": 0.1256781326917343,
+        "edge_relative_loss_p95": 0.25683070846747325,
+        "edge_relative_loss_max": 0.29105510136884105,
+        "median_projected_area_over_3d_area": 0.7749556797290664,
+        "projected_triangles_positive": 768,
+        "projected_triangles_negative": 0,
+        "projected_triangles_collapsed": 0,
+        "seam_max_out_of_plane_mm": 0
+      }
+    },
+    {
+      "mesh": "Rounded hoof base.002",
+      "ring_index": 0,
+      "topology": {
+        "seam_vertices": 512,
+        "outer_vertices": 256,
+        "triangles": 768,
+        "connected_components": 1,
+        "boundary_loops": 2,
+        "euler": 0,
+        "nonmanifold_edges": 0
+      },
+      "projection": {
+        "edge_relative_loss_mean": 0.1653793523667886,
+        "edge_relative_loss_p95": 0.281697001005644,
+        "edge_relative_loss_max": 0.2910551013688393,
+        "median_projected_area_over_3d_area": 0.7278065292686604,
+        "projected_triangles_positive": 768,
+        "projected_triangles_negative": 0,
+        "projected_triangles_collapsed": 0,
+        "seam_max_out_of_plane_mm": 0
+      }
+    },
+    {
+      "mesh": "Rounded hoof base.003",
+      "ring_index": 0,
+      "topology": {
+        "seam_vertices": 512,
+        "outer_vertices": 256,
+        "triangles": 768,
+        "connected_components": 1,
+        "boundary_loops": 2,
+        "euler": 0,
+        "nonmanifold_edges": 0
+      },
+      "projection": {
+        "edge_relative_loss_mean": 0.12567813592846586,
+        "edge_relative_loss_p95": 0.25683123590082185,
+        "edge_relative_loss_max": 0.29105510136884016,
+        "median_projected_area_over_3d_area": 0.7749551446188553,
+        "projected_triangles_positive": 768,
+        "projected_triangles_negative": 0,
+        "projected_triangles_collapsed": 0,
+        "seam_max_out_of_plane_mm": 0
+      }
+    }
+  ],
+  "limitations": [
+    "Baseline is a simple orthogonal projection of each actual triangle onto the seam plane",
+    "Not an optimized low-strain parameterization, no cut/slit is modeled",
+    "Mixed triangle signs absent does not prove global non-overlap",
+    "No material/rest state, seam allowance, fabrication or safety clearance"
+  ]
+}

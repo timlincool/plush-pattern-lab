@@ -22,11 +22,11 @@ from plush_pattern_lab.validation.seam_band_topology import (
     face_profile,
     outer_ring_for_quads,
 )
-from plush_pattern_lab.validation.triangle_band_topology import (
-    analyze_triangle_patch,
-)
 from plush_pattern_lab.validation.triangle_band_projection import (
     projection_screen,
+)
+from plush_pattern_lab.validation.triangle_band_topology import (
+    analyze_triangle_patch,
 )
 
 
