@@ -18,9 +18,7 @@ def shapes(points=32, warped=False):
     for i in range(4):
         z = 0.7 * np.sin(3 * t) if warped else np.zeros(points)
         rings.append(
-            np.column_stack(
-                (12 * np.cos(t) + 110 * i, 9 * np.sin(t), z + i * 4)
-            )
+            np.column_stack((12 * np.cos(t) + 110 * i, 9 * np.sin(t), z + i * 4))
         )
     return rings
 
@@ -57,7 +55,9 @@ def test_reference_has_exact_opposing_vertex_pairings_and_arc_length():
             target = hoofs[i][notch["hoof_ring_ordinal"]]
             np.testing.assert_allclose(source, target, rtol=0, atol=1e-12)
         assert [n["id"] for n in row["notches"]] == ["Q0", "Q1", "Q2", "Q3"]
-        assert row["projection_diagnostics"]["projection_length_loss_mm"] == pytest.approx(0, abs=1e-8)
+        assert row["projection_diagnostics"][
+            "projection_length_loss_mm"
+        ] == pytest.approx(0, abs=1e-8)
 
 
 def test_source_cycle_rotation_keeps_notch_identity():
@@ -131,7 +131,14 @@ def test_svg_is_valid_1_to_1_reference_not_cut_outline():
     root = ET.fromstring(svg)
     assert root.attrib["width"].endswith("mm")
     assert root.attrib["height"].endswith("mm")
-    assert len(root.findall("{http://www.w3.org/2000/svg}g/{http://www.w3.org/2000/svg}polygon")) == 4
+    assert (
+        len(
+            root.findall(
+                "{http://www.w3.org/2000/svg}g/{http://www.w3.org/2000/svg}polygon"
+            )
+        )
+        == 4
+    )
     assert "NOT A CUT PATTERN" in svg
     assert "seam allowance" in svg
     assert "Q0" in svg and "Q3" in svg
