@@ -63,7 +63,10 @@ def _notches(body, flat, body_indices, hoof_indices):
     edges = np.linalg.norm(np.roll(body, -1, axis=0) - body, axis=1)
     stations = np.r_[0.0, np.cumsum(edges[:-1])]
     total = float(edges.sum())
-    positions = [int(np.argmin(abs(stations - fraction * total))) for fraction in (0, 0.25, 0.5, 0.75)]
+    positions = [
+        int(np.argmin(abs(stations - fraction * total)))
+        for fraction in (0, 0.25, 0.5, 0.75)
+    ]
     if len(set(positions)) != 4:
         raise ValueError("对位标记落到重复顶点，环长度分布异常")
     return (
