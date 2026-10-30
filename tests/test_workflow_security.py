@@ -12,20 +12,33 @@ import yaml
 
 BASE = Path(__file__).resolve().parents[1]
 ROOT = BASE / ".github" / "workflows"
-EXPECTED = {"ci.yml", "sewing-poc.yml", "capped-sewing.yml", "selfcollision-ab.yml"}
+EXPECTED = {
+    "ci.yml",
+    "sewing-poc.yml",
+    "capped-sewing.yml",
+    "selfcollision-ab.yml",
+    "stage6-hoof-seam-reference.yml",
+}
 ALLOWED_IF = {
     "ci.yml": "github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')",
     "sewing-poc.yml": "github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')",
     "capped-sewing.yml": "github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')",
     "selfcollision-ab.yml": "github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')",
+    "stage6-hoof-seam-reference.yml": "github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')",
 }
 ALLOWED_JOBS = {
     "ci.yml": {"python-tests"},
     "sewing-poc.yml": {"blender-sewing"},
     "capped-sewing.yml": {"sewn-caps"},
     "selfcollision-ab.yml": {"collision-study"},
+    "stage6-hoof-seam-reference.yml": {"stage6-hoof-reference"},
 }
 BLENDER_SHA256 = "4da1c956673c0485e63054e563ee69198cc8f80d8157dd7592dffc8a6a5592e6"
+STAGE6_SHA256 = "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a"
+STAGE6_PUBLIC_URL = (
+    "https://github.com/timlincool/plush-pattern-lab/releases/download/"
+    "cloud-alpaca-stage6-visuals-20261028/cloud-alpaca-stage6.blend"
+)
 PIN = re.compile(r"^actions/[A-Za-z0-9_.-]+@[0-9a-f]{40}$")
 
 
@@ -62,6 +75,14 @@ def check_workflows(files: dict[str, str]) -> None:
             # The official Blender 4.3.2 binary must be checked before tar extraction.
             assert BLENDER_SHA256 in content, (filename, "Blender SHA256")
             assert "sha256sum -c -" in content, (filename, "Blender hash check")
+        if filename == "stage6-hoof-seam-reference.yml":
+            assert STAGE6_PUBLIC_URL in content, (filename, "public input")
+            assert (
+                f'echo "{STAGE6_SHA256}  $RUNNER_TEMP/stage6.blend"'
+                in content
+            ), (filename, "pinned Stage6 sha256")
+            assert "--disable-autoexec" in content, (filename, "autoexec disabled")
+            assert "cloud-alpaca-plush" not in content, (filename, "private source")
         jobs = cfg.get("jobs")
         assert isinstance(jobs, dict) and set(jobs) == ALLOWED_JOBS[filename], (
             filename,
@@ -186,3 +207,18 @@ def test_reject_new_yaml_workflow():
     files["evil.yaml"] = "on: [pull_request]\njobs: {}\n"
     with pytest.raises(AssertionError):
         check_workflows(files)
+
+
+def test_reject_unpinned_public_stage6_asset():
+    target = "stage6-hoof-seam-reference.yml"
+    original = f'echo "{STAGE6_SHA256}  $RUNNER_TEMP/stage6.blend"'
+    tampered = f'echo "{"0" * 64}  $RUNNER_TEMP/stage6.blend"'
+    _reject(target, original, tampered)
+
+
+def test_reject_stage6_autoexec():
+    _reject(
+        "stage6-hoof-seam-reference.yml",
+        "--disable-autoexec --python-exit-code",
+        "--python-exit-code",
+    )
