@@ -17,7 +17,9 @@ def test_measured_slit_unroll_proof_is_from_the_public_stage6():
     assert not proof["approved_cut_pattern"]
     assert proof["parameters"]["inner_seam_arclength_fixed"]
     assert len(proof["bands"]) == 8
-    assert all(0 < item["p95_optimized"] < item["p95_initial"] for item in proof["bands"])
+    assert all(
+        0 < item["p95_optimized"] < item["p95_initial"] for item in proof["bands"]
+    )
     assert all(
         item["flips"] == 0
         and item["overlap_pairs"] == 0
