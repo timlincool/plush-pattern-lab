@@ -156,6 +156,8 @@ python scripts/build_prototype_kit.py --input /tmp/plush-input.json --output-dir
 
 [弧长对位与投影失真说明](docs/STAGE6_HOOF_SEAM_REFERENCE.md) 直接读取已公开的 Stage 6 可编辑 Blender 模型，生成四蹄与主体的一一拓扑配对、Q0～Q3 标记、真实三维缝线弧长与可检查的 1:1 SVG 参考。**SVG 是投影及弧长标尺，不是面片展平，更不是可剪裁的纸样。** 可信主分支 Blender 工作流负责下载后验签并保留研究证据。
 
+**新增研究：** [Stage 6 三角环带周期切缝与边长稀疏优化](docs/STAGE6_SLIT_UNROLL.md) 将真实 8 组三角环带沿一条径向缝切开，固定内侧三维弧长并稀疏优化外圈二维坐标；单独检查逐边误差、翻面和重叠。此实验尚非纸样制造门禁。
+
 ## 真实模型几何接口检查（不是纸样批准）
 
 新增 [主体与四蹄三维边界审计](docs/REAL_MODEL_INTERFACES.md)：在隔离的 Blender 4.3.2 中读取用户自行提供并验签的模型，检查四组 512 点环的有向配对、世界坐标和周长。算法与负例测试存于本仓库；已验签的 Stage 6 模型通过同仓库 Release 提供，不写入 Git 历史。几何接口成立不等于二维纸样、缝制或填棉合格。

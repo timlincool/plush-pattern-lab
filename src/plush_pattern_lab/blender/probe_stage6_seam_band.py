@@ -30,8 +30,8 @@ from plush_pattern_lab.validation.triangle_band_topology import (
 )
 
 
-def _patch_plane_metrics(obj, mesh, ring, faces):
-    """Evaluate 3D triangle geometry against a seam-plane projection baseline."""
+def _patch_geometry(obj, mesh, ring, faces):
+    """Copy only the audited local triangles, in mm, to an ephemeral file."""
     used = sorted({vertex for face in faces for vertex in face})
     lookup = {value: index for index, value in enumerate(used)}
     coords = (
@@ -41,12 +41,21 @@ def _patch_plane_metrics(obj, mesh, ring, faces):
         )
         * 1000
     )
-    triangles = [[lookup[v] for v in face] for face in faces]
-    seam_indices = [lookup[v] for v in ring]
-    return projection_screen(coords, triangles, seam_indices)
+    return {
+        "vertices_mm": coords.tolist(),
+        "faces": [[lookup[v] for v in face] for face in faces],
+        "seam_ids": [lookup[v] for v in ring],
+    }
 
 
-def inspect_object(obj):
+def _patch_plane_metrics(patch):
+    """Evaluate 3D triangle geometry against a seam-plane projection baseline."""
+    return projection_screen(
+        patch["vertices_mm"], patch["faces"], patch["seam_ids"]
+    )
+
+
+def inspect_object(obj, geometry=None):
     """Read only one face around each topological seam edge."""
     bm = bmesh.new()
     try:
@@ -85,9 +94,12 @@ def inspect_object(obj):
                     "failure_reason": str(error),
                 }
             if report["vertex_one_ring_patch"]["candidate_triangular_annulus"]:
-                report["plane_projection_baseline"] = _patch_plane_metrics(
-                    obj, bm, ring, patch_faces
-                )
+                patch = _patch_geometry(obj, bm, ring, patch_faces)
+                report["plane_projection_baseline"] = _patch_plane_metrics(patch)
+                if geometry is not None:
+                    geometry.append(
+                        {"object": obj.name, "ring_index": index, **patch}
+                    )
             if report["regular_quad_strip"]:
                 outer = outer_ring_for_quads(ring, faces)
                 radial = np.array(
@@ -114,7 +126,7 @@ def inspect_object(obj):
         bm.free()
 
 
-def generate_report(source_sha):
+def generate_report(source_sha, geometry=None):
     """Verify the existing strict four-hoof geometry gate before surveying."""
     verified = build_report(source_sha)
     if not verified["all_geometry_interfaces_match"]:
@@ -122,7 +134,12 @@ def generate_report(source_sha):
     objects = _source_objects()
     if len(objects) != 5:
         raise ValueError("missing body or four hoof objects")
-    entries = [{"object": obj.name, "rings": inspect_object(obj)} for obj in objects]
+    entries = [
+        {"object": obj.name, "rings": inspect_object(obj, geometry)}
+        for obj in objects
+    ]
+    if geometry is not None:
+        geometry.sort(key=lambda x: (x["object"], x["ring_index"]))
     return {
         "schema": "stage6-adjacent-face-topology-v1",
         "status": "TOPOLOGY_SURVEY_ONLY_NO_FLATTENING",
@@ -150,6 +167,7 @@ def main():
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--source-sha256", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--geometry-output", type=Path)
     args = parser.parse_args(
         sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     )
@@ -159,11 +177,32 @@ def main():
         raise ValueError("input .blend does not exist")
     if args.output.suffix != ".json" or args.output.exists():
         raise ValueError("output must be an unused .json path")
+    if args.geometry_output is not None:
+        if args.geometry_output.suffix != ".json":
+            raise ValueError("ephemeral patch geometry must be JSON")
+        if args.geometry_output.exists() or args.geometry_output.is_symlink():
+            raise FileExistsError("refuse to overwrite exported patch geometry")
+        if args.geometry_output.resolve() == args.output.resolve():
+            raise ValueError("geometry and survey report need separate files")
     source_sha = sha256_file(args.input)
     if source_sha != args.source_sha256:
         raise ValueError("input source SHA-256 mismatch; refusing to open")
     bpy.ops.wm.open_mainfile(filepath=str(args.input.resolve()), load_ui=False)
-    report = generate_report(source_sha)
+    extracted = [] if args.geometry_output is not None else None
+    report = generate_report(source_sha, extracted)
+    if extracted is not None:
+        if len(extracted) != 8:
+            raise ValueError("expected exactly eight authentic triangular rings")
+        payload = {
+            "schema": "stage6-verified-local-triangle-bands-v1",
+            "source_sha256": source_sha,
+            "units": "mm",
+            "patches": extracted,
+        }
+        args.geometry_output.parent.mkdir(parents=True, exist_ok=True)
+        args.geometry_output.write_text(
+            json.dumps(payload, ensure_ascii=False), encoding="utf-8"
+        )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
