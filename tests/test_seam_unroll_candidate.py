@@ -99,7 +99,7 @@ def test_reject_untrusted_or_degenerate_geometry(case):
 
 
 def _eight_patches():
-    xyz, faces, seam = _mesh()
+    xyz, faces, seam = _mesh(count=512)
     objects = [(BODY, index) for index in range(4)]
     objects.extend((name, 0) for name in HOOFS)
     return {
@@ -129,7 +129,7 @@ def test_cli_research_evaluation_and_svg_are_not_cut_patterns():
     root = ET.fromstring(svg)
     assert root.attrib["width"].endswith("mm")
     assert "NOT A CUT PATTERN" in svg
-    assert len(root.findall(".//{http://www.w3.org/2000/svg}polygon")) == 768
+    assert len(root.findall(".//{http://www.w3.org/2000/svg}polygon")) == 8 * 768
 
 
 def test_cli_rejects_bad_identity_and_missing_band():

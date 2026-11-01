@@ -29,3 +29,17 @@ python scripts/unroll_stage6_triangle_band.py \
 
 - Mori & Igarashi, *Plushie: An Interactive Design System for Plush Toys*, ACM TOG (2007), https://doi.org/10.1145/1276377.1276433：纸样几何与缝制模拟必须构成反馈。
 - *Bounded-Distortion Piecewise Mesh Parameterization*, ETH IGL, https://igl.ethz.ch/projects/parameterization/BDPMP/index.php：切缝分片与失真应联合考虑。本实现不宣称具有该论文的方法或严格失真上界。
+
+## 2026-11-01 真实 Stage 6 实验结果
+
+[Blender + SciPy 受信任运行 #41282869818](https://github.com/timlincool/plush-pattern-lab/actions/runs/41282869818) 已从公开 SHA 固定的 .blend 提取原始三角面，在隔离 Runner 中完成八组参数化并产生真实 JSON / SVG（七日 Artifact）。无需返回旧私有仓库。长期可审计的[八组测量摘要](../experiments/stage6_slit_unroll_20261101/summary.json)已固定源 SHA、运行号、求解结果和失效条件。
+
+| 局部环带 | 稀疏优化前 P95 | 稀疏优化后 P95 |
+| --- | ---: | ---: |
+| 主体环 0 | 8.73% | 3.47% |
+| 主体环 1 | 9.29% | 3.46% |
+| 主体环 2 | 17.97% | 2.77% |
+| 主体环 3 | 17.98% | 2.73% |
+| 四个蹄部 | 3.73%～10.46% | 2.28%～2.79% |
+
+全部 8/8 求解收敛、每组一条径向切缝、局部面片翻转数 0、二维三角面**检测到的重叠对数 0**。但原始完整 JSON 显示最坏单边误差仍约 **9.31%**，因此下轮应针对最差边/局部片段优化并保持独立重叠门禁；不可据 P95 晋升为生产纸样。注意此实验的“优化前”是同一周期接缝的初始猜测，与历史“整体平面投影”的约束不同，不能把两个 P95 直接当作严格 A/B 结论。
