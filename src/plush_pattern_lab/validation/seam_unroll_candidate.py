@@ -63,9 +63,7 @@ def _validate(vertices_mm, faces, seam_ids):
 
 
 def _edges(tri, xyz):
-    edges = np.concatenate(
-        (tri[:, [0, 1]], tri[:, [1, 2]], tri[:, [2, 0]])
-    )
+    edges = np.concatenate((tri[:, [0, 1]], tri[:, [1, 2]], tri[:, [2, 0]]))
     edges = np.unique(np.sort(edges, axis=1), axis=0)
     lengths = np.linalg.norm(xyz[edges[:, 1]] - xyz[edges[:, 0]], axis=1)
     if np.any(lengths <= 1e-9):
@@ -78,9 +76,7 @@ def _wrap(values, period):
 
 
 def _seam_stations(xyz, seam):
-    distances = np.linalg.norm(
-        xyz[np.roll(seam, -1)] - xyz[seam], axis=1
-    )
+    distances = np.linalg.norm(xyz[np.roll(seam, -1)] - xyz[seam], axis=1)
     if np.any(distances <= 1e-9):
         raise ValueError("zero-length 3D seam edge")
     return np.r_[0.0, np.cumsum(distances[:-1])], float(distances.sum())
@@ -143,9 +139,7 @@ def _jacobian_pattern(edges, outer):
 def _optimize(uv, outer, guess, radii, edges, lengths, period, budget):
     if not 5 <= budget <= 100:
         raise ValueError("optimization iteration budget out of bounds")
-    low = np.column_stack(
-        (guess[:, 0] - period / 8, np.full(len(outer), 1e-4))
-    ).ravel()
+    low = np.column_stack((guess[:, 0] - period / 8, np.full(len(outer), 1e-4))).ravel()
     high = np.column_stack(
         (guess[:, 0] + period / 8, np.maximum(2 * radii, guess[:, 1] + 1))
     ).ravel()
@@ -175,9 +169,7 @@ def _optimize(uv, outer, guess, radii, edges, lengths, period, budget):
 
 def _distortion(xyz, tri, corners, area3):
     triangle_xyz = xyz[tri]
-    target = np.linalg.norm(
-        triangle_xyz[:, [1, 2, 0]] - triangle_xyz, axis=2
-    )
+    target = np.linalg.norm(triangle_xyz[:, [1, 2, 0]] - triangle_xyz, axis=2)
     found = np.linalg.norm(corners[:, [1, 2, 0]] - corners, axis=2)
     relative = np.abs(found / target - 1).ravel()
     a = corners[:, 1] - corners[:, 0]
@@ -211,9 +203,7 @@ def _cut_edges(tri, corners):
     cuts = []
     for edge, adjacent in owners.items():
         if len(adjacent) == 2:
-            max_gap = max(
-                np.linalg.norm(adjacent[0][v] - adjacent[1][v]) for v in edge
-            )
+            max_gap = max(np.linalg.norm(adjacent[0][v] - adjacent[1][v]) for v in edge)
             if max_gap > 1e-5:
                 cuts.append(edge)
     return cuts
@@ -222,9 +212,7 @@ def _cut_edges(tri, corners):
 def _overlap(corners):
     polygons = [Polygon(face) for face in corners]
     if any(not shape.is_valid for shape in polygons):
-        return {
-            "invalid_polygon_count": sum(not shape.is_valid for shape in polygons)
-        }
+        return {"invalid_polygon_count": sum(not shape.is_valid for shape in polygons)}
     spatial = STRtree(polygons)
     count, total = 0, 0.0
     for i, shape in enumerate(polygons):
@@ -258,9 +246,7 @@ def unroll_triangular_band(vertices_mm, faces, seam_ids, budget=60):
     uv[seam, 0] = stations
     uv[outer] = guess
     baseline = _distortion(xyz, tri, _corner_uv(uv, tri, period), area3)
-    solver, hits = _optimize(
-        uv, outer, guess, radii, edges, lengths, period, budget
-    )
+    solver, hits = _optimize(uv, outer, guess, radii, edges, lengths, period, budget)
     corners = _corner_uv(uv, tri, period)
     cuts = _cut_edges(tri, corners)
     return {

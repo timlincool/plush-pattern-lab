@@ -43,19 +43,19 @@ def draw_slit_unroll_svg(results, layouts):
         parts.extend(
             [
                 '</g><g fill="#273c49" font-size="3.4">',
-                f'<text x="{origin[0]:.2f}" y="{origin[1]-6:.2f}">'
-                f'{label} / ring {record["ring_index"]}</text>',
-                f'<text x="{origin[0]:.2f}" y="{origin[1]-2:.2f}">'
-                f'p95 {quality["p95_abs_edge_relative_error"]:.1%}; '
-                f'flips {quality["mixed_winding_or_collapsed_triangles"]}; '
-                f'overlap {record["overlap"]["overlapping_triangle_pairs"]}</text>',
+                f'<text x="{origin[0]:.2f}" y="{origin[1] - 6:.2f}">'
+                f"{label} / ring {record['ring_index']}</text>",
+                f'<text x="{origin[0]:.2f}" y="{origin[1] - 2:.2f}">'
+                f"p95 {quality['p95_abs_edge_relative_error']:.1%}; "
+                f"flips {quality['mixed_winding_or_collapsed_triangles']}; "
+                f"overlap {record['overlap']['overlapping_triangle_pairs']}</text>",
                 '</g><g fill="#f5f6f4" stroke="#71838b" stroke-width="0.09">',
             ]
         )
     parts.extend(
         [
             "</g>",
-            f'<text x="8" y="{height-4:.2f}" font-size="3.2">'
+            f'<text x="8" y="{height - 4:.2f}" font-size="3.2">'
             "RESEARCH ONLY: PERIODIC SEAM SLIT - NOT A CUT PATTERN"
             "</text>",
             "</svg>",

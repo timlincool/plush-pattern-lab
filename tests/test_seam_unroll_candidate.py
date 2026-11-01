@@ -15,9 +15,7 @@ from scripts.unroll_stage6_triangle_band import BODY, HOOFS, evaluate
 
 def _mesh(mode="cylinder", count=64):
     theta = np.arange(count) * 2 * np.pi / count
-    inner = np.column_stack(
-        (10 * np.cos(theta), 10 * np.sin(theta), np.zeros(count))
-    )
+    inner = np.column_stack((10 * np.cos(theta), 10 * np.sin(theta), np.zeros(count)))
     nouter = count // 2
     phase = np.arange(nouter) * 2 * np.pi / nouter
     outer = np.column_stack(
