@@ -116,7 +116,7 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-dev.txt
       - name: Pinned Python research dependencies (reviewed main only)
-        run: python -m pip install --only-binary=:all: -r requirements-dev.txt
+        run: 'python -m pip install --only-binary=:all: -r requirements-dev.txt'
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
         run: |
