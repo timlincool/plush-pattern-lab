@@ -117,6 +117,8 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - name: Pinned Python research dependencies (reviewed main only)
         run: 'python -m pip install --only-binary=:all: -r requirements-dev.txt'
+      - name: Install reviewed source package for Python CLI
+        run: python -m pip install --no-deps --no-build-isolation -e .
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
         run: |
