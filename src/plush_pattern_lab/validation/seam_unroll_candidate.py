@@ -18,6 +18,18 @@ from plush_pattern_lab.validation.triangle_band_topology import (
 )
 
 
+def _validate_indices(xyz, tri, seam):
+    """Reject invalid topology indices before any geometry or scipy work."""
+    if np.any(tri < 0) or np.any(tri >= len(xyz)):
+        raise ValueError("out-of-range face indices")
+    if np.any(seam < 0) or np.any(seam >= len(xyz)):
+        raise ValueError("out-of-range seam indices")
+    if len(np.unique(seam)) != len(seam):
+        raise ValueError("repeated seam vertex indices")
+    if any(np.any(tri[:, k] == tri[:, (k + 1) % 3]) for k in range(3)):
+        raise ValueError("triangle repeats a vertex")
+
+
 def _validate(vertices_mm, faces, seam_ids):
     xyz = np.asarray(vertices_mm, dtype=np.float64)
     tri = np.asarray(faces)
@@ -34,14 +46,7 @@ def _validate(vertices_mm, faces, seam_ids):
         raise ValueError("expected ordered seam ring indices")
     if not np.issubdtype(seam.dtype, np.integer):
         raise ValueError("seam indices must be integers")
-    if np.any(tri < 0) or np.any(tri >= len(xyz)):
-        raise ValueError("out-of-range face indices")
-    if np.any(seam < 0) or np.any(seam >= len(xyz)):
-        raise ValueError("out-of-range seam indices")
-    if len(np.unique(seam)) != len(seam):
-        raise ValueError("repeated seam vertex indices")
-    if any(np.any(tri[:, k] == tri[:, (k + 1) % 3]) for k in range(3)):
-        raise ValueError("triangle repeats a vertex")
+    _validate_indices(xyz, tri, seam)
     if not analyze_triangle_patch(seam, tri)["candidate_triangular_annulus"]:
         raise ValueError("not a connected two-boundary triangular annulus")
     triangle_xyz = xyz[tri]
