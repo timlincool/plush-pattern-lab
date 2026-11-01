@@ -162,6 +162,18 @@ def generate_report(source_sha, geometry=None):
     }
 
 
+def _validate_geometry_output(args):
+    """Refuse accidental overwrites or aliasing of geometry and survey files."""
+    if args.geometry_output is None:
+        return
+    if args.geometry_output.suffix != ".json":
+        raise ValueError("ephemeral patch geometry must be JSON")
+    if args.geometry_output.exists() or args.geometry_output.is_symlink():
+        raise FileExistsError("refuse to overwrite exported patch geometry")
+    if args.geometry_output.resolve() == args.output.resolve():
+        raise ValueError("geometry and survey report need separate files")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
@@ -177,13 +189,7 @@ def main():
         raise ValueError("input .blend does not exist")
     if args.output.suffix != ".json" or args.output.exists():
         raise ValueError("output must be an unused .json path")
-    if args.geometry_output is not None:
-        if args.geometry_output.suffix != ".json":
-            raise ValueError("ephemeral patch geometry must be JSON")
-        if args.geometry_output.exists() or args.geometry_output.is_symlink():
-            raise FileExistsError("refuse to overwrite exported patch geometry")
-        if args.geometry_output.resolve() == args.output.resolve():
-            raise ValueError("geometry and survey report need separate files")
+    _validate_geometry_output(args)
     source_sha = sha256_file(args.input)
     if source_sha != args.source_sha256:
         raise ValueError("input source SHA-256 mismatch; refusing to open")
