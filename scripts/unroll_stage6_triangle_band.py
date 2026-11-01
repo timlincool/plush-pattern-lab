@@ -113,9 +113,7 @@ def main():
                     "ring_index": row["ring_index"],
                     "p95_initial": row["initial"]["p95_abs_edge_relative_error"],
                     "p95_optimized": row["optimized"]["p95_abs_edge_relative_error"],
-                    "flips": row["optimized"][
-                        "mixed_winding_or_collapsed_triangles"
-                    ],
+                    "flips": row["optimized"]["mixed_winding_or_collapsed_triangles"],
                     "overlap_pairs": row["overlap"]["overlapping_triangle_pairs"],
                     "slit_edges": row["cut_edges_count"],
                     "converged": row["solver"]["converged"],
