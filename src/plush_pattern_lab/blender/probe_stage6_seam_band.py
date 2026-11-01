@@ -50,9 +50,7 @@ def _patch_geometry(obj, mesh, ring, faces):
 
 def _patch_plane_metrics(patch):
     """Evaluate 3D triangle geometry against a seam-plane projection baseline."""
-    return projection_screen(
-        patch["vertices_mm"], patch["faces"], patch["seam_ids"]
-    )
+    return projection_screen(patch["vertices_mm"], patch["faces"], patch["seam_ids"])
 
 
 def inspect_object(obj, geometry=None):
@@ -97,9 +95,7 @@ def inspect_object(obj, geometry=None):
                 patch = _patch_geometry(obj, bm, ring, patch_faces)
                 report["plane_projection_baseline"] = _patch_plane_metrics(patch)
                 if geometry is not None:
-                    geometry.append(
-                        {"object": obj.name, "ring_index": index, **patch}
-                    )
+                    geometry.append({"object": obj.name, "ring_index": index, **patch})
             if report["regular_quad_strip"]:
                 outer = outer_ring_for_quads(ring, faces)
                 radial = np.array(
@@ -135,8 +131,7 @@ def generate_report(source_sha, geometry=None):
     if len(objects) != 5:
         raise ValueError("missing body or four hoof objects")
     entries = [
-        {"object": obj.name, "rings": inspect_object(obj, geometry)}
-        for obj in objects
+        {"object": obj.name, "rings": inspect_object(obj, geometry)} for obj in objects
     ]
     if geometry is not None:
         geometry.sort(key=lambda x: (x["object"], x["ring_index"]))
