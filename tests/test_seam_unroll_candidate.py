@@ -6,10 +6,10 @@ import numpy as np
 import pytest
 
 from plush_pattern_lab.patterns.seam_unroll_svg import draw_slit_unroll_svg
+from plush_pattern_lab.validation.public_release_proof import MODEL_SHA256
 from plush_pattern_lab.validation.seam_unroll_candidate import (
     unroll_triangular_band,
 )
-from plush_pattern_lab.validation.public_release_proof import MODEL_SHA256
 from scripts.unroll_stage6_triangle_band import BODY, HOOFS, evaluate
 
 
