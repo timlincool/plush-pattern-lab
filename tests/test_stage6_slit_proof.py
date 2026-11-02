@@ -31,7 +31,6 @@ def test_measured_slit_unroll_proof_is_from_the_public_stage6():
     assert proof["aggregate"]["p95_after_max"] < 0.04
 
 
-
 def test_real_outer_hotspot_weighting_remains_a_documented_negative():
     path = PROOF.parent / "outer_hotspot_ab_20261102.json"
     evidence = json.loads(path.read_text(encoding="utf-8"))
@@ -45,8 +44,9 @@ def test_real_outer_hotspot_weighting_remains_a_documented_negative():
     assert not negative["approved_cut_pattern"]
     assert len(negative["bands"]) == 8
     for row in negative["bands"]:
-        assert row["outer_only_max_abs_relative_error"] > row[
-            "baseline_max_abs_relative_error"
-        ]
+        assert (
+            row["outer_only_max_abs_relative_error"]
+            > row["baseline_max_abs_relative_error"]
+        )
         assert row["outer_only_overlap_pairs"] == 0
         assert row["outer_only_flipped_triangles"] == 0
