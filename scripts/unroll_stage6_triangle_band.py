@@ -129,9 +129,9 @@ def main():
                     "hotspot_worst_edge": row["baseline_edge_hotspots"]["worst_edges"][
                         0
                     ],
-                    "max_edge_outer_focus": row["outer_worst_edge_variant"]["optimized"][
-                        "max_abs_edge_relative_error"
-                    ],
+                    "max_edge_outer_focus": row["outer_worst_edge_variant"][
+                        "optimized"
+                    ]["max_abs_edge_relative_error"],
                     "p95_outer_focus": row["outer_worst_edge_variant"]["optimized"][
                         "p95_abs_edge_relative_error"
                     ],
