@@ -177,7 +177,6 @@ def test_hotspot_weighted_ab_cannot_silently_replace_original_candidate():
     assert not report["approved_cut_pattern"]
 
 
-
 def test_outer_worst_edge_variant_uses_only_a_few_bounded_outer_weights():
     report, _ = _sample("warped")
     trial = report["outer_worst_edge_variant"]
