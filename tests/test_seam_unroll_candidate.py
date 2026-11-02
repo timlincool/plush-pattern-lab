@@ -172,8 +172,6 @@ def test_hotspot_weighted_ab_cannot_silently_replace_original_candidate():
     assert trial["upweighted_edge_count"] > 0
     assert trial["optimized"]["p95_abs_edge_relative_error"] >= 0
     assert trial["optimized"]["max_abs_edge_relative_error"] >= 0
-    assert trial["edge_hotspots"]["by_type"][
-        "seam-seam"
-    ]["count"] == 64
+    assert trial["edge_hotspots"]["by_type"]["seam-seam"]["count"] == 64
     assert report["fixed_original_3d_seam_length"]
     assert not report["approved_cut_pattern"]
