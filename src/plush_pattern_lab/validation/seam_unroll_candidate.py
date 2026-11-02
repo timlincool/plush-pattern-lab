@@ -283,7 +283,18 @@ def _overlap(corners):
 
 
 def _hotspot_ab(
-    xyz, tri, seam, uv, outer, guess, radii, edges, lengths, period, area3, budget,
+    xyz,
+    tri,
+    seam,
+    uv,
+    outer,
+    guess,
+    radii,
+    edges,
+    lengths,
+    period,
+    area3,
+    budget,
     outer_only=False,
 ):
     """One bounded IRLS-style candidate, never replacing the original solution."""
