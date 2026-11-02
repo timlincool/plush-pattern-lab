@@ -120,15 +120,15 @@ def main():
                     "max_edge_baseline": row["optimized"][
                         "max_abs_edge_relative_error"
                     ],
-                    "max_edge_hotspot_variant": row[
-                        "hotspot_weighted_variant"
-                    ]["optimized"]["max_abs_edge_relative_error"],
-                    "p95_hotspot_variant": row["hotspot_weighted_variant"][
+                    "max_edge_hotspot_variant": row["hotspot_weighted_variant"][
                         "optimized"
-                    ]["p95_abs_edge_relative_error"],
-                    "hotspot_worst_edge": row["baseline_edge_hotspots"][
-                        "worst_edges"
-                    ][0],
+                    ]["max_abs_edge_relative_error"],
+                    "p95_hotspot_variant": row["hotspot_weighted_variant"]["optimized"][
+                        "p95_abs_edge_relative_error"
+                    ],
+                    "hotspot_worst_edge": row["baseline_edge_hotspots"]["worst_edges"][
+                        0
+                    ],
                 }
                 for row in result["bands"]
             ]
