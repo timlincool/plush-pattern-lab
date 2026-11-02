@@ -152,11 +152,15 @@ def _edge_hotspots(uv, edges, lengths, seam, period):
     groups = {}
     for kind, label in labels.items():
         subset = errors[seam_count == kind]
-        groups[label] = {
-            "count": int(len(subset)),
-            "p95_abs_relative_error": float(np.quantile(subset, 0.95)),
-            "max_abs_relative_error": float(subset.max()),
-        } if len(subset) else {"count": 0}
+        groups[label] = (
+            {
+                "count": int(len(subset)),
+                "p95_abs_relative_error": float(np.quantile(subset, 0.95)),
+                "max_abs_relative_error": float(subset.max()),
+            }
+            if len(subset)
+            else {"count": 0}
+        )
     indices = np.argsort(-errors, kind="stable")[:8]
     return {
         "vertex_ids_are_local_patch_indices": True,
@@ -287,8 +291,16 @@ def _hotspot_ab(
     weights = np.clip(error / scale, 1.0, 4.0)
     trial = uv.copy()
     solver, hits = _optimize(
-        trial, outer, guess, radii, edges, lengths, period, budget,
-        weights=weights, start=uv[outer].copy()
+        trial,
+        outer,
+        guess,
+        radii,
+        edges,
+        lengths,
+        period,
+        budget,
+        weights=weights,
+        start=uv[outer].copy(),
     )
     corners = _corner_uv(trial, tri, period)
     return {
@@ -329,7 +341,17 @@ def unroll_triangular_band(vertices_mm, faces, seam_ids, budget=60):
     cuts = _cut_edges(tri, corners)
     hotspots = _edge_hotspots(uv, edges, lengths, seam, period)
     comparison = _hotspot_ab(
-        xyz, tri, seam, uv, outer, guess, radii, edges, lengths, period, area3,
+        xyz,
+        tri,
+        seam,
+        uv,
+        outer,
+        guess,
+        radii,
+        edges,
+        lengths,
+        period,
+        area3,
         budget,
     )
     return {
