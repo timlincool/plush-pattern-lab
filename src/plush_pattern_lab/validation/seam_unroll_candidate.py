@@ -136,7 +136,48 @@ def _jacobian_pattern(edges, outer):
     return jac.tocsr()
 
 
-def _optimize(uv, outer, guess, radii, edges, lengths, period, budget):
+def _relative_edge_error(uv, edges, lengths, period):
+    """Signed edge-length discrepancy in the periodic slit domain."""
+    vector = uv[edges[:, 1]] - uv[edges[:, 0]]
+    vector[:, 0] = _wrap(vector[:, 0], period)
+    return np.linalg.norm(vector, axis=1) / lengths - 1
+
+
+def _edge_hotspots(uv, edges, lengths, seam, period):
+    """Bounded local indices and error magnitudes, never export raw 3D vertices."""
+    signed = _relative_edge_error(uv, edges, lengths, period)
+    errors = np.abs(signed)
+    seam_count = np.isin(edges, seam).sum(axis=1)
+    labels = {0: "outer-outer", 1: "seam-outer", 2: "seam-seam"}
+    groups = {}
+    for kind, label in labels.items():
+        subset = errors[seam_count == kind]
+        groups[label] = {
+            "count": int(len(subset)),
+            "p95_abs_relative_error": float(np.quantile(subset, 0.95)),
+            "max_abs_relative_error": float(subset.max()),
+        } if len(subset) else {"count": 0}
+    indices = np.argsort(-errors, kind="stable")[:8]
+    return {
+        "vertex_ids_are_local_patch_indices": True,
+        "unique_edge_count": len(edges),
+        "by_type": groups,
+        "worst_edges": [
+            {
+                "local_vertex_ids": [int(v) for v in edges[i]],
+                "type": labels[int(seam_count[i])],
+                "length_3d_mm": float(lengths[i]),
+                "signed_relative_error": float(signed[i]),
+                "abs_relative_error": float(errors[i]),
+            }
+            for i in indices
+        ],
+    }
+
+
+def _optimize(
+    uv, outer, guess, radii, edges, lengths, period, budget, weights=None, start=None
+):
     if not 5 <= budget <= 100:
         raise ValueError("optimization iteration budget out of bounds")
     low = np.column_stack((guess[:, 0] - period / 8, np.full(len(outer), 1e-4))).ravel()
@@ -144,15 +185,22 @@ def _optimize(uv, outer, guess, radii, edges, lengths, period, budget):
         (guess[:, 0] + period / 8, np.maximum(2 * radii, guess[:, 1] + 1))
     ).ravel()
 
+    if weights is not None:
+        weights = np.asarray(weights, dtype=np.float64)
+        if weights.shape != lengths.shape or not np.isfinite(weights).all():
+            raise ValueError("invalid hotspot reweighting")
+        if np.any(weights < 1) or np.any(weights > 4):
+            raise ValueError("hotspot weights outside the frozen [1, 4] bounds")
+
     def relative_residual(variables):
         uv[outer] = variables.reshape(-1, 2)
-        vector = uv[edges[:, 1]] - uv[edges[:, 0]]
-        vector[:, 0] = _wrap(vector[:, 0], period)
-        return np.linalg.norm(vector, axis=1) / lengths - 1
+        discrepancy = _relative_edge_error(uv, edges, lengths, period)
+        return discrepancy if weights is None else discrepancy * weights
 
+    initial = guess.ravel() if start is None else np.asarray(start).ravel()
     result = least_squares(
         relative_residual,
-        guess.ravel(),
+        initial,
         bounds=(low, high),
         jac_sparsity=_jacobian_pattern(edges, outer),
         max_nfev=budget,
@@ -230,6 +278,34 @@ def _overlap(corners):
     }
 
 
+def _hotspot_ab(xyz, tri, uv, outer, guess, radii, edges, lengths, period, area3, budget):
+    """One bounded IRLS-style candidate, never replacing the original solution."""
+    error = np.abs(_relative_edge_error(uv, edges, lengths, period))
+    scale = max(float(np.quantile(error, 0.95)), 1e-8)
+    weights = np.clip(error / scale, 1.0, 4.0)
+    trial = uv.copy()
+    solver, hits = _optimize(
+        trial, outer, guess, radii, edges, lengths, period, budget,
+        weights=weights, start=uv[outer].copy()
+    )
+    corners = _corner_uv(trial, tri, period)
+    return {
+        "status": "HOTSPOT_WEIGHTED_COMPARISON_ONLY",
+        "max_weight": float(weights.max()),
+        "upweighted_edge_count": int(np.count_nonzero(weights > 1)),
+        "optimized": _distortion(xyz, tri, corners, area3),
+        "overlap": _overlap(corners),
+        "cut_edges_count": len(_cut_edges(tri, corners)),
+        "solver": {
+            "converged": bool(solver.success),
+            "function_evaluations": solver.nfev,
+            "bound_components_at_limit": hits,
+        },
+        "edge_hotspots": _edge_hotspots(trial, edges, lengths, [], period),
+        "promoted_to_default": False,
+    }
+
+
 def unroll_triangular_band(vertices_mm, faces, seam_ids, budget=60):
     """Return research metrics and per-face coordinates; no approved cut geometry."""
     xyz, tri, seam, area3 = _validate(vertices_mm, faces, seam_ids)
@@ -249,6 +325,11 @@ def unroll_triangular_band(vertices_mm, faces, seam_ids, budget=60):
     solver, hits = _optimize(uv, outer, guess, radii, edges, lengths, period, budget)
     corners = _corner_uv(uv, tri, period)
     cuts = _cut_edges(tri, corners)
+    hotspots = _edge_hotspots(uv, edges, lengths, seam, period)
+    comparison = _hotspot_ab(
+        xyz, tri, uv, outer, guess, radii, edges, lengths, period, area3,
+        budget,
+    )
     return {
         "schema": "stage6-slitted-triangle-band-unroll-v1",
         "status": "SPARSE_EDGE_LENGTH_UNROLL_RESEARCH_NOT_CUT_PATTERN",
@@ -258,6 +339,8 @@ def unroll_triangular_band(vertices_mm, faces, seam_ids, budget=60):
         "triangle_count": len(tri),
         "initial": baseline,
         "optimized": _distortion(xyz, tri, corners, area3),
+        "baseline_edge_hotspots": hotspots,
+        "hotspot_weighted_variant": comparison,
         "cut_edges_count": len(cuts),
         "cut_edges_local_indices": [list(edge) for edge in cuts],
         "overlap": _overlap(corners),
@@ -273,6 +356,7 @@ def unroll_triangular_band(vertices_mm, faces, seam_ids, budget=60):
             "A radial slit is encoded as duplicated per-triangle 2D corner positions",
             "A constrained straight 2D seam does not mean physically sewable fabric",
             "Optimizing edge lengths can still create inverted or overlapping faces",
+            "Weighted hotspot A/B is diagnostic only and cannot replace the baseline",
             "No fabric grain, sewing allowance, stuffing or physical test",
         ],
     }, corners
