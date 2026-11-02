@@ -129,6 +129,21 @@ def main():
                     "hotspot_worst_edge": row["baseline_edge_hotspots"]["worst_edges"][
                         0
                     ],
+                    "max_edge_outer_focus": row["outer_worst_edge_variant"]["optimized"][
+                        "max_abs_edge_relative_error"
+                    ],
+                    "p95_outer_focus": row["outer_worst_edge_variant"]["optimized"][
+                        "p95_abs_edge_relative_error"
+                    ],
+                    "outer_focus_flips": row["outer_worst_edge_variant"]["optimized"][
+                        "mixed_winding_or_collapsed_triangles"
+                    ],
+                    "outer_focus_overlap_pairs": row["outer_worst_edge_variant"][
+                        "overlap"
+                    ].get("overlapping_triangle_pairs", -1),
+                    "outer_focus_converged": row["outer_worst_edge_variant"]["solver"][
+                        "converged"
+                    ],
                 }
                 for row in result["bands"]
             ]
