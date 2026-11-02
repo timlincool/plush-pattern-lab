@@ -141,3 +141,39 @@ def test_cli_rejects_bad_identity_and_missing_band():
     doc["patches"].pop()
     with pytest.raises(ValueError, match="eight"):
         evaluate(doc, budget=40)
+
+
+def test_worst_edges_are_traceable_to_patch_local_topology():
+    report, _ = _sample("warped")
+    hotspots = report["baseline_edge_hotspots"]
+    classes = hotspots["by_type"]
+    assert hotspots["vertex_ids_are_local_patch_indices"]
+    assert classes["seam-seam"]["count"] == 64
+    assert classes["seam-outer"]["count"] == 96
+    assert classes["outer-outer"]["count"] == 32
+    assert hotspots["unique_edge_count"] == 192
+    values = [edge["abs_relative_error"] for edge in hotspots["worst_edges"]]
+    assert len(values) == 8
+    assert values == sorted(values, reverse=True)
+    assert values[0] > 0
+    for edge in hotspots["worst_edges"]:
+        assert edge["type"] in classes
+        assert len(edge["local_vertex_ids"]) == 2
+        assert all(0 <= index < 96 for index in edge["local_vertex_ids"])
+        assert edge["length_3d_mm"] > 0
+
+
+def test_hotspot_weighted_ab_cannot_silently_replace_original_candidate():
+    report, _ = _sample("warped")
+    trial = report["hotspot_weighted_variant"]
+    assert trial["status"] == "HOTSPOT_WEIGHTED_COMPARISON_ONLY"
+    assert not trial["promoted_to_default"]
+    assert 1 <= trial["max_weight"] <= 4
+    assert trial["upweighted_edge_count"] > 0
+    assert trial["optimized"]["p95_abs_edge_relative_error"] >= 0
+    assert trial["optimized"]["max_abs_edge_relative_error"] >= 0
+    assert trial["edge_hotspots"]["by_type"][
+        "seam-seam"
+    ]["count"] == 64
+    assert report["fixed_original_3d_seam_length"]
+    assert not report["approved_cut_pattern"]
