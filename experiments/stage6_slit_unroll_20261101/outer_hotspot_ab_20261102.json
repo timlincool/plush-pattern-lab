@@ -211,5 +211,122 @@
     "Uniform weighting reduced maximum error but degraded P95 especially on body rings 2/3",
     "Original seam, bounds, and physical toy constraints are not approved",
     "Only patch-local vertex index pairs and edge length statistics are preserved"
-  ]
+  ],
+  "outer_only_weighted_negative_control": {
+    "status": "REAL_STAGE6_OUTER_ONLY_WEIGHT_AB_REJECTED",
+    "source_run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41396074705",
+    "source_commit": "0b42e7a847ca62e0b33e410426267ee5d809d00a",
+    "artifact_id": 13119232172,
+    "focus": "top 2 percent of baseline outer-outer edges by relative error only",
+    "weight": 1.75,
+    "upweighted_outer_edges_per_band": 6,
+    "bands": [
+      {
+        "object": "PRIMARY continuous sculpt | new anatomy",
+        "ring_index": 0,
+        "baseline_max_abs_relative_error": 0.044115048778041954,
+        "broad_reweighted_max_abs_relative_error": 0.04131918903627918,
+        "outer_only_max_abs_relative_error": 0.04565132226493507,
+        "baseline_p95_abs_relative_error": 0.03469977294744967,
+        "outer_only_p95_abs_relative_error": 0.03443248523562663,
+        "outer_only_flipped_triangles": 0,
+        "outer_only_overlap_pairs": 0,
+        "outer_only_solver_converged": true
+      },
+      {
+        "object": "PRIMARY continuous sculpt | new anatomy",
+        "ring_index": 1,
+        "baseline_max_abs_relative_error": 0.04476446280169899,
+        "broad_reweighted_max_abs_relative_error": 0.04196512509314476,
+        "outer_only_max_abs_relative_error": 0.04591141379415786,
+        "baseline_p95_abs_relative_error": 0.03455962785131942,
+        "outer_only_p95_abs_relative_error": 0.03446716559157562,
+        "outer_only_flipped_triangles": 0,
+        "outer_only_overlap_pairs": 0,
+        "outer_only_solver_converged": true
+      },
+      {
+        "object": "PRIMARY continuous sculpt | new anatomy",
+        "ring_index": 2,
+        "baseline_max_abs_relative_error": 0.09250418172614494,
+        "broad_reweighted_max_abs_relative_error": 0.08018362438219517,
+        "outer_only_max_abs_relative_error": 0.10289613677887233,
+        "baseline_p95_abs_relative_error": 0.027738395920184452,
+        "outer_only_p95_abs_relative_error": 0.03021607670591703,
+        "outer_only_flipped_triangles": 0,
+        "outer_only_overlap_pairs": 0,
+        "outer_only_solver_converged": true
+      },
+      {
+        "object": "PRIMARY continuous sculpt | new anatomy",
+        "ring_index": 3,
+        "baseline_max_abs_relative_error": 0.09312329586345469,
+        "broad_reweighted_max_abs_relative_error": 0.07988513407279862,
+        "outer_only_max_abs_relative_error": 0.10805569224402833,
+        "baseline_p95_abs_relative_error": 0.027280626903217864,
+        "outer_only_p95_abs_relative_error": 0.02968162673629919,
+        "outer_only_flipped_triangles": 0,
+        "outer_only_overlap_pairs": 0,
+        "outer_only_solver_converged": true
+      },
+      {
+        "object": "Rounded hoof base",
+        "ring_index": 0,
+        "baseline_max_abs_relative_error": 0.02974718940521459,
+        "broad_reweighted_max_abs_relative_error": 0.02691617425985282,
+        "outer_only_max_abs_relative_error": 0.03102538802865662,
+        "baseline_p95_abs_relative_error": 0.022760485384214525,
+        "outer_only_p95_abs_relative_error": 0.022717028210229476,
+        "outer_only_flipped_triangles": 0,
+        "outer_only_overlap_pairs": 0,
+        "outer_only_solver_converged": true
+      },
+      {
+        "object": "Rounded hoof base.001",
+        "ring_index": 0,
+        "baseline_max_abs_relative_error": 0.052838960105668686,
+        "broad_reweighted_max_abs_relative_error": 0.05106504671990675,
+        "outer_only_max_abs_relative_error": 0.056051820618501114,
+        "baseline_p95_abs_relative_error": 0.02792933405628159,
+        "outer_only_p95_abs_relative_error": 0.029209336806016947,
+        "outer_only_flipped_triangles": 0,
+        "outer_only_overlap_pairs": 0,
+        "outer_only_solver_converged": true
+      },
+      {
+        "object": "Rounded hoof base.002",
+        "ring_index": 0,
+        "baseline_max_abs_relative_error": 0.0291475929924655,
+        "broad_reweighted_max_abs_relative_error": 0.02688045178582288,
+        "outer_only_max_abs_relative_error": 0.030444154091425313,
+        "baseline_p95_abs_relative_error": 0.02288923050219327,
+        "outer_only_p95_abs_relative_error": 0.02291820447626967,
+        "outer_only_flipped_triangles": 0,
+        "outer_only_overlap_pairs": 0,
+        "outer_only_solver_converged": true
+      },
+      {
+        "object": "Rounded hoof base.003",
+        "ring_index": 0,
+        "baseline_max_abs_relative_error": 0.05283989288271718,
+        "broad_reweighted_max_abs_relative_error": 0.05106519322881298,
+        "outer_only_max_abs_relative_error": 0.0560507375157695,
+        "baseline_p95_abs_relative_error": 0.02792970678176968,
+        "outer_only_p95_abs_relative_error": 0.029210159017831635,
+        "outer_only_flipped_triangles": 0,
+        "outer_only_overlap_pairs": 0,
+        "outer_only_solver_converged": true
+      }
+    ],
+    "all_outer_only_max_worse_than_baseline": true,
+    "all_outer_only_solvers_converged": true,
+    "any_outer_only_flips_or_overlap": false,
+    "promoted_to_default": false,
+    "approved_cut_pattern": false,
+    "limitations": [
+      "Worst edges are all outer-outer; worsening does not imply incorrect optimization execution",
+      "Only 2D/3D geometric edge discrepancy, not measured fabric strain",
+      "Future work should vary slit placement or patch topology while preserving original seam identity"
+    ]
+  }
 }
