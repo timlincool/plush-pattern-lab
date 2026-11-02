@@ -1,0 +1,215 @@
+{
+  "schema": "stage6-eight-band-outer-edge-ab-evidence-v1",
+  "status": "MEASURED_GEOMETRIC_EDGE_COMPARISON_NOT_CUT_PATTERN",
+  "source": {
+    "model": "cloud-alpaca-stage6.blend",
+    "repo": "timlincool/plush-pattern-lab",
+    "sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "workflow_run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41395441378",
+    "workflow_head": "fdc0adaf7d4797fd72d719b857257ac6033a0cdb",
+    "artifact_id": 13118563182,
+    "blender": "4.3.2"
+  },
+  "metric_definition": "Per-triangle geometry edge length absolute relative error, not fabric strain",
+  "bands": [
+    {
+      "object": "PRIMARY continuous sculpt | new anatomy",
+      "ring_index": 0,
+      "baseline": {
+        "max_abs_relative_error": 0.04411504877538275,
+        "p95_abs_relative_error": 0.03469977288891403,
+        "flipped_triangles": 0,
+        "overlap_pairs": 0
+      },
+      "uniform_weighted": {
+        "max_abs_relative_error": 0.04131918875618501,
+        "p95_abs_relative_error": 0.03494330061969024
+      },
+      "baseline_worst_edge": {
+        "local_vertex_ids": [
+          575,
+          576
+        ],
+        "type": "outer-outer",
+        "length_3d_mm": 0.36690607698438715,
+        "signed_relative_error": 0.04411504877538275,
+        "abs_relative_error": 0.04411504877538275
+      }
+    },
+    {
+      "object": "PRIMARY continuous sculpt | new anatomy",
+      "ring_index": 1,
+      "baseline": {
+        "max_abs_relative_error": 0.044764462797417526,
+        "p95_abs_relative_error": 0.03455962791705561,
+        "flipped_triangles": 0,
+        "overlap_pairs": 0
+      },
+      "uniform_weighted": {
+        "max_abs_relative_error": 0.04196512451605394,
+        "p95_abs_relative_error": 0.03487955412989075
+      },
+      "baseline_worst_edge": {
+        "local_vertex_ids": [
+          575,
+          576
+        ],
+        "type": "outer-outer",
+        "length_3d_mm": 0.3997425510586205,
+        "signed_relative_error": 0.044764462797417526,
+        "abs_relative_error": 0.044764462797417526
+      }
+    },
+    {
+      "object": "PRIMARY continuous sculpt | new anatomy",
+      "ring_index": 2,
+      "baseline": {
+        "max_abs_relative_error": 0.09250417804353295,
+        "p95_abs_relative_error": 0.027738397960057788,
+        "flipped_triangles": 0,
+        "overlap_pairs": 0
+      },
+      "uniform_weighted": {
+        "max_abs_relative_error": 0.08018361247496864,
+        "p95_abs_relative_error": 0.0479442437354064
+      },
+      "baseline_worst_edge": {
+        "local_vertex_ids": [
+          575,
+          576
+        ],
+        "type": "outer-outer",
+        "length_3d_mm": 0.5525106390519019,
+        "signed_relative_error": 0.09250417804353295,
+        "abs_relative_error": 0.09250417804353295
+      }
+    },
+    {
+      "object": "PRIMARY continuous sculpt | new anatomy",
+      "ring_index": 3,
+      "baseline": {
+        "max_abs_relative_error": 0.09312329581489265,
+        "p95_abs_relative_error": 0.027280626576622224,
+        "flipped_triangles": 0,
+        "overlap_pairs": 0
+      },
+      "uniform_weighted": {
+        "max_abs_relative_error": 0.07988512063815834,
+        "p95_abs_relative_error": 0.04739747308432862
+      },
+      "baseline_worst_edge": {
+        "local_vertex_ids": [
+          703,
+          704
+        ],
+        "type": "outer-outer",
+        "length_3d_mm": 0.5522836106364241,
+        "signed_relative_error": 0.09312329581489265,
+        "abs_relative_error": 0.09312329581489265
+      }
+    },
+    {
+      "object": "Rounded hoof base",
+      "ring_index": 0,
+      "baseline": {
+        "max_abs_relative_error": 0.029747189409239705,
+        "p95_abs_relative_error": 0.022760485380528873,
+        "flipped_triangles": 0,
+        "overlap_pairs": 0
+      },
+      "uniform_weighted": {
+        "max_abs_relative_error": 0.02691617429405624,
+        "p95_abs_relative_error": 0.023074704795048993
+      },
+      "baseline_worst_edge": {
+        "local_vertex_ids": [
+          16,
+          111
+        ],
+        "type": "outer-outer",
+        "length_3d_mm": 0.3907133336246264,
+        "signed_relative_error": -0.029747189409239705,
+        "abs_relative_error": 0.029747189409239705
+      }
+    },
+    {
+      "object": "Rounded hoof base.001",
+      "ring_index": 0,
+      "baseline": {
+        "max_abs_relative_error": 0.05283896013082989,
+        "p95_abs_relative_error": 0.027929334010951174,
+        "flipped_triangles": 0,
+        "overlap_pairs": 0
+      },
+      "uniform_weighted": {
+        "max_abs_relative_error": 0.05106504668086842,
+        "p95_abs_relative_error": 0.03502795545579586
+      },
+      "baseline_worst_edge": {
+        "local_vertex_ids": [
+          49,
+          210
+        ],
+        "type": "outer-outer",
+        "length_3d_mm": 0.3599155318964555,
+        "signed_relative_error": -0.05283896013082989,
+        "abs_relative_error": 0.05283896013082989
+      }
+    },
+    {
+      "object": "Rounded hoof base.002",
+      "ring_index": 0,
+      "baseline": {
+        "max_abs_relative_error": 0.02914759299928593,
+        "p95_abs_relative_error": 0.022889230509512148,
+        "flipped_triangles": 0,
+        "overlap_pairs": 0
+      },
+      "uniform_weighted": {
+        "max_abs_relative_error": 0.026880451785257775,
+        "p95_abs_relative_error": 0.023007768381690264
+      },
+      "baseline_worst_edge": {
+        "local_vertex_ids": [
+          16,
+          111
+        ],
+        "type": "outer-outer",
+        "length_3d_mm": 0.35869052064095175,
+        "signed_relative_error": -0.02914759299928593,
+        "abs_relative_error": 0.02914759299928593
+      }
+    },
+    {
+      "object": "Rounded hoof base.003",
+      "ring_index": 0,
+      "baseline": {
+        "max_abs_relative_error": 0.05283989290225588,
+        "p95_abs_relative_error": 0.027929706870032243,
+        "flipped_triangles": 0,
+        "overlap_pairs": 0
+      },
+      "uniform_weighted": {
+        "max_abs_relative_error": 0.051065193329038805,
+        "p95_abs_relative_error": 0.03502780987181666
+      },
+      "baseline_worst_edge": {
+        "local_vertex_ids": [
+          49,
+          210
+        ],
+        "type": "outer-outer",
+        "length_3d_mm": 0.3599229400952474,
+        "signed_relative_error": -0.05283989290225588,
+        "abs_relative_error": 0.05283989290225588
+      }
+    }
+  ],
+  "all_worst_edges_outer_outer": true,
+  "promoted_variant": false,
+  "limitations": [
+    "Uniform weighting reduced maximum error but degraded P95 especially on body rings 2/3",
+    "Original seam, bounds, and physical toy constraints are not approved",
+    "Only patch-local vertex index pairs and edge length statistics are preserved"
+  ]
+}

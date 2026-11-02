@@ -283,12 +283,21 @@ def _overlap(corners):
 
 
 def _hotspot_ab(
-    xyz, tri, seam, uv, outer, guess, radii, edges, lengths, period, area3, budget
+    xyz, tri, seam, uv, outer, guess, radii, edges, lengths, period, area3, budget,
+    outer_only=False,
 ):
     """One bounded IRLS-style candidate, never replacing the original solution."""
     error = np.abs(_relative_edge_error(uv, edges, lengths, period))
-    scale = max(float(np.quantile(error, 0.95)), 1e-8)
-    weights = np.clip(error / scale, 1.0, 4.0)
+    if outer_only:
+        is_outer_edge = np.isin(edges, seam).sum(axis=1) == 0
+        if not is_outer_edge.any():
+            raise ValueError("the triangular annulus lacks an outer boundary")
+        threshold = float(np.quantile(error[is_outer_edge], 0.98))
+        selected = is_outer_edge & (error >= threshold)
+        weights = np.where(selected, 1.75, 1.0)
+    else:
+        scale = max(float(np.quantile(error, 0.95)), 1e-8)
+        weights = np.clip(error / scale, 1.0, 4.0)
     trial = uv.copy()
     solver, hits = _optimize(
         trial,
@@ -304,7 +313,11 @@ def _hotspot_ab(
     )
     corners = _corner_uv(trial, tri, period)
     return {
-        "status": "HOTSPOT_WEIGHTED_COMPARISON_ONLY",
+        "status": (
+            "OUTER_TOP_2PCT_WEIGHTED_COMPARISON_ONLY"
+            if outer_only
+            else "HOTSPOT_WEIGHTED_COMPARISON_ONLY"
+        ),
         "max_weight": float(weights.max()),
         "upweighted_edge_count": int(np.count_nonzero(weights > 1)),
         "optimized": _distortion(xyz, tri, corners, area3),
@@ -354,6 +367,21 @@ def unroll_triangular_band(vertices_mm, faces, seam_ids, budget=60):
         area3,
         budget,
     )
+    outer_comparison = _hotspot_ab(
+        xyz,
+        tri,
+        seam,
+        uv,
+        outer,
+        guess,
+        radii,
+        edges,
+        lengths,
+        period,
+        area3,
+        budget,
+        outer_only=True,
+    )
     return {
         "schema": "stage6-slitted-triangle-band-unroll-v1",
         "status": "SPARSE_EDGE_LENGTH_UNROLL_RESEARCH_NOT_CUT_PATTERN",
@@ -365,6 +393,7 @@ def unroll_triangular_band(vertices_mm, faces, seam_ids, budget=60):
         "optimized": _distortion(xyz, tri, corners, area3),
         "baseline_edge_hotspots": hotspots,
         "hotspot_weighted_variant": comparison,
+        "outer_worst_edge_variant": outer_comparison,
         "cut_edges_count": len(cuts),
         "cut_edges_local_indices": [list(edge) for edge in cuts],
         "overlap": _overlap(corners),

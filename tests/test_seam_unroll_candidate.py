@@ -175,3 +175,21 @@ def test_hotspot_weighted_ab_cannot_silently_replace_original_candidate():
     assert trial["edge_hotspots"]["by_type"]["seam-seam"]["count"] == 64
     assert report["fixed_original_3d_seam_length"]
     assert not report["approved_cut_pattern"]
+
+
+
+def test_outer_worst_edge_variant_uses_only_a_few_bounded_outer_weights():
+    report, _ = _sample("warped")
+    trial = report["outer_worst_edge_variant"]
+    assert trial["status"] == "OUTER_TOP_2PCT_WEIGHTED_COMPARISON_ONLY"
+    assert trial["max_weight"] == 1.75
+    assert 1 <= trial["upweighted_edge_count"] <= 3
+    assert not trial["promoted_to_default"]
+    classes = trial["edge_hotspots"]["by_type"]
+    assert classes["seam-seam"]["count"] == 64
+    assert classes["seam-outer"]["count"] == 96
+    assert classes["outer-outer"]["count"] == 32
+    assert trial["optimized"]["max_abs_edge_relative_error"] >= 0
+    assert trial["cut_edges_count"] >= 0
+    assert report["fixed_original_3d_seam_length"]
+    assert not report["approved_cut_pattern"]
