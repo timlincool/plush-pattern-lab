@@ -139,6 +139,8 @@ jobs:
           assert all(row['triangle_count'] == 768 for row in data['bands'])
           assert all(len(row['baseline_edge_hotspots']['worst_edges']) == 8 for row in data['bands'])
           assert all(not row['hotspot_weighted_variant']['promoted_to_default'] for row in data['bands'])
+          assert all(row['outer_worst_edge_variant']['status'] == 'OUTER_TOP_2PCT_WEIGHTED_COMPARISON_ONLY' for row in data['bands'])
+          assert all(not row['outer_worst_edge_variant']['promoted_to_default'] for row in data['bands'])
           print('STAGE6_SLIT_UNROLL_EIGHT_BANDS_DIAGNOSTIC_ONLY')
           PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)
