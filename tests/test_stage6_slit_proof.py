@@ -29,3 +29,24 @@ def test_measured_slit_unroll_proof_is_from_the_public_stage6():
     )
     assert proof["aggregate"]["p95_after_min"] > 0
     assert proof["aggregate"]["p95_after_max"] < 0.04
+
+
+
+def test_real_outer_hotspot_weighting_remains_a_documented_negative():
+    path = PROOF.parent / "outer_hotspot_ab_20261102.json"
+    evidence = json.loads(path.read_text(encoding="utf-8"))
+    assert evidence["source"]["sha256"] == MODEL_SHA256
+    negative = evidence["outer_only_weighted_negative_control"]
+    assert negative["source_run_url"].endswith("/41396074705")
+    assert negative["all_outer_only_max_worse_than_baseline"]
+    assert negative["all_outer_only_solvers_converged"]
+    assert not negative["any_outer_only_flips_or_overlap"]
+    assert not negative["promoted_to_default"]
+    assert not negative["approved_cut_pattern"]
+    assert len(negative["bands"]) == 8
+    for row in negative["bands"]:
+        assert row["outer_only_max_abs_relative_error"] > row[
+            "baseline_max_abs_relative_error"
+        ]
+        assert row["outer_only_overlap_pairs"] == 0
+        assert row["outer_only_flipped_triangles"] == 0
