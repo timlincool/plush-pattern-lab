@@ -278,7 +278,9 @@ def _overlap(corners):
     }
 
 
-def _hotspot_ab(xyz, tri, uv, outer, guess, radii, edges, lengths, period, area3, budget):
+def _hotspot_ab(
+    xyz, tri, seam, uv, outer, guess, radii, edges, lengths, period, area3, budget
+):
     """One bounded IRLS-style candidate, never replacing the original solution."""
     error = np.abs(_relative_edge_error(uv, edges, lengths, period))
     scale = max(float(np.quantile(error, 0.95)), 1e-8)
@@ -301,7 +303,7 @@ def _hotspot_ab(xyz, tri, uv, outer, guess, radii, edges, lengths, period, area3
             "function_evaluations": solver.nfev,
             "bound_components_at_limit": hits,
         },
-        "edge_hotspots": _edge_hotspots(trial, edges, lengths, [], period),
+        "edge_hotspots": _edge_hotspots(trial, edges, lengths, seam, period),
         "promoted_to_default": False,
     }
 
@@ -327,7 +329,7 @@ def unroll_triangular_band(vertices_mm, faces, seam_ids, budget=60):
     cuts = _cut_edges(tri, corners)
     hotspots = _edge_hotspots(uv, edges, lengths, seam, period)
     comparison = _hotspot_ab(
-        xyz, tri, uv, outer, guess, radii, edges, lengths, period, area3,
+        xyz, tri, seam, uv, outer, guess, radii, edges, lengths, period, area3,
         budget,
     )
     return {
