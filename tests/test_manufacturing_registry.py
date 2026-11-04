@@ -38,13 +38,18 @@ def test_all_42_actual_meshes_are_accounted_for_without_fake_cut_pieces():
     assert not report["materials_confirmed"]
     assert all(part["pieces_to_cut"] is None for part in report["component_rows"])
     assert all(part["cut_pattern_id"] is None for part in report["component_rows"])
-    assert all(part["approved_material_sku"] is None for part in report["component_rows"])
+    assert all(
+        part["approved_material_sku"] is None for part in report["component_rows"]
+    )
     assert next(
         part for part in report["component_rows"] if part["source_mesh"] == FLOOR
     )["non_product_scene_asset"]
-    assert next(
-        part for part in report["component_rows"] if part["source_mesh"] == BODY
-    )["source_faces"] == 466278
+    assert (
+        next(part for part in report["component_rows"] if part["source_mesh"] == BODY)[
+            "source_faces"
+        ]
+        == 466278
+    )
 
 
 def test_exactly_four_real_geometry_boundaries_and_ten_unknown_tab_anchors():
@@ -58,9 +63,7 @@ def test_exactly_four_real_geometry_boundaries_and_ten_unknown_tab_anchors():
     assert all(not item["production_seam_approved"] for item in joins)
     assert all(not item["fabric_assembly_verified"] for item in joins)
     targets = {item["source_mesh"] for item in data["component_rows"]}
-    assert all(
-        j["target_mesh"] is None or j["target_mesh"] in targets for j in joins
-    )
+    assert all(j["target_mesh"] is None or j["target_mesh"] in targets for j in joins)
     hooves = {
         item["child_mesh"]: item["body_open_ring_index"]
         for item in joins
