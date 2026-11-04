@@ -13,7 +13,9 @@ def _counts(face_sizes, edge_incidence):
         raise ValueError("edge incidence categories must include loose/complex cases")
     if any(not isinstance(value, int) or value < 0 for value in face_sizes.values()):
         raise ValueError("invalid face polygon counts")
-    if any(not isinstance(value, int) or value < 0 for value in edge_incidence.values()):
+    if any(
+        not isinstance(value, int) or value < 0 for value in edge_incidence.values()
+    ):
         raise ValueError("invalid edge incidence counts")
 
 
@@ -28,7 +30,9 @@ def summarize_core_shell_topology(
 ):
     """Quantify exact face/edge counts without assuming cloth manufacturability."""
     _counts(face_sizes, edge_incidence)
-    if not all(isinstance(value, int) and value > 0 for value in (vertices, edges, faces)):
+    if not all(
+        isinstance(value, int) and value > 0 for value in (vertices, edges, faces)
+    ):
         raise ValueError("positive integral mesh sizes are required")
     if sum(face_sizes.values()) != faces or sum(edge_incidence.values()) != edges:
         raise ValueError("polygon and edge incidence tallies must match mesh")
