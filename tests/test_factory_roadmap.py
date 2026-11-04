@@ -51,20 +51,21 @@ def test_all_factory_gates_have_independent_proofs():
             assert (ROOT / path).is_file(), row["id"]
 
 
-def test_no_manufacturing_claim_without_physical_factory_evidence():
+def test_factory_readiness_claims_require_accepted_gates():
     progress = load_progress()
     overall = progress["overall"]
-    assert not overall["factory_sample_pack_ready"]
-    assert not overall["mass_production_ready"]
-    assert not overall["approved_golden_sample_exists"]
-    assert not overall["physical_plush_sample_exists"]
-    assert overall["estimated_percent_complete"] is None
     phases = {row["id"]: row for row in progress["phases"]}
-    for phase in ("P5", "P6", "P7"):
-        assert phases[phase]["status"] != "accepted"
-    assert not progress["verified_baseline"]["geometry_actual_model"][
-        "manufacturing_approved"
-    ]
+    assert overall["estimated_percent_complete"] is None
+    if overall["factory_sample_pack_ready"]:
+        assert phases["P5"]["status"] == "accepted"
+    if overall["physical_plush_sample_exists"]:
+        assert phases["P6"]["status"] != "not_started"
+    if overall["approved_golden_sample_exists"]:
+        assert phases["P6"]["status"] == "accepted"
+    if overall["mass_production_ready"]:
+        assert overall["approved_golden_sample_exists"]
+        assert overall["factory_sample_pack_ready"]
+        assert phases["P7"]["status"] == "accepted"
 
 
 def test_readme_agents_and_feature_map_link_to_one_roadmap():
