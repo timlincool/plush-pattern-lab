@@ -1,0 +1,217 @@
+{
+  "schema": "cloud-alpaca-production-progress-v1",
+  "updated_at": "2026-11-03",
+  "canonical_document": "docs/FACTORY_ROADMAP.md",
+  "factory_handoff": "docs/FACTORY_HANDOFF.md",
+  "source_repository": "timlincool/plush-pattern-lab",
+  "source_branch": "main",
+  "product_goal": {
+    "name": "原创云朵羊驼",
+    "target_height_cm_approx": 25,
+    "design_reference": "design/reference-v25/images/original-design.png",
+    "selected_appearance_reference": "design/reference-v25/images/selected-D-appearance.png",
+    "ornament": "10个短扁布片连接的布制水滴",
+    "material_constraint": "合成、非动物来源",
+    "success": "具备完整纸样+技术包+实物 Golden Sample，工厂可复现"
+  },
+  "stage6_input": {
+    "release_tag": "cloud-alpaca-stage6-visuals-20261028",
+    "asset": "cloud-alpaca-stage6.blend",
+    "size_bytes": 89853017,
+    "sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "source_url": "https://github.com/timlincool/plush-pattern-lab/releases/tag/cloud-alpaca-stage6-visuals-20261028"
+  },
+  "status_vocabulary": [
+    "not_started",
+    "in_progress",
+    "partial_evidence",
+    "accepted",
+    "blocked_external"
+  ],
+  "overall": {
+    "stage": "design_and_local_geometry_research",
+    "ready_for_preliminary_supplier_conversation": true,
+    "factory_sample_pack_ready": false,
+    "mass_production_ready": false,
+    "approved_golden_sample_exists": false,
+    "physical_plush_sample_exists": false,
+    "estimated_percent_complete": null,
+    "measurement_note": "不计算不真实的精确完成率；以每个阶段 Gate 的实际证据判定"
+  },
+  "phases": [
+    {
+      "id": "P0",
+      "name": "外观与输入来源",
+      "status": "partial_evidence",
+      "acceptance": "设计四视图、实际尺寸表、颜色表及设计冻结签核，且源模型可独立验证",
+      "evidence": [
+        {
+          "path": "design/reference-v25/APPEARANCE_CONTRACT_v25.md",
+          "kind": "design_criteria"
+        },
+        {
+          "path": "design/reference-v25/images/selected-D-appearance.png",
+          "kind": "visual_reference"
+        },
+        {
+          "path": "docs/原型开发基线.md",
+          "kind": "source_model"
+        }
+      ],
+      "blockers": [
+        "四视图生产规格未冻结",
+        "Stage6 外观与最终设计的逐部件差异尚未签核"
+      ]
+    },
+    {
+      "id": "P1",
+      "name": "厂商接口与材料可获得性",
+      "status": "not_started",
+      "acceptance": "至少一家厂商确认可接受的裁片/刺绣文件格式、面料/样卡、打样与修版条款",
+      "evidence": [],
+      "blockers": [
+        "requires_factory_confirmation"
+      ]
+    },
+    {
+      "id": "P2",
+      "name": "全角色对象、外观与部件盘点",
+      "status": "in_progress",
+      "acceptance": "基于 Stage6 实际场景的完整部件/对象清单；按部件标识可制版曲面、装饰、毛发代理及接合缺口，带可审计证据",
+      "evidence": [
+        {
+          "path": "docs/REAL_MODEL_INTERFACES.md",
+          "kind": "partial_four_hoof_interfaces"
+        },
+        {
+          "path": "experiments/stage6_slit_unroll_20261101/summary.json",
+          "kind": "partial_local_surface_study"
+        }
+      ],
+      "blockers": [
+        "缺少完整场景全对象几何盘点",
+        "其余角色部件到真实缝线映射缺失"
+      ]
+    },
+    {
+      "id": "P3",
+      "name": "全角色可缝分片与装配关系",
+      "status": "not_started",
+      "acceptance": "全部外观结构具有可缝裁片与配对净缝、返口、嵌入、支撑和装配顺序；异常自交有独立处理",
+      "evidence": [],
+      "blockers": [
+        "缺少头身耳云团尾巴的可缝制造分片"
+      ]
+    },
+    {
+      "id": "P4",
+      "name": "真实角色 1:1 工业纸样",
+      "status": "not_started",
+      "acceptance": "整只角色所有裁片含完整缝线/裁切线/缝份/标记/毛向/镜像件数，1:1 PDF/SVG 与目标厂商 DXF 可校核",
+      "evidence": [],
+      "blockers": [
+        "现有 12+2 纸样仅为合成椭球，不是本产品纸样"
+      ]
+    },
+    {
+      "id": "P5",
+      "name": "厂商打样 V1 技术包",
+      "status": "not_started",
+      "acceptance": "有版本一致的外观尺寸、BOM/实际料样、五官刺绣、水滴、工艺、验收与返工反馈表，工厂确认可开首样",
+      "evidence": [],
+      "blockers": [
+        "材料/绣花与裁片不能从 3D 渲染直接认证"
+      ]
+    },
+    {
+      "id": "P6",
+      "name": "真实布料首样与修版",
+      "status": "not_started",
+      "acceptance": "真实材料试片、厂商首样、尺寸外观四视图对照和至少一次反馈/修版记录得到设计确认",
+      "evidence": [],
+      "blockers": [
+        "requires_factory_and_physical_sample",
+        "没有真实样布、填棉及成品照片"
+      ]
+    },
+    {
+      "id": "P7",
+      "name": "生产锁版与适用检测",
+      "status": "not_started",
+      "acceptance": "工厂可接收最终版、材料 BOM/工艺/纸样一致，Golden Sample 已签核，适用目标市场检测完成",
+      "evidence": [],
+      "blockers": [
+        "requires_factory_confirmation",
+        "requires_physical_sample",
+        "requires_market_specific_compliance"
+      ]
+    }
+  ],
+  "verified_baseline": {
+    "python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41396615974",
+    "python_tests_passed": 266,
+    "geometry_actual_model": {
+      "four_hoof_interface_max_gap_mm": 0,
+      "triangular_local_annuli_count": 8,
+      "seam_vertices_each": 512,
+      "triangles_each": 768,
+      "local_unroll_p95_edge_error_min": 0.022760485384214525,
+      "local_unroll_p95_edge_error_max": 0.03469977294744967,
+      "manufacturing_approved": false,
+      "evidence_path": "experiments/stage6_slit_unroll_20261101/summary.json"
+    },
+    "rejected_reweighting_path": "experiments/stage6_slit_unroll_20261101/outer_hotspot_ab_20261102.json"
+  },
+  "next_actions": [
+    {
+      "priority": "P0",
+      "phase_id": "P2",
+      "action": "在可信 Blender Runner 对 Stage6 全场景做只读分类与可制版网格盘点",
+      "owner": "研发",
+      "done_when": "有按来源 SHA 绑定的真实场景 JSON 和源码测试"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P0",
+      "action": "对原设计和 Stage6 的正/侧/背/顶视图建立尺寸与外观差异清单",
+      "owner": "研发+设计确认",
+      "done_when": "关键差异与修改优先级有四视图证据"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P1",
+      "action": "并行向至少一家厂商确认 DXF 版本、纸样层约定、绣花格式、缝份/设备、面料与打样条款",
+      "owner": "用户/厂商",
+      "done_when": "取得实际书面回复，才可锁定文件格式"
+    },
+    {
+      "priority": "P1",
+      "phase_id": "P3",
+      "action": "定义头身+腿蹄主壳的第一版完整可缝分片和装配关系",
+      "owner": "研发",
+      "done_when": "真实角色主壳有裁片身份、净缝对位和拓扑核查"
+    }
+  ],
+  "update_protocol": {
+    "first_read": [
+      "docs/FACTORY_ROADMAP.md",
+      "docs/PRODUCTION_PROGRESS.json",
+      "docs/FACTORY_HANDOFF.md"
+    ],
+    "update_on": "每次里程碑证据变化或真实结果出现之后，以 main 对应提交更新 phase/status/evidence/next_actions",
+    "acceptance_rule": "缺真实工厂/材料/实物证据不得把 P5/P6/P7 标 accepted；CI 成功不能推导出产品已完成",
+    "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
+  },
+  "history": [
+    {
+      "date": "2026-11-03",
+      "event": "设立工厂交付唯一进度源，生产目标从局部算法优化转向整个角色可缝纸样与真实试样",
+      "evidence_path": "docs/FACTORY_ROADMAP.md"
+    },
+    {
+      "date": "2026-11-02",
+      "event": "八组真实局部环带重加权负例归档；保留原样，263+项软件测试/设计未构成生产验收",
+      "evidence_path": "experiments/stage6_slit_unroll_20261101/outer_hotspot_ab_20261102.json"
+    }
+  ]
+}
