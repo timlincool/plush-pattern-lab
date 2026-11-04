@@ -14,7 +14,10 @@ BODY = "PRIMARY continuous sculpt | new anatomy"
 FLOOR = "Studio floor"
 POLICY = {
     "core_body_mesh": ("main_shell_source", "retopologize_and_design_seams"),
-    "decorative_cloud_layers": ("cloud_overlay_candidate", "design_attachment_and_pile"),
+    "decorative_cloud_layers": (
+        "cloud_overlay_candidate",
+        "design_attachment_and_pile",
+    ),
     "four_hooves": ("hoof_piece_candidate", "develop_complete_leg_and_hoof_panels"),
     "tail_overlay": ("tail_overlay_candidate", "design_hidden_root_attachment"),
     "facial_markers": ("embroidery_location_reference", "digitize_on_real_head_panels"),
@@ -136,9 +139,7 @@ def _draft_joins(rows, seams):
                     if matched
                     else "proposed_attachment_not_verified"
                 ),
-                "body_open_ring_index": (
-                    seam["body_ring_index"] if matched else None
-                ),
+                "body_open_ring_index": (seam["body_ring_index"] if matched else None),
                 "verified_boundary_vertices": 512 if matched else None,
                 "production_seam_approved": False,
                 "fabric_assembly_verified": False,
