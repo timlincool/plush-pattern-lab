@@ -1,0 +1,1152 @@
+{
+  "schema": "stage6-draft-manufacturing-component-registry-v1",
+  "status": "P2_DESIGN_REVIEW_NOT_A_FACTORY_TECH_PACK",
+  "source_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_scene_evidence": "experiments/stage6_scene_inventory_20261103/summary.json",
+  "source_hoof_evidence": "experiments/stage6_hoof_seams_20261030/summary.json",
+  "model_mesh_count": 42,
+  "non_product_scene_mesh_count": 1,
+  "provisional_group_counts": {
+    "core_body_mesh": 1,
+    "decorative_cloud_layers": 7,
+    "ears": 4,
+    "fabric_drops": 10,
+    "facial_markers": 4,
+    "flat_connectors": 10,
+    "four_hooves": 4,
+    "studio_floor_not_plush": 1,
+    "tail_overlay": 1
+  },
+  "component_rows": [
+    {
+      "source_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "source_faces": 466278,
+      "source_bbox_extent_mm": [
+        132.348,
+        226.906,
+        228.676
+      ],
+      "scene_group": "core_body_mesh",
+      "proposed_manufacturing_role": "main_shell_source",
+      "next_engineering_task": "retopologize_and_design_seams",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Asymmetric flowing ivory bib",
+      "source_faces": 37762,
+      "source_bbox_extent_mm": [
+        112.925,
+        103.098,
+        121.326
+      ],
+      "scene_group": "decorative_cloud_layers",
+      "proposed_manufacturing_role": "cloud_overlay_candidate",
+      "next_engineering_task": "design_attachment_and_pile",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Grey head cloud halo",
+      "source_faces": 32906,
+      "source_bbox_extent_mm": [
+        133.42,
+        60.025,
+        100.982
+      ],
+      "scene_group": "decorative_cloud_layers",
+      "proposed_manufacturing_role": "cloud_overlay_candidate",
+      "next_engineering_task": "design_attachment_and_pile",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Varied ivory forehead cloud",
+      "source_faces": 12632,
+      "source_bbox_extent_mm": [
+        116.679,
+        50.591,
+        51.909
+      ],
+      "scene_group": "decorative_cloud_layers",
+      "proposed_manufacturing_role": "cloud_overlay_candidate",
+      "next_engineering_task": "design_attachment_and_pile",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Grey flank cloud -1",
+      "source_faces": 12212,
+      "source_bbox_extent_mm": [
+        38.025,
+        140.595,
+        49.767
+      ],
+      "scene_group": "decorative_cloud_layers",
+      "proposed_manufacturing_role": "cloud_overlay_candidate",
+      "next_engineering_task": "design_attachment_and_pile",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Grey flank cloud 1",
+      "source_faces": 12212,
+      "source_bbox_extent_mm": [
+        37.986,
+        140.538,
+        49.769
+      ],
+      "scene_group": "decorative_cloud_layers",
+      "proposed_manufacturing_role": "cloud_overlay_candidate",
+      "next_engineering_task": "design_attachment_and_pile",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Ivory crown ridge",
+      "source_faces": 6702,
+      "source_bbox_extent_mm": [
+        51.447,
+        50.346,
+        34.333
+      ],
+      "scene_group": "decorative_cloud_layers",
+      "proposed_manufacturing_role": "cloud_overlay_candidate",
+      "next_engineering_task": "design_attachment_and_pile",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Grey cascading left chest cloud",
+      "source_faces": 5506,
+      "source_bbox_extent_mm": [
+        46.988,
+        47.229,
+        37.095
+      ],
+      "scene_group": "decorative_cloud_layers",
+      "proposed_manufacturing_role": "cloud_overlay_candidate",
+      "next_engineering_task": "design_attachment_and_pile",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Rounded hoof base",
+      "source_faces": 5376,
+      "source_bbox_extent_mm": [
+        35.729,
+        38.165,
+        19.986
+      ],
+      "scene_group": "four_hooves",
+      "proposed_manufacturing_role": "hoof_piece_candidate",
+      "next_engineering_task": "develop_complete_leg_and_hoof_panels",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Rounded hoof base.001",
+      "source_faces": 5376,
+      "source_bbox_extent_mm": [
+        32.801,
+        52.556,
+        19.986
+      ],
+      "scene_group": "four_hooves",
+      "proposed_manufacturing_role": "hoof_piece_candidate",
+      "next_engineering_task": "develop_complete_leg_and_hoof_panels",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Rounded hoof base.002",
+      "source_faces": 5376,
+      "source_bbox_extent_mm": [
+        32.801,
+        35.037,
+        19.986
+      ],
+      "scene_group": "four_hooves",
+      "proposed_manufacturing_role": "hoof_piece_candidate",
+      "next_engineering_task": "develop_complete_leg_and_hoof_panels",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Rounded hoof base.003",
+      "source_faces": 5376,
+      "source_bbox_extent_mm": [
+        32.801,
+        52.556,
+        19.986
+      ],
+      "scene_group": "four_hooves",
+      "proposed_manufacturing_role": "hoof_piece_candidate",
+      "next_engineering_task": "develop_complete_leg_and_hoof_panels",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Hanging grey tail overlay",
+      "source_faces": 5016,
+      "source_bbox_extent_mm": [
+        50.323,
+        50.592,
+        62.267
+      ],
+      "scene_group": "tail_overlay",
+      "proposed_manufacturing_role": "tail_overlay_candidate",
+      "next_engineering_task": "design_hidden_root_attachment",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Clay eye marker",
+      "source_faces": 1536,
+      "source_bbox_extent_mm": [
+        14.79,
+        9.774,
+        18.096
+      ],
+      "scene_group": "facial_markers",
+      "proposed_manufacturing_role": "embroidery_location_reference",
+      "next_engineering_task": "digitize_on_real_head_panels",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Clay eye marker.001",
+      "source_faces": 1536,
+      "source_bbox_extent_mm": [
+        13.92,
+        9.432,
+        18.096
+      ],
+      "scene_group": "facial_markers",
+      "proposed_manufacturing_role": "embroidery_location_reference",
+      "next_engineering_task": "digitize_on_real_head_panels",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Ivory thread eye glint -1",
+      "source_faces": 640,
+      "source_bbox_extent_mm": [
+        2.784,
+        0.832,
+        3.306
+      ],
+      "scene_group": "facial_markers",
+      "proposed_manufacturing_role": "embroidery_location_reference",
+      "next_engineering_task": "digitize_on_real_head_panels",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Ivory thread eye glint 1",
+      "source_faces": 640,
+      "source_bbox_extent_mm": [
+        2.784,
+        0.831,
+        3.306
+      ],
+      "scene_group": "facial_markers",
+      "proposed_manufacturing_role": "embroidery_location_reference",
+      "next_engineering_task": "digitize_on_real_head_panels",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Pink inset ear -1",
+      "source_faces": 640,
+      "source_bbox_extent_mm": [
+        19.052,
+        2,
+        31.11
+      ],
+      "scene_group": "ears",
+      "proposed_manufacturing_role": "ear_outer_or_inset_candidate",
+      "next_engineering_task": "design_double_layer_and_ear_root",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Pink inset ear 1",
+      "source_faces": 640,
+      "source_bbox_extent_mm": [
+        19.814,
+        22.046,
+        24.789
+      ],
+      "scene_group": "ears",
+      "proposed_manufacturing_role": "ear_outer_or_inset_candidate",
+      "next_engineering_task": "design_double_layer_and_ear_root",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Slender upright ivory ear -1",
+      "source_faces": 640,
+      "source_bbox_extent_mm": [
+        33.086,
+        5.4,
+        50.11
+      ],
+      "scene_group": "ears",
+      "proposed_manufacturing_role": "ear_outer_or_inset_candidate",
+      "next_engineering_task": "design_double_layer_and_ear_root",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Slender upright ivory ear 1",
+      "source_faces": 640,
+      "source_bbox_extent_mm": [
+        34.782,
+        36.534,
+        41.973
+      ],
+      "scene_group": "ears",
+      "proposed_manufacturing_role": "ear_outer_or_inset_candidate",
+      "next_engineering_task": "design_double_layer_and_ear_root",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 0",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        13.152,
+        5.083,
+        19.668
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 1",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 2",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 3",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 4",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 5",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 6",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 7",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.669
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 8",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Fabric rain drop 9",
+      "source_faces": 122,
+      "source_bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.669
+      ],
+      "scene_group": "fabric_drops",
+      "proposed_manufacturing_role": "fabric_drop_candidate",
+      "next_engineering_task": "design_soft_drop_pattern",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 0",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        16.383,
+        6.867,
+        12.453
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 1",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        6.902,
+        10.113,
+        9.147
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 2",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        9.824,
+        7.122,
+        7.122
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 3",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        11.865,
+        13.256,
+        8.346
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 4",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        8.827,
+        8.126,
+        8.126
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 5",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        11.836,
+        3.263,
+        8
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 6",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        13.748,
+        9.776,
+        8.159
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 7",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        5.934,
+        10.114,
+        9.148
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 8",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        7.827,
+        6.151,
+        7.101
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Connected short flat fabric tab 9",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        8.827,
+        9.085,
+        7.165
+      ],
+      "scene_group": "flat_connectors",
+      "proposed_manufacturing_role": "tab_visual_proxy",
+      "next_engineering_task": "rebuild_real_fabric_tab",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": false
+    },
+    {
+      "source_mesh": "Studio floor",
+      "source_faces": 1,
+      "source_bbox_extent_mm": [
+        200000,
+        200000,
+        0
+      ],
+      "scene_group": "studio_floor_not_plush",
+      "proposed_manufacturing_role": "excluded_render_equipment",
+      "next_engineering_task": "no_fabrication",
+      "review_state": "DESIGN_CONFIRMATION_REQUIRED",
+      "cut_pattern_id": null,
+      "pieces_to_cut": null,
+      "approved_material_sku": null,
+      "non_product_scene_asset": true
+    }
+  ],
+  "assembly_intents": [
+    {
+      "child_mesh": "Asymmetric flowing ivory bib",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Clay eye marker",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Clay eye marker.001",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 0",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 1",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 2",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 3",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 4",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 5",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 6",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 7",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 8",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Connected short flat fabric tab 9",
+      "target_mesh": null,
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": true
+    },
+    {
+      "child_mesh": "Fabric rain drop 0",
+      "target_mesh": "Connected short flat fabric tab 0",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Fabric rain drop 1",
+      "target_mesh": "Connected short flat fabric tab 1",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Fabric rain drop 2",
+      "target_mesh": "Connected short flat fabric tab 2",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Fabric rain drop 3",
+      "target_mesh": "Connected short flat fabric tab 3",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Fabric rain drop 4",
+      "target_mesh": "Connected short flat fabric tab 4",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Fabric rain drop 5",
+      "target_mesh": "Connected short flat fabric tab 5",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Fabric rain drop 6",
+      "target_mesh": "Connected short flat fabric tab 6",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Fabric rain drop 7",
+      "target_mesh": "Connected short flat fabric tab 7",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Fabric rain drop 8",
+      "target_mesh": "Connected short flat fabric tab 8",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Fabric rain drop 9",
+      "target_mesh": "Connected short flat fabric tab 9",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Grey cascading left chest cloud",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Grey flank cloud -1",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Grey flank cloud 1",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Grey head cloud halo",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Hanging grey tail overlay",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Ivory crown ridge",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Ivory thread eye glint -1",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Ivory thread eye glint 1",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Pink inset ear -1",
+      "target_mesh": "Slender upright ivory ear -1",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Pink inset ear 1",
+      "target_mesh": "Slender upright ivory ear 1",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Rounded hoof base",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "verified_3d_boundary_only",
+      "body_open_ring_index": 1,
+      "verified_boundary_vertices": 512,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Rounded hoof base.001",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "verified_3d_boundary_only",
+      "body_open_ring_index": 2,
+      "verified_boundary_vertices": 512,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Rounded hoof base.002",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "verified_3d_boundary_only",
+      "body_open_ring_index": 0,
+      "verified_boundary_vertices": 512,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Rounded hoof base.003",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "verified_3d_boundary_only",
+      "body_open_ring_index": 3,
+      "verified_boundary_vertices": 512,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Slender upright ivory ear -1",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Slender upright ivory ear 1",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    },
+    {
+      "child_mesh": "Varied ivory forehead cloud",
+      "target_mesh": "PRIMARY continuous sculpt | new anatomy",
+      "relation": "proposed_attachment_not_verified",
+      "body_open_ring_index": null,
+      "verified_boundary_vertices": null,
+      "production_seam_approved": false,
+      "fabric_assembly_verified": false,
+      "anchor_missing": false
+    }
+  ],
+  "joins_with_measured_3d_boundary_only": 4,
+  "unresolved_attachment_target_count": 10,
+  "approved_cut_patterns": 0,
+  "materials_confirmed": false,
+  "all_attachments_sewable": false,
+  "human_approved_component_classification": false,
+  "manufacturing_handoff_ready": false,
+  "next_gate": "Design-review 42 meshes, select real core shell panels and attachment paths",
+  "limitations": [
+    "One visual 3D Mesh is not necessarily one physical part or cut piece",
+    "Only the four body-hoof boundary rings have measured 3D registration",
+    "Ten fabric-tab support surfaces have not been identified or verified",
+    "Core 466278-face visual shell still needs manufacturable partitioning"
+  ]
+}
