@@ -31,6 +31,10 @@
 真实样布量测校准 → 实物打样 → 工艺与安全验收
 ```
 
+## Stage6 整体制造结构（非量产批准）
+
+已从真实 42 个 Mesh 建立 [制造部件与装配关系草案](docs/STAGE6_MANUFACTURING_STRUCTURE.md)／[机器可读42对象登记表](design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json)。只有四蹄接口有已验证三维边界，雨滴短布片的10个承接位置还未确认；此表**不等于裁片数量或BOM**。下一步优先做高密度主壳可缝结构与低密度代理，而非继续局部网格调权重。
+
 ## 当前阶段
 
 | 部分 | 当前证据 | 不要误解为 |

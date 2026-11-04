@@ -10,6 +10,8 @@ description: 定位 Plush Pattern Lab 当前已实现功能、源码、命令、
 
 当用户问“哪里实现、有什么、怎么用、进展如何、下一步改哪”时，先看此页，按需仅打开对应 reference。**以当前源码和匹配的 CI 结果为准，不把计划、旧实验或运行成功当作新的能力证明。**
 
+**制造结构草案：** [42个实测Mesh与40条装配候选登记表](../../../design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json) · [完整角色制版下一步](../../../docs/STAGE6_MANUFACTURING_STRUCTURE.md)。先做真实主壳低密度代理、分片与完整连接结构，不要把眼部渲染标记或云团外观网格直接当作裁布BOM。
+
 ## 现有能力与边界
 
 | 能力 | 当前证据/范围 | 不代表 |
