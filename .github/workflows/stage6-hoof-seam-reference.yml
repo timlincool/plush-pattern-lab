@@ -12,6 +12,7 @@ on:
       - 'scripts/export_stage6_hoof_seams.py'
       - 'scripts/probe_stage6_seam_band.py'
       - 'scripts/probe_stage6_scene_inventory.py'
+      - 'scripts/probe_stage6_core_shell.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -136,6 +137,35 @@ jobs:
               'types': result['object_types'],
               'mesh': result['mesh_objects_total'],
               'role_hints': result['mesh_role_hint_counts_nonexclusive'],
+          }))
+          PY
+      - name: Verify actual Stage6 main-shell face topology before proxy work
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/probe_stage6_core_shell.py -- \
+            --input "$RUNNER_TEMP/stage6.blend" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --output "$RUNNER_TEMP/stage6-reference/core_shell_topology.json"
+          python - <<'PY'
+          import json, os, pathlib
+          p = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/core_shell_topology.json'
+          obj = json.loads(p.read_text(encoding='utf8'))
+          assert obj['schema'] == 'stage6-core-shell-mesh-topology-v1'
+          assert obj['source_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert obj['faces'] == 466278
+          assert obj['verified_body_hoof_3d_pair_count'] == 4
+          assert obj['boundary_loop_vertex_counts'] == [512, 512, 512, 512]
+          assert not obj['low_poly_proxy_created']
+          assert not obj['cutting_patterns_approved']
+          assert not obj['whole_model_modified']
+          print('STAGE6_MAIN_SHELL_TOPOLOGY_RESEARCH', json.dumps({
+              'vertices': obj['vertices'], 'edges': obj['edges'],
+              'faces': obj['faces'], 'euler': obj['euler_characteristic'],
+              'face_components': obj['face_components_by_shared_edge'],
+              'edge_incidence': obj['edge_incidence'],
+              'proxy_candidate': obj['candidate_for_non_destructive_proxy_experiment'],
           }))
           PY
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
