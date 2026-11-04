@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "draft_manufacturing_component_register_complete_design_review_and_shell_proxy_pending",
+    "stage": "real_stage6_main_shell_topology_proven_proxy_and_full_panels_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -113,11 +113,23 @@
     {
       "id": "P3",
       "name": "全角色可缝分片与装配关系",
-      "status": "not_started",
+      "status": "in_progress",
       "acceptance": "全部外观结构具有可缝裁片与配对净缝、返口、嵌入、支撑和装配顺序；异常自交有独立处理",
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "experiments/stage6_core_shell_20261104/topology.json",
+          "kind": "actual_main_shell_VEF_and_four_hoof_boundary_proof"
+        },
+        {
+          "path": "docs/STAGE6_CORE_SHELL_TOPOLOGY.md",
+          "kind": "required_manufacturing_proxy_topology_gate"
+        }
+      ],
       "blockers": [
-        "缺少头身耳云团尾巴的可缝制造分片"
+        "主壳234161顶点、466278三角面已通过单连通/四洞/无非流形只读审计，但还没有低面数制造代理",
+        "头身四腿完整裁片分界、缝线匹配、翻面/返口与填棉尚未实现",
+        "主壳面朝向一致性及代理外形误差尚未独立验证",
+        "真实面料与工厂兼容制版格式尚未确认"
       ]
     },
     {
@@ -204,36 +216,54 @@
       "approved_manufacturing_panels": 0,
       "real_material_skus": 0,
       "factory_accepted": false
+    },
+    "stage6_core_shell_topology": {
+      "source_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "real_blender_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41774495231",
+      "evidence_path": "experiments/stage6_core_shell_20261104/topology.json",
+      "vertices": 234161,
+      "edges": 700441,
+      "triangles": 466278,
+      "boundary_loops_four_512": true,
+      "boundary_edges": 2048,
+      "nonmanifold_edges": 0,
+      "loose_edges": 0,
+      "loose_vertices": 0,
+      "shared_edge_connected_components": 1,
+      "euler_characteristic": -2,
+      "candidate_for_non_destructive_proxy_experiment": true,
+      "low_poly_proxy_created": false,
+      "whole_role_sewing_patterns_approved": 0
     }
   },
   "next_actions": [
     {
       "priority": "P0",
-      "phase_id": "P2",
-      "action": "逐条审阅42个网格制造归属和40项候选装配连接；确认内耳/外耳、胸云/头云/灰侧云/尾根的工艺类型与10个短布片的真实承接位置",
-      "owner": "研发+设计确认",
-      "done_when": "登记表内每个可见部件有经设计签核的制造工艺及装配位置；未解决连接有明确工艺方案"
+      "phase_id": "P3",
+      "action": "在公开Stage6原主壳上建立**非破坏性低密度制版代理候选**，先保护4个512点真实蹄部开口与原世界坐标；比较原模型尺寸/轮廓、面片自交及代理拓扑，未经实测不得写入制造纸样",
+      "owner": "研发",
+      "done_when": "可信Blender A/B 证明代理四蹄环身份不变、拓扑与外形误差可复核，并保留失败版本/拒绝理由"
     },
     {
       "priority": "P0",
-      "phase_id": "P3",
-      "action": "建立与真实Stage6主体466278面外形对照的低密度制版代理，严格保留4个已证实蹄部接口并提出头身、四腿的全壳缝线/返口方案",
-      "owner": "研发",
-      "done_when": "在可信Blender上得到可验证尺寸/轮廓误差、四蹄接口与独立主壳拓扑/缝线结构报告"
+      "phase_id": "P2",
+      "action": "审核42个真实Mesh对应的制造角色和40项装配草案，明确7个云覆层、双耳、尾根、五官与10个水滴短带的真实连接/材料工艺",
+      "owner": "研发+设计确认",
+      "done_when": "各角色有经设计确认的接合结构和仍需厂商验证的独立项目"
     },
     {
       "priority": "P0",
       "phase_id": "P0",
-      "action": "原始设计与D外观对照真实Stage6正/侧/背/顶视角，建立25cm设计外形的差异清单并签核需修改区域",
+      "action": "把原图与D外观对照Stage6正侧背顶视图，冻结25cm主结构、表情、云团和耳尾差异",
       "owner": "研发+设计确认",
-      "done_when": "各关键部位及站姿的差异有可复核视觉图与尺寸要求"
+      "done_when": "有4视图及关键尺寸差异清单、设计确认版本"
     },
     {
       "priority": "P0",
       "phase_id": "P1",
-      "action": "向目标工厂确认可接收DXF/AAMA等版本、刺绣格式、默认缝份、材料样卡、打样修版轮次、MOQ和文件权属",
+      "action": "向候选工厂获取 DXF具体版本/层、刺绣格式、面料样布、缝份、样品费修版轮次和MOQ",
       "owner": "用户+工厂",
-      "done_when": "至少一家工厂回复实际设备/格式要求及样品/修改报价"
+      "done_when": "取得至少一家工厂可引用的真实报价与生产文件接口条件"
     }
   ],
   "update_protocol": {
@@ -247,6 +277,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-04",
+      "event": "真实Blender检测Stage6主体：234161点、700441边、466278三角面、按边1个连通块、4条512点开环、0非流形/松散边/顶点，欧拉示性数-2；P3启动但未生成低面数代理或纸样",
+      "evidence_path": "experiments/stage6_core_shell_20261104/topology.json"
+    },
     {
       "date": "2026-11-04",
       "event": "基于已验证Stage6的42 Mesh原始数据和四蹄几何证据生成制造角色/装配草案：40条非制造签核连接，其中4条仅三维几何配准、10条雨滴带承接位置空缺；P2仍未通过人工审核",
