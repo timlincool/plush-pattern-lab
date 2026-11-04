@@ -73,3 +73,8 @@
 ## 研究依据（不是材料认证）
 
 Mori & Igarashi, *Plushie* (2007), DOI 10.1145/1276377.1276433；Jin et al., *ToyAssembler* (2022), DOI 10.1016/j.cad.2022.103356；Pietroni et al. fabrication-aware patternmaking, https://igl.ethz.ch/projects/computational-patternmaking/。参见 [专业工作流](PROFESSIONAL_WORKFLOW.md)。
+
+
+## P3 启动：完整主壳制造代理的输入门禁
+
+[真实Stage6主体拓扑报告](../experiments/stage6_core_shell_20261104/topology.json)证明单个按边连通主壳、四条512点开放环及没有非流形/松散边，是下一步尝试低密度制版代理的可追溯前置条件。**P3状态已更新为进行中，尚无完整可缝分片/纸样。** 优先保护原四蹄边界身份，随后比较低密度代理的正/侧/背/顶外观与真实拓扑。工厂制造包仍未生成。

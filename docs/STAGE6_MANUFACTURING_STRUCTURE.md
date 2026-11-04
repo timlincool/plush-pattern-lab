@@ -57,3 +57,8 @@ python scripts/build_stage6_component_register.py \
 ~~~
 
 源 SHA 或 42 Mesh 分组改变时，生成器拒绝输出，要求先重新验证真实 Stage 6。唯一进度入口仍是 [PRODUCTION_PROGRESS.json](PRODUCTION_PROGRESS.json)：P2 继续进行中；只有实际纸样、布样、工厂与实物证据取得后才能晋升 P3–P7。初稿中的所有材料、裁片和连接均非正式批准。
+
+
+### 已取得的主壳真实拓扑输入（2026-11-04）
+
+[真实Blender主壳报告](../experiments/stage6_core_shell_20261104/topology.json)证明 234,161 顶点、700,441 边、466,278 三角面属于**单个按边连通曲面**，恰好四条512点开放环，非流形和游离边/顶点均为0，Euler=-2。该证据允许下一步受控非破坏性制造代理尝试，但实际代理、整角色净缝线和可缝裁片仍然是未完成项。
