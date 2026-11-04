@@ -1,0 +1,554 @@
+{
+  "schema": "stage6-whole-scene-inventory-evidence-v1",
+  "status": "OBSERVED_SCENE_OBJECTS_NOT_MANUFACTURING_PATTERNS",
+  "source": {
+    "repository": "timlincool/plush-pattern-lab",
+    "source_model": "cloud-alpaca-stage6.blend",
+    "source_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "blender_version": "4.3.2",
+    "trusted_run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41767796150",
+    "source_commit": "16f939d6d02e4dde6f51ecc67e94d52c05a284df",
+    "artifact_id": 13294060110
+  },
+  "scope": "all objects in bpy.data.objects; original scene re-opened read-only and hoof interface checked",
+  "scene_objects_total": 469,
+  "active_scene_objects": 469,
+  "object_types": {
+    "CAMERA": 1,
+    "CURVE": 388,
+    "CURVES": 35,
+    "LIGHT": 3,
+    "MESH": 42
+  },
+  "mesh_objects_total": 42,
+  "mesh_face_total_including_studio_floor": 620873,
+  "visual_curve_objects": 423,
+  "unclassified_by_name_hints": 13,
+  "provisional_group_counts": {
+    "core_body_mesh": 1,
+    "decorative_cloud_layers": 7,
+    "four_hooves": 4,
+    "tail_overlay": 1,
+    "facial_markers": 4,
+    "ears": 4,
+    "fabric_drops": 10,
+    "flat_connectors": 10,
+    "studio_floor_not_plush": 1
+  },
+  "geometry_entries": [
+    {
+      "name": "PRIMARY continuous sculpt | new anatomy",
+      "faces": 466278,
+      "bbox_extent_mm": [
+        132.348,
+        226.906,
+        228.676
+      ],
+      "provisional_group": "core_body_mesh",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Asymmetric flowing ivory bib",
+      "faces": 37762,
+      "bbox_extent_mm": [
+        112.925,
+        103.098,
+        121.326
+      ],
+      "provisional_group": "decorative_cloud_layers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Grey head cloud halo",
+      "faces": 32906,
+      "bbox_extent_mm": [
+        133.42,
+        60.025,
+        100.982
+      ],
+      "provisional_group": "decorative_cloud_layers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Varied ivory forehead cloud",
+      "faces": 12632,
+      "bbox_extent_mm": [
+        116.679,
+        50.591,
+        51.909
+      ],
+      "provisional_group": "decorative_cloud_layers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Grey flank cloud -1",
+      "faces": 12212,
+      "bbox_extent_mm": [
+        38.025,
+        140.595,
+        49.767
+      ],
+      "provisional_group": "decorative_cloud_layers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Grey flank cloud 1",
+      "faces": 12212,
+      "bbox_extent_mm": [
+        37.986,
+        140.538,
+        49.769
+      ],
+      "provisional_group": "decorative_cloud_layers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Ivory crown ridge",
+      "faces": 6702,
+      "bbox_extent_mm": [
+        51.447,
+        50.346,
+        34.333
+      ],
+      "provisional_group": "decorative_cloud_layers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Grey cascading left chest cloud",
+      "faces": 5506,
+      "bbox_extent_mm": [
+        46.988,
+        47.229,
+        37.095
+      ],
+      "provisional_group": "decorative_cloud_layers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Rounded hoof base",
+      "faces": 5376,
+      "bbox_extent_mm": [
+        35.729,
+        38.165,
+        19.986
+      ],
+      "provisional_group": "four_hooves",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Rounded hoof base.001",
+      "faces": 5376,
+      "bbox_extent_mm": [
+        32.801,
+        52.556,
+        19.986
+      ],
+      "provisional_group": "four_hooves",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Rounded hoof base.002",
+      "faces": 5376,
+      "bbox_extent_mm": [
+        32.801,
+        35.037,
+        19.986
+      ],
+      "provisional_group": "four_hooves",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Rounded hoof base.003",
+      "faces": 5376,
+      "bbox_extent_mm": [
+        32.801,
+        52.556,
+        19.986
+      ],
+      "provisional_group": "four_hooves",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Hanging grey tail overlay",
+      "faces": 5016,
+      "bbox_extent_mm": [
+        50.323,
+        50.592,
+        62.267
+      ],
+      "provisional_group": "tail_overlay",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Clay eye marker",
+      "faces": 1536,
+      "bbox_extent_mm": [
+        14.79,
+        9.774,
+        18.096
+      ],
+      "provisional_group": "facial_markers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Clay eye marker.001",
+      "faces": 1536,
+      "bbox_extent_mm": [
+        13.92,
+        9.432,
+        18.096
+      ],
+      "provisional_group": "facial_markers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Ivory thread eye glint -1",
+      "faces": 640,
+      "bbox_extent_mm": [
+        2.784,
+        0.832,
+        3.306
+      ],
+      "provisional_group": "facial_markers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Ivory thread eye glint 1",
+      "faces": 640,
+      "bbox_extent_mm": [
+        2.784,
+        0.831,
+        3.306
+      ],
+      "provisional_group": "facial_markers",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Pink inset ear -1",
+      "faces": 640,
+      "bbox_extent_mm": [
+        19.052,
+        2,
+        31.11
+      ],
+      "provisional_group": "ears",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Pink inset ear 1",
+      "faces": 640,
+      "bbox_extent_mm": [
+        19.814,
+        22.046,
+        24.789
+      ],
+      "provisional_group": "ears",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Slender upright ivory ear -1",
+      "faces": 640,
+      "bbox_extent_mm": [
+        33.086,
+        5.4,
+        50.11
+      ],
+      "provisional_group": "ears",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Slender upright ivory ear 1",
+      "faces": 640,
+      "bbox_extent_mm": [
+        34.782,
+        36.534,
+        41.973
+      ],
+      "provisional_group": "ears",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 0",
+      "faces": 122,
+      "bbox_extent_mm": [
+        13.152,
+        5.083,
+        19.668
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 1",
+      "faces": 122,
+      "bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 2",
+      "faces": 122,
+      "bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 3",
+      "faces": 122,
+      "bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 4",
+      "faces": 122,
+      "bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 5",
+      "faces": 122,
+      "bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 6",
+      "faces": 122,
+      "bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 7",
+      "faces": 122,
+      "bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.669
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 8",
+      "faces": 122,
+      "bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.668
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Fabric rain drop 9",
+      "faces": 122,
+      "bbox_extent_mm": [
+        10.781,
+        3.178,
+        19.669
+      ],
+      "provisional_group": "fabric_drops",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 0",
+      "faces": 1,
+      "bbox_extent_mm": [
+        16.383,
+        6.867,
+        12.453
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 1",
+      "faces": 1,
+      "bbox_extent_mm": [
+        6.902,
+        10.113,
+        9.147
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 2",
+      "faces": 1,
+      "bbox_extent_mm": [
+        9.824,
+        7.122,
+        7.122
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 3",
+      "faces": 1,
+      "bbox_extent_mm": [
+        11.865,
+        13.256,
+        8.346
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 4",
+      "faces": 1,
+      "bbox_extent_mm": [
+        8.827,
+        8.126,
+        8.126
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 5",
+      "faces": 1,
+      "bbox_extent_mm": [
+        11.836,
+        3.263,
+        8
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 6",
+      "faces": 1,
+      "bbox_extent_mm": [
+        13.748,
+        9.776,
+        8.159
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 7",
+      "faces": 1,
+      "bbox_extent_mm": [
+        5.934,
+        10.114,
+        9.148
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 8",
+      "faces": 1,
+      "bbox_extent_mm": [
+        7.827,
+        6.151,
+        7.101
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Connected short flat fabric tab 9",
+      "faces": 1,
+      "bbox_extent_mm": [
+        8.827,
+        9.085,
+        7.165
+      ],
+      "provisional_group": "flat_connectors",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    },
+    {
+      "name": "Studio floor",
+      "faces": 1,
+      "bbox_extent_mm": [
+        200000,
+        200000,
+        0
+      ],
+      "provisional_group": "studio_floor_not_plush",
+      "role_proven_only_by_name": false,
+      "production_pattern_confirmed": false
+    }
+  ],
+  "critical_findings": [
+    "PRIMARY continuous sculpt has 466278 faces; requires manufacturable surface segmentation/retopology before 1:1 panels",
+    "42 Mesh include a 200000mm studio floor and visual markers: not 42 fabric panels",
+    "ten Fabric rain drop meshes and ten connected flat tab quads exist; attachment seam and stress test still missing",
+    "cloud overlays/bib/crown/tail may overlap base surface; geometry intersection does not provide sewable attachment",
+    "ear mesh and facial markers are visual geometry, not verified physical ear root or machine embroidery programs"
+  ],
+  "next_gate": "P2: approve each physical component category from reference design, choose head-body/leg main-shell pattern proxy and seam graph",
+  "manufacturing_panels_approved": 0,
+  "factory_sample_pack_ready": false
+}
