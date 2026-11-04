@@ -1,0 +1,52 @@
+{
+  "schema": "stage6-core-shell-mesh-topology-v1",
+  "status": "MAIN_SHELL_RETOPOLOGY_INPUT_AUDIT_ONLY",
+  "vertices": 234161,
+  "edges": 700441,
+  "faces": 466278,
+  "face_sizes": {
+    "3": 466278
+  },
+  "edge_incidence": {
+    "0": 0,
+    "1": 2048,
+    "2": 698393,
+    ">2": 0
+  },
+  "face_components_by_shared_edge": 1,
+  "boundary_loop_vertex_counts": [
+    512,
+    512,
+    512,
+    512
+  ],
+  "euler_characteristic": -2,
+  "manifold_edges_only": true,
+  "four_512_edge_openings_verified": true,
+  "single_face_connected_component": true,
+  "genus_candidate_if_orientable": 0,
+  "candidate_for_non_destructive_proxy_experiment": true,
+  "low_poly_proxy_created": false,
+  "cutting_patterns_approved": false,
+  "limitations": [
+    "A topological shell is not a manufacturable sewn panel set",
+    "Orientability and genus need independent face-winding confirmation",
+    "Proxy decimation must retain the original four hoof seam identities",
+    "No fabric, actual sewing, seam allowance or physical sample evidence"
+  ],
+  "loose_vertices": 0,
+  "source_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "blender": "4.3.2",
+  "verified_body_hoof_3d_pair_count": 4,
+  "whole_model_modified": false,
+  "provenance": {
+    "repository": "timlincool/plush-pattern-lab",
+    "release_tag": "cloud-alpaca-stage6-visuals-20261028",
+    "source_asset": "cloud-alpaca-stage6.blend",
+    "source_asset_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "trusted_workflow_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41774495231",
+    "producing_commit": "c7e0e5afdce4be16ce6c6e0788e24a638559d2f8",
+    "artifact_id": 13296880062,
+    "measurement_only": true
+  }
+}
