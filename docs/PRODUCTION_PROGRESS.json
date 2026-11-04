@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-03",
+  "updated_at": "2026-11-04",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "design_and_local_geometry_research",
+    "stage": "whole_character_component_inventory_verified_structural_mapping_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -86,11 +86,20 @@
         {
           "path": "experiments/stage6_slit_unroll_20261101/summary.json",
           "kind": "partial_local_surface_study"
+        },
+        {
+          "path": "experiments/stage6_scene_inventory_20261103/summary.json",
+          "kind": "verified_real_stage6_scene_inventory_469_objects_42_meshes"
+        },
+        {
+          "path": "docs/STAGE6_SCENE_TRIAGE.md",
+          "kind": "production_component_triage_method"
         }
       ],
       "blockers": [
-        "缺少完整场景全对象几何盘点",
-        "其余角色部件到真实缝线映射缺失"
+        "42个真实 Mesh 中只有对象级盘点，没有工厂批准的部件类型或可缝分片",
+        "主体原视觉网格约466278面，需低面数制造代理及完整头身腿分片",
+        "尚缺目标四视图外观差异确认、真实接合与返口/填棉结构"
       ]
     },
     {
@@ -160,36 +169,49 @@
       "manufacturing_approved": false,
       "evidence_path": "experiments/stage6_slit_unroll_20261101/summary.json"
     },
-    "rejected_reweighting_path": "experiments/stage6_slit_unroll_20261101/outer_hotspot_ab_20261102.json"
+    "rejected_reweighting_path": "experiments/stage6_slit_unroll_20261101/outer_hotspot_ab_20261102.json",
+    "stage6_whole_scene_inventory": {
+      "source_run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41767796150",
+      "source_evidence_path": "experiments/stage6_scene_inventory_20261103/summary.json",
+      "blender": "4.3.2",
+      "scene_objects": 469,
+      "mesh_objects": 42,
+      "render_curve_objects": 423,
+      "mesh_face_total_including_floor": 620873,
+      "core_body_faces": 466278,
+      "candidate_groups_observed_only": 9,
+      "manufacturing_panels_approved": 0,
+      "factory_ready": false
+    }
   },
   "next_actions": [
     {
       "priority": "P0",
       "phase_id": "P2",
-      "action": "在可信 Blender Runner 对 Stage6 全场景做只读分类与可制版网格盘点",
-      "owner": "研发",
-      "done_when": "有按来源 SHA 绑定的真实场景 JSON 和源码测试"
+      "action": "根据真实42 Mesh 全清单，建立主壳/覆云/耳/尾/面部/水滴及视觉代理的人工制版部件注册表；区分可缝与非制造物",
+      "owner": "研发+设计确认",
+      "done_when": "每个可见结构有部件归属、连接方法、需人工确认项与来源 ID"
     },
     {
       "priority": "P0",
       "phase_id": "P0",
-      "action": "对原设计和 Stage6 的正/侧/背/顶视图建立尺寸与外观差异清单",
+      "action": "用原始设计图和选定 D 外观校核 Stage6 正/侧/背/顶及目标25cm关键尺寸，冻结偏差清单",
       "owner": "研发+设计确认",
-      "done_when": "关键差异与修改优先级有四视图证据"
+      "done_when": "各关键区域的外观差异清单与需修改模型区域已记录"
     },
     {
       "priority": "P0",
       "phase_id": "P1",
-      "action": "并行向至少一家厂商确认 DXF 版本、纸样层约定、绣花格式、缝份/设备、面料与打样条款",
+      "action": "向一家以上工厂确认实际纸样DXF版本/层约定、绣花文件、缝份、样布/填棉、打样与修版费用",
       "owner": "用户/厂商",
-      "done_when": "取得实际书面回复，才可锁定文件格式"
+      "done_when": "至少一家目标厂商的书面格式与采购约束得到记录"
     },
     {
       "priority": "P1",
       "phase_id": "P3",
-      "action": "定义头身+腿蹄主壳的第一版完整可缝分片和装配关系",
+      "action": "开始真实头身+腿蹄主壳低密度制造代理、完整分片及成对缝线/返口方案",
       "owner": "研发",
-      "done_when": "真实角色主壳有裁片身份、净缝对位和拓扑核查"
+      "done_when": "不再只有四蹄局部，整段头身与四腿有真实闭合分片和制造说明"
     }
   ],
   "update_protocol": {
@@ -203,6 +225,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-04",
+      "event": "真实 Stage6 Blender 4.3.2 对固定公开 SHA 的469个对象及42个Mesh完成只读全场景盘点；第一批整体部件事实可追溯，但仍未完成制造分类与纸样",
+      "evidence_path": "experiments/stage6_scene_inventory_20261103/summary.json"
+    },
     {
       "date": "2026-11-03",
       "event": "设立工厂交付唯一进度源，生产目标从局部算法优化转向整个角色可缝纸样与真实试样",
