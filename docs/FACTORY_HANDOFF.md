@@ -2,6 +2,8 @@
 
 **用途**：围绕约 25 cm 原创云朵羊驼生成**一个工厂能据此报价、打样、修版和批量复现**的正式技术包。不代表当前任何项目文件已通过。实际进展以 [PRODUCTION_PROGRESS.json](PRODUCTION_PROGRESS.json) 为准。
 
+**当前已有但尚未批准的基础结构数据：** [Stage6 42 个视觉网格 → 制造部件候选、40项连接意图](../design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json)。其中任何 `pieces_to_cut=null` 均表示没有确认裁片件数；不得复制进正式BOM，也不能作为自动化裁床数据。
+
 ## A. 给工厂询价前（可以现在开始）
 
 | 必须确认 | 目标 | 当前 |
