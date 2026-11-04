@@ -62,7 +62,10 @@ def test_factory_progress_records_inventory_without_approving_paper_patterns():
         note["path"] == "experiments/stage6_scene_inventory_20261103/summary.json"
         for note in p2["evidence"]
     )
-    assert state["verified_baseline"]["stage6_whole_scene_inventory"][
-        "manufacturing_panels_approved"
-    ] == 0
+    assert (
+        state["verified_baseline"]["stage6_whole_scene_inventory"][
+            "manufacturing_panels_approved"
+        ]
+        == 0
+    )
     assert not state["overall"]["factory_sample_pack_ready"]
