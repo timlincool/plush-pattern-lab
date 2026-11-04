@@ -11,6 +11,7 @@ on:
       - 'src/plush_pattern_lab/blender/audit_hoof_interfaces.py'
       - 'scripts/export_stage6_hoof_seams.py'
       - 'scripts/probe_stage6_seam_band.py'
+      - 'scripts/probe_stage6_scene_inventory.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -109,6 +110,33 @@ jobs:
                   'triangle_patch': item['vertex_one_ring_patch'],
                   'plane_projection': item.get('plane_projection_baseline', {}),
               } for item in row['rings']]} for row in data['objects']]))
+          PY
+      - name: Audit full public Stage6 scene for component planning
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/probe_stage6_scene_inventory.py -- \
+            --input "$RUNNER_TEMP/stage6.blend" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --output "$RUNNER_TEMP/stage6-reference/whole_scene_inventory.json"
+          python - <<'PY'
+          import json, os, pathlib
+          p = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/whole_scene_inventory.json'
+          result = json.loads(p.read_text(encoding='utf8'))
+          assert result['schema'] == 'stage6-whole-scene-component-triage-v1'
+          assert result['source_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert result['core_body_and_four_hoof_meshes_present']
+          assert result['mesh_objects_total'] >= 5
+          assert result['scene_objects_total'] >= result['mesh_objects_total']
+          assert not result['all_sewable_panels_identified']
+          assert not result['factory_handoff_ready']
+          print('STAGE6_WHOLE_SCENE_TRIAGE_PASS', json.dumps({
+              'total': result['scene_objects_total'],
+              'types': result['object_types'],
+              'mesh': result['mesh_objects_total'],
+              'role_hints': result['mesh_role_hint_counts_nonexclusive'],
+          }))
           PY
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
