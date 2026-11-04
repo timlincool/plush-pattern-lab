@@ -31,6 +31,7 @@ def test_project_progress_tracks_components_without_promoting_factory_readiness(
     assert audit["approved_manufacturing_panels"] == 0
     assert not audit["factory_accepted"]
     assert not progress["overall"]["factory_sample_pack_ready"]
-    assert next(
-        row for row in progress["phases"] if row["id"] == "P4"
-    )["status"] == "not_started"
+    assert (
+        next(row for row in progress["phases"] if row["id"] == "P4")["status"]
+        == "not_started"
+    )
