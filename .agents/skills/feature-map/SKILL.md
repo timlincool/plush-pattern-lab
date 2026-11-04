@@ -5,6 +5,9 @@ description: 定位 Plush Pattern Lab 当前已实现功能、源码、命令、
 
 # Plush Pattern Lab · 当前功能地图
 
+**项目进度与“继续研发”的权威入口：** [工厂路线图](../../../docs/FACTORY_ROADMAP.md)、[实际 Gate 进度](../../../docs/PRODUCTION_PROGRESS.json)、[工厂交付标准](../../../docs/FACTORY_HANDOFF.md)。先确定整只玩偶的生产阶段与验收缺口，再看本页的功能/测试；**不得把局部 Stage6 三角环带几何实验当成全角色纸样**。
+
+
 当用户问“哪里实现、有什么、怎么用、进展如何、下一步改哪”时，先看此页，按需仅打开对应 reference。**以当前源码和匹配的 CI 结果为准，不把计划、旧实验或运行成功当作新的能力证明。**
 
 ## 现有能力与边界
