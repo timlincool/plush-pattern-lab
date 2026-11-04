@@ -53,9 +53,7 @@ def inspect_core_shell():
         bm.from_mesh(body.data)
         bm.verts.ensure_lookup_table()
         bm.verts.index_update()
-        ring_sizes = [
-            len(ring) for ring in _walk_rings(_boundary_successors(bm))
-        ]
+        ring_sizes = [len(ring) for ring in _walk_rings(_boundary_successors(bm))]
         face_sizes = Counter(str(len(face.verts)) for face in bm.faces)
         incidences = {"0": 0, "1": 0, "2": 0, ">2": 0}
         for edge in bm.edges:
