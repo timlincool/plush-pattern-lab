@@ -99,7 +99,9 @@ def build_scene_inventory(records, source_sha256, blender_version):
         )
     meshes.sort(key=lambda m: (-m["mesh_faces"], m["name"]))
     types = dict(sorted(Counter(row["type"] for row in records).items()))
-    hints = Counter(label for item in meshes for label in item["triage_role_hints_only"])
+    hints = Counter(
+        label for item in meshes for label in item["triage_role_hints_only"]
+    )
     return {
         "schema": "stage6-whole-scene-component-triage-v1",
         "status": "WHOLE_SCENE_INVENTORY_NOT_PATTERN_OR_BOM",

@@ -67,9 +67,7 @@ def extract_scene_inventory(source_digest):
     records = _scene_rows()
     report = build_scene_inventory(records, source_digest, bpy.app.version_string)
     report["active_scene_name"] = bpy.context.scene.name
-    report["objects_in_active_scene"] = sum(
-        row["in_active_scene"] for row in records
-    )
+    report["objects_in_active_scene"] = sum(row["in_active_scene"] for row in records)
     report["objects_not_in_active_scene"] = sum(
         not row["in_active_scene"] for row in records
     )

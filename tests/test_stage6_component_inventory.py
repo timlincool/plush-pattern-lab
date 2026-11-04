@@ -83,8 +83,15 @@ def test_role_hints_are_explicitly_unverified_and_nonexclusive():
 
 @pytest.mark.parametrize(
     "change",
-    ["wrong_source", "missing_hoof", "duplicate", "negative_face",
-     "invalid_extent", "nan_extent", "missing_extent"],
+    [
+        "wrong_source",
+        "missing_hoof",
+        "duplicate",
+        "negative_face",
+        "invalid_extent",
+        "nan_extent",
+        "missing_extent",
+    ],
 )
 def test_wrong_source_or_unverifiable_geometry_rejected(change):
     rows = _sample_scene()
