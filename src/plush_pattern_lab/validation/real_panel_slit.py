@@ -188,8 +188,8 @@ def _validate_cut_disk(faces, size, original_boundary, slit_edges):
     return border
 
 
-def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512):
-    """Return a real full-panel disk and source-index map, not approved cut lines."""
+def _validated_source_inputs(vertices_mm, whole_faces, face_ids):
+    """Refuse malformed inputs before any source/proxy boundary matching."""
     xyz = np.asarray(vertices_mm, dtype=np.float64)
     whole = np.asarray(whole_faces)
     selected = np.asarray(face_ids)
@@ -209,6 +209,11 @@ def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512)
         raise ValueError("repeated source face index")
     if (whole < 0).any() or (whole >= len(xyz)).any():
         raise ValueError("invalid source shell face vertex")
+    return xyz, whole, selected
+
+
+def _region_topology(xyz, whole, selected, expected_cuff_edges):
+    """Separate the complete original 3D cuff from 3D inter-panel seams."""
     global_edges, _, global_counts, global_keys, _ = _edges(whole, len(xyz))
     region = whole[selected]
     vertices = np.unique(region.ravel())
@@ -243,6 +248,17 @@ def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512)
         raise ValueError("outer source seam is not one directed ring")
     if len(vertices) - len(edges) + len(triangle) != 0:
         raise ValueError("original panel is not an Euler-zero annulus")
+    return vertices, triangle, edges, inverse, counts, boundary, cuff, outer
+
+
+def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512):
+    """Return a real full-panel disk and source-index map, not approved cut lines."""
+    xyz, whole, selected = _validated_source_inputs(
+        vertices_mm, whole_faces, face_ids
+    )
+    vertices, triangle, edges, inverse, counts, boundary, cuff, outer = (
+        _region_topology(xyz, whole, selected, expected_cuff_edges)
+    )
     coords = xyz[vertices]
     path, path_length = _path_to_outer(
         coords, edges, counts, np.unique(cuff), np.unique(outer)
