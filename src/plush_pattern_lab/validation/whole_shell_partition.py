@@ -6,8 +6,6 @@ It is NOT a 2D rest-shape or an industrial sewing/cutting pattern.
 
 from __future__ import annotations
 
-from collections import Counter
-
 import numpy as np
 from scipy.sparse import csr_matrix
 from scipy.sparse.csgraph import connected_components
@@ -134,7 +132,7 @@ def _region_report(region, labels, vertices, triangles, topology, cuff_size):
             if len(cuff_vertices)
             else None
         ),
-        "contains_one_complete_512_hoof_opening": (
+        "contains_one_complete_expected_hoof_opening": (
             len(cuffs) == cuff_size
             and cuff_graph["loops"] == 1
             and cuff_graph["degree_failures"] == 0
@@ -225,7 +223,7 @@ def draft_four_zone_shell(vertices_mm, faces, split_y_mm=20, cuff_size=512):
         and all(row["boundary_loop_count"] == 2 for row in regions)
         and all(row["boundary_degree_failures"] == 0 for row in regions)
         and all(row["euler_characteristic"] == 0 for row in regions)
-        and all(row["contains_one_complete_512_hoof_opening"] for row in regions)
+        and all(row["contains_one_complete_expected_hoof_opening"] for row in regions)
         and {row["region_pair"] for row in interfaces} == REQUIRED_PAIRS
         and all(
             row["path_components"] == 1
