@@ -32,10 +32,18 @@ from plush_pattern_lab.validation.proxy_view_quality import (
 
 RESOLUTION = 96
 EXPECTED = (
-    ("core_shell_proxy_ratio_0.50.ply", 117591, 233138,
-     "22020a5631ccd6b171f242d6c5c9f9713e9b0d600a20f8a0fcf3b7c08149bd4f"),
-    ("core_shell_proxy_ratio_0.25.ply", 59306, 116568,
-     "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd"),
+    (
+        "core_shell_proxy_ratio_0.50.ply",
+        117591,
+        233138,
+        "22020a5631ccd6b171f242d6c5c9f9713e9b0d600a20f8a0fcf3b7c08149bd4f",
+    ),
+    (
+        "core_shell_proxy_ratio_0.25.ply",
+        59306,
+        116568,
+        "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+    ),
 )
 VIEWS = (
     ("front", 1, 1, 0, 2),
@@ -140,6 +148,34 @@ def _self_intersections(mesh, tree):
     }
 
 
+def _bvh_crossing_canary():
+    """Require the same-tree BVH path to detect two disjoint-ID intersecting faces."""
+    mesh = bmesh.new()
+    try:
+        coords = [
+            (-0.01, -0.01, 0.0),
+            (0.01, -0.01, 0.0),
+            (0.0, 0.01, 0.0),
+            (-0.005, 0.0, -0.01),
+            (0.005, 0.0, -0.01),
+            (0.0, 0.0, 0.01),
+        ]
+        verts = [mesh.verts.new(point) for point in coords]
+        mesh.faces.new(verts[:3])
+        mesh.faces.new(verts[3:])
+        mesh.faces.ensure_lookup_table()
+        mesh.faces.index_update()
+        mesh.verts.ensure_lookup_table()
+        mesh.verts.index_update()
+        tree = BVHTree.FromBMesh(mesh)
+        result = _self_intersections(mesh, tree)
+        if result["nonadjacent_triangle_intersection_pairs"] != 1:
+            raise ValueError("Blender BVH cannot detect the synthetic intersecting faces")
+        return True
+    finally:
+        mesh.free()
+
+
 def _bounds(mesh):
     points = np.asarray([tuple(v.co) for v in mesh.verts], dtype=np.float64)
     return np.stack((points.min(axis=0), points.max(axis=0)))
@@ -177,7 +213,9 @@ def _png_bytes(rgb):
 
     def chunk(kind, data):
         return (
-            struct.pack(">I", len(data)) + kind + data
+            struct.pack(">I", len(data))
+            + kind
+            + data
             + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
         )
 
@@ -205,6 +243,7 @@ def evaluate_geometry(source_sha256, candidates, output_dir):
     body = bpy.context.scene.objects.get(BODY)
     if body is None or body.type != "MESH":
         raise ValueError("verified Stage6 original main shell missing")
+    crossing_canary = _bvh_crossing_canary()
     original = bmesh.new()
     try:
         original.from_mesh(body.data)
@@ -222,7 +261,9 @@ def evaluate_geometry(source_sha256, candidates, output_dir):
         reference_winding = _edge_winding(original)
         results = []
         for name, vertices, faces, digest in candidates:
-            points, indices = _read_exact_ply(output_dir / name, vertices, faces, digest)
+            points, indices = _read_exact_ply(
+                output_dir / name, vertices, faces, digest
+            )
             candidate = _bmesh_from_ply(points, indices)
             try:
                 bvh = BVHTree.FromBMesh(candidate)
@@ -259,6 +300,7 @@ def evaluate_geometry(source_sha256, candidates, output_dir):
             "schema": "stage6-real-proxy-independent-geometry-screen-v1",
             "status": "INDEPENDENT_SCREEN_NOT_FABRIC_PRODUCTION_CERTIFICATION",
             "source_main_mesh_faces": len(original.faces),
+            "bvh_nonadjacent_crossing_canary_passed": crossing_canary,
             "reference_face_winding": reference_winding,
             "reference_nonadjacent_bvh": _self_intersections(original, reference_bvh),
             "view_grid_resolution": RESOLUTION,
@@ -298,11 +340,18 @@ def main():
         raise ValueError("Blender 4.3.2 required")
     if not args.input.is_file() or args.input.suffix != ".blend":
         raise ValueError("missing trusted public Blender source")
-    if args.output.suffix != ".json" or args.output.exists() or args.output.is_symlink():
+    if (
+        args.output.suffix != ".json"
+        or args.output.exists()
+        or args.output.is_symlink()
+    ):
         raise ValueError("refuse to overwrite geometric research results")
     if sha256_file(args.input) != args.source_sha256:
         raise ValueError("source SHA verification failed")
-    if args.source_sha256 != "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a":
+    if (
+        args.source_sha256
+        != "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a"
+    ):
         raise ValueError("unexpected public source identity")
     if not args.proxy_dir.is_dir() or args.proxy_dir.is_symlink():
         raise ValueError("derived proxy directory must exist")

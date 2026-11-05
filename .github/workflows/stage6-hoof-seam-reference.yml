@@ -225,6 +225,7 @@ jobs:
           assert data['schema'] == 'stage6-real-proxy-independent-geometry-screen-v1'
           assert data['source_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
           assert len(data['results']) == 2 and data['source_main_mesh_faces'] == 466278
+          assert data['bvh_nonadjacent_crossing_canary_passed']
           assert not data['approved_cut_patterns'] and not data['manufacturing_production_ready']
           assert all(len(m['orthographic_first_hit']) == 5 for m in data['results'])
           assert all(m['nonadjacent_bvh']['nonadjacent_triangle_intersection_pairs'] >= 0 for m in data['results'])
