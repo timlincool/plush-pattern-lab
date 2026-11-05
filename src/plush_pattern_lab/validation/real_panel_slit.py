@@ -259,6 +259,8 @@ def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512)
         "slit_pin_outer_id": int(path[-1]),
         "source_cuff_edges": len(cuff),
         "source_outer_seam_edges": len(outer),
+        "source_cuff_edge_global_ids": vertices[cuff].tolist(),
+        "source_outer_edge_global_ids": vertices[outer].tolist(),
         "original_annulus_vertices": len(vertices),
         "original_annulus_faces": len(triangle),
         "cut_disk_vertices": len(cut_points),
