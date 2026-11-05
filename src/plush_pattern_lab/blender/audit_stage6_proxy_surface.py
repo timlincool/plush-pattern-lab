@@ -148,6 +148,34 @@ def _self_intersections(mesh, tree):
     }
 
 
+def _bvh_crossing_canary():
+    """Require the same-tree BVH path to detect two disjoint-ID intersecting faces."""
+    mesh = bmesh.new()
+    try:
+        coords = [
+            (-0.01, -0.01, 0.0),
+            (0.01, -0.01, 0.0),
+            (0.0, 0.01, 0.0),
+            (-0.005, 0.0, -0.01),
+            (0.005, 0.0, -0.01),
+            (0.0, 0.0, 0.01),
+        ]
+        verts = [mesh.verts.new(point) for point in coords]
+        mesh.faces.new(verts[:3])
+        mesh.faces.new(verts[3:])
+        mesh.faces.ensure_lookup_table()
+        mesh.faces.index_update()
+        mesh.verts.ensure_lookup_table()
+        mesh.verts.index_update()
+        tree = BVHTree.FromBMesh(mesh)
+        result = _self_intersections(mesh, tree)
+        if result["nonadjacent_triangle_intersection_pairs"] != 1:
+            raise ValueError("Blender BVH cannot detect the synthetic intersecting faces")
+        return True
+    finally:
+        mesh.free()
+
+
 def _bounds(mesh):
     points = np.asarray([tuple(v.co) for v in mesh.verts], dtype=np.float64)
     return np.stack((points.min(axis=0), points.max(axis=0)))
@@ -215,6 +243,7 @@ def evaluate_geometry(source_sha256, candidates, output_dir):
     body = bpy.context.scene.objects.get(BODY)
     if body is None or body.type != "MESH":
         raise ValueError("verified Stage6 original main shell missing")
+    crossing_canary = _bvh_crossing_canary()
     original = bmesh.new()
     try:
         original.from_mesh(body.data)
@@ -271,6 +300,7 @@ def evaluate_geometry(source_sha256, candidates, output_dir):
             "schema": "stage6-real-proxy-independent-geometry-screen-v1",
             "status": "INDEPENDENT_SCREEN_NOT_FABRIC_PRODUCTION_CERTIFICATION",
             "source_main_mesh_faces": len(original.faces),
+            "bvh_nonadjacent_crossing_canary_passed": crossing_canary,
             "reference_face_winding": reference_winding,
             "reference_nonadjacent_bvh": _self_intersections(original, reference_bvh),
             "view_grid_resolution": RESOLUTION,
