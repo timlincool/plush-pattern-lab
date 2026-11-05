@@ -24,11 +24,7 @@ def _validate_inputs(points, faces, locked, steps, alpha, max_shift_mm):
         or len(triangles) == 0
     ):
         raise ValueError("expected integer Mx3 source triangles")
-    if (
-        fixed.ndim != 1
-        or not np.issubdtype(fixed.dtype, np.integer)
-        or not len(fixed)
-    ):
+    if fixed.ndim != 1 or not np.issubdtype(fixed.dtype, np.integer) or not len(fixed):
         raise ValueError("required integer protected source seam vertex IDs")
     if np.any(triangles < 0) or np.any(triangles >= len(xyz)):
         raise ValueError("invalid triangle vertex ID")
@@ -42,9 +38,7 @@ def _validate_inputs(points, faces, locked, steps, alpha, max_shift_mm):
 
 
 def _uniform_neighbors(faces, count):
-    edges = np.concatenate(
-        (faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [2, 0]])
-    )
+    edges = np.concatenate((faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [2, 0]]))
     edges = np.unique(np.sort(edges, axis=1), axis=0)
     if np.any(edges[:, 0] == edges[:, 1]):
         raise ValueError("self-loop triangle edge")
@@ -119,9 +113,7 @@ def fair_manufacturing_surface(
         "alpha": alpha,
         "max_source_displacement_mm": max_shift_mm,
     }
-    score["potential_triangle_area_damage"] = (
-        score["face_area_ratio_min"] < 0.5
-    )
+    score["potential_triangle_area_damage"] = score["face_area_ratio_min"] < 0.5
     score["three_dimensional_surface_screen_rejected"] = (
         score["face_orientation_reversals"] > 0
         or score["face_collapse_count"] > 0

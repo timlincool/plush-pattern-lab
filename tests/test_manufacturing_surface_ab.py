@@ -43,8 +43,7 @@ def test_boundary_frozen_and_displacement_cap_applied_without_changing_source():
 def test_stable_planar_surface_remains_unchanged_if_all_vertices_protected():
     points, faces, boundary = _fan()
     candidate, score = fair_manufacturing_surface(
-        points, faces, np.arange(len(points)), steps=2,
-        alpha=0.15, max_shift_mm=0.1
+        points, faces, np.arange(len(points)), steps=2, alpha=0.15, max_shift_mm=0.1
     )
     assert np.array_equal(candidate, points)
     assert score["vertex_displacement_max_mm"] == 0
