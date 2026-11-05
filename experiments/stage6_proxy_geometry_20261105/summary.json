@@ -1,0 +1,131 @@
+{
+  "schema": "stage6-real-proxy-geometry-screen-evidence-v1",
+  "status": "RESEARCH_GEOMETRY_SCREEN_ONLY_NOT_CUT_PATTERN",
+  "source": {
+    "repository": "timlincool/plush-pattern-lab",
+    "public_release_tag": "cloud-alpaca-stage6-visuals-20261028",
+    "source_asset_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "producing_head": "7aaed75da03860369f09554c5f9135c424bc705d",
+    "blender": "4.3.2",
+    "trusted_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41959067621",
+    "artifact_id": 13384422663,
+    "mesh_artifact_id": 13384700926,
+    "authoritative_detail": "proxy_independent_screen.json"
+  },
+  "reference": {
+    "faces": 466278,
+    "manifold_two_face_edges": 698393,
+    "face_winding_conflicts": 0,
+    "nonadjacent_bvh_triangle_intersection_pairs": 0,
+    "outward_normals_proven": false
+  },
+  "method": {
+    "views": [
+      "front",
+      "back",
+      "left",
+      "right",
+      "top"
+    ],
+    "ray_grid_resolution": [
+      96,
+      96
+    ],
+    "silhouette": "first-hit ray boolean IoU against original source at same orthographic coordinates",
+    "depth": "absolute first-hit distance along same rays (mm)",
+    "bvh": "Blender BVHTree.overlap on same tree; ignore pairs sharing vertices",
+    "bounds": "absolute max of six world-space bbox extremes in mm"
+  },
+  "models": [
+    {
+      "ratio": 0.5,
+      "vertices": 117591,
+      "faces": 233138,
+      "winding_conflicts": 0,
+      "nonadjacent_bvh_intersections": 0,
+      "bounds_max_abs_mm": 0.0013262033462524414,
+      "views": {
+        "front": {
+          "silhouette_iou": 1,
+          "silhouette_mismatch_rays": 0,
+          "first_hit_depth_p95_mm": 0.00541228801012039,
+          "first_hit_depth_max_mm": 0.38904696702957153
+        },
+        "back": {
+          "silhouette_iou": 1,
+          "silhouette_mismatch_rays": 0,
+          "first_hit_depth_p95_mm": 0.007930584251880644,
+          "first_hit_depth_max_mm": 0.29869377613067627
+        },
+        "left": {
+          "silhouette_iou": 0.9997738579828132,
+          "silhouette_mismatch_rays": 1,
+          "first_hit_depth_p95_mm": 0.005323439836502075,
+          "first_hit_depth_max_mm": 0.06256997585296631
+        },
+        "right": {
+          "silhouette_iou": 0.9997738579828132,
+          "silhouette_mismatch_rays": 1,
+          "first_hit_depth_p95_mm": 0.005587935447692871,
+          "first_hit_depth_max_mm": 0.07893890142440796
+        },
+        "top": {
+          "silhouette_iou": 1,
+          "silhouette_mismatch_rays": 0,
+          "first_hit_depth_p95_mm": 0.007550418376922591,
+          "first_hit_depth_max_mm": 0.2542175352573395
+        }
+      }
+    },
+    {
+      "ratio": 0.25,
+      "vertices": 59306,
+      "faces": 116568,
+      "winding_conflicts": 0,
+      "nonadjacent_bvh_intersections": 0,
+      "bounds_max_abs_mm": 0.010401010513305664,
+      "views": {
+        "front": {
+          "silhouette_iou": 1,
+          "silhouette_mismatch_rays": 0,
+          "first_hit_depth_p95_mm": 0.014907494187355038,
+          "first_hit_depth_max_mm": 0.9338706731796265
+        },
+        "back": {
+          "silhouette_iou": 1,
+          "silhouette_mismatch_rays": 0,
+          "first_hit_depth_p95_mm": 0.020681135356426232,
+          "first_hit_depth_max_mm": 0.23888051509857178
+        },
+        "left": {
+          "silhouette_iou": 0.9995478182229256,
+          "silhouette_mismatch_rays": 2,
+          "first_hit_depth_p95_mm": 0.014506280422210693,
+          "first_hit_depth_max_mm": 0.20594894886016846
+        },
+        "right": {
+          "silhouette_iou": 0.9995478182229256,
+          "silhouette_mismatch_rays": 2,
+          "first_hit_depth_p95_mm": 0.014599412679672241,
+          "first_hit_depth_max_mm": 0.2183765172958374
+        },
+        "top": {
+          "silhouette_iou": 1,
+          "silhouette_mismatch_rays": 0,
+          "first_hit_depth_p95_mm": 0.020606815814971917,
+          "first_hit_depth_max_mm": 1.4591217041015625
+        }
+      }
+    }
+  ],
+  "approved_cut_patterns": false,
+  "manufacturing_ready": false,
+  "limitations": [
+    "The main shell excludes ears, hooves, cloud overlays, tail, filling and sewn connections",
+    "The absence of BVH nonadjacent intersections does not prove finite-thickness collision or continuous-time fabric safety",
+    "Consistent triangle winding does not establish globally outward normals",
+    "96x96 pixel silhouette IOU is low resolution; localized depth error up to 1.459mm persists",
+    "Signed mm measurements are not observed fabric strain, self-weight, stuffing or production accuracy"
+  ],
+  "next_action": "Use the 25pct independent main shell for a provisional front/back + left/right four-region seam graph while keeping exactly one 512-vertex cuff per region; no approval of fabric cut shapes"
+}
