@@ -3,6 +3,8 @@
 import numpy as np
 import pytest
 
+from plush_pattern_lab.patterns.whole_shell_seam_map import render_four_zone_seam_map
+
 from plush_pattern_lab.validation.whole_shell_partition import (
     draft_four_zone_shell,
 )
@@ -95,3 +97,16 @@ def test_damaged_shell_input_is_refused(case):
         triangles[0, 0] = triangles[0, 1]
     with pytest.raises(ValueError):
         draft_four_zone_shell(vertices, triangles, split_y_mm=0, cuff_size=4)
+
+
+def test_top_projection_svg_is_labeled_as_nonfabric_schematic():
+    import xml.etree.ElementTree as ET
+
+    vertices, triangles = cube_with_four_one_cell_hoof_openings()
+    draft = draft_four_zone_shell(vertices, triangles, split_y_mm=0, cuff_size=4)
+    svg = render_four_zone_seam_map(vertices, draft)
+    root = ET.fromstring(svg)
+    assert root.attrib["width"].endswith("mm")
+    assert "NOT FABRIC CUT LINES" in svg
+    lines = root.findall(".//{http://www.w3.org/2000/svg}line")
+    assert len(lines) == draft["total_shared_3d_seam_edges"]
