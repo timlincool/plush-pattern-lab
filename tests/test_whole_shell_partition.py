@@ -26,9 +26,11 @@ def cube_with_four_one_cell_hoof_openings():
         for side in (-4, 4):
             for i in range(8):
                 for j in range(8):
-                    if axis == 2 and side == -4 and (i, j) in {
-                        (1, 1), (1, 5), (5, 1), (5, 5)
-                    }:
+                    if (
+                        axis == 2
+                        and side == -4
+                        and (i, j) in {(1, 1), (1, 5), (5, 1), (5, 5)}
+                    ):
                         continue
                     corners = []
                     for ui, vj in ((i, j), (i + 1, j), (i + 1, j + 1), (i, j + 1)):
@@ -53,15 +55,20 @@ def test_four_region_true_3d_shell_has_exactly_one_open_cuff_per_region():
         region["face_components_by_shared_edge"] == 1 for region in report["regions"]
     )
     assert all(
-        region["contains_one_complete_expected_hoof_opening"] for region in report["regions"]
+        region["contains_one_complete_expected_hoof_opening"]
+        for region in report["regions"]
     )
     assert all(region["boundary_loop_count"] == 2 for region in report["regions"])
     assert all(region["euler_characteristic"] == 0 for region in report["regions"])
     assert {part["region_pair"] for part in report["seam_interfaces"]} == {
-        "0:1", "0:2", "1:3", "2:3"
+        "0:1",
+        "0:2",
+        "1:3",
+        "2:3",
     }
     assert all(
-        part["both_sides_use_identical_proxy_edges"] for part in report["seam_interfaces"]
+        part["both_sides_use_identical_proxy_edges"]
+        for part in report["seam_interfaces"]
     )
     assert not report["manufacturing_approved"]
     assert not report["real_2d_fabric_rest_shapes_generated"]
@@ -74,9 +81,7 @@ def test_face_assignments_are_complete_disjoint_and_in_original_face_order():
     assert runs[0][0] == 0
     assert runs[-1][1] == len(triangles)
     assert all(runs[i][1] == runs[i + 1][0] for i in range(len(runs) - 1))
-    reconstructed = [
-        label for start, end, label in runs for _ in range(end - start)
-    ]
+    reconstructed = [label for start, end, label in runs for _ in range(end - start)]
     assert len(reconstructed) == len(triangles)
     assert set(reconstructed) == {0, 1, 2, 3}
     assert report["total_shared_3d_seam_edges"] == len(report["seam_edges"])
