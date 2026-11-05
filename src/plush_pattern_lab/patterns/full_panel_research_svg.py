@@ -59,7 +59,7 @@ def render_full_panel_research_svg(disk, uv, results):
         f'<text x="4" y="4" font-size="2.6" fill="#a52c20">{label}</text>',
         f'<text x="4" y="8" font-size="2.3">EDGE P95 {p95:.1%}; '
         f'OVERLAP PAIRS {collisions}</text>',
-        f'<text x="4" y="12" font-size="2.3">NOT A CUTTING TEMPLATE</text>',
+        '<text x="4" y="12" font-size="2.3">NOT A CUTTING TEMPLATE</text>',
         f'<line x1="{xscale:.2f}" y1="{yscale:.2f}" '
         f'x2="{xscale + 10:.2f}" y2="{yscale:.2f}" '
         'stroke="black" stroke-width="0.35"/>',

@@ -105,57 +105,67 @@ def _path_to_outer(coords, edge_ids, counts, cuff_ids, outer_ids):
     return path, float(total.sum())
 
 
-def _cut_vertex_fans(triangles, edge_ids, inverse, counts, path):
-    """Duplicate each slit vertex exactly once by its two incident face fans."""
-    n = int(triangles.max()) + 1
-    faces = triangles.copy()
-    owners = np.tile(np.arange(len(faces)), 3)
-    sort = np.argsort(inverse, kind="stable")
+def _cut_fan_connections(edge_ids, inverse, counts, path, face_count):
+    """Connect incident face fans across NON-cut, two-face source edges."""
+    owners = np.tile(np.arange(face_count), 3)
+    order = np.argsort(inverse, kind="stable")
     starts = np.cumsum(counts) - counts
-    edge_owners = np.full((len(edge_ids), 2), -1, dtype=np.int64)
-    edge_owners[:, 0] = owners[sort[starts]]
-    double = counts == 2
-    edge_owners[double, 1] = owners[sort[starts[double] + 1]]
+    source = np.full((len(edge_ids), 2), -1, dtype=np.int64)
+    source[:, 0] = owners[order[starts]]
+    interior = counts == 2
+    source[interior, 1] = owners[order[starts[interior] + 1]]
     cut_edges = {
         tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])
     }
-    fan_links = defaultdict(list)
-    slit_vertices = set(path.tolist())
-    for ei, (a, b) in enumerate(edge_ids):
-        if counts[ei] != 2 or (int(a), int(b)) in cut_edges:
+    neighbors = defaultdict(list)
+    cut_points = set(path.tolist())
+    for index, (a, b) in enumerate(edge_ids):
+        if counts[index] != 2 or (int(a), int(b)) in cut_edges:
             continue
-        if a in slit_vertices:
-            fan_links[int(a)].append(edge_owners[ei])
-        if b in slit_vertices:
-            fan_links[int(b)].append(edge_owners[ei])
-    duplicates = []
-    for point in path:
-        point = int(point)
-        incident = np.flatnonzero(np.any(triangles == point, axis=1))
-        parent = {int(face): int(face) for face in incident}
+        if a in cut_points:
+            neighbors[int(a)].append(source[index])
+        if b in cut_points:
+            neighbors[int(b)].append(source[index])
+    return neighbors
 
-        def find(index):
-            while parent[index] != index:
-                parent[index] = parent[parent[index]]
-                index = parent[index]
-            return index
 
-        for first, second in fan_links[point]:
-            parent[find(int(first))] = find(int(second))
-        groups = defaultdict(list)
-        for face in incident:
-            groups[find(int(face))].append(int(face))
-        if len(groups) != 2:
-            raise ValueError("slit vertex does not have exactly two face fans")
-        chosen = sorted(groups.values(), key=min)
-        new_vertex = n + len(duplicates)
-        duplicates.append(point)
-        for face in chosen[1]:
-            column = np.flatnonzero(faces[face] == point)
-            if len(column) != 1:
-                raise ValueError("slit face has ambiguous original vertex")
-            faces[face, column[0]] = new_vertex
-    return faces, np.asarray(duplicates, dtype=np.int64)
+def _duplicate_face_fan(original, result, point, adjacent, duplicate_id):
+    """An edge-to-edge face fan must split into exactly two components."""
+    incident = np.flatnonzero(np.any(original == point, axis=1))
+    parents = {int(face): int(face) for face in incident}
+
+    def find(index):
+        while parents[index] != index:
+            parents[index] = parents[parents[index]]
+            index = parents[index]
+        return index
+
+    for first, second in adjacent:
+        parents[find(int(first))] = find(int(second))
+    groups = defaultdict(list)
+    for face in incident:
+        groups[find(int(face))].append(int(face))
+    if len(groups) != 2:
+        raise ValueError("slit vertex must have precisely two side face fans")
+    for face in sorted(groups.values(), key=min)[1]:
+        corner = np.flatnonzero(result[face] == point)
+        if len(corner) != 1:
+            raise ValueError("cut vertex is not a unique triangle corner")
+        result[face, corner[0]] = duplicate_id
+
+
+def _cut_vertex_fans(triangles, edge_ids, inverse, counts, path):
+    """Duplicate one topological identity for each original cut-path point."""
+    n = int(triangles.max()) + 1
+    rewritten = triangles.copy()
+    connections = _cut_fan_connections(
+        edge_ids, inverse, counts, path, len(triangles)
+    )
+    for index, point in enumerate(path):
+        _duplicate_face_fan(
+            triangles, rewritten, int(point), connections[int(point)], n + index
+        )
+    return rewritten, np.asarray(path, dtype=np.int64)
 
 
 def _validate_cut_disk(faces, size, original_boundary, slit_edges):
@@ -178,8 +188,8 @@ def _validate_cut_disk(faces, size, original_boundary, slit_edges):
     return border
 
 
-def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512):
-    """Return a real full-panel disk and source-index map, not approved cut lines."""
+def _validated_source_inputs(vertices_mm, whole_faces, face_ids):
+    """Refuse malformed inputs before any source/proxy boundary matching."""
     xyz = np.asarray(vertices_mm, dtype=np.float64)
     whole = np.asarray(whole_faces)
     selected = np.asarray(face_ids)
@@ -199,6 +209,11 @@ def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512)
         raise ValueError("repeated source face index")
     if (whole < 0).any() or (whole >= len(xyz)).any():
         raise ValueError("invalid source shell face vertex")
+    return xyz, whole, selected
+
+
+def _region_topology(xyz, whole, selected, expected_cuff_edges):
+    """Separate the complete original 3D cuff from 3D inter-panel seams."""
     global_edges, _, global_counts, global_keys, _ = _edges(whole, len(xyz))
     region = whole[selected]
     vertices = np.unique(region.ravel())
@@ -233,6 +248,17 @@ def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512)
         raise ValueError("outer source seam is not one directed ring")
     if len(vertices) - len(edges) + len(triangle) != 0:
         raise ValueError("original panel is not an Euler-zero annulus")
+    return vertices, triangle, edges, inverse, counts, boundary, cuff, outer
+
+
+def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512):
+    """Return a real full-panel disk and source-index map, not approved cut lines."""
+    xyz, whole, selected = _validated_source_inputs(
+        vertices_mm, whole_faces, face_ids
+    )
+    vertices, triangle, edges, inverse, counts, boundary, cuff, outer = (
+        _region_topology(xyz, whole, selected, expected_cuff_edges)
+    )
     coords = xyz[vertices]
     path, path_length = _path_to_outer(
         coords, edges, counts, np.unique(cuff), np.unique(outer)
