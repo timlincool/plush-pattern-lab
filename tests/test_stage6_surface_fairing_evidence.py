@@ -12,7 +12,9 @@ PROGRESS = ROOT / "docs/PRODUCTION_PROGRESS.json"
 
 def test_real_stage6_fairing_ab_is_pinned_and_rejected():
     data = json.loads(EVIDENCE.read_text(encoding="utf8"))
-    assert data["schema"] == "stage6-real-leftfront-manufacturing-surface-ab-measured-v1"
+    assert (
+        data["schema"] == "stage6-real-leftfront-manufacturing-surface-ab-measured-v1"
+    )
     assert data["public_original_stage6_blend_sha256"] == SOURCE_SHA256
     assert data["trusted_main_run_conclusion"] == "success"
     assert data["leftfront_original_faces"] == 36833
@@ -25,8 +27,7 @@ def test_real_stage6_fairing_ab_is_pinned_and_rejected():
     assert measured["A_light"]["uv_nonzero_area_overlap_triangle_pairs"] == 24178
     assert measured["B_strong"]["uv_nonzero_area_overlap_triangle_pairs"] == 24401
     assert all(
-        measured[x]["three_d_geometry_screen_rejected"]
-        for x in ("A_light", "B_strong")
+        measured[x]["three_d_geometry_screen_rejected"] for x in ("A_light", "B_strong")
     )
     assert not data["geometric_and_manufacturing_cut_approved"]
 
@@ -40,8 +41,7 @@ def test_project_progress_keeps_rejected_surface_away_from_factory():
     assert not progress["overall"]["factory_sample_pack_ready"]
     assert not progress["overall"]["mass_production_ready"]
     assert any(
-        row["path"] == EVIDENCE.relative_to(ROOT).as_posix()
-        for row in p3["evidence"]
+        row["path"] == EVIDENCE.relative_to(ROOT).as_posix() for row in p3["evidence"]
     )
     assert (
         progress["verified_baseline"]["stage6_leftfront_surface_fairing_real_2d_ab"][
