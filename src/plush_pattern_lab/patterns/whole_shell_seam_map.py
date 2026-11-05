@@ -4,7 +4,12 @@ from __future__ import annotations
 
 import numpy as np
 
-PALETTE = {"0:1": "#CB6E2D", "0:2": "#2584A0", "1:3": "#2584A0", "2:3": "#CB6E2D"}
+PALETTE = {
+    "0:1": "#CB6E2D",
+    "0:2": "#2584A0",
+    "1:3": "#2584A0",
+    "2:3": "#CB6E2D",
+}
 
 
 def render_four_zone_seam_map(vertices_mm, report):
@@ -43,27 +48,17 @@ def render_four_zone_seam_map(vertices_mm, report):
         )
     title = "STAGE6 MAIN SHELL / TOP-PROJECTED 3D SEAM DRAFT"
     warning = "NOT FABRIC CUT LINES / NOT 2D REST SHAPE"
-    return (
+    parts = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width:.3f}mm" '
-        f'height="{height:.3f}mm" viewBox="0 0 {width:.3f} {height:.3f}">
-'
-        '<rect width="100%" height="100%" fill="#ffffff"/>
-'
-        f'<text x="3" y="6" font-size="3" fill="#223746">{title}</text>
-'
-        f'<g stroke-width="0.55" stroke-linecap="round">
-'
-        + "
-".join(strokes)
-        + "
-</g>
-"
-        + "
-".join(circles)
-        + f'
-<text x="3" y="{height - 3:.3f}" font-size="3" fill="#bf4c2d">'
-        + warning
-        + "</text>
-</svg>
-"
-    )
+        f'height="{height:.3f}mm" viewBox="0 0 {width:.3f} {height:.3f}">',
+        '<rect width="100%" height="100%" fill="#ffffff"/>',
+        f'<text x="3" y="6" font-size="3" fill="#223746">{title}</text>',
+        '<g stroke-width="0.55" stroke-linecap="round">',
+        *strokes,
+        '</g>',
+        *circles,
+        f'<text x="3" y="{height - 3:.3f}" font-size="3" fill="#bf4c2d">'
+        f'{warning}</text>',
+        '</svg>',
+    ]
+    return "\n".join(parts) + "\n"
