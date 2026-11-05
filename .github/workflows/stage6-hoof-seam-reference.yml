@@ -16,6 +16,7 @@ on:
       - 'scripts/build_stage6_core_proxy.py'
       - 'scripts/audit_stage6_proxy_surface.py'
       - 'scripts/propose_stage6_shell_panels.py'
+      - 'scripts/unroll_stage6_leftfront.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -280,6 +281,40 @@ jobs:
                'one_cuff_each': all(r['source_hoof_boundary_edges'] == 512 for r in c['regions'])}
               for c in report['scenarios']
           ]))
+          PY
+      - name: Slit and unwrap the complete real Stage6 left-front 36833-face panel
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/unroll_stage6_leftfront.py \
+            --input "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --summary "$RUNNER_TEMP/stage6-reference/leftfront_unroll_summary.json" \
+            --detail "$RUNNER_TEMP/stage6-reference/leftfront_unroll_detail.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/leftfront_research_net.svg" \
+            --iterations 8000
+          python - <<'PY'
+          import json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'stage6-reference'
+          report = json.loads((root/'leftfront_unroll_summary.json').read_text(encoding='utf8'))
+          assert report['schema'] == 'stage6-leftfront-whole-panel-lscm-v1'
+          assert report['source_original_model_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert report['region'] == 'left_front'
+          assert report['topology']['original_annulus_faces'] == 36833
+          assert report['topology']['source_cuff_edges'] == 512
+          assert report['topology']['cut_disk_euler'] == 1
+          assert report['geometry_quality']['boundary']['perimeter_by_source_role']['hoof']['edge_count'] == 512
+          assert not report['net_cut_pattern_approved']
+          assert not report['manufacturing_ready']
+          print('STAGE6_REAL_LEFTFRONT_3D_TO_2D_RESEARCH', json.dumps({
+              'status': report['status'],
+              'slit_mm': report['topology']['slit_path_length_3d_mm'],
+              'disk_vertices': report['topology']['cut_disk_vertices'],
+              'p95_edge_error': report['geometry_quality']['strain_screen']['triangle_edge_relative_error']['p95'],
+              'flips': report['geometry_quality']['strain_screen']['inverted_winding_triangles'],
+              'overlap_pairs': report['geometry_quality']['global_2d_overlap']['overlapping_nonzero_area_triangle_pairs'],
+              'not_approved': True,
+          }))
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
