@@ -151,7 +151,9 @@ def _write_research_ply(path, mesh, sha):
     return path.stat().st_size
 
 
-def _run_trial(source, ratio, interior, source_rings, original_bm, original_bvh, outdir, sha):
+def _run_trial(
+    source, ratio, interior, source_rings, original_bm, original_bvh, outdir, sha
+):
     """A cloned-only modifier experiment; any geometry issue rejects export."""
     proxy = source.copy()
     proxy.data = source.data.copy()
@@ -291,7 +293,11 @@ def main():
         raise ValueError("Blender 4.3.2 is required")
     if not opts.input.is_file() or opts.input.suffix != ".blend":
         raise ValueError("public source must be an existing Blender model")
-    if opts.output.suffix != ".json" or opts.output.exists() or opts.output.is_symlink():
+    if (
+        opts.output.suffix != ".json"
+        or opts.output.exists()
+        or opts.output.is_symlink()
+    ):
         raise ValueError("new JSON report path required")
     if opts.proxy_dir.exists() or opts.proxy_dir.is_symlink():
         raise ValueError("output candidate directory must not already exist")
