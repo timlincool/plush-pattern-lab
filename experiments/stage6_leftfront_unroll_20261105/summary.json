@@ -1,0 +1,77 @@
+{
+  "schema": "stage6-leftfront-full-slit-lscm-independent-evidence-v1",
+  "date_utc": "2026-11-05",
+  "trusted_main_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41980583315",
+  "trusted_main_commit": "0ebfcc2b3c0973187b78e2538de707a7e76d11d4",
+  "run_conclusion": "success",
+  "research_artifact_id": 13393492844,
+  "proxy_artifact_id": 13393362988,
+  "source_public_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "proxy_25pct_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "leftfront_unroll_summary_sha256": "743f79f6fa1ef3894da146884580d9749775ee71924017cdf839f4a1b890e5b4",
+  "leftfront_unroll_detail_sha256": "2fe9f12f426e2e17df55c83ec68f863b40fc9acad37049971f3c404a79a06e53",
+  "geometry_from_trusted_run": {
+    "original_annulus_faces": 36833,
+    "original_annulus_vertices": 18913,
+    "source_cuff_edges": 512,
+    "outer_seam_edges": 481,
+    "slit_path_vertices": 33,
+    "slit_length_3d_mm": 40.89211016973698,
+    "cut_disk_vertices": 18946,
+    "cut_disk_faces": 36833,
+    "cut_disk_boundary_edges": 1057,
+    "cut_disk_euler": 1,
+    "solver_status": 2,
+    "solver_iterations": 6036,
+    "solver_residual_l2": 1.977299173071209,
+    "triangle_edge_relative_error_p95": 0.9959241920210488,
+    "near_zero_uv_area_triangles": 266,
+    "inverted_winding_triangles": 7,
+    "uv_positive_area_overlap_pairs": 23651,
+    "overlap_search_truncated": false,
+    "source_outer_seam_3d_mm": 968.6370609220164,
+    "candidate_outer_seam_uv_mm": 173.76040093287486,
+    "status": "REJECTED_FOR_DIRECT_SINGLE_PIECE",
+    "approved_for_cutting": false
+  },
+  "independent_angle_defect_screen": {
+    "calculation": "2*pi-sum(atan2(cross_norm,dot)) on every interior vertex of the actual split disk; exclude 1057 boundary vertices",
+    "data_source": "original source PLY xyz plus exact cut face/vertex map from leftfront_unroll_detail.json",
+    "screen_only_not_a_software_manufacturing_gate": true,
+    "interior_vertices": 17889,
+    "boundary_vertices_excluded": 1057,
+    "threshold_degrees": 3,
+    "absolute_defect_p95_degrees": 2.6329664097365257,
+    "max_abs_defect_degrees": 189.8299447457313,
+    "positive_defect_vertices_over_3_degrees": 339,
+    "negative_defect_vertices_below_minus_3_degrees": 468,
+    "positive_defect_sum_radians": 110.80475454268424,
+    "negative_defect_sum_radians": -118.35684524460981,
+    "top_two_hotspots": [
+      {
+        "source_vertex_id": 10884,
+        "angle_defect_degrees": 189.8299447457313,
+        "xyz_mm": [
+          -25.5909,
+          11.8552,
+          51.1941
+        ]
+      },
+      {
+        "source_vertex_id": 42978,
+        "angle_defect_degrees": -184.46414032114157,
+        "xyz_mm": [
+          -38.7058,
+          -34.6987,
+          224.9292
+        ]
+      }
+    ],
+    "independent_reproduction": "offline NumPy 2.3.5 from downloaded trusted Action ZIP and pinned 25pct PLY",
+    "model_surface_not_validated_manufacturing_base": true,
+    "physical_fabric_response_unknown": true
+  },
+  "scientific_interpretation": "Nonzero internal angle defect mathematically excludes zero-strain exact isometric 2D flattening without cuts; neither curvature nor a failed LSCM run determines fabric dart count or optimal seam routes.",
+  "next_development": "Investigate clustered curvature extremes and smoother manufacturing shell candidate; only after 3D seam fidelity and full 2D strain/overlap testing consider extra darts or panels.",
+  "manufacturing_approved": false
+}
