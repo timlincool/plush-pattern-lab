@@ -35,6 +35,8 @@
 
 已从真实 42 个 Mesh 建立 [制造部件与装配关系草案](docs/STAGE6_MANUFACTURING_STRUCTURE.md)／[机器可读42对象登记表](design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json)。只有四蹄接口有已验证三维边界，雨滴短布片的10个承接位置还未确认；此表**不等于裁片数量或BOM**。下一步优先做高密度主壳可缝结构与低密度代理，而非继续局部网格调权重。
 
+**最新 P3 整主壳缝线结构研究：** [真实 Stage6 主体四区域分区与成对 3D 缝线](docs/STAGE6_FOUR_REGION_SHELL_PLAN.md)（[可验证 25% 代理数据](experiments/stage6_whole_shell_partition_20261105/summary.json)）。116,568个真实三角面完整分为四个连续区域，每区含完整512点蹄口；Y=20mm方案835条共有3D边、约1,789mm缝线、两处四线交汇。**不是2D净缝纸样**，下一步为左前区真实环形曲面的径向切缝/低应变展平。
+
 ## 当前阶段
 
 | 部分 | 当前证据 | 不要误解为 |

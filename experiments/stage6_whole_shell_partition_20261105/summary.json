@@ -1,0 +1,159 @@
+{
+  "schema": "stage6-real-four-zone-whole-main-shell-evidence-v1",
+  "status": "MEASURED_3D_REGION_SEAM_GRAPH_RESEARCH_NOT_FABRIC_PATTERNS",
+  "source": {
+    "repository": "timlincool/plush-pattern-lab",
+    "public_model_release": "cloud-alpaca-stage6-visuals-20261028",
+    "model_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "proxy_ratio": 0.25,
+    "proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+    "source_proxy_vertices": 59306,
+    "source_proxy_triangles": 116568,
+    "blender": "4.3.2",
+    "trusted_run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41962253061",
+    "run_head_sha": "84fd730cc0dd94a48577d93ccaa37d3008061c1c",
+    "artifact_id": 13386031404,
+    "details_files": [
+      "four_region_seam_graph.json",
+      "four_region_3d_top_view.svg"
+    ]
+  },
+  "method": "3D face-centroid four-zone labels, X>=0 left/right and Y split 20/25mm front/rear; original proxy face IDs, exact 3D shared mesh edges and millimetre lengths; RLE and edge graph in archived full JSON",
+  "region_names": [
+    "left_front",
+    "left_rear",
+    "right_front",
+    "right_rear"
+  ],
+  "each_region_verified": {
+    "face_components": 1,
+    "euler_characteristic": 0,
+    "boundary_loops": 2,
+    "one_full_source_hoof_opening": true,
+    "original_hoof_open_boundary_edges": 512,
+    "net_fabric_panels_approved": 0
+  },
+  "interfaces_verified": {
+    "expected_pairs": [
+      "0:1",
+      "0:2",
+      "1:3",
+      "2:3"
+    ],
+    "each_interface_single_nonbranching_chain": true,
+    "each_interface_endpoints": 2,
+    "exact_shared_3d_edges_both_sides": true
+  },
+  "scenarios": [
+    {
+      "split_y_mm": 20,
+      "face_counts": [
+        36833,
+        21703,
+        36596,
+        21436
+      ],
+      "face_label_rle_runs": 664,
+      "cut_edges": 835,
+      "shared_3d_seam_length_mm": 1789.473552276921,
+      "fourway_junctions": 2,
+      "junction_xyz_mm": [
+        [
+          -1.9985,
+          20.1842,
+          44.0035
+        ],
+        [
+          0.0003,
+          21.6591,
+          138.881
+        ]
+      ],
+      "interfaces": [
+        {
+          "pair": "0:1",
+          "edge_count": 126,
+          "approx_3d_length_mm": 270.931
+        },
+        {
+          "pair": "0:2",
+          "edge_count": 355,
+          "approx_3d_length_mm": 697.706
+        },
+        {
+          "pair": "1:3",
+          "edge_count": 233,
+          "approx_3d_length_mm": 541.264
+        },
+        {
+          "pair": "2:3",
+          "edge_count": 121,
+          "approx_3d_length_mm": 279.573
+        }
+      ],
+      "all_four_regions_topology_valid": true,
+      "approved_factory_patterns": false
+    },
+    {
+      "split_y_mm": 25,
+      "face_counts": [
+        37255,
+        21281,
+        36928,
+        21104
+      ],
+      "face_label_rle_runs": 544,
+      "cut_edges": 839,
+      "shared_3d_seam_length_mm": 1858.225729264413,
+      "fourway_junctions": 2,
+      "junction_xyz_mm": [
+        [
+          -1.9986,
+          25.0671,
+          44.0912
+        ],
+        [
+          0.0029,
+          26.0166,
+          138.8523
+        ]
+      ],
+      "interfaces": [
+        {
+          "pair": "0:1",
+          "edge_count": 135,
+          "approx_3d_length_mm": 356.207
+        },
+        {
+          "pair": "0:2",
+          "edge_count": 358,
+          "approx_3d_length_mm": 711.602
+        },
+        {
+          "pair": "1:3",
+          "edge_count": 230,
+          "approx_3d_length_mm": 527.368
+        },
+        {
+          "pair": "2:3",
+          "edge_count": 116,
+          "approx_3d_length_mm": 263.049
+        }
+      ],
+      "all_four_regions_topology_valid": true,
+      "approved_factory_patterns": false
+    }
+  ],
+  "shorter_measured_3d_seam_candidate_y_mm": 20,
+  "net_sewing_lines_exported": false,
+  "fabric_cut_patterns_approved": false,
+  "real_seam_allowances_defined": false,
+  "manufacturing_ready": false,
+  "requirements_before_sewing": [
+    "Each of four candidate annulus regions needs additional radial slit/dart or more panels to flatten",
+    "Two topologically valid four-way seam junctions need industry manufacturing design",
+    "X/Y plane split positions are not design-signed visible seam paths; compare against original eyes/cloud placement",
+    "Must evaluate material-dependent 2D rest seam lengths, strain, cloth grain, fill return opening, sewing and a physical Golden Sample"
+  ],
+  "readme": "Do NOT use the 3D top-projection SVG as an SVG/DXF cutting template; it is an orthographic 3D seam graph only"
+}
