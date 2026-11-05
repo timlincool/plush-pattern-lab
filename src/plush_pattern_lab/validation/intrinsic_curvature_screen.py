@@ -37,6 +37,11 @@ def _validated_disk(disk):
         raise ValueError("triangle references an invalid vertex")
     if np.any(boundary < 0) or np.any(boundary >= len(points)):
         raise ValueError("boundary references an invalid vertex")
+    _validated_edge_incidence(faces, boundary)
+    return points, faces.astype(np.int64), boundary.astype(np.int64), source
+
+
+def _validated_edge_incidence(faces, boundary):
     if np.any(np.diff(np.sort(faces, axis=1), axis=1) == 0):
         raise ValueError("triangle has repeated vertex IDs")
     edges = np.sort(
@@ -49,7 +54,6 @@ def _validated_disk(disk):
         raise ValueError("nonmanifold or duplicated boundary")
     if not np.array_equal(unique[counts == 1], supplied):
         raise ValueError("disk boundary does not match triangle incidence")
-    return points, faces.astype(np.int64), boundary.astype(np.int64), source
 
 
 def _triangle_angles(points, faces):
@@ -102,12 +106,16 @@ def audit_intrinsic_curvature(disk, *, max_hotspots=12, threshold_degrees=3.0):
         "abs_defect_degrees_p95": float(np.quantile(np.abs(degrees), 0.95)),
         "max_abs_defect_degrees": float(np.abs(degrees).max()),
         "positive_defect_over_threshold": int((degrees > threshold_degrees).sum()),
-        "negative_defect_below_minus_threshold": int((degrees < -threshold_degrees).sum()),
+        "negative_defect_below_minus_threshold": int(
+            (degrees < -threshold_degrees).sum()
+        ),
         "screen_threshold_degrees": threshold_degrees,
         "positive_defect_total_radians": float(defect[defect > 0].sum()),
         "negative_defect_total_radians": float(defect[defect < 0].sum()),
         "top_abs_defect_hotspots": witnesses,
-        "exact_isometry_possible_with_uncut_interior": bool(np.max(np.abs(degrees)) <= 1e-3),
+        "exact_isometry_possible_with_uncut_interior": bool(
+            np.max(np.abs(degrees)) <= 1e-3
+        ),
         "not_a_proof_of_required_fabric_dart_count": True,
         "fabric_properties_or_manufacturing_approved": False,
     }
