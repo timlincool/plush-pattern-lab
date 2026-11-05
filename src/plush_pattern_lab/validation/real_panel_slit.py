@@ -15,9 +15,10 @@ from scipy.sparse.csgraph import connected_components, dijkstra
 
 
 def _edges(triangles, vertex_count):
-    n = len(triangles)
+    triangle_ids = np.asarray(triangles, dtype=np.int64)
+    n = len(triangle_ids)
     ordered = np.concatenate(
-        (triangles[:, [0, 1]], triangles[:, [1, 2]], triangles[:, [2, 0]])
+        (triangle_ids[:, [0, 1]], triangle_ids[:, [1, 2]], triangle_ids[:, [2, 0]])
     )
     unique, inverse, counts = np.unique(
         np.sort(ordered, axis=1), axis=0, return_inverse=True, return_counts=True
@@ -216,7 +217,7 @@ def _region_topology(xyz, whole, selected, expected_cuff_edges):
     """Separate the complete original 3D cuff from 3D inter-panel seams."""
     global_edges, _, global_counts, global_keys, _ = _edges(whole, len(xyz))
     region = whole[selected]
-    vertices = np.unique(region.ravel())
+    vertices = np.unique(region.ravel()).astype(np.int64)
     local_map = np.full(len(xyz), -1, dtype=np.int32)
     local_map[vertices] = np.arange(len(vertices))
     triangle = local_map[region].astype(np.int64)

@@ -9,7 +9,7 @@ from plush_pattern_lab.patterns.full_panel_research_svg import (
     render_full_panel_research_svg,
 )
 from plush_pattern_lab.patterns.mesh_lscm_candidate import flatten_cut_panel
-from plush_pattern_lab.validation.real_panel_slit import slit_real_panel
+from plush_pattern_lab.validation.real_panel_slit import _edges, slit_real_panel
 
 
 def _cylinder(count=64):
@@ -100,3 +100,26 @@ def test_svg_must_reject_nonfinite_failed_net_coords():
     uv[0, 0] = np.nan
     with pytest.raises(ValueError):
         render_full_panel_research_svg(disk, uv, score)
+
+
+
+def test_large_int32_blender_ply_edge_keys_are_64bit_before_multiplication():
+    # Source PLY faces are <i4, while global edge IDs exceed int32 range.
+    triangles = np.array(
+        [[59997, 59998, 59999], [0, 1, 2]], dtype=np.int32
+    )
+    unique, _, _, keys, _ = _edges(triangles, vertex_count=60000)
+    assert unique.dtype == np.int64
+    assert keys.dtype == np.int64
+    assert np.all(np.diff(keys) > 0)
+    assert int(keys[-1]) > (2**31 - 1)
+
+
+def test_cylinder_panels_from_int32_original_faces_preserve_topology():
+    xyz, faces, selected = _cylinder()
+    disk = slit_real_panel(
+        xyz, faces.astype(np.int32), selected, expected_cuff_edges=64
+    )
+    assert disk["cut_disk_euler"] == 1
+    assert disk["source_cuff_edges"] == 64
+    assert disk["source_outer_seam_edges"] == 64
