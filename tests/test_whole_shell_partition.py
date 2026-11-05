@@ -50,14 +50,20 @@ def test_four_region_true_3d_shell_has_exactly_one_open_cuff_per_region():
     assert report["source_original_open_boundary_edges"] == 16
     assert len(report["regions"]) == 4
     assert report["all_regions_single_connected_annuli_with_one_complete_hoof"]
-    assert all(region["face_components_by_shared_edge"] == 1 for region in report["regions"])
-    assert all(region["contains_one_complete_expected_hoof_opening"] for region in report["regions"])
+    assert all(
+        region["face_components_by_shared_edge"] == 1 for region in report["regions"]
+    )
+    assert all(
+        region["contains_one_complete_expected_hoof_opening"] for region in report["regions"]
+    )
     assert all(region["boundary_loop_count"] == 2 for region in report["regions"])
     assert all(region["euler_characteristic"] == 0 for region in report["regions"])
     assert {part["region_pair"] for part in report["seam_interfaces"]} == {
         "0:1", "0:2", "1:3", "2:3"
     }
-    assert all(part["both_sides_use_identical_proxy_edges"] for part in report["seam_interfaces"])
+    assert all(
+        part["both_sides_use_identical_proxy_edges"] for part in report["seam_interfaces"]
+    )
     assert not report["manufacturing_approved"]
     assert not report["real_2d_fabric_rest_shapes_generated"]
 
