@@ -4,7 +4,6 @@ import numpy as np
 import pytest
 
 from plush_pattern_lab.patterns.whole_shell_seam_map import render_four_zone_seam_map
-
 from plush_pattern_lab.validation.whole_shell_partition import (
     draft_four_zone_shell,
 )
