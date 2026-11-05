@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "full_real_stage6_leftfront_lscm_rejected_independent_curvature_screen",
+    "stage": "stage6_leftfront_surface_fairing_ab_source_verified_ci_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -155,6 +155,10 @@
         {
           "path": "docs/STAGE6_LEFTFRONT_FULL_PANEL_QA.md",
           "kind": "real_2d_failure_analysis_and_next_manufacturing_surface_decisions"
+        },
+        {
+          "path": "docs/STAGE6_MANUFACTURING_SURFACE_AB.md",
+          "kind": "p3_real_ply_3d_surface_fairing_preliminary_ab_pending_trusted_ci_uv"
         }
       ],
       "blockers": [
@@ -162,7 +166,8 @@
         "3D配缝界面含两处四线交汇，须调整成工厂可车缝的接合顺序/小过渡片；X=0/Y=20mm几何分割位置未经外观与设计签核",
         "目前虽已保留四蹄身份、BVH无非相邻自交和96x96五视角数据，25%顶视最大1.46mm近表面深度差及与全部42Mesh附件接触仍未完成生产验证",
         "尚无真实2D净缝/裁剪线、缝份、经纬毛向、返口与聚酯填棉物理试验、供应商设备/材料确认、实物打样",
-        "独立3D内禀曲率筛查：17,889内部顶点中807点角亏绝对值超过3°；制造所需省道数与实际面料应变尚无法推导"
+        "独立3D内禀曲率筛查：17,889内部顶点中807点角亏绝对值超过3°；制造所需省道数与实际面料应变尚无法推导",
+        "真实3D离线A/B：保护1024个缝线源点不动，角亏P95下降但A/B最差面片面积比仅43.1%/22.3%；未证明3D无新自交、五视图轮廓或2D可裁布，必须跑受信主分支全片LSCM A/B"
       ]
     },
     {
@@ -356,15 +361,45 @@
       "screen_not_a_dart_number_or_material_certification": true,
       "net_cut_pattern_approved": 0,
       "factory_ready": false
+    },
+    "stage6_leftfront_surface_fairing_offline_screen": {
+      "source_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "source_original_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "evidence_path": "docs/STAGE6_MANUFACTURING_SURFACE_AB.md",
+      "evidence_level": "independently_recomputed_offline_3d_only_requires_trusted_main_real_2d_AB",
+      "panel_original_faces": 36833,
+      "protected_original_seam_vertices": 1024,
+      "candidate_names": [
+        "A_light",
+        "B_strong"
+      ],
+      "displacement_cap_mm": [
+        0.25,
+        0.5
+      ],
+      "curvature_abs_p95_degrees": [
+        1.6176886292959347,
+        1.2292390459598022
+      ],
+      "bad_internal_angle_defect_over_3_degrees": [
+        418,
+        251
+      ],
+      "minimum_triangle_area_ratios": [
+        0.430786701230388,
+        0.22347209958246098
+      ],
+      "inplane_overlap_and_3d_bvh_not_yet_assessed": true,
+      "manufacturing_ready": false
     }
   },
   "next_actions": [
     {
       "priority": "P0",
       "phase_id": "P3",
-      "action": "以可信run #41980583315真实失败UV与独立角亏热点为证据，先核对高曲率是否来自视觉雕刻褶皱，再设计不改变四视图外形/原蹄口的制造曲面和额外隐藏切缝或省道A/B；重新验证3D配缝来源、2D边长/翻面/重叠，未通过一律仅归档研究反例",
       "owner": "研发+设计确认",
-      "done_when": "给出经真实Stage6输入复算的至少两组可审计分片/省道/平滑曲面A/B与逐段配缝明细，并注明失真、图形和实体风险；不自动晋升P4"
+      "action": "运行可信 Stage6 固定SHA的左前制造曲面A/B（原缝线1024点不动）与两个完整LSCM UV；验证长度/翻面/交叠/角亏/3D面积变形并写入永久实测证据。若仍失败，按原四视图设计额外隐藏缝线或多片省道，不提高现有质量门限",
+      "done_when": "两组真实完整左前2D A/B与基线报告和不可篡改源哈希一致、有严谨否决结论，并排除必须等待外部工厂验证的事项"
     },
     {
       "priority": "P0",
@@ -406,6 +441,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-05",
+      "event": "基于真实已SHA验证25% Stage6左前主壳做保护1024源缝线点的有界拉普拉斯曲面3D离线A/B；角亏减小但最差3D三角面积比43.1%/22.3%，证明不能仅凭曲率改善就批准纸样，受信任全片LSCM真实A/B待跑",
+      "evidence_path": "docs/STAGE6_MANUFACTURING_SURFACE_AB.md"
+    },
     {
       "date": "2026-11-05",
       "event": "真实Stage6 25%主壳左前36,833面已由可信main跑通环带→单缝圆盘→LSCM，但2D重叠23,651对/翻面7/边误差P95约99.59%明确拒绝；离线独立3D角亏检查发现807个内部顶点绝对角亏超过3°，P3继续且不升级任何工厂纸样",

@@ -17,6 +17,7 @@ on:
       - 'scripts/audit_stage6_proxy_surface.py'
       - 'scripts/propose_stage6_shell_panels.py'
       - 'scripts/unroll_stage6_leftfront.py'
+      - 'scripts/compare_stage6_leftfront_fairing.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -315,6 +316,29 @@ jobs:
               'overlap_pairs': report['geometry_quality']['global_2d_overlap']['overlapping_nonzero_area_triangle_pairs'],
               'not_approved': True,
           }))
+          PY
+      - name: Compare real seam-frozen leftfront manufacture-surface A/B and full UV
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/compare_stage6_leftfront_fairing.py \
+            --input "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --baseline "$RUNNER_TEMP/stage6-reference/leftfront_unroll_summary.json" \
+            --output "$RUNNER_TEMP/stage6-reference/leftfront_manufacturing_surface_ab.json"
+          python - <<'PY'
+          import json, os, pathlib
+          file = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/leftfront_manufacturing_surface_ab.json'
+          data = json.loads(file.read_text(encoding='utf8'))
+          assert data['schema'] == 'stage6-real-leftfront-seam-locked-surface-ab-v1'
+          assert data['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert data['source_region_faces'] == 36833
+          assert data['source_protected_3d_vertices'] == 1024
+          assert [row['trial'] for row in data['trials']] == ['A_light', 'B_strong']
+          assert all(row['all_original_sewing_seam_coordinates_exact'] for row in data['trials'])
+          assert all(not row['accepted_for_production'] for row in data['trials'])
+          assert not data['manufacturer_seam_or_cut_pattern_approved']
+          print('STAGE6_FAIRING_AB_3D_SOURCE_SEAMS_PROTECTED_NO_CUT_PATTERNS')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
