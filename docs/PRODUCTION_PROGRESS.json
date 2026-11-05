@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_real_proxy_independent_geometry_screen_complete_full_main_shell_seam_design_next",
+    "stage": "full_real_stage6_main_shell_four_region_3D_seam_graph_measured_2D_paper_patterns_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -139,13 +139,21 @@
         {
           "path": "docs/STAGE6_PROXY_GEOMETRY_QA.md",
           "kind": "independent_geometry_qc_and_production_limitations"
+        },
+        {
+          "path": "experiments/stage6_whole_shell_partition_20261105/summary.json",
+          "kind": "real_25pct_main_shell_four_region_3D_seam_edge_graph_two_split_candidates"
+        },
+        {
+          "path": "docs/STAGE6_FOUR_REGION_SHELL_PLAN.md",
+          "kind": "true_shell_zone_geometry_and_manufacturing_constraints"
         }
       ],
       "blockers": [
-        "原主壳与两代理内部边绕向冲突=0、BVH非相邻自交=0，但尚未验证与四蹄/云层/耳尾等其他组件的接触、布料厚度或全局法线朝外",
-        "25%代理顶部视角存在约1.459mm最大单射线可见深度差异，需与最终完整外观和实物审查关联",
-        "尚无真正完整主壳头身四腿制造分片、成对净缝线、缺口、返口/填棉和任何1:1纸样",
-        "实际面料样布、厂商文件格式、第一件实物样品与Golden Sample均缺失"
+        "真实25%主壳4区已按边完整划分，4区每区一个512点蹄洞口且每区是双边界环（annulus）；尚需增加各区合理的径向切缝、省道或再分片来生成可铺平的2D静止布片",
+        "3D配缝界面含两处四线交汇，须调整成工厂可车缝的接合顺序/小过渡片；X=0/Y=20mm几何分割位置未经外观与设计签核",
+        "目前虽已保留四蹄身份、BVH无非相邻自交和96x96五视角数据，25%顶视最大1.46mm近表面深度差及与全部42Mesh附件接触仍未完成生产验证",
+        "尚无真实2D净缝/裁剪线、缝份、经纬毛向、返口与聚酯填棉物理试验、供应商设备/材料确认、实物打样"
       ]
     },
     {
@@ -298,43 +306,65 @@
       "self_intersection_only_zero_not_global_thickness_clearance": true,
       "candidate_ready_for_face_partition_research": true,
       "cut_patterns_approved": 0
+    },
+    "stage6_whole_shell_four_region": {
+      "source_original_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41962253061",
+      "evidence_path": "experiments/stage6_whole_shell_partition_20261105/summary.json",
+      "real_main_shell_faces_partitioned": 116568,
+      "two_trials_split_y_mm": [
+        20,
+        25
+      ],
+      "all_four_regions_connected": true,
+      "each_region_exact_original_512_vertex_hoof_ring": true,
+      "each_region_euler": 0,
+      "each_region_boundary_loops": 2,
+      "selected_research_only_split_y_mm": 20,
+      "total_shared_3d_seam_edges": 835,
+      "total_shared_3d_seam_length_mm": 1789.473552276921,
+      "topological_four_way_seam_junctions": 2,
+      "net_sewing_patterns_approved": 0,
+      "two_dimensional_rest_shapes_generated": false,
+      "factory_ready": false
     }
   },
   "next_actions": [
     {
       "priority": "P0",
       "phase_id": "P3",
-      "action": "基于真实25%主壳代理(59306点/116568面)建立前/后、左/右四个**全壳分片候选区域**，验证每区面连通、恰好归属一个512点蹄部开放环、跨区边界配对与毫米缝线长度；仅生成研究缝线图，不自动生产纸样",
+      "action": "在Y=20mm真实主壳四区草案上先选择左前区(36833面，1个512点蹄洞口)设计一条从蹄口连向外缝的**新增径向切缝**；保留所有原3D顶点与缝线配对，进行可验证的2D低应变展平、翻面/重叠/主伸长检查，输出首张研究性实尺净缝SVG；不自动批准工厂裁剪",
       "owner": "研发",
-      "done_when": "存在固定SHA来源的真实四区域 JSON／接口边长证明；若分区跨蹄洞口或不连通则明确拒绝"
+      "done_when": "真实Stage6左前区有完整可展平拓扑/净缝线逐边3D↔2D对应和可审计畸变/交叉报告"
     },
     {
       "priority": "P0",
       "phase_id": "P3",
-      "action": "定位25%代理顶部最大约1.46mm单射线深度差异；对所有邻件进行独立BVH接触检查，在拟定分片边上设计返口/填棉与后续低应变2D展平方案",
-      "owner": "研发",
-      "done_when": "记录可复核的局部差异区、外观取舍和分片接触/翻面风险"
+      "action": "处理当前四区域缝线图的两处四线交汇、分析1,789.47mm几何缝线长度造成的工时和返口布线风险；设计成可实际缝制的非四线死结接法",
+      "owner": "研发+工艺确认",
+      "done_when": "四线交汇改为可顺序缝制的具体接法/过渡片，连接线与对位点都有编号"
     },
     {
       "priority": "P0",
       "phase_id": "P0",
-      "action": "将原始设计与D外观对照Stage6正/侧/背/顶成品可见外观，签核25cm尺寸/颜色/耳尾与云团差异",
+      "action": "将原始设计图及选定D外观与完整Stage6四视角核对，优先审查X=0/Y=20mm预估缝位是否穿过脸、云团和关键可见区域，并冻结25cm目标",
       "owner": "研发+设计确认",
-      "done_when": "关键外观与生产尺寸有设计签核的四视图文件"
+      "done_when": "有相机与尺寸一致的四视图、被批准或拒绝的缝位标注"
     },
     {
       "priority": "P0",
       "phase_id": "P2",
-      "action": "审核42个真实Mesh和40个装配候选，确定云层、内外耳、尾巴、五官及10个水滴短带真实缝入承接结构",
+      "action": "确认7云团覆层、内外耳、尾根、脸部刺绣和10水滴布片的真实承接边与实物工艺，禁止把Mesh当BOM",
       "owner": "研发+设计确认",
-      "done_when": "每个部件的工艺与缝线位置经过模型与设计核对"
+      "done_when": "全部可见部件的真实缝线/工艺归属与未决厂商项有签核"
     },
     {
       "priority": "P1",
       "phase_id": "P1",
-      "action": "向目标工厂获取具体DXF版本/层、绣花格式、面料样卡、缝份、首样/修版成本及MOQ报价",
-      "owner": "用户+工厂",
-      "done_when": "取得至少一家真实厂商可接受的机器文件和供应规则"
+      "action": "从至少一家目标工厂取得DXF图层/版本、刺绣格式、样布填棉、缝份/首样与修版费、MOQ书面确认",
+      "owner": "用户+厂商",
+      "done_when": "工厂真实设备和成本约束可用于输出正式工艺包"
     }
   ],
   "update_protocol": {
@@ -348,6 +378,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-05",
+      "event": "25%真实Stage6主壳首次全范围四区分割：Y=20/25mm两个A/B均4区连通、各自完整512点蹄口、每区两个边界环/欧拉0；Y=20得到835条3D共缝边、1789.4736mm总缝长及2处四线交汇。无2D裁片，P3继续。",
+      "evidence_path": "experiments/stage6_whole_shell_partition_20261105/summary.json"
+    },
     {
       "date": "2026-11-05",
       "event": "真实Stage6源/两版代理完成独立BVH非相邻自交(均0)、面绕向冲突(均0)和96x96五视角射线；25%正面IOU=1/侧面约0.999548，但顶部单射线最大深度偏差1.459mm；P3继续分片研究、不批准裁布",
