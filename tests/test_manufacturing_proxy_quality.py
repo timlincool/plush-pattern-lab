@@ -69,7 +69,9 @@ def test_reversed_winding_is_not_a_valid_sewing_interface():
     result = register_original_hoof_seams(original, candidate)
     assert not result["all_original_seam_points_and_winding_preserved"]
     assert not result["source_to_proxy_vertex_identity_is_explicit"]
-    intact = sum(row["exact_world_geometry_accepted"] for row in result["registrations"])
+    intact = sum(
+        row["exact_world_geometry_accepted"] for row in result["registrations"]
+    )
     assert intact == 3
 
 
