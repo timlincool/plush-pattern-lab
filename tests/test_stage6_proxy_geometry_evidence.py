@@ -47,7 +47,9 @@ def test_view_metrics_preserve_real_depth_outliers_not_just_high_iou():
 
 
 def test_factory_progress_keeps_proxy_screen_as_early_p3_evidence():
-    state = json.loads((ROOT / "docs/PRODUCTION_PROGRESS.json").read_text(encoding="utf8"))
+    state = json.loads(
+        (ROOT / "docs/PRODUCTION_PROGRESS.json").read_text(encoding="utf8")
+    )
     p3 = next(item for item in state["phases"] if item["id"] == "P3")
     assert any(
         evidence["path"] == "experiments/stage6_proxy_geometry_20261105/summary.json"
