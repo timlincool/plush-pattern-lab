@@ -23,9 +23,7 @@ def test_entire_actual_shell_face_census_and_four_cuffs_are_grounded():
         assert scenario["fourway_junctions"] == 2
         assert scenario["cut_edges"] > 0
         assert not scenario["approved_factory_patterns"]
-    assert proof["each_region_verified"]["source_original_open_boundary_edges"] if (
-        "source_original_open_boundary_edges" in proof["each_region_verified"]
-    ) else proof["each_region_verified"]["original_hoof_open_boundary_edges"] == 512
+    assert proof["each_region_verified"]["original_hoof_open_boundary_edges"] == 512
     assert proof["each_region_verified"]["euler_characteristic"] == 0
 
 
