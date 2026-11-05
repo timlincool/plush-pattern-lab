@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_leftfront_surface_fairing_ab_source_verified_ci_pending",
+    "stage": "stage6_real_leftfront_fairing_ab_rejected_design_aware_extra_darts_required",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -159,6 +159,10 @@
         {
           "path": "docs/STAGE6_MANUFACTURING_SURFACE_AB.md",
           "kind": "p3_real_ply_3d_surface_fairing_preliminary_ab_pending_trusted_ci_uv"
+        },
+        {
+          "path": "experiments/stage6_manufacturing_surface_ab_20261105/summary.json",
+          "kind": "trusted_main_real_stage6_seam_locked_3d_fairing_ab_and_full_uv_rejection"
         }
       ],
       "blockers": [
@@ -167,7 +171,7 @@
         "目前虽已保留四蹄身份、BVH无非相邻自交和96x96五视角数据，25%顶视最大1.46mm近表面深度差及与全部42Mesh附件接触仍未完成生产验证",
         "尚无真实2D净缝/裁剪线、缝份、经纬毛向、返口与聚酯填棉物理试验、供应商设备/材料确认、实物打样",
         "独立3D内禀曲率筛查：17,889内部顶点中807点角亏绝对值超过3°；制造所需省道数与实际面料应变尚无法推导",
-        "真实3D离线A/B：保护1024个缝线源点不动，角亏P95下降但A/B最差面片面积比仅43.1%/22.3%；未证明3D无新自交、五视图轮廓或2D可裁布，必须跑受信主分支全片LSCM A/B"
+        "真实Stage6受信Runner #42004163013已实测A/B；虽降低角亏但面积比仅43%/22%，2D重叠反而增至24,178/24,401对，整片仍不可裁；需要原设计认可的新切缝/省道与合适的制造曲面"
       ]
     },
     {
@@ -391,6 +395,36 @@
       ],
       "inplane_overlap_and_3d_bvh_not_yet_assessed": true,
       "manufacturing_ready": false
+    },
+    "stage6_leftfront_surface_fairing_real_2d_ab": {
+      "source_original_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42004163013",
+      "evidence_path": "experiments/stage6_manufacturing_surface_ab_20261105/summary.json",
+      "face_count": 36833,
+      "protected_original_seam_vertices": 1024,
+      "baseline_uv_overlaps": 23672,
+      "candidate_ab_uv_overlaps": [
+        24178,
+        24401
+      ],
+      "baseline_uv_p95_relative_edge_error": 0.995919867433165,
+      "candidate_ab_uv_p95_relative_edge_error": [
+        0.9939531176374704,
+        0.9936606984235816
+      ],
+      "baseline_3d_curvature_p95_degrees": 2.6329664097365257,
+      "candidate_ab_3d_curvature_p95_degrees": [
+        1.6176886292962096,
+        1.2292390459599751
+      ],
+      "candidate_ab_min_3d_triangle_area_ratios": [
+        0.43078670123036467,
+        0.22347209958245795
+      ],
+      "both_candidated_rejected": true,
+      "approved_for_cutting": 0,
+      "manufacturer_approved": false
     }
   },
   "next_actions": [
@@ -398,8 +432,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "运行可信 Stage6 固定SHA的左前制造曲面A/B（原缝线1024点不动）与两个完整LSCM UV；验证长度/翻面/交叠/角亏/3D面积变形并写入永久实测证据。若仍失败，按原四视图设计额外隐藏缝线或多片省道，不提高现有质量门限",
-      "done_when": "两组真实完整左前2D A/B与基线报告和不可篡改源哈希一致、有严谨否决结论，并排除必须等待外部工厂验证的事项"
+      "action": "结束已失败的左前整片平滑 A/B：根据源模型和设计正/侧/背/顶视图规划额外隐藏径向切缝、省道或低复杂度制造母版的分片A/B；先给每组真实源边拓扑/配缝和双侧缝长，再做完整2D UV重叠/翻面/面积/伸长对照，禁止把点位折叠或UV显示当可裁纸样",
+      "done_when": "至少两条物理可解释的新增切缝/省道路线具备真实Stage6边ID、区域拓扑、净缝配对和UV验收报告，并标记设计/厂商尚未批准的可见缝位"
     },
     {
       "priority": "P0",
@@ -441,6 +475,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-05",
+      "event": "可信 Stage6 #42004163013 全36,833面左前区实跑保护1,024源缝线点的平滑A/B：角亏P95降低但3D面积比降到43%/22%，2D重叠23,672→24,178/24,401；确认两者均拒绝，开发主线转向设计可隐藏的新增切缝/省道，仍无裁布纸样",
+      "evidence_path": "experiments/stage6_manufacturing_surface_ab_20261105/summary.json"
+    },
     {
       "date": "2026-11-05",
       "event": "基于真实已SHA验证25% Stage6左前主壳做保护1024源缝线点的有界拉普拉斯曲面3D离线A/B；角亏减小但最差3D三角面积比43.1%/22.3%，证明不能仅凭曲率改善就批准纸样，受信任全片LSCM真实A/B待跑",
