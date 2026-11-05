@@ -200,7 +200,7 @@ def _mask_overlay(original, proxy):
     return rgb
 
 
-def evaluate_geometry(source, candidates, output_dir):
+def evaluate_geometry(source_sha256, candidates, output_dir):
     """Independent face, BVH and registered orthographic-view audit."""
     body = bpy.context.scene.objects.get(BODY)
     if body is None or body.type != "MESH":
@@ -269,7 +269,7 @@ def evaluate_geometry(source, candidates, output_dir):
                 "red": "source surface only",
                 "blue": "proxy surface only",
             },
-            "source_sha256": sha256_file(_source_file),
+            "source_sha256": source_sha256,
             "results": results,
             "approved_cut_patterns": False,
             "manufacturing_production_ready": False,
@@ -310,9 +310,7 @@ def main():
     check = build_report(args.source_sha256)
     if not check["all_geometry_interfaces_match"]:
         raise ValueError("original four-hoof 3D interface check failed")
-    global _source_file
-    _source_file = args.input
-    result = evaluate_geometry(args.input, EXPECTED, args.proxy_dir)
+    result = evaluate_geometry(args.source_sha256, EXPECTED, args.proxy_dir)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n",
