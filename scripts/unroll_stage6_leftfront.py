@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+from propose_stage6_shell_panels import load_pinned_proxy
 
 from plush_pattern_lab.patterns.full_panel_research_svg import (
     render_full_panel_research_svg,
@@ -19,7 +20,6 @@ from plush_pattern_lab.patterns.full_panel_research_svg import (
 from plush_pattern_lab.patterns.mesh_lscm_candidate import flatten_cut_panel
 from plush_pattern_lab.validation.component_inventory import SOURCE_SHA256
 from plush_pattern_lab.validation.real_panel_slit import slit_real_panel
-from propose_stage6_shell_panels import load_pinned_proxy
 
 REAL_FACES = 36833
 REAL_VERTICES = 18913
