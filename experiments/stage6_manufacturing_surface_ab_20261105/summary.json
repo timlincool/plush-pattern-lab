@@ -1,0 +1,86 @@
+{
+  "schema": "stage6-real-leftfront-manufacturing-surface-ab-measured-v1",
+  "date_utc": "2026-11-05",
+  "trusted_main_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42004163013",
+  "trusted_main_commit": "118b9b58f87b09a60587b30f0ff893967cb9da56",
+  "trusted_main_run_conclusion": "success",
+  "reviewed_real_artifact_id": 13403418771,
+  "research_artifact_original_zip_sha256": "46a3c7f49274ae349e58dac864391e80cc42447af997716205781ba49e2ffe81",
+  "research_result_member": "leftfront_manufacturing_surface_ab.json",
+  "research_result_member_sha256": "520c3d2647ccb2b2bdd825b7b2ab2772469a2c674235d087a9675eee6e20b46c",
+  "public_original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "protected_25pct_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "leftfront_original_faces": 36833,
+  "leftfront_original_vertices": 18913,
+  "locked_original_3d_source_vertices": 1024,
+  "leftfront_cut_disk_euler": 1,
+  "stitched_source_hoof_ring_3d_mm": 101.64031705608457,
+  "stitched_source_outer_region_ring_3d_mm": 968.6370609220164,
+  "candidate_parameters": {
+    "A_light": {
+      "steps": 3,
+      "alpha": 0.2,
+      "max_source_displacement_mm": 0.25
+    },
+    "B_strong": {
+      "steps": 5,
+      "alpha": 0.35,
+      "max_source_displacement_mm": 0.5
+    }
+  },
+  "same_method": "sparse_2_pin_lscm_on_exact_original_faces_after_each_independent_3d_fairing",
+  "measured": {
+    "original": {
+      "curvature_abs_defect_p95_deg": 2.6329664097365257,
+      "curvature_outliers_abs_gt_3deg": 807,
+      "uv_edge_error_relative_p95": 0.995919867433165,
+      "uv_nonzero_area_overlap_triangle_pairs": 23672,
+      "uv_flips": 7,
+      "uv_near_zero_area_triangles": 266,
+      "uv_status": "REJECTED_FOR_DIRECT_SINGLE_PIECE"
+    },
+    "A_light": {
+      "curvature_abs_defect_p95_deg": 1.6176886292962096,
+      "curvature_outliers_abs_gt_3deg": 418,
+      "min_source_face_area_ratio": 0.43078670123036467,
+      "face_orientation_reversals": 0,
+      "face_collapses": 0,
+      "source_protected_max_drift_mm": 0,
+      "uv_edge_error_relative_p95": 0.9939531176374704,
+      "uv_nonzero_area_overlap_triangle_pairs": 24178,
+      "uv_flips": 4,
+      "uv_near_zero_area_triangles": 157,
+      "uv_source_hoof_3d_mm": 101.64031705608457,
+      "uv_hoof_candidate_2d_mm": 36.04212762299032,
+      "uv_source_outer_3d_mm": 968.6370609220164,
+      "uv_outer_candidate_2d_mm": 181.56302656821708,
+      "three_d_geometry_screen_rejected": true,
+      "uv_status": "REJECTED_FOR_DIRECT_SINGLE_PIECE"
+    },
+    "B_strong": {
+      "curvature_abs_defect_p95_deg": 1.2292390459599751,
+      "curvature_outliers_abs_gt_3deg": 251,
+      "min_source_face_area_ratio": 0.22347209958245795,
+      "face_orientation_reversals": 0,
+      "face_collapses": 0,
+      "source_protected_max_drift_mm": 0,
+      "uv_edge_error_relative_p95": 0.9936606984235816,
+      "uv_nonzero_area_overlap_triangle_pairs": 24401,
+      "uv_flips": 4,
+      "uv_near_zero_area_triangles": 154,
+      "uv_source_hoof_3d_mm": 101.64031705608457,
+      "uv_hoof_candidate_2d_mm": 35.97602771292708,
+      "uv_source_outer_3d_mm": 968.6370609220164,
+      "uv_outer_candidate_2d_mm": 182.6211021664164,
+      "three_d_geometry_screen_rejected": true,
+      "uv_status": "REJECTED_FOR_DIRECT_SINGLE_PIECE"
+    }
+  },
+  "decision": "REJECT_BOTH_FAIRING_VARIANTS; prioritize pattern-aware additional panels or design-approved hidden darts; do not optimize curvature or UV P95 alone",
+  "reason": "Both 3D surface candidates exceed the exploratory 50pct-local-face-area-loss flag; global 2D overlap worsened and seam length mismatch remains extreme.",
+  "preserved_3d_original_seams": true,
+  "independent_3d_self_intersection_and_design_silhouette_after_fairing_not_verified": true,
+  "actual_material_elasticity_and_factory_rules_unknown": true,
+  "geometric_and_manufacturing_cut_approved": false,
+  "next_action": "Compare topology-valid design-aware auxiliary seam/dart layouts using whole-panel 3D source edge matching, UV overlap/strain, and face/front/top design references; do not automatically emit printable cut patterns."
+}
