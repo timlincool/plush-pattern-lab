@@ -75,11 +75,7 @@ def evaluate_real_leftfront(points, faces, budget=8000):
         "region_id": 0,
         "source_3d_split_x_mm": 0,
         "source_3d_split_y_mm": RESEARCH_SPLIT_Y,
-        "topology": {
-            key: value
-            for key, value in disk.items()
-            if key in TOPOLOGY_KEYS
-        },
+        "topology": {key: value for key, value in disk.items() if key in TOPOLOGY_KEYS},
         "slit_path_original_vertex_ids": disk["slit_path_source_vertex_ids"].tolist(),
         "geometry_quality": quality,
         "intrinsic_curvature_screen": curvature,
@@ -169,7 +165,8 @@ def main():
                 ]["abs_defect_degrees_p95"],
                 "curvature_points_over_3deg": report["intrinsic_curvature_screen"][
                     "positive_defect_over_threshold"
-                ] + report["intrinsic_curvature_screen"][
+                ]
+                + report["intrinsic_curvature_screen"][
                     "negative_defect_below_minus_threshold"
                 ],
                 "approved_for_cutting": False,
