@@ -180,15 +180,52 @@ def _boundary_metrics(disk, planar):
     two = np.linalg.norm(xy[:, 1] - xy[:, 0], axis=1)
     three = np.linalg.norm(xyz[:, 1] - xyz[:, 0], axis=1)
     delta = np.abs(two / three - 1)
+    ids = np.asarray(disk["source_vertex_ids"])[edges]
+    original_keys = np.sort(ids, axis=1)
+    original = {
+        "hoof": {tuple(sorted(v)) for v in disk["source_cuff_edge_global_ids"]},
+        "outer": {tuple(sorted(v)) for v in disk["source_outer_edge_global_ids"]},
+    }
+    original["slit"] = {
+        tuple(sorted(v))
+        for v in zip(
+            disk["slit_path_source_vertex_ids"][:-1],
+            disk["slit_path_source_vertex_ids"][1:],
+        )
+    }
+    region = {
+        kind: np.fromiter(
+            (tuple(pair) in keys for pair in original_keys),
+            dtype=bool,
+            count=len(edges),
+        )
+        for kind, keys in original.items()
+    }
+    if np.any(np.sum(np.stack(list(region.values())), axis=0) != 1):
+        raise ValueError("unclassified or multiply classified cut boundary edge")
+    group_metrics = {
+        kind: {
+            "edge_count": int(mask.sum()),
+            "original_3d_mm": float(three[mask].sum()),
+            "candidate_2d_mm": float(two[mask].sum()),
+            "p95_edge_relative_error": float(np.quantile(delta[mask], 0.95)),
+            "max_edge_relative_error": float(delta[mask].max()),
+        }
+        for kind, mask in region.items()
+    }
+    if group_metrics["hoof"]["edge_count"] != disk["source_cuff_edges"]:
+        raise ValueError("a measured hoof seam edge was lost during cutting")
+    if group_metrics["outer"]["edge_count"] != disk["source_outer_seam_edges"]:
+        raise ValueError("an original inter-panel seam edge was lost")
     return {
         "boundary_edge_count": len(edges),
         "original_boundary_3d_length_mm": float(three.sum()),
         "new_cut_boundary_2d_length_mm": float(two.sum()),
         "boundary_edge_relative_error_p95": float(np.quantile(delta, 0.95)),
         "boundary_edge_relative_error_max": float(delta.max()),
-        "boundary_edge_source_vertex_ids": np.asarray(
-            disk["source_vertex_ids"]
-        )[edges].tolist(),
+        "perimeter_by_source_role": group_metrics,
+        "source_seam_vertex_pairs_preserved": True,
+        "boundary_edge_source_vertex_ids": ids.tolist(),
         "boundary_edge_uv_ids": edges.tolist(),
     }
 
