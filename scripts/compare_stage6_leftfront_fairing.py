@@ -116,9 +116,7 @@ def run_real_surface_ab(xyz, faces, baseline):
     ):
         raise ValueError("unverified current-run original LSCM baseline")
     base_uv = baseline["geometry_quality"]
-    trials = [
-        _trial(xyz, disk, used, local_faces, fixed, spec) for spec in TRIALS
-    ]
+    trials = [_trial(xyz, disk, used, local_faces, fixed, spec) for spec in TRIALS]
     return {
         "schema": "stage6-real-leftfront-seam-locked-surface-ab-v1",
         "source_original_blend_sha256": SOURCE_SHA256,
