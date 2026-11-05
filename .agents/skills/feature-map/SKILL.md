@@ -12,6 +12,8 @@ description: 定位 Plush Pattern Lab 当前已实现功能、源码、命令、
 
 **制造结构草案：** [42个实测Mesh与40条装配候选登记表](../../../design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json) · [完整角色制版下一步](../../../docs/STAGE6_MANUFACTURING_STRUCTURE.md)。先做真实主壳低密度代理、分片与完整连接结构，不要把眼部渲染标记或云团外观网格直接当作裁布BOM。
 
+**最新整角色P3工程实证：** [实际Stage6四区域曲面拓扑与3D配缝](../../../docs/STAGE6_FOUR_REGION_SHELL_PLAN.md)。源25%代理的116,568面全部有RLE分区，四区分别保留512点蹄口，四条3D缝线可逐边成对匹配；但没有2D静止布片/缝份，须先做左前区径向切缝和真实展平。进度仍以 [PRODUCTION_PROGRESS](../../../docs/PRODUCTION_PROGRESS.json) 为权威。
+
 ## 现有能力与边界
 
 | 能力 | 当前证据/范围 | 不代表 |
