@@ -68,9 +68,7 @@ def _components(n, edges):
         return n, np.arange(n)
     rows = np.r_[edges[:, 0], edges[:, 1]]
     cols = np.r_[edges[:, 1], edges[:, 0]]
-    graph = csr_matrix(
-        (np.ones(len(rows), dtype=np.int8), (rows, cols)), shape=(n, n)
-    )
+    graph = csr_matrix((np.ones(len(rows), dtype=np.int8), (rows, cols)), shape=(n, n))
     return connected_components(graph, directed=False)
 
 
@@ -99,9 +97,7 @@ def _face_components(region_face_ids, internal, total_faces):
 def _region_report(region, labels, vertices, triangles, topology, cuff_size):
     edges, counts, first, second, face_edge_ids = topology
     selected = np.flatnonzero(labels == region)
-    chosen, used_counts = np.unique(
-        face_edge_ids[selected].ravel(), return_counts=True
-    )
+    chosen, used_counts = np.unique(face_edge_ids[selected].ravel(), return_counts=True)
     border = edges[chosen[used_counts == 1]]
     boundary = _boundary_stats(border, len(vertices))
     verts = np.unique(triangles[selected].ravel())
@@ -241,9 +237,7 @@ def draft_four_zone_shell(vertices_mm, faces, split_y_mm=20, cuff_size=512):
         "split_y_mm": float(split_y_mm),
         "source_vertices": len(vertices),
         "source_triangles": len(triangles),
-        "source_original_open_boundary_edges": int(
-            (topology[1] == 1).sum()
-        ),
+        "source_original_open_boundary_edges": int((topology[1] == 1).sum()),
         "regions": regions,
         "seam_interfaces": interfaces,
         "seam_edges": seam_edges,

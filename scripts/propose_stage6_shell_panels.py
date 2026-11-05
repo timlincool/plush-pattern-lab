@@ -64,9 +64,11 @@ def measure_splits(vertices, triangles):
         draft_four_zone_shell(vertices, triangles, split_y_mm=cut)
         for cut in (20.0, 25.0)
     ]
-    valid = [row for row in candidates if row[
-        "all_regions_single_connected_annuli_with_one_complete_hoof"
-    ]]
+    valid = [
+        row
+        for row in candidates
+        if row["all_regions_single_connected_annuli_with_one_complete_hoof"]
+    ]
     if not valid:
         raise ValueError("no valid four-zone topological split on real Stage6")
     selected = min(valid, key=lambda row: row["total_shared_3d_seam_length_mm"])

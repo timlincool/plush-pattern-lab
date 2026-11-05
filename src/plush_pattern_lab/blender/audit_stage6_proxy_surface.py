@@ -170,7 +170,9 @@ def _bvh_crossing_canary():
         tree = BVHTree.FromBMesh(mesh)
         result = _self_intersections(mesh, tree)
         if result["nonadjacent_triangle_intersection_pairs"] != 1:
-            raise ValueError("Blender BVH cannot detect the synthetic intersecting faces")
+            raise ValueError(
+                "Blender BVH cannot detect the synthetic intersecting faces"
+            )
         return True
     finally:
         mesh.free()
