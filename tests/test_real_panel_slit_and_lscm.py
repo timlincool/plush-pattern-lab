@@ -15,9 +15,7 @@ from plush_pattern_lab.validation.real_panel_slit import _edges, slit_real_panel
 def _cylinder(count=64):
     """Triangulated cylinder with original lower cuff open and upper disk cap."""
     t = np.arange(count) * (2 * np.pi / count)
-    bottom = np.column_stack(
-        (20 * np.cos(t), 20 * np.sin(t), np.zeros(count))
-    )
+    bottom = np.column_stack((20 * np.cos(t), 20 * np.sin(t), np.zeros(count)))
     top = bottom.copy()
     top[:, 2] = 25
     vertices = np.vstack((bottom, top, [0, 0, 25]))
@@ -102,12 +100,9 @@ def test_svg_must_reject_nonfinite_failed_net_coords():
         render_full_panel_research_svg(disk, uv, score)
 
 
-
 def test_large_int32_blender_ply_edge_keys_are_64bit_before_multiplication():
     # Source PLY faces are <i4, while global edge IDs exceed int32 range.
-    triangles = np.array(
-        [[59997, 59998, 59999], [0, 1, 2]], dtype=np.int32
-    )
+    triangles = np.array([[59997, 59998, 59999], [0, 1, 2]], dtype=np.int32)
     unique, _, _, keys, _ = _edges(triangles, vertex_count=60000)
     assert unique.dtype == np.int64
     assert keys.dtype == np.int64

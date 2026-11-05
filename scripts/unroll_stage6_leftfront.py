@@ -19,12 +19,28 @@ from plush_pattern_lab.patterns.full_panel_research_svg import (
 )
 from plush_pattern_lab.patterns.mesh_lscm_candidate import flatten_cut_panel
 from plush_pattern_lab.validation.component_inventory import SOURCE_SHA256
+from plush_pattern_lab.validation.intrinsic_curvature_screen import (
+    audit_intrinsic_curvature,
+)
 from plush_pattern_lab.validation.real_panel_slit import slit_real_panel
 
 REAL_FACES = 36833
 REAL_VERTICES = 18913
 REAL_CUFF_EDGES = 512
 RESEARCH_SPLIT_Y = 20.0
+TOPOLOGY_KEYS = frozenset(
+    {
+        "slit_path_length_3d_mm",
+        "source_cuff_edges",
+        "source_outer_seam_edges",
+        "original_annulus_vertices",
+        "original_annulus_faces",
+        "cut_disk_vertices",
+        "cut_disk_faces",
+        "cut_disk_boundary_edges",
+        "cut_disk_euler",
+    }
+)
 
 
 def _source_region(xyz, faces):
@@ -46,6 +62,7 @@ def evaluate_real_leftfront(points, faces, budget=8000):
     if disk["original_annulus_faces"] != REAL_FACES:
         raise ValueError("source Stage6 panel triangle count has drifted")
     quality, uv = flatten_cut_panel(disk, iteration_cap=budget)
+    curvature = audit_intrinsic_curvature(disk)
     boundary = dict(quality["boundary"])
     edge_source_ids = boundary.pop("boundary_edge_source_vertex_ids")
     edge_uv_ids = boundary.pop("boundary_edge_uv_ids")
@@ -61,20 +78,11 @@ def evaluate_real_leftfront(points, faces, budget=8000):
         "topology": {
             key: value
             for key, value in disk.items()
-            if key in {
-                "slit_path_length_3d_mm",
-                "source_cuff_edges",
-                "source_outer_seam_edges",
-                "original_annulus_vertices",
-                "original_annulus_faces",
-                "cut_disk_vertices",
-                "cut_disk_faces",
-                "cut_disk_boundary_edges",
-                "cut_disk_euler",
-            }
+            if key in TOPOLOGY_KEYS
         },
         "slit_path_original_vertex_ids": disk["slit_path_source_vertex_ids"].tolist(),
         "geometry_quality": quality,
+        "intrinsic_curvature_screen": curvature,
         "original_3d_faces_unchanged": True,
         "net_cut_pattern_approved": False,
         "fabric_material_validated": False,
@@ -155,6 +163,14 @@ def main():
                 ],
                 "uv_overlap_truncated": report["geometry_quality"]["global_2d_overlap"][
                     "overlap_search_truncated"
+                ],
+                "curvature_abs_defect_p95_degrees": report[
+                    "intrinsic_curvature_screen"
+                ]["abs_defect_degrees_p95"],
+                "curvature_points_over_3deg": report["intrinsic_curvature_screen"][
+                    "positive_defect_over_threshold"
+                ] + report["intrinsic_curvature_screen"][
+                    "negative_defect_below_minus_threshold"
                 ],
                 "approved_for_cutting": False,
             }

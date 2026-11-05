@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "full_real_stage6_main_shell_four_region_3D_seam_graph_measured_2D_paper_patterns_pending",
+    "stage": "full_real_stage6_leftfront_lscm_rejected_independent_curvature_screen",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -147,13 +147,22 @@
         {
           "path": "docs/STAGE6_FOUR_REGION_SHELL_PLAN.md",
           "kind": "true_shell_zone_geometry_and_manufacturing_constraints"
+        },
+        {
+          "path": "experiments/stage6_leftfront_unroll_20261105/summary.json",
+          "kind": "trusted_real_full_panel_lscm_rejection_with_independent_intrinsic_curvature_screen"
+        },
+        {
+          "path": "docs/STAGE6_LEFTFRONT_FULL_PANEL_QA.md",
+          "kind": "real_2d_failure_analysis_and_next_manufacturing_surface_decisions"
         }
       ],
       "blockers": [
-        "真实25%主壳4区已按边完整划分，4区每区一个512点蹄洞口且每区是双边界环（annulus）；尚需增加各区合理的径向切缝、省道或再分片来生成可铺平的2D静止布片",
+        "左前完整36,833面已拓扑切圆盘，但真实LSCM 2D边误差P95=99.59%、重叠23,651对、翻面7片、塌面266片；不准按该UV裁布，优先辨识制造曲面与真实省道/分片方案",
         "3D配缝界面含两处四线交汇，须调整成工厂可车缝的接合顺序/小过渡片；X=0/Y=20mm几何分割位置未经外观与设计签核",
         "目前虽已保留四蹄身份、BVH无非相邻自交和96x96五视角数据，25%顶视最大1.46mm近表面深度差及与全部42Mesh附件接触仍未完成生产验证",
-        "尚无真实2D净缝/裁剪线、缝份、经纬毛向、返口与聚酯填棉物理试验、供应商设备/材料确认、实物打样"
+        "尚无真实2D净缝/裁剪线、缝份、经纬毛向、返口与聚酯填棉物理试验、供应商设备/材料确认、实物打样",
+        "独立3D内禀曲率筛查：17,889内部顶点中807点角亏绝对值超过3°；制造所需省道数与实际面料应变尚无法推导"
       ]
     },
     {
@@ -328,15 +337,34 @@
       "net_sewing_patterns_approved": 0,
       "two_dimensional_rest_shapes_generated": false,
       "factory_ready": false
+    },
+    "stage6_leftfront_full_panel_2d": {
+      "trusted_main_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41980583315",
+      "trusted_main_commit": "0ebfcc2b3c0973187b78e2538de707a7e76d11d4",
+      "evidence_path": "experiments/stage6_leftfront_unroll_20261105/summary.json",
+      "original_panel_faces": 36833,
+      "cut_disk_vertices": 18946,
+      "slit_3d_mm": 40.89211016973698,
+      "uv_edge_relative_error_p95": 0.9959241920210488,
+      "uv_inverted_faces": 7,
+      "uv_degenerate_faces": 266,
+      "uv_nonzero_overlap_pairs": 23651,
+      "actual_lscm_status": "REJECTED_FOR_DIRECT_SINGLE_PIECE",
+      "independent_curvature_screen_interior_vertices": 17889,
+      "independent_curvature_screen_abs_angle_defect_p95_degrees": 2.6329664097365257,
+      "independent_curvature_screen_hotspots_over_3_degrees": 807,
+      "screen_not_a_dart_number_or_material_certification": true,
+      "net_cut_pattern_approved": 0,
+      "factory_ready": false
     }
   },
   "next_actions": [
     {
       "priority": "P0",
       "phase_id": "P3",
-      "action": "在Y=20mm真实主壳四区草案上先选择左前区(36833面，1个512点蹄洞口)设计一条从蹄口连向外缝的**新增径向切缝**；保留所有原3D顶点与缝线配对，进行可验证的2D低应变展平、翻面/重叠/主伸长检查，输出首张研究性实尺净缝SVG；不自动批准工厂裁剪",
-      "owner": "研发",
-      "done_when": "真实Stage6左前区有完整可展平拓扑/净缝线逐边3D↔2D对应和可审计畸变/交叉报告"
+      "action": "以可信run #41980583315真实失败UV与独立角亏热点为证据，先核对高曲率是否来自视觉雕刻褶皱，再设计不改变四视图外形/原蹄口的制造曲面和额外隐藏切缝或省道A/B；重新验证3D配缝来源、2D边长/翻面/重叠，未通过一律仅归档研究反例",
+      "owner": "研发+设计确认",
+      "done_when": "给出经真实Stage6输入复算的至少两组可审计分片/省道/平滑曲面A/B与逐段配缝明细，并注明失真、图形和实体风险；不自动晋升P4"
     },
     {
       "priority": "P0",
@@ -378,6 +406,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-05",
+      "event": "真实Stage6 25%主壳左前36,833面已由可信main跑通环带→单缝圆盘→LSCM，但2D重叠23,651对/翻面7/边误差P95约99.59%明确拒绝；离线独立3D角亏检查发现807个内部顶点绝对角亏超过3°，P3继续且不升级任何工厂纸样",
+      "evidence_path": "experiments/stage6_leftfront_unroll_20261105/summary.json"
+    },
     {
       "date": "2026-11-05",
       "event": "25%真实Stage6主壳首次全范围四区分割：Y=20/25mm两个A/B均4区连通、各自完整512点蹄口、每区两个边界环/欧拉0；Y=20得到835条3D共缝边、1789.4736mm总缝长及2处四线交汇。无2D裁片，P3继续。",

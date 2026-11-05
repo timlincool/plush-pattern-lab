@@ -34,9 +34,7 @@ def _components(n, edges):
         return n
     r = np.r_[edges[:, 0], edges[:, 1]]
     c = np.r_[edges[:, 1], edges[:, 0]]
-    graph = coo_matrix(
-        (np.ones(len(r), dtype=np.int8), (r, c)), shape=(n, n)
-    ).tocsr()
+    graph = coo_matrix((np.ones(len(r), dtype=np.int8), (r, c)), shape=(n, n)).tocsr()
     return connected_components(graph, directed=False, return_labels=False)
 
 
@@ -64,9 +62,7 @@ def _boundary_check(edges, vertex_count):
 def _path_to_outer(coords, edge_ids, counts, cuff_ids, outer_ids):
     """Multi-source shortest path; original mesh boundary edges are excluded."""
     interiors = edge_ids[counts == 2]
-    lengths = np.linalg.norm(
-        coords[interiors[:, 0]] - coords[interiors[:, 1]], axis=1
-    )
+    lengths = np.linalg.norm(coords[interiors[:, 0]] - coords[interiors[:, 1]], axis=1)
     if not len(interiors) or np.any(lengths <= 0):
         raise ValueError("invalid non-boundary edge lengths")
     n = len(coords)
@@ -115,9 +111,7 @@ def _cut_fan_connections(edge_ids, inverse, counts, path, face_count):
     source[:, 0] = owners[order[starts]]
     interior = counts == 2
     source[interior, 1] = owners[order[starts[interior] + 1]]
-    cut_edges = {
-        tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])
-    }
+    cut_edges = {tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])}
     neighbors = defaultdict(list)
     cut_points = set(path.tolist())
     for index, (a, b) in enumerate(edge_ids):
@@ -159,9 +153,7 @@ def _cut_vertex_fans(triangles, edge_ids, inverse, counts, path):
     """Duplicate one topological identity for each original cut-path point."""
     n = int(triangles.max()) + 1
     rewritten = triangles.copy()
-    connections = _cut_fan_connections(
-        edge_ids, inverse, counts, path, len(triangles)
-    )
+    connections = _cut_fan_connections(edge_ids, inverse, counts, path, len(triangles))
     for index, point in enumerate(path):
         _duplicate_face_fan(
             triangles, rewritten, int(point), connections[int(point)], n + index
@@ -254,9 +246,7 @@ def _region_topology(xyz, whole, selected, expected_cuff_edges):
 
 def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512):
     """Return a real full-panel disk and source-index map, not approved cut lines."""
-    xyz, whole, selected = _validated_source_inputs(
-        vertices_mm, whole_faces, face_ids
-    )
+    xyz, whole, selected = _validated_source_inputs(vertices_mm, whole_faces, face_ids)
     vertices, triangle, edges, inverse, counts, boundary, cuff, outer = (
         _region_topology(xyz, whole, selected, expected_cuff_edges)
     )
@@ -264,9 +254,7 @@ def slit_real_panel(vertices_mm, whole_faces, face_ids, expected_cuff_edges=512)
     path, path_length = _path_to_outer(
         coords, edges, counts, np.unique(cuff), np.unique(outer)
     )
-    cut_faces, duplicates = _cut_vertex_fans(
-        triangle, edges, inverse, counts, path
-    )
+    cut_faces, duplicates = _cut_vertex_fans(triangle, edges, inverse, counts, path)
     if len(duplicates) != len(path):
         raise ValueError("every cut-path vertex must get one copy")
     cut_points = np.vstack((coords, coords[duplicates]))

@@ -24,14 +24,10 @@ def _intrinsic_triangles(points, faces):
     width = np.linalg.norm(edge1, axis=1)
     dot = np.einsum("ij,ij->i", edge1, edge2)
     x2 = dot / np.maximum(width, 1e-12)
-    y2 = np.sqrt(
-        np.maximum(np.einsum("ij,ij->i", edge2, edge2) - x2 * x2, 0)
-    )
+    y2 = np.sqrt(np.maximum(np.einsum("ij,ij->i", edge2, edge2) - x2 * x2, 0))
     if np.any(width < 1e-10) or np.any(y2 < 1e-10):
         raise ValueError("source 3D panel contains a collapsed triangle")
-    gradient_x = np.column_stack(
-        (-1 / width, 1 / width, np.zeros(len(faces)))
-    )
+    gradient_x = np.column_stack((-1 / width, 1 / width, np.zeros(len(faces))))
     gradient_y = np.column_stack(
         ((x2 - width) / (width * y2), -x2 / (width * y2), 1 / y2)
     )
@@ -44,8 +40,12 @@ def _conformal_matrix(faces, width, y2, dx, dy, vertex_count):
     ids = faces.ravel()
     scale = np.sqrt((width * y2 / 2))[:, None]
     data = np.concatenate(
-        ((scale * dx).ravel(), (-scale * dy).ravel(),
-         (scale * dy).ravel(), (scale * dx).ravel())
+        (
+            (scale * dx).ravel(),
+            (-scale * dy).ravel(),
+            (scale * dy).ravel(),
+            (scale * dx).ravel(),
+        )
     )
     r = np.concatenate((2 * rows, 2 * rows, 2 * rows + 1, 2 * rows + 1))
     c = np.concatenate((2 * ids, 2 * ids + 1, 2 * ids, 2 * ids + 1))
@@ -66,9 +66,7 @@ def _solve_lscm(disk, iteration_cap):
     if first == last:
         raise ValueError("slit endpoints are not distinct")
     pins = np.array([2 * first, 2 * first + 1, 2 * last, 2 * last + 1])
-    pin_values = np.array(
-        [0.0, 0.0, float(disk["slit_path_length_3d_mm"]), 0.0]
-    )
+    pin_values = np.array([0.0, 0.0, float(disk["slit_path_length_3d_mm"]), 0.0])
     free = np.ones(equations.shape[1], dtype=bool)
     free[pins] = False
     right = -(equations[:, pins] @ pin_values)
@@ -78,15 +76,20 @@ def _solve_lscm(disk, iteration_cap):
     coordinates = np.zeros(equations.shape[1], dtype=np.float64)
     coordinates[pins] = pin_values
     coordinates[free] = solved[0]
-    return coordinates.reshape(-1, 2), {
-        "method": "two_pin_sparse_LSCM_real_3d_triangle_intrinsic_charts",
-        "pinned_original_path_3d_length_mm": float(pin_values[2]),
-        "solver_status": int(solved[1]),
-        "solver_iterations": int(solved[2]),
-        "solver_residual_l2": float(solved[3]),
-        "converged_before_cap": bool(solved[1] in (1, 2)),
-        "max_solver_iterations": iteration_cap,
-    }, (xyz, width, x2, y2)
+    return (
+        coordinates.reshape(-1, 2),
+        {
+            "method": "two_pin_sparse_LSCM_real_3d_triangle_intrinsic_charts",
+            "pinned_original_path_3d_length_mm": float(pin_values[2]),
+            "solver_status": int(solved[1]),
+            "solver_iterations": int(solved[2]),
+            "solver_residual_l2": float(solved[3]),
+            "converged_before_cap": bool(solved[1] in (1, 2)),
+            "max_solver_iterations": iteration_cap,
+            "stationary_least_squares_is_not_geometric_quality": True,
+        },
+        (xyz, width, x2, y2),
+    )
 
 
 def _strain_metrics(uv_faces, intrinsic):
@@ -99,12 +102,8 @@ def _strain_metrics(uv_faces, intrinsic):
     sign = 1 if positive >= negative else -1
     inverted = int((signed_area * sign < -1e-8).sum())
     near_zero = int((np.abs(signed_area) <= 1e-8).sum())
-    lengths3 = np.linalg.norm(
-        original[:, [1, 2, 0]] - original, axis=2
-    )
-    lengths2 = np.linalg.norm(
-        uv_faces[:, [1, 2, 0]] - uv_faces, axis=2
-    )
+    lengths3 = np.linalg.norm(original[:, [1, 2, 0]] - original, axis=2)
+    lengths2 = np.linalg.norm(uv_faces[:, [1, 2, 0]] - uv_faces, axis=2)
     discrepancy = np.abs(lengths2 / lengths3 - 1)
     valid = np.abs(signed_area) > 1e-8
     stretch = np.array([], dtype=np.float64)
@@ -249,7 +248,9 @@ def flatten_cut_panel(disk, iteration_cap=8000):
         issues.append("high_relative_triangle_edge_distortion")
     return {
         "schema": "stage6-whole-leftfront-slit-lscm-research-v1",
-        "status": "REJECTED_FOR_DIRECT_SINGLE_PIECE" if issues else "RESEARCH_GEOMETRY_ONLY",
+        "status": "REJECTED_FOR_DIRECT_SINGLE_PIECE"
+        if issues
+        else "RESEARCH_GEOMETRY_ONLY",
         "solver": solver,
         "strain_screen": metric,
         "global_2d_overlap": collisions,
