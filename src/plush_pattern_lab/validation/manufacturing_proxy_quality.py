@@ -22,9 +22,7 @@ SEAM_MAX_GAP_MM = 0.0001
 def _ring_record(item):
     ids = np.asarray(item["vertex_ids"])
     coords = np.asarray(item["xyz_mm"], dtype=np.float64)
-    if ids.shape != (RING_VERTICES,) or not np.issubdtype(
-        ids.dtype, np.integer
-    ):
+    if ids.shape != (RING_VERTICES,) or not np.issubdtype(ids.dtype, np.integer):
         raise ValueError("ring needs 512 integral original vertex identities")
     if len(np.unique(ids)) != RING_VERTICES or (ids < 0).any():
         raise ValueError("ring has invalid repeated or negative vertex identities")
@@ -67,8 +65,7 @@ def register_original_hoof_seams(source_rings, proxy_rings):
         if good:
             ordered = np.roll(new_ids, match["cyclic_shift"])
             result["original_to_proxy_vertex_id"] = [
-                [int(old), int(new)]
-                for old, new in zip(old_ids, ordered)
+                [int(old), int(new)] for old, new in zip(old_ids, ordered)
             ]
         results.append(result)
     return {

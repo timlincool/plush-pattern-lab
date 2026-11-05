@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-04",
+  "updated_at": "2026-11-05",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "real_stage6_main_shell_topology_proven_proxy_and_full_panels_pending",
+    "stage": "real_stage6_low_poly_main_shell_proxy_verified_sewing_panels_and_materials_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -123,13 +123,21 @@
         {
           "path": "docs/STAGE6_CORE_SHELL_TOPOLOGY.md",
           "kind": "required_manufacturing_proxy_topology_gate"
+        },
+        {
+          "path": "experiments/stage6_core_proxy_20261105/summary.json",
+          "kind": "real_stage6_50_25pct_non_destructive_proxy_with_preserved_four_hoof_world_boundaries"
+        },
+        {
+          "path": "docs/STAGE6_CORE_PROXY_AB.md",
+          "kind": "research_proxy_rationale_and_reproducible_trusted_workflow"
         }
       ],
       "blockers": [
-        "主壳234161顶点、466278三角面已通过单连通/四洞/无非流形只读审计，但还没有低面数制造代理",
-        "头身四腿完整裁片分界、缝线匹配、翻面/返口与填棉尚未实现",
-        "主壳面朝向一致性及代理外形误差尚未独立验证",
-        "真实面料与工厂兼容制版格式尚未确认"
+        "主壳已得到两版真实低密度研究代理，但尚未有正/侧/背/顶视角轮廓与面法线/独立BVH自交复核",
+        "主壳＋四腿仍未划分成真实可缝2D裁片与两两配对净缝/对位缺口/返口及填棉结构",
+        "独立云团覆层、耳根、尾根和水滴短布片的真实材料/缝线/固定位置尚未签核",
+        "实际面料与工厂制版格式及样布/实物试样均缺失"
       ]
     },
     {
@@ -234,36 +242,59 @@
       "candidate_for_non_destructive_proxy_experiment": true,
       "low_poly_proxy_created": false,
       "whole_role_sewing_patterns_approved": 0
+    },
+    "stage6_core_shell_proxy": {
+      "source_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "source_blender_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41953627248",
+      "evidence_path": "experiments/stage6_core_proxy_20261105/summary.json",
+      "experiment": "protected 4x512 source boundaries plus 2-hop vertices; 50% and 25% decimate ratios",
+      "actual_research_proxy_candidates": 2,
+      "candidate_faces": [
+        233138,
+        116568
+      ],
+      "candidate_vertices": [
+        117591,
+        59306
+      ],
+      "all_four_original_seams_per_proxy_max_gap_mm": 0,
+      "source_to_25pct_proxy_sampled_surface_p95_mm": 0.009735960702528246,
+      "source_to_25pct_proxy_sampled_surface_max_mm": 0.018427388567943126,
+      "sample_is_not_continuous_hausdorff": true,
+      "standalone_research_ply_files_exported": true,
+      "ready_for_next_manufacturing_segmentation_research": true,
+      "full_character_panels_approved": 0,
+      "sample_or_factory_approved": false
     }
   },
   "next_actions": [
     {
       "priority": "P0",
       "phase_id": "P3",
-      "action": "在公开Stage6原主壳上建立**非破坏性低密度制版代理候选**，先保护4个512点真实蹄部开口与原世界坐标；比较原模型尺寸/轮廓、面片自交及代理拓扑，未经实测不得写入制造纸样",
+      "action": "在已验证的约59k点/116568面主壳研究代理上独立审计面朝向与BVH自交，并建立头身+四腿可解释的完整制版分区、缝线图与返口方案；严格保留四个512点蹄部接口",
       "owner": "研发",
-      "done_when": "可信Blender A/B 证明代理四蹄环身份不变、拓扑与外形误差可复核，并保留失败版本/拒绝理由"
-    },
-    {
-      "priority": "P0",
-      "phase_id": "P2",
-      "action": "审核42个真实Mesh对应的制造角色和40项装配草案，明确7个云覆层、双耳、尾根、五官与10个水滴短带的真实连接/材料工艺",
-      "owner": "研发+设计确认",
-      "done_when": "各角色有经设计确认的接合结构和仍需厂商验证的独立项目"
+      "done_when": "可信Blender证明代理不丢接缝，并有真实主壳分区/拼缝草案及多视角偏差证据"
     },
     {
       "priority": "P0",
       "phase_id": "P0",
-      "action": "把原图与D外观对照Stage6正侧背顶视图，冻结25cm主结构、表情、云团和耳尾差异",
+      "action": "从原始设计图/选定D外观对照Stage6正侧背顶关键尺寸、头身云团与站姿，冻结生产四视图差异/目标",
       "owner": "研发+设计确认",
-      "done_when": "有4视图及关键尺寸差异清单、设计确认版本"
+      "done_when": "四视图尺寸/主要外观差异/优先修改区域逐部位签核"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P2",
+      "action": "审核42个真实Mesh对应制造用途和40项装配草案，明确云团、双耳、尾根、绣花和10个水滴布片真实承接工艺",
+      "owner": "研发+设计确认",
+      "done_when": "每个可见部件有已确认工艺、装配关系与独立供应商阻塞项"
     },
     {
       "priority": "P0",
       "phase_id": "P1",
-      "action": "向候选工厂获取 DXF具体版本/层、刺绣格式、面料样布、缝份、样品费修版轮次和MOQ",
+      "action": "向目标工厂获取DXF层/版本、刺绣格式、样布/填棉、缝份/免费修版轮数及MOQ的书面回复",
       "owner": "用户+工厂",
-      "done_when": "取得至少一家工厂可引用的真实报价与生产文件接口条件"
+      "done_when": "至少一家真实工厂的可接收文件与样品报价明确"
     }
   ],
   "update_protocol": {
@@ -277,6 +308,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-05",
+      "event": "可信Blender实跑Stage6原主体非破坏性保四蹄环减面：50%得到233138面，25%得到116568面；4×512边界真实世界坐标最大误差0、均单连通/Euler=-2，无非流形/松散边，25%原→代理采样P95约0.009736mm；输出研究PLY但未完成实际缝片",
+      "evidence_path": "experiments/stage6_core_proxy_20261105/summary.json"
+    },
     {
       "date": "2026-11-04",
       "event": "真实Blender检测Stage6主体：234161点、700441边、466278三角面、按边1个连通块、4条512点开环、0非流形/松散边/顶点，欧拉示性数-2；P3启动但未生成低面数代理或纸样",

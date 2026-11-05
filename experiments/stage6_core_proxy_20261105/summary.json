@@ -1,0 +1,123 @@
+{
+  "schema": "stage6-real-core-shell-proxy-ab-evidence-v1",
+  "status": "ACTUAL_BLENDER_RESEARCH_PROXY_NOT_FACTORY_PATTERN",
+  "source": {
+    "repository": "timlincool/plush-pattern-lab",
+    "release": "cloud-alpaca-stage6-visuals-20261028",
+    "asset": "cloud-alpaca-stage6.blend",
+    "source_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "blender": "4.3.2",
+    "workflow_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/41953627248",
+    "run_commit": "f837ed1c97e3409925667b36c5afb9da7b86fa12",
+    "full_evidence_artifact_id": 13382051730,
+    "ply_artifact_id": 13381549179
+  },
+  "units": "mm",
+  "experiment": {
+    "method": "Blender collapse decimate modifier only on non-protected interior, 4x512 seam vertices and two topological edge neighborhoods excluded",
+    "source_mesh": {
+      "vertices": 234161,
+      "edges": 700441,
+      "faces": 466278
+    },
+    "protected_vertices": 4096,
+    "eligible_interior_vertices": 230065,
+    "four_original_seam_rings": 4,
+    "boundary_vertices_per_ring": 512,
+    "max_world_boundary_displacement_mm": 0,
+    "original_source_counts_unchanged": true,
+    "sampled_surface_metric": "deterministic sampled vertex-to-nearest-triangle distances; not continuous Hausdorff"
+  },
+  "trials": [
+    {
+      "ratio": 0.5,
+      "real_faces": 233138,
+      "vertices": 117591,
+      "edges": 350731,
+      "topology": {
+        "connected_components": 1,
+        "euler": -2,
+        "boundary_edge_count": 2048,
+        "nonmanifold_edges": 0,
+        "loose_edges": 0,
+        "loose_vertices": 0,
+        "all_4x512_directed_hoop_rings_unchanged": true,
+        "old_to_new_vertex_id_pairs": 2048
+      },
+      "source_to_proxy_mm": {
+        "sample_count": 1201,
+        "mean": 0.0015033673966880813,
+        "p95": 0.003977017058787169,
+        "max": 0.00678198603054625,
+        "rms": 0.0020300491549421875
+      },
+      "proxy_to_source_mm": {
+        "sample_count": 1213,
+        "mean": 0.0012382032567521805,
+        "p95": 0.0039055692468537005,
+        "max": 0.006056672646082006,
+        "rms": 0.0018702523306508524
+      },
+      "research_ply": {
+        "file": "core_shell_proxy_ratio_0.50.ply",
+        "bytes": 4442215,
+        "sha256": "22020a5631ccd6b171f242d6c5c9f9713e9b0d600a20f8a0fcf3b7c08149bd4f",
+        "unit": "mm",
+        "binary_ply_independently_parsed": true
+      },
+      "exported_only_after_manifold_and_boundary_tests": true,
+      "approved_for_fabric_cutting": false
+    },
+    {
+      "ratio": 0.25,
+      "real_faces": 116568,
+      "vertices": 59306,
+      "edges": 175876,
+      "topology": {
+        "connected_components": 1,
+        "euler": -2,
+        "boundary_edge_count": 2048,
+        "nonmanifold_edges": 0,
+        "loose_edges": 0,
+        "loose_vertices": 0,
+        "all_4x512_directed_hoop_rings_unchanged": true,
+        "old_to_new_vertex_id_pairs": 2048
+      },
+      "source_to_proxy_mm": {
+        "sample_count": 1201,
+        "mean": 0.0040119095998135375,
+        "p95": 0.009735960702528246,
+        "max": 0.018427388567943126,
+        "rms": 0.005082666931799199
+      },
+      "proxy_to_source_mm": {
+        "sample_count": 1211,
+        "mean": 0.004012112686652076,
+        "p95": 0.009980382856156211,
+        "max": 0.01759113001753576,
+        "rms": 0.005250956061162719
+      },
+      "research_ply": {
+        "file": "core_shell_proxy_ratio_0.25.ply",
+        "bytes": 2227384,
+        "sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+        "unit": "mm",
+        "binary_ply_independently_parsed": true
+      },
+      "exported_only_after_manifold_and_boundary_tests": true,
+      "approved_for_fabric_cutting": false
+    }
+  ],
+  "provisional_next_geometry_study": "ratio 0.25 for editable true main-shell segmentation; requires independent self-intersection, normal and appearance checks before manufacturing",
+  "model_mesh_modified": false,
+  "full_character_pattern_exists": false,
+  "factory_materials_and_golden_sample_approved": false,
+  "warnings": [
+    "Mesh is only the continuous main shell; four hooves, cloud overlays, ears, tail and decorations are NOT contained in derived PLY",
+    "PLY positions are world-space millimetres, not Blender metres; scale by 0.001 on Blender import if needed",
+    "Source-to-proxy and reverse error metrics are fixed-stride VERTEX samples, not exact Hausdorff and not sampled multi-view silhouettes",
+    "Self-intersection and cross-part physical contact have not been audited for these derived candidates",
+    "Keep source Stage6 Release and reproducible scripts; short-lived Actions PLY artifacts expire after seven days",
+    "Design-selected full-size sewing seams, allowances, fabric and production confirmation are still absent"
+  ]
+}

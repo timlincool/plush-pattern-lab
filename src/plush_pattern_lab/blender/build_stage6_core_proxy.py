@@ -86,9 +86,7 @@ def _protected_neighborhood(obj, source_rings):
             if a in protected or b in protected:
                 expanded.update((a, b))
         protected = expanded
-    interior = [
-        vert.index for vert in obj.data.vertices if vert.index not in protected
-    ]
+    interior = [vert.index for vert in obj.data.vertices if vert.index not in protected]
     if len(interior) < 500 or len(protected) < 2048:
         raise ValueError("protected boundary neighborhood leaves no safe interior")
     return interior, len(protected)
@@ -145,9 +143,7 @@ def _write_research_ply(path, mesh, sha):
             x, y, z = vertex.co
             stream.write(struct.pack("<fff", x * 1000, y * 1000, z * 1000))
         for face in mesh.faces:
-            stream.write(
-                struct.pack("<Biii", 3, *(vert.index for vert in face.verts))
-            )
+            stream.write(struct.pack("<Biii", 3, *(vert.index for vert in face.verts)))
     return path.stat().st_size
 
 
@@ -248,8 +244,14 @@ def evaluate_proxies(source_sha256, output_dir):
         original_bvh = BVHTree.FromBMesh(original_bm)
         trials = [
             _run_trial(
-                body, ratio, interior, source_rings, original_bm,
-                original_bvh, output_dir, source_sha256
+                body,
+                ratio,
+                interior,
+                source_rings,
+                original_bm,
+                original_bvh,
+                output_dir,
+                source_sha256,
             )
             for ratio in RATIOS
         ]
