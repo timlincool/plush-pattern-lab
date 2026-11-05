@@ -24,7 +24,7 @@
 
 每次做真实角色制版前读取 [Stage6 42对象登记表](design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json) 与 [结构说明](docs/STAGE6_MANUFACTURING_STRUCTURE.md)，先核对42个真实Mesh和40条待确认装配关系；其中4条仅3D边界验证、10条水滴布片承接未知。该登记表由 [重建脚本](scripts/build_stage6_component_register.py) 对固定源哈希的两份公开证据生成。**不可按42个Mesh直接生成42片布料或虚构已审核材料BOM。**
 
-**最新 P3 整主壳进度：** [真实四区3D配缝图与阻塞](docs/STAGE6_FOUR_REGION_SHELL_PLAN.md)，四区每区单连通且保留原512点蹄口，仍有2条边界环、两处四线交汇。2026-11-05 已在可信 main 的 [#41980583315](https://github.com/timlincool/plush-pattern-lab/actions/runs/41980583315) 完成左前36,833面径向切缝→圆盘→LSCM，真实 UV **边误差 P95约99.59%、重叠23,651对、翻向7片**，明确拒绝直接裁布；独立角亏诊断详见 [左前整片失真说明](docs/STAGE6_LEFTFRONT_FULL_PANEL_QA.md)。下一轮 `继续` 应优先研究高曲率源是否是视觉雕刻噪声、制造母版曲面/隐藏省道A/B和两处四线交汇，**不可重新宣称该UV可生产**。
+**最新 P3 整主壳进度：** [真实四区3D配缝图与阻塞](docs/STAGE6_FOUR_REGION_SHELL_PLAN.md)，四区每区单连通且保留原512点蹄口，仍有2条边界环、两处四线交汇。2026-11-05 已在可信 main 的 [#41980583315](https://github.com/timlincool/plush-pattern-lab/actions/runs/41980583315) 完成左前36,833面径向切缝→圆盘→LSCM，真实 UV **边误差 P95约99.59%、重叠23,651对、翻向7片**，明确拒绝直接裁布；独立角亏诊断详见 [左前整片失真说明](docs/STAGE6_LEFTFRONT_FULL_PANEL_QA.md)。此后 [可信 Stage6 完整平滑 A/B #42004163013](https://github.com/timlincool/plush-pattern-lab/actions/runs/42004163013) 已确认：虽曲率P95降低，3D三角形面积严重退化，**2D重叠从23,672增至24,178／24,401对**，两组均明确拒绝；长期结果见 [制造曲面A/B否定研究](docs/STAGE6_MANUFACTURING_SURFACE_AB.md)。下一轮 `继续` **不要继续提高平滑强度**，须围绕设计可隐藏的切缝／省道、主壳分片与两处四线交汇，优先拿到真实源边、配缝和整片UV否决证据；没有正式纸样或生产批准。
 
 ## 代码与验证契约
 
