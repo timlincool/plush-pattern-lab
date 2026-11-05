@@ -55,10 +55,10 @@ def render_four_zone_seam_map(vertices_mm, report):
         f'<text x="3" y="6" font-size="3" fill="#223746">{title}</text>',
         '<g stroke-width="0.55" stroke-linecap="round">',
         *strokes,
-        '</g>',
+        "</g>",
         *circles,
         f'<text x="3" y="{height - 3:.3f}" font-size="3" fill="#bf4c2d">'
-        f'{warning}</text>',
-        '</svg>',
+        f"{warning}</text>",
+        "</svg>",
     ]
     return "\n".join(parts) + "\n"
