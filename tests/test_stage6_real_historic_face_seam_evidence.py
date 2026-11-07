@@ -21,7 +21,7 @@ def test_real_source_face_risk_and_view_sha_are_frozen():
     paths = report["paths"]
     assert [p["source_vertex_count"] for p in paths] == [33, 143, 132]
     assert [p["body_front_first_hit_near_count"] for p in paths] == [32, 0, 126]
-    assert [p["historic_nose_mouth_proximity_alert_count"] for p in paths] == [
+    assert [p["historic_eye_nose_mouth_proximity_alert_count"] for p in paths] == [
         0,
         0,
         8,
