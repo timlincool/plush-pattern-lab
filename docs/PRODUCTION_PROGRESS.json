@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_bthree_real_lscm_arap_and_uniform_scale_comparison_ci_pending",
+    "stage": "stage6_real_bthree_lscm_arap_scale_ab_measured_all_uv_rejected",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -175,6 +175,10 @@
         {
           "path": "docs/STAGE6_UV_SOLVER_ARAP_AB.md",
           "kind": "source_pinned_real_bthree_lscm_vs_arap_offline_preflight_pending_trusted_ci"
+        },
+        {
+          "path": "experiments/stage6_uv_solver_arap_20261108/summary.json",
+          "kind": "trusted_real_blender_stage6_bthree_full_uv_arap_lscm_scale_and_radial_two_side_seam_rejection"
         }
       ],
       "blockers": [
@@ -185,7 +189,7 @@
         "独立3D内禀曲率筛查：17,889内部顶点中807点角亏绝对值超过3°；制造所需省道数与实际面料应变尚无法推导",
         "真实Stage6受信Runner #42004163013已实测A/B；虽降低角亏但面积比仅43%/22%，2D重叠反而增至24,178/24,401对，整片仍不可裁；需要原设计认可的新切缝/省道与合适的制造曲面",
         "真实Stage6受信 Runner 已完成两/三片全UV：A两片P95边长误差99.77%/87.80%，B三片98.84%/43.14%/81.96%；尽管B一片无重叠，新增224.92mm三维缝两侧UV相差217.51mm，全部纸样拒绝。高位缝可能跨越可见头脸/云团，未获设计签核",
-        "B三片离线独立ARAP(两个初值、30轮)虽可能降低某些P95边长误差，却产生/增加UV重叠及翻面；最优统一缩放也不能消除边长非均匀失真。需可信主干复现同源结果，再设计边界无交叠/设计可见缝约束，禁止自动生成厂商纸样"
+        "可信Stage6 #42403534959已完整复算B三片ARAP与LSCM：ARAP虽部分降低边长P95，但原B-2零重叠变为4057/5610对，B-1出现最多569面翻转；一条224.92mm源3D配缝二维两侧仍差42.25mm或71.30mm。两种解法的全部裁片仍拒绝，必须增加二维无重叠/设计可见缝等约束"
       ]
     },
     {
@@ -530,6 +534,101 @@
       ],
       "all_are_research_only": true,
       "approved_paper_patterns": 0
+    },
+    "stage6_uv_solver_arap_real_main_run": {
+      "real_runner": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42403534959",
+      "main_commit": "6b82f9dce2c0da352cc17c7d0755fd9ed1f9635e",
+      "python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42403534975",
+      "full_python_tests_passed": 400,
+      "evidence_path": "experiments/stage6_uv_solver_arap_20261108/summary.json",
+      "source_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "source_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "source_faces_three_panels": [
+        20915,
+        6904,
+        9014
+      ],
+      "solver_names": [
+        "LSCM",
+        "ARAP_PCA",
+        "ARAP_LSCM"
+      ],
+      "actual_triangle_edge_relative_error_p95": {
+        "LSCM": [
+          0.9883665435643059,
+          0.43226432826318184,
+          0.819420511656893
+        ],
+        "ARAP_PCA": [
+          0.5229093889772485,
+          0.41239828350419805,
+          0.31799290915178746
+        ],
+        "ARAP_LSCM": [
+          0.6129921650981921,
+          0.47500061578606934,
+          0.2976965684582129
+        ]
+      },
+      "actual_uv_overlap_triangle_pairs": {
+        "LSCM": [
+          26,
+          0,
+          10540
+        ],
+        "ARAP_PCA": [
+          23734,
+          4057,
+          4049
+        ],
+        "ARAP_LSCM": [
+          14157,
+          5610,
+          3019
+        ]
+      },
+      "actual_uv_flip_faces": {
+        "LSCM": [
+          3,
+          0,
+          1
+        ],
+        "ARAP_PCA": [
+          569,
+          3,
+          3
+        ],
+        "ARAP_LSCM": [
+          305,
+          5,
+          2
+        ]
+      },
+      "radial_3d_paths_mm": [
+        40.89211016973698,
+        224.92003861220397,
+        210.64578128579944
+      ],
+      "two_sided_uv_radial_length_gap_mm": {
+        "LSCM": [
+          0.031,
+          217.706,
+          32.216
+        ],
+        "ARAP_PCA": [
+          6.04,
+          42.25,
+          69.461
+        ],
+        "ARAP_LSCM": [
+          12.266,
+          71.301,
+          75.84
+        ]
+      },
+      "scale_only_does_not_fix_global_overlap_or_strain": true,
+      "study_not_an_accepted_pattern": true,
+      "approved_manufacturing_panels": 0
     }
   },
   "next_actions": [
@@ -537,8 +636,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "可信Stage6 main独立复算同一B方案3片下原LSCM、最优单一尺度诊断以及真实内禀局部/全局ARAP（PCA与LSCM两初值30轮）并核对逐片UV边长误差/翻面/重叠/原3D径向缝两侧UV净缝差。即使局部数字改善也不自动认可，下一步需要无交叠边界约束和真实正侧顶背可见缝设计确认",
-      "done_when": "固定SHA的可信主分支产生完整各片/各方法UV和两侧净缝JSON及独立回归证据，正确区别整体尺度与非均匀应变；保持P4未启动"
+      "action": "同源真实Stage6 B三片LSCM/ARAP数值已确认全部失败（翻面/重叠/二维两侧配缝不等长），不要再只以降低单一P95或ARAP迭代次数作优化。下一步先检验能约束二维折叠/边界的有效参数化方式，并将新增高位缝线投射到完整原设计的正侧背顶视图，检查是否穿脸、云团、尾根；再规划真正可隐藏的省道、对位点与返口。保持原3D蹄口和所有源边身份不变",
+      "done_when": "原设计四视图清楚标注新增切缝并有设计审查结论；新的无折叠/净缝约束求解与实际材料假设分开报告，真实3D/2D全链证据可复核且不偷放宽门限"
     },
     {
       "priority": "P0",
@@ -580,6 +679,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-08",
+      "event": "可信Stage6 #42403534959 完成B三片LSCM/ARAP PCA+LSCM初值30轮独立真实UV比对，Python400项通过。ARAP虽使部分边长P95降到29.77%，仍存在3,019对二维重叠；B原无重叠片在ARAP后出现4,057/5,610对重叠，一条224.92mm3D切缝两侧UV差仍42.25/71.30mm。全部方案拒绝，P3继续",
+      "evidence_path": "experiments/stage6_uv_solver_arap_20261108/summary.json"
+    },
     {
       "date": "2026-11-08",
       "event": "基于固定Stage6真实PLY和前轮B三片逐面UV独立离线试验比较ARAP 30轮(PCA/LSCM初始化)及最优统一尺度；ARAP可降低部分边误差但在原无重叠子片产生上千UV交叠，尚非合格纸样。新源码和可信主干真实A/B工作流待验证，P3继续",

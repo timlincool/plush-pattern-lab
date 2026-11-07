@@ -107,3 +107,9 @@ Mori & Igarashi, *Plushie* (2007), DOI 10.1145/1276377.1276433；Jin et al., *To
 [可信Stage6真实运行 #42332683339](https://github.com/timlincool/plush-pattern-lab/actions/runs/42332683339) 对左前36,833面按原3D源边新增A两片/B三片切缝：所有原始三角面覆盖一次、各片单边界Euler1、源蹄口/外部拼缝不动、所有新增径向缝均在3D两侧有相同边。新增高位缝长度A约228.62mm、B约435.57mm，但**完整LSCM的五片二维解全部拒绝**。B一片虽无UV重叠却边长误差P95 43.14%；B一条原3D 224.92mm配缝的候选2D两侧分别284.90/67.39mm，互差217.51mm。
 
 详细数值见[Stage6多盘研究](STAGE6_MULTI_RADIAL_DISKS.md)及[固定SHA的真实实验数据](../experiments/stage6_multi_radial_20261107/summary.json)。因此P3下一步改成同源面、同切口下的**二维参数化求解器对照 + 真实参考设计可见缝审查**，然后才能决定实际省道/额外裁片，而不是继续盲目增加分片数量。P4工业纸样、P5工厂技术包、实体首样仍不存在。
+
+## 2026-11-08 可信Stage6 B三片ARAP与LSCM对照：改善局部边长但加重部分自交
+
+[真实受信Blender #42403534959](https://github.com/timlincool/plush-pattern-lab/actions/runs/42403534959) 基于同一固定SHA、同一源Face/Vertex ID和两/三盘分片，在B三片实际运行LSCM/ARAP(PCA/LSCM初值30轮)。Python [#42403534975](https://github.com/timlincool/plush-pattern-lab/actions/runs/42403534975) 400/400项回归与Ruff通过。ARAP可使B-3边长误差P95降到29.77%，但仍有**3,019对UV重叠**；B-2原LSCM零重叠在ARAP PCA之后变成**4,057对**。同一224.92mm的原三维配缝在两个二维子片上的长度仍相差**42.25mm**（ARAP PCA）或**71.30mm**（ARAP LSCM初值）。最优相似尺度只能诊断整体比例，不能解决非均匀失真。所有实验**拒绝**作为工厂裁布纸样。
+
+见[技术报告](STAGE6_UV_SOLVER_ARAP_AB.md)与[永久实测/哈希摘要](../experiments/stage6_uv_solver_arap_20261108/summary.json)。P3下一优先不再只是更换普通展开求解器：必须要求无折叠/接缝一致的边界约束，并核对真实正侧顶背设计可见缝，再优化省道、返口与工艺顺序。P4仍未启动。
