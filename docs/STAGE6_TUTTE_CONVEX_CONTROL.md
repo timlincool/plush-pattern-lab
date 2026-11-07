@@ -1,6 +1,6 @@
 # Stage 6 真实 B 三片：凸边界 Tutte 展平负例（P3）
 
-**研究目标**：验证“二维无重叠 + 净缝双侧长度相近”是否足以支撑生产裁布。结论须以可信 main 的真实 Stage6 Runner 为准。即便成功也不是厂商纸样。
+**研究结论：可信 main 已复核，三片均0交叠、0翻面且双侧边界缝近等长，但内部边误差大到不可裁布。** 可信原始模型与计算均为研究证据，不是厂商纸样。
 
 ## 输入固定
 
@@ -15,7 +15,9 @@
 
 参考：Tutte (1963), *How to Draw a Graph*；Floater (2003), *Mean Value Coordinates*, DOI [10.1016/S0167-8396(03)00002-5](https://doi.org/10.1016/S0167-8396(03)00002-5)。保证性的数学条件包括有效的平面圆盘图嵌入、正权重和严格凸边界；**本项目仍通过数值翻面/相交审计，不直接声称任意坏网格也会通过**。
 
-## 固定真实 PLY 的独立离线预复核（可信 main 仍待运行）
+## 2026-11-08 可信 Stage6 真实主分支复核：结果均拒绝
+
+从固定原Blend/25% PLY、与上一轮同源的B三盘，在 [可信 Stage6 #42409834633](https://github.com/timlincool/plush-pattern-lab/actions/runs/42409834633) 完整跑完，独立复现早一次 [#42409665213](https://github.com/timlincool/plush-pattern-lab/actions/runs/42409665213) 的每个原始summary/detail SHA-256；代码合并后的 [Python #42409834593](https://github.com/timlincool/plush-pattern-lab/actions/runs/42409834593) 完成410项测试、Ruff与wheel构建。永久实验哈希、Run与逐面UV路径详见 [真实数据摘要](../experiments/stage6_tutte_convex_20261108/summary.json)。
 
 | B真实裁片 | 原三角面数 | Tutte 2D 边长误差 P95 | 非零面积UV重叠 | 翻面 |
 | --- | ---: | ---: | ---: | ---: |

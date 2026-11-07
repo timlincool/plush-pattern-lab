@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_tutte_convex_bthree_high_strain_control_pending_trusted_ci",
+    "stage": "stage6_real_bthree_tutte_convex_zero_uv_overlap_extreme_strain_rejected",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -183,6 +183,10 @@
         {
           "path": "docs/STAGE6_TUTTE_CONVEX_CONTROL.md",
           "kind": "same_pinned_bthree_source_convex_disk_research_no_overlaps_but_extreme_interior_edge_strain_pending_trusted_ci"
+        },
+        {
+          "path": "experiments/stage6_tutte_convex_20261108/summary.json",
+          "kind": "trusted_main_actual_bthree_tutte_zero_fold_zero_overlap_extreme_interior_strain_refutation"
         }
       ],
       "blockers": [
@@ -194,7 +198,7 @@
         "真实Stage6受信Runner #42004163013已实测A/B；虽降低角亏但面积比仅43%/22%，2D重叠反而增至24,178/24,401对，整片仍不可裁；需要原设计认可的新切缝/省道与合适的制造曲面",
         "真实Stage6受信 Runner 已完成两/三片全UV：A两片P95边长误差99.77%/87.80%，B三片98.84%/43.14%/81.96%；尽管B一片无重叠，新增224.92mm三维缝两侧UV相差217.51mm，全部纸样拒绝。高位缝可能跨越可见头脸/云团，未获设计签核",
         "可信Stage6 #42403534959已完整复算B三片ARAP与LSCM：ARAP虽部分降低边长P95，但原B-2零重叠变为4057/5610对，B-1出现最多569面翻转；一条224.92mm源3D配缝二维两侧仍差42.25mm或71.30mm。两种解法的全部裁片仍拒绝，必须增加二维无重叠/设计可见缝等约束",
-        "独立离线原25%真实PLY的凸边界Tutte B三片无UV交叠、无翻面，原缝线两侧差<0.002mm但系边界构造效应；内部三角边P95误差217%/593%/784%，全部不可裁，等待受信主干复现与真实五视图缝位审查"
+        "可信Stage6 #42409834633实测B三片Tutte凸边界0翻面/0二维重叠、径向边界同源两侧差<0.002mm（约束构造效应），但内部三角边P95误差217%/593%/784%，明确全部拒绝，须优先审核高位缝在真实完整角色/脸/云团上的可见位置"
       ]
     },
     {
@@ -667,6 +671,42 @@
       ],
       "seam_length_match_is_a_boundary_constraint_not_fabric_validation": true,
       "manufacturing_cut_patterns_approved": 0
+    },
+    "stage6_real_tutte_convex_control": {
+      "trusted_runner": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42409834633",
+      "main_commit": "3b1ea6e6701ce4e53556b5a8ca41055bf14201f4",
+      "python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42409834593",
+      "passed_python_tests": 410,
+      "evidence_path": "experiments/stage6_tutte_convex_20261108/summary.json",
+      "source_original_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "source_25pct_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "original_face_counts": [
+        20915,
+        6904,
+        9014
+      ],
+      "uv_flip_counts": [
+        0,
+        0,
+        0
+      ],
+      "uv_positive_area_overlap_pairs": [
+        0,
+        0,
+        0
+      ],
+      "uv_triangle_edge_relative_error_p95": [
+        2.172797439863501,
+        5.927501207429868,
+        7.839387499385689
+      ],
+      "radial_seam_two_side_gap_mm": [
+        0.0007528931872471389,
+        0.0017260722422349772,
+        0.0009613789558784447
+      ],
+      "boundary_shape_forces_near_matching_seam_arc_lengths": true,
+      "production_pattern_approved": 0
     }
   },
   "next_actions": [
@@ -674,8 +714,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "复核可信Stage6 main同源Tutte B三片凸边界控制，独立检验无UV交叠但P95内部边长仍极大、匹配源缝属于边界强制结果；随后必须用原始Stage6 Blend与设计四视图生成新增高位缝线的正背左右顶五视角及可能遮挡/五官/云团冲突审计，才能制定真正隐藏省道和工厂装配顺序",
-      "done_when": "真实主干归档全片Tutte UV及配缝报告、明确否决内部失真；至少提供源SHA可追溯多视角缝线位置与待设计审查清单，P4不得被自动批准"
+      "action": "数值Tutte控制已确认0UV交叠但内部失真巨大，不再只追求换解法或缝线近等长。直接用原Stage6完整源模型、B三片真实径向缝及历史v14五官注册X/Z位置，生成正背左右顶五视角缝位和首表面遮挡检查；报告鼻口/眼睛/云团耳尾等潜在设计冲突并标出尚未审核的工艺缝，优先确定可隐藏省道和实际车缝工序，再考虑低应变二维静止裁片",
+      "done_when": "五视角有源SHA/原3D顶点ID与正面五官历史注册坐标的可审计叠图和距离/遮挡见证，所有设计误差与厂商缺项有明确否决条件，P4不得自动晋升"
     },
     {
       "priority": "P0",
@@ -717,6 +757,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-08",
+      "event": "可信Stage6 #42409834633与重复#42409665213从固定真源复现Tutte凸边界B三片：0二维重叠/0翻面及原径向缝两侧极小数值差是构造性边界映射结果，真实内部边长P95相对失真仍217%/593%/784%，因此全部不可裁布。Python 410项通过，转向真设计五视角缝位冲突审查",
+      "evidence_path": "experiments/stage6_tutte_convex_20261108/summary.json"
+    },
     {
       "date": "2026-11-08",
       "event": "在固定SHA真实Stage6 25% PLY+已实测B三片Face/Vertex ID上，独立离线用凸边界Tutte正权重调和映射，三片均0翻面/0UV交叠，但内部边长误差P95高达217%/593%/784%；双侧缝线极近于相等系边界强制效应，不代表真正可裁布。代码与受信main Runner待验证",

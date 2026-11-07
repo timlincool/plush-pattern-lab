@@ -113,3 +113,7 @@ Mori & Igarashi, *Plushie* (2007), DOI 10.1145/1276377.1276433；Jin et al., *To
 [真实受信Blender #42403534959](https://github.com/timlincool/plush-pattern-lab/actions/runs/42403534959) 基于同一固定SHA、同一源Face/Vertex ID和两/三盘分片，在B三片实际运行LSCM/ARAP(PCA/LSCM初值30轮)。Python [#42403534975](https://github.com/timlincool/plush-pattern-lab/actions/runs/42403534975) 400/400项回归与Ruff通过。ARAP可使B-3边长误差P95降到29.77%，但仍有**3,019对UV重叠**；B-2原LSCM零重叠在ARAP PCA之后变成**4,057对**。同一224.92mm的原三维配缝在两个二维子片上的长度仍相差**42.25mm**（ARAP PCA）或**71.30mm**（ARAP LSCM初值）。最优相似尺度只能诊断整体比例，不能解决非均匀失真。所有实验**拒绝**作为工厂裁布纸样。
 
 见[技术报告](STAGE6_UV_SOLVER_ARAP_AB.md)与[永久实测/哈希摘要](../experiments/stage6_uv_solver_arap_20261108/summary.json)。P3下一优先不再只是更换普通展开求解器：必须要求无折叠/接缝一致的边界约束，并核对真实正侧顶背设计可见缝，再优化省道、返口与工艺顺序。P4仍未启动。
+
+## 2026-11-08 真实Tutte凸边界参数化实验：无重叠不等于可裁布
+
+[受信源重算#42409834633](https://github.com/timlincool/plush-pattern-lab/actions/runs/42409834633) 在已固定3D源缝/原36,833面上将B三片强制映射到按3D边界弧长参数化的凸圆，内部用均匀正权重解调和坐标。三片皆0翻面、0二维面积重叠，各源径向缝两侧几乎等长，但内部三角边误差P95达**217%/593%/784%**，所以不可以厂商裁布。近等长是边界固定的数学构造效应，不是独立实体缝线验收。详见[完整研究](STAGE6_TUTTE_CONVEX_CONTROL.md)和[不可变源与真实数据](../experiments/stage6_tutte_convex_20261108/summary.json)。P3下一步转向真实模型与历史脸部设计参考的**正背左右顶五视角缝位冲突检查**；工厂材料、配缝、返口与两处四线交汇仍未通过。
