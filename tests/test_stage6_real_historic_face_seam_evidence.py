@@ -34,7 +34,9 @@ def test_real_source_face_risk_and_view_sha_are_frozen():
 
 def test_full_character_visibility_and_factory_signoff_still_missing():
     data = json.loads(EVIDENCE.read_text(encoding="utf8"))
-    assert not data["view_visualization"]["complete_cloud_eye_ear_tail_mesh_or_fur_visibility_test"]
+    assert not data["view_visualization"][
+        "complete_cloud_eye_ear_tail_mesh_or_fur_visibility_test"
+    ]
     progress = json.loads(PROGRESS.read_text(encoding="utf8"))
     p3 = next(x for x in progress["phases"] if x["id"] == "P3")
     p4 = next(x for x in progress["phases"] if x["id"] == "P4")
