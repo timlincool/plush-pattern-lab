@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_B_high_route_historic_nose_mouth_first_hit_screen_pending_trusted_ci",
+    "stage": "stage6_B_three_source_rays_historic_face_8_alerts_confirmed_42mesh_review_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -191,6 +191,10 @@
         {
           "path": "docs/STAGE6_B_FACE_SEAM_VIEW_QA.md",
           "kind": "same_pinned_source_body_front_raycast_and_historic_face_registration_offline_preflight_ci_pending"
+        },
+        {
+          "path": "experiments/stage6_face_seam_review_20261108/summary.json",
+          "kind": "trusted_real_stage6_B_source_radial_seams_front_first_hit_historic_face_risk_and_five_views"
         }
       ],
       "blockers": [
@@ -203,7 +207,7 @@
         "真实Stage6受信 Runner 已完成两/三片全UV：A两片P95边长误差99.77%/87.80%，B三片98.84%/43.14%/81.96%；尽管B一片无重叠，新增224.92mm三维缝两侧UV相差217.51mm，全部纸样拒绝。高位缝可能跨越可见头脸/云团，未获设计签核",
         "可信Stage6 #42403534959已完整复算B三片ARAP与LSCM：ARAP虽部分降低边长P95，但原B-2零重叠变为4057/5610对，B-1出现最多569面翻转；一条224.92mm源3D配缝二维两侧仍差42.25mm或71.30mm。两种解法的全部裁片仍拒绝，必须增加二维无重叠/设计可见缝等约束",
         "可信Stage6 #42409834633实测B三片Tutte凸边界0翻面/0二维重叠、径向边界同源两侧差<0.002mm（约束构造效应），但内部三角边P95误差217%/593%/784%，明确全部拒绝，须优先审核高位缝在真实完整角色/脸/云团上的可见位置",
-        "真实固定Stage6代理离线正面第一命中审查：B新增高位缝2有8个靠近历史surface14鼻口绣线≤3mm的源顶点（末点40436近鼻约0.575mm），虽然只是旧设计X/Z而非正式Stage6外观，已是需优先避让/审核的外观风险；完整42 Mesh云团/眼/尾遮挡尚未审核"
+        "可信Stage6 Run #42411444680实跑正面first-hit审查：B高位缝2的132个源顶点中126位于主壳正面，8个与旧surface14鼻口线投影距离≤3mm；端点ID40436约0.5754mm。高位缝靠近鼻口，待完整42Mesh云团/眼/耳/尾与原设计多视角遮挡及设计审核，禁止视为已隐藏或可裁布"
       ]
     },
     {
@@ -747,6 +751,50 @@
       "evidence_level": "offline_recomputed_from_sha_pinned_25pct_proxy_and_same_run_Bpaths; trusted_main_stage6_ci_pending",
       "cloud_and_independent_face_mesh_raycast_checked": false,
       "approved_design_seams": 0
+    },
+    "stage6_real_B_radial_historic_face_review": {
+      "real_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42411444680",
+      "run_commit": "c5148f7df25572bf6b02e21033834e37f9dfd2c5",
+      "evidence_path": "experiments/stage6_face_seam_review_20261108/summary.json",
+      "source_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "source_25percent_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "face_reference_path": "design/reference-v25/face_embroidery_registration_v14.json",
+      "face_reference_structural_revision": "surface14 on earlier structural iteration12 NOT approved final Stage6 embroidery",
+      "front_shell_depth_tolerance_mm": 0.7,
+      "historic_face_proximity_mm": 3,
+      "original_radial_path_vertex_counts": [
+        33,
+        143,
+        132
+      ],
+      "front_surface_source_sample_counts": [
+        32,
+        0,
+        126
+      ],
+      "original_body_occluded_sample_counts": [
+        1,
+        143,
+        6
+      ],
+      "historic_nose_mouth_alert_source_vertex_counts": [
+        0,
+        0,
+        8
+      ],
+      "critical_b_high_path_2_source_vertex_id": 40436,
+      "critical_b_high_path_2_xyz_mm": [
+        -0.9331,
+        -86.3353,
+        190.2309
+      ],
+      "critical_b_high_path_2_historic_nose_projection_distance_mm": 0.5754,
+      "only_body_front_occlusion_checked": true,
+      "all_42_mesh_face_or_cloud_occlusion_checked": false,
+      "five_orthographic_source_proxy_svg_generated": true,
+      "main_postformat_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42411704796",
+      "postformat_python_tests_passed": 418,
+      "approval_for_manufacturing_paper_patterns": 0
     }
   },
   "next_actions": [
@@ -754,8 +802,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "先用可信Stage6主干验证B三条真实高位缝五视图与历史五官surface14注册X/Z首表面投影：尤其路径2终点接近鼻线、8个点靠近鼻嘴候选区。再读取完整Stage6 42Mesh和原设计外观确认云团/眼/鼻/耳/尾是否遮挡及能否避让，必要时在源3D网格重新布置隐藏切缝/省道；随后重跑每片可逆2D与源径向缝两侧长度，不得先生成厂商纸样",
-      "done_when": "受信主干B三条源径向缝的正背左右顶SVG及前表面五官距离/深度报告有固定SHA与明确定性设计警报；完整覆层审查/新路径尚未完成时不得晋升P4"
+      "action": "真实Stage6主分支已经确认B高位切缝2与历史鼻口绣线8个近邻源顶点，末端40436距历史鼻线仅0.5754mm。下一轮必须用固定公共Stage6完整42Mesh、原设计四视图和已冻结历史五官数据进行可见表面遮挡/可缝缝位对比，避开鼻嘴眼及云团承接；必要时修改真实源边路径并重新执行全片Euler1、source 3D接缝双侧配对与2D低应变/无折叠/配缝长度QA。先做设计风险否决，不自动生成工业纸样",
+      "done_when": "受信主干有完整Stage6可见部件的正侧背顶实测缝位/挡片证据、贴图与历史/现行五官版号区别，以及明确需要设计人工审查的路径；缺真实设计或供应商批准仍停在P3"
     },
     {
       "priority": "P0",
@@ -797,6 +845,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-08",
+      "event": "受信真模型Stage6 #42411444680复算B三条源径向缝与旧face surface14五官。路径0前表面32/33、警报0；路径1前表面0/143、警报0；路径2前表面126/132、8个与旧鼻口距离<=3mm，端点ID40436距旧鼻线0.5754mm。已有主壳五视图原ID SVG和报告SHA，尚未审查全部42 Mesh/毛绒/正式设计遮挡，P3拒绝正式纸样",
+      "evidence_path": "experiments/stage6_face_seam_review_20261108/summary.json"
+    },
     {
       "date": "2026-11-08",
       "event": "独立离线从真实固定SHA 25% PLY和B三片同源径向缝检查正面首表面深度与历史surface14五官X/Z注册；路径2的132源顶点中126近主壳正面、8个距历史鼻口绣线≤3mm，末点40436投影距鼻线仅0.5754mm。生成正背左右顶五视图候选，待可信main复核与完整42Mesh设计审核",
