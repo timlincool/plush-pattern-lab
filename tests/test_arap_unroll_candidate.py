@@ -98,3 +98,13 @@ def test_uniform_scale_rejects_collapsed_uv():
             disk["faces"],
             np.zeros((len(disk["points_xyz_mm"]), 2)),
         )
+
+
+def test_stage6_real_runner_quality_uses_intrinsic_geometry_without_gradients():
+    from compare_stage6_uv_solvers import _quality
+
+    disk, rest = _cut_cylinder()
+    quality = _quality(disk, rest)
+    assert quality["raw_triangle_edge_relative_error_p95"] < 0.01
+    assert quality["uv_nonzero_area_overlap_face_pairs"] == 0
+    assert not quality["approved_for_cutting"]
