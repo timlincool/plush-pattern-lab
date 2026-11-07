@@ -149,8 +149,8 @@ def _two_sided_radial_seams(radial_paths, mappings):
 
 def _quality(disk, uv):
     faces = np.asarray(disk["faces"], dtype=np.int64)
-    intrinsic = _intrinsic_triangles(disk["points_xyz_mm"], faces)
-    strain = _strain_metrics(uv[faces], intrinsic)
+    charts = _intrinsic_triangles(disk["points_xyz_mm"], faces)
+    strain = _strain_metrics(uv[faces], charts[:4])
     overlap = _overlap_metrics(uv[faces])
     return {
         "unique_edge_similarity_fit": best_similarity_scale(
