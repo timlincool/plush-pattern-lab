@@ -31,8 +31,7 @@ def compare_real_b_tutte(points, faces, baseline, detailed):
         baseline.get("schema") != "stage6-source-pinned-multi-disk-lscm-research-v1"
         or baseline.get("source_blend_sha256") != SOURCE_SHA256
         or baseline.get("source_proxy_sha256") != PROXY_SHA256
-        or detailed.get("schema")
-        != "stage6-source-pinned-multi-disk-face-uv-detail-v1"
+        or detailed.get("schema") != "stage6-source-pinned-multi-disk-face-uv-detail-v1"
         or detailed.get("source_blend_sha256") != SOURCE_SHA256
     ):
         raise ValueError("untrusted original Stage6 B-three source-link schema")
@@ -73,7 +72,10 @@ def compare_real_b_tutte(points, faces, baseline, detailed):
             }
         )
         side_lengths.append(_source_pair_lengths(disk, uv))
-    if sum(item["original_source_face_count"] for item in reports) != EXPECTED_SOURCE_FACES:
+    if (
+        sum(item["original_source_face_count"] for item in reports)
+        != EXPECTED_SOURCE_FACES
+    ):
         raise ValueError("real source face IDs lost during convex boundary mapping")
     paired = _two_sided_radial_seams(summary["radial_seams"], side_lengths)
     return {
@@ -118,7 +120,10 @@ def main():
         raise ValueError("research output identities must be distinct")
     previous_bytes = args.prior_detail.read_bytes()
     previous_summary = json.loads(args.prior_summary.read_text(encoding="utf8"))
-    if previous_summary.get("detail_sha256") != hashlib.sha256(previous_bytes).hexdigest():
+    if (
+        previous_summary.get("detail_sha256")
+        != hashlib.sha256(previous_bytes).hexdigest()
+    ):
         raise ValueError("source linked real UV detail hash does not match its summary")
     xyz, faces = load_pinned_proxy(args.input)
     report, detail = compare_real_b_tutte(
@@ -138,8 +143,12 @@ def main():
             [
                 {
                     "panel_id": row["panel_id"],
-                    "p95_triangle_edge_error": row["uv_qa"]["raw_triangle_edge_relative_error_p95"],
-                    "uv_overlap_pairs": row["uv_qa"]["uv_nonzero_area_overlap_face_pairs"],
+                    "p95_triangle_edge_error": row["uv_qa"][
+                        "raw_triangle_edge_relative_error_p95"
+                    ],
+                    "uv_overlap_pairs": row["uv_qa"][
+                        "uv_nonzero_area_overlap_face_pairs"
+                    ],
                     "uv_flips": row["uv_qa"]["uv_flipped_faces"],
                     "factory_approved": False,
                 }
