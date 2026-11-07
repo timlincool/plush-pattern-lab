@@ -36,6 +36,8 @@
 
 **2026-11-08 B真实高位缝面部风险：** [源主壳正面首命中＋历史五官v14 X/Z和五视角审查](docs/STAGE6_B_FACE_SEAM_VIEW_QA.md) 已离线检测B径向路径2有8个处于原主壳正面且距离历史鼻口绣线≤3mm的原Source Vertex点，末点40436约距历史鼻线0.575mm。**不是已确认成品五官碰撞**：v14归属较早结构版，且尚未检查Stage6全42Mesh云团/眼/尾与毛绒遮挡。待可信主干真实复核后优先设计避让，而非把0UV重叠或ARAP数学进展当作可裁纸样。P3继续，P4未开始。
 
+**2026-11-08 可信五官风险结论：** [真Stage6 B高位径向缝正面首表面与历史鼻口审查](docs/STAGE6_B_FACE_SEAM_VIEW_QA.md) 已由 [Stage6 #42411444680](https://github.com/timlincool/plush-pattern-lab/actions/runs/42411444680) 跑完并存 [永久证据](experiments/stage6_face_seam_review_20261108/summary.json)：B新高位缝2在真实原主壳正面126/132源点，**8个**与历史surface14鼻口注册X/Z线距离≤3mm，末端Source Vertex 40436距鼻线仅**0.5754mm**。历史surface14基于早期结构版，不是已经核验的新Stage6脸；完整42Mesh云团/眼/耳/尾与毛绒遮挡还没审计。未来“继续”优先真正全场景缝位可见性/工厂避让，不要因2D算法或3D拓扑数字过关擅自升级P4。
+
 ## 代码与验证契约
 
 - 从数字研究转向实体打样时，优先交付能实尺打印的逐片纸样、缝线/对位/返口说明、试布测量记录；当前 [试缝套件](docs/PHYSICAL_PROTOTYPE.md) 只覆盖合成椭球而非真实角色。

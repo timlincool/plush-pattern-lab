@@ -1,0 +1,110 @@
+{
+  "schema": "stage6-real-source-linked-b-three-historic-face-and-five-view-evidence-v1",
+  "date_utc": "2026-11-07",
+  "trusted_main_real_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42411444680",
+  "trusted_main_run_commit": "c5148f7df25572bf6b02e21033834e37f9dfd2c5",
+  "trusted_main_result": "success",
+  "post_refactor_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42411704796",
+  "post_refactor_python_tests_passed": 418,
+  "source_original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_25percent_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "source_B_three_disk_summary_sha256": "5708e845b4e1bc00072260ad4cf9c1581da912a30caddffa471a23f56e261b9e",
+  "historical_face_v14_sha256": "67094dba7f9dc5ffbcaf7ddecf6867609144cca3842fb24bd49d6831db94993f",
+  "artifact": {
+    "id": 13590115096,
+    "research_zip_sha256": "a4b2b31b25d0ae7b1c56a164ae95467ac6d6f4ab8abf8b894ea25137d76ee321",
+    "json_member": "leftfront_source_face_review.json",
+    "json_member_sha256": "2a131afd2a7382333cfd9f2c8c9f347be07612c0d0f0dfa708af24e1c0794ad0",
+    "five_view_source_svg_member": "leftfront_body_only_5views_face_review.svg",
+    "svg_sha256": "19f8ff6ac9ae075dfbccc36cb4fdcd74fa5563cfa6cab9ca95be59dbfbc23412",
+    "temporary_github_artifact_retention_days": 7
+  },
+  "review_frame": "world millimetres, front negative Y, front-ray towards positive Y on fixed 25percent original main shell",
+  "historical_face_contract": "design/reference-v25/face_embroidery_registration_v14.json: old iteration12-based X/Z historical embroidered eye/nose/mouth candidate, NOT final Stage6 registration",
+  "experimental_depth_tolerance_mm": 0.7,
+  "experimental_face_feature_distance_mm": 3,
+  "paths": [
+    {
+      "id": 0,
+      "source_3d_length_mm": 40.89211016973698,
+      "source_vertex_count": 33,
+      "body_front_first_hit_near_count": 32,
+      "body_occluded_count": 1,
+      "unknown_front_hit_count": 0,
+      "historic_eye_nose_mouth_proximity_alert_count": 0,
+      "role": "original radial source seam"
+    },
+    {
+      "id": 1,
+      "source_3d_length_mm": 224.92003861220397,
+      "source_vertex_count": 143,
+      "body_front_first_hit_near_count": 0,
+      "body_occluded_count": 143,
+      "unknown_front_hit_count": 0,
+      "historic_eye_nose_mouth_proximity_alert_count": 0,
+      "role": "B high route 1; body-front hidden, side/back exposure unchecked"
+    },
+    {
+      "id": 2,
+      "source_3d_length_mm": 210.64578128579944,
+      "source_vertex_count": 132,
+      "body_front_first_hit_near_count": 126,
+      "body_occluded_count": 6,
+      "unknown_front_hit_count": 0,
+      "historic_eye_nose_mouth_proximity_alert_count": 8,
+      "role": "B high route 2; strong historic nose/mouth collision candidate"
+    }
+  ],
+  "critical_witness": {
+    "source_vertex_id": 40436,
+    "source_vertex_xyz_mm": [
+      -0.9331,
+      -86.3353,
+      190.2309
+    ],
+    "front_first_hit_depth_y_mm": -86.3353,
+    "near_historic_stroke": "y_nose_xz",
+    "historic_xz_stroke_distance_mm": 0.5754,
+    "source_face_aligned_with_historic_registration": false,
+    "full_scene_42_mesh_occlusion_audited": false,
+    "possible_design_conflict_not_verified_final_embroidered_geometry": true
+  },
+  "remaining_historic_warning_vertices": [
+    40406,
+    40409,
+    40423,
+    40427,
+    40424,
+    40425,
+    40426
+  ],
+  "view_visualization": {
+    "view_names": [
+      "front",
+      "back",
+      "left",
+      "right",
+      "top"
+    ],
+    "front_only_source_body_first_hit_occlusion_test": true,
+    "other_views_are_geometry_projections_only": true,
+    "pink_face_marks_are_unaligned_historic_coordinates_not_final_design": true,
+    "complete_cloud_eye_ear_tail_mesh_or_fur_visibility_test": false
+  },
+  "decision": "FAIL_VISIBLE_FACIAL_SEAM_CLEARANCE_PRELIMINARY_SCREEN_UNDER_HISTORIC_V14; HOLD_B_HIGH_ROUTE_2_FOR_DESIGN_REVIEW",
+  "manufacturer_paper_patterns_approved": 0,
+  "next": "Use complete pinned Stage6 42 Mesh scene to assess visible face/cloud/ear/tail concealment and compare original design four views; reroute B high source seam near historic nose/mouth if the proposed design is confirmed, then rerun topology and whole-panel UV. Do not upgrade P4.",
+  "post_refactor_full_stage6_reproduction": {
+    "run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42411704833",
+    "conclusion": "success",
+    "artifact_id": 13590130464,
+    "artifact_zip_sha256": "aacd4f720fd829ea92bd47176fc3d6dead5301ce45a667ff26fe160888a82e64",
+    "study_json_member_sha256": "78f28fcf6a04f27670d2e06218a8a76b371f827152e223442f684c2b6755fccd",
+    "five_view_svg_sha256": "19f8ff6ac9ae075dfbccc36cb4fdcd74fa5563cfa6cab9ca95be59dbfbc23412",
+    "same_view_svg_raw_sha_as_prior_run": true,
+    "identical_vertex_and_face_proximity_risk_counts": true,
+    "study_json_sha_diff_only_in_current_run_multidisk_summary_hash": true,
+    "source_prior_multidisk_summary_sha256": "d7044bdb4de730ff2e17b9e7501d9a60b797144324e03780d558cd25e7a8666b",
+    "numeric_upstream_lscm_optimization_may_be_nondeterministic": true
+  }
+}
