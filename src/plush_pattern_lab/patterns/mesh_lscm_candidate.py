@@ -185,13 +185,18 @@ def _boundary_metrics(disk, planar):
         "hoof": {tuple(sorted(v)) for v in disk["source_cuff_edge_global_ids"]},
         "outer": {tuple(sorted(v)) for v in disk["source_outer_edge_global_ids"]},
     }
-    original["slit"] = {
-        tuple(sorted(v))
-        for v in zip(
-            disk["slit_path_source_vertex_ids"][:-1],
-            disk["slit_path_source_vertex_ids"][1:],
-        )
-    }
+    if "source_slit_edge_global_ids" in disk:
+        original["slit"] = {
+            tuple(sorted(v)) for v in disk["source_slit_edge_global_ids"]
+        }
+    else:
+        original["slit"] = {
+            tuple(sorted(v))
+            for v in zip(
+                disk["slit_path_source_vertex_ids"][:-1],
+                disk["slit_path_source_vertex_ids"][1:],
+            )
+        }
     region = {
         kind: np.fromiter(
             (tuple(pair) in keys for pair in original_keys),

@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_real_leftfront_fairing_ab_rejected_design_aware_extra_darts_required",
+    "stage": "stage6_real_leftfront_source_paired_two_three_disk_topology_2d_ci_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -163,6 +163,10 @@
         {
           "path": "experiments/stage6_manufacturing_surface_ab_20261105/summary.json",
           "kind": "trusted_main_real_stage6_seam_locked_3d_fairing_ab_and_full_uv_rejection"
+        },
+        {
+          "path": "docs/STAGE6_MULTI_RADIAL_DISKS.md",
+          "kind": "real_source_3d_two_three_disks_local_topology_ab_2d_ci_pending"
         }
       ],
       "blockers": [
@@ -171,7 +175,8 @@
         "目前虽已保留四蹄身份、BVH无非相邻自交和96x96五视角数据，25%顶视最大1.46mm近表面深度差及与全部42Mesh附件接触仍未完成生产验证",
         "尚无真实2D净缝/裁剪线、缝份、经纬毛向、返口与聚酯填棉物理试验、供应商设备/材料确认、实物打样",
         "独立3D内禀曲率筛查：17,889内部顶点中807点角亏绝对值超过3°；制造所需省道数与实际面料应变尚无法推导",
-        "真实Stage6受信Runner #42004163013已实测A/B；虽降低角亏但面积比仅43%/22%，2D重叠反而增至24,178/24,401对，整片仍不可裁；需要原设计认可的新切缝/省道与合适的制造曲面"
+        "真实Stage6受信Runner #42004163013已实测A/B；虽降低角亏但面积比仅43%/22%，2D重叠反而增至24,178/24,401对，整片仍不可裁；需要原设计认可的新切缝/省道与合适的制造曲面",
+        "新增径向缝沿真实网格高位延伸A(2片)/B(3片)已本地验出Euler=1和原边配对；尚需可信主干完整UV失真/缝线差及设计四视图审核，不能凭片数认定隐藏缝或可裁纸样"
       ]
     },
     {
@@ -432,8 +437,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "结束已失败的左前整片平滑 A/B：根据源模型和设计正/侧/背/顶视图规划额外隐藏径向切缝、省道或低复杂度制造母版的分片A/B；先给每组真实源边拓扑/配缝和双侧缝长，再做完整2D UV重叠/翻面/面积/伸长对照，禁止把点位折叠或UV显示当可裁纸样",
-      "done_when": "至少两条物理可解释的新增切缝/省道路线具备真实Stage6边ID、区域拓扑、净缝配对和UV验收报告，并标记设计/厂商尚未批准的可见缝位"
+      "action": "从真实25%主壳已锁定切缝追加A(2片)/B(3片)候选，先让可信Stage6主干重新验证每片单闭边界Euler=1、源三角面无缺漏、全部新增径向缝两侧3D同源边和UV净缝长差，再按原设计四视图否决穿过脸、云团和关键外观的路线；研究结果仍禁止生产裁布",
+      "done_when": "真实主干有两组独立完整2D UV失真/重叠/配缝结果与不可变SHA证据，新增缝位可由设计判断、明确标记是否需改线；P4不自动晋升"
     },
     {
       "priority": "P0",
@@ -475,6 +480,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-07",
+      "event": "真实25% Stage6 36,833面左前壳本地研究新增高位径向缝：A 2片(25680/11153面), B 3片(20915/6904/9014面)，每片Euler1/单环且原3D边双侧对应。该阶段仅3D几何拓扑，可信主分支完整LSCM与设计可见缝审查待运行；不批准工厂裁布",
+      "evidence_path": "docs/STAGE6_MULTI_RADIAL_DISKS.md"
+    },
     {
       "date": "2026-11-05",
       "event": "可信 Stage6 #42004163013 全36,833面左前区实跑保护1,024源缝线点的平滑A/B：角亏P95降低但3D面积比降到43%/22%，2D重叠23,672→24,178/24,401；确认两者均拒绝，开发主线转向设计可隐藏的新增切缝/省道，仍无裁布纸样",
