@@ -28,9 +28,9 @@ def test_real_multidisk_3d_pairing_does_not_imply_valid_uv():
         10536,
     ]
     assert b["panels"][1]["uv_edge_error_relative_p95"] > 0.4
-    assert b["two_side_lscm_net_seam_candidate_disagreements_mm"][1][
-        "difference_mm"
-    ] > 200
+    assert (
+        b["two_side_lscm_net_seam_candidate_disagreements_mm"][1]["difference_mm"] > 200
+    )
     assert all(not x["approved"] for x in (a, b))
     assert evidence["approved_factory_paper_patterns"] == 0
 
