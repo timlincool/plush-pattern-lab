@@ -104,7 +104,10 @@ def render_source_seam_orthoview_svg(source_points, report, face_reference):
     points = np.asarray(source_points, dtype=np.float64)
     if points.ndim != 2 or points.shape[1] != 3 or not np.isfinite(points).all():
         raise ValueError("finite source PLY needed for geometric projections")
-    if report.get("schema") != "stage6-pinned-source-front-shell-historical-face-v14-review-v1":
+    if (
+        report.get("schema")
+        != "stage6-pinned-source-front-shell-historical-face-v14-review-v1"
+    ):
         raise ValueError("wrong verified seam review schema")
     if len(report.get("routes", [])) != 3:
         raise ValueError("exactly three original B radial paths required")
@@ -114,11 +117,11 @@ def render_source_seam_orthoview_svg(source_points, report, face_reference):
         'viewBox="0 0 1500 945">',
         '<rect x="0" y="0" width="1500" height="945" fill="#fcfcfc"/>',
         '<text x="18" y="22" font-size="16" font-family="sans-serif">'
-        'REAL STAGE6 B THREE-DISK SOURCE SEAMS | NOT A CUTTING PATTERN</text>',
+        "REAL STAGE6 B THREE-DISK SOURCE SEAMS | NOT A CUTTING PATTERN</text>",
         '<text x="18" y="42" font-size="11" font-family="sans-serif">'
-        'Source body proxy only; pink marks = historical surface14 face X/Z, '
-        'NOT registered final design. Front depth-tested; other views projection-only.'
-        '</text>',
+        "Source body proxy only; pink marks = historical surface14 face X/Z, "
+        "NOT registered final design. Front depth-tested; other views projection-only."
+        "</text>",
     ]
     for i, (name, axes, signs) in enumerate(VIEWS):
         left = (i % 3) * 500 + 5
@@ -144,17 +147,17 @@ def render_source_seam_orthoview_svg(source_points, report, face_reference):
         svg.append(
             f'<text x="{left + 11}" y="{top + height - 7}" '
             'font-family="sans-serif" font-size="10">'
-            f'Body-proxy mm (not final design; scale {scale:.2f}px/mm)</text>'
+            f"Body-proxy mm (not final design; scale {scale:.2f}px/mm)</text>"
         )
     svg.extend(
         [
             '<text x="1018" y="515" font-family="sans-serif" font-size="13">'
-            'Legend: red=old slit, ochre=high route 1, blue=high route 2</text>',
+            "Legend: red=old slit, ochre=high route 1, blue=high route 2</text>",
             '<text x="1018" y="540" font-family="sans-serif" font-size="12">'
-            'Front red circles = proximity to historic nose/mouth</text>',
+            "Front red circles = proximity to historic nose/mouth</text>",
             '<text x="1018" y="562" font-family="sans-serif" font-size="12">'
-            'Clouds, fleece, eye meshes, tail and factory sewing NOT checked</text>',
-            '</svg>',
+            "Clouds, fleece, eye meshes, tail and factory sewing NOT checked</text>",
+            "</svg>",
         ]
     )
     return "\n".join(svg) + "\n"
