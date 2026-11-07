@@ -62,10 +62,7 @@ def _panel_uv_edges(panel, score, uv):
 def _path_sides_in_panel(source_paths, lookup, panel_index):
     result = {}
     for index, path in enumerate(source_paths):
-        pairs = [
-            tuple(sorted((int(a), int(b))))
-            for a, b in zip(path[:-1], path[1:])
-        ]
+        pairs = [tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])]
         present = [edge in lookup for edge in pairs]
         if any(present) and not all(present):
             raise ValueError("a radial seam is partly absent from one 2D panel")
@@ -141,8 +138,7 @@ def _paired_radial_sides(source_paths, path_lengths, panels):
                 "endpoint_source_xyz_mm": None,
                 "panel_sides": sides,
                 "candidate_2d_side_length_difference_mm": abs(
-                    sides[0]["uv_seam_length_mm"]
-                    - sides[1]["uv_seam_length_mm"]
+                    sides[0]["uv_seam_length_mm"] - sides[1]["uv_seam_length_mm"]
                 ),
                 "both_3d_sides_have_same_source_edges": True,
             }
@@ -151,15 +147,11 @@ def _paired_radial_sides(source_paths, path_lengths, panels):
 
 
 def _trial(xyz, faces, selected, base_path, title, extra):
-    candidate = split_annulus_by_radial_paths(
-        xyz, faces, selected, base_path, extra
-    )
+    candidate = split_annulus_by_radial_paths(xyz, faces, selected, base_path, extra)
     summaries = []
     details = []
     for index, panel in enumerate(candidate["panels"]):
-        summary, detail = _score_one_panel(
-            panel, candidate["source_paths"], index
-        )
+        summary, detail = _score_one_panel(panel, candidate["source_paths"], index)
         summaries.append(summary)
         details.append(detail)
     paired = _paired_radial_sides(
@@ -169,9 +161,7 @@ def _trial(xyz, faces, selected, base_path, title, extra):
     )
     for seam in paired:
         path = seam["original_source_vertex_ids"]
-        seam["endpoint_source_xyz_mm"] = np.round(
-            xyz[[path[0], path[-1]]], 4
-        ).tolist()
+        seam["endpoint_source_xyz_mm"] = np.round(xyz[[path[0], path[-1]]], 4).tolist()
     face_counts = [p["face_count"] for p in candidate["panels"]]
     result = {
         "candidate": title,
@@ -184,12 +174,8 @@ def _trial(xyz, faces, selected, base_path, title, extra):
         "all_3d_radial_seam_edges_paired_exactly": candidate[
             "source_3d_seams_exactly_paired"
         ],
-        "total_original_radial_seam_mm": sum(
-            candidate["path_lengths_3d_mm"]
-        ),
-        "extra_radial_seam_mm": sum(
-            candidate["path_lengths_3d_mm"][1:]
-        ),
+        "total_original_radial_seam_mm": sum(candidate["path_lengths_3d_mm"]),
+        "extra_radial_seam_mm": sum(candidate["path_lengths_3d_mm"][1:]),
         "radial_seams": paired,
         "panel_uv_quality": summaries,
         "design_visible_seam_review": "NOT_REVIEWED",
@@ -204,9 +190,7 @@ def run_real_radial_ab(xyz, faces, baseline):
     selected, original_slit = _verified_baseline(xyz, faces, baseline)
     summaries, details = [], []
     for title, extra in TRIALS:
-        summary, detail = _trial(
-            xyz, faces, selected, original_slit, title, extra
-        )
+        summary, detail = _trial(xyz, faces, selected, original_slit, title, extra)
         summaries.append(summary)
         details.append(detail)
     return {
@@ -263,21 +247,24 @@ def main():
     )
     print(
         "STAGE6_REAL_MULTI_DISK_RADIAL_UV_RESEARCH",
-        json.dumps([
-            {
-                "name": c["candidate"],
-                "face_counts": c["individual_panel_face_counts"],
-                "extra_seam_mm": c["extra_radial_seam_mm"],
-                "panel_rejections": [
-                    row["status"] for row in c["panel_uv_quality"]
-                ],
-                "uv_overlap_pairs": [
-                    row["uv_positive_area_overlaps"] for row in c["panel_uv_quality"]
-                ],
-                "approved_for_cutting": False,
-            }
-            for c in summary["candidates"]
-        ]),
+        json.dumps(
+            [
+                {
+                    "name": c["candidate"],
+                    "face_counts": c["individual_panel_face_counts"],
+                    "extra_seam_mm": c["extra_radial_seam_mm"],
+                    "panel_rejections": [
+                        row["status"] for row in c["panel_uv_quality"]
+                    ],
+                    "uv_overlap_pairs": [
+                        row["uv_positive_area_overlaps"]
+                        for row in c["panel_uv_quality"]
+                    ],
+                    "approved_for_cutting": False,
+                }
+                for c in summary["candidates"]
+            ]
+        ),
         flush=True,
     )
 
