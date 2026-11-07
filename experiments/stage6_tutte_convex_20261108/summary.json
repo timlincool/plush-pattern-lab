@@ -1,0 +1,98 @@
+{
+  "schema": "stage6-source-pinned-bthree-tutte-convex-real-evidence-v1",
+  "date_utc": "2026-11-07",
+  "trusted_main_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42409834633",
+  "trusted_main_commit": "3b1ea6e6701ce4e53556b5a8ca41055bf14201f4",
+  "trusted_run_result": "success",
+  "prior_reproduction_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42409665213",
+  "identical_raw_summary_and_detail_sha256_across_runs": true,
+  "trusted_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42409834593",
+  "python_tests_passed": 410,
+  "python_ci_quality_and_wheel": "PASS",
+  "original_public_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "pinned_25percent_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "run_artifact": {
+    "id": 13589105770,
+    "name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "zip_sha256": "cdd857553d736fdd5aac7675e5da95eda4b675e0b68475e206cbbe406945eea1",
+    "summary_member": "leftfront_tutte_summary.json",
+    "summary_sha256": "9f9a95d50eb85cb2cf3035f79398233dc99a212bcdd1ba5ff3d671215cd7a121",
+    "detail_member": "leftfront_tutte_detail.json",
+    "detail_sha256": "989f93779607d2850e3ae593ab591fcc7e8ea7c4e33c369691b73dc115900314",
+    "artifact_expires_according_to_actions_retention": true
+  },
+  "method": "Positive uniform harmonic weights, one source-perimeter-proportional strictly convex 2D circle per verified original topological disk",
+  "source_region": "left_front B_three_disks",
+  "total_source_faces": 36833,
+  "source_panel_faces": [
+    20915,
+    6904,
+    9014
+  ],
+  "all_original_source_face_vertex_identities_retained": true,
+  "panels": [
+    {
+      "id": 0,
+      "source_faces": 20915,
+      "edge_length_relative_error_p95": 2.172797439863501,
+      "uv_positive_area_overlap_pairs": 0,
+      "uv_flipped_faces": 0,
+      "uniform_similarity_scale": 0.593094672277522,
+      "approved": false
+    },
+    {
+      "id": 1,
+      "source_faces": 6904,
+      "edge_length_relative_error_p95": 5.927501207429868,
+      "uv_positive_area_overlap_pairs": 0,
+      "uv_flipped_faces": 0,
+      "uniform_similarity_scale": 0.2418072553173978,
+      "approved": false
+    },
+    {
+      "id": 2,
+      "source_faces": 9014,
+      "edge_length_relative_error_p95": 7.839387499385689,
+      "uv_positive_area_overlap_pairs": 0,
+      "uv_flipped_faces": 0,
+      "uniform_similarity_scale": 0.2072419639620614,
+      "approved": false
+    }
+  ],
+  "paired_original_source_radial_seams": [
+    {
+      "id": 0,
+      "source_3d_mm": 40.89211016973698,
+      "uv_sides_mm": [
+        40.89067949079768,
+        40.89143238398493
+      ],
+      "two_sides_difference_mm": 0.0007528931872471389
+    },
+    {
+      "id": 1,
+      "source_3d_mm": 224.92003861220397,
+      "uv_sides_mm": [
+        224.9161062520469,
+        224.91783232428912
+      ],
+      "two_sides_difference_mm": 0.0017260722422349772
+    },
+    {
+      "id": 2,
+      "source_3d_mm": 210.64578128579944,
+      "uv_sides_mm": [
+        210.64056510741858,
+        210.6396037284627
+      ],
+      "two_sides_difference_mm": 0.0009613789558784447
+    }
+  ],
+  "decision": "ALL_PANELS_REJECTED_FOR_FABRIC_CUTTING",
+  "reason": "0 fold/overlap and source-matched boundary arc lengths are not sufficient: severe nonuniform interior edge strain makes all three candidate 2D rest geometries implausible; source boundary length matching is imposed by construction",
+  "source_sewing_seams_reconstructed_but_not_independent_fabric_proof": true,
+  "visible_face_cloud_ear_tail_conflicts_not_yet_reviewed": true,
+  "fabric_stretch_and_fill_not_measured": true,
+  "approved_industrial_cut_patterns": 0,
+  "next": "Review complete Stage6 geometry and historical face positions in orthographic views, then design physically plausible seam/dart topology and matched 2D geometry"
+}
