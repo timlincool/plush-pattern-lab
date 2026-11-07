@@ -54,7 +54,14 @@ def test_convex_border_can_be_overlap_free_but_stretched():
 
 @pytest.mark.parametrize(
     "change",
-    ["wrong_boundary", "duplicate_boundary", "nonmanifold", "nan", "unused", "bad_face"],
+    [
+        "wrong_boundary",
+        "duplicate_boundary",
+        "nonmanifold",
+        "nan",
+        "unused",
+        "bad_face",
+    ],
 )
 def test_invalid_original_geometry_or_topology_refused(change):
     disk = _fan()
