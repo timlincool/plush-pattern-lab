@@ -37,31 +37,27 @@ def front_first_hit_y(source_tris, point):
     if not len(triangles):
         return None
     a, b, c = [triangles[:, j, :][:, [0, 2]] for j in range(3)]
-    denom = (b[:, 1] - c[:, 1]) * (a[:, 0] - c[:, 0]) + (
-        c[:, 0] - b[:, 0]
-    ) * (a[:, 1] - c[:, 1])
+    denom = (b[:, 1] - c[:, 1]) * (a[:, 0] - c[:, 0]) + (c[:, 0] - b[:, 0]) * (
+        a[:, 1] - c[:, 1]
+    )
     nondegenerate = np.abs(denom) > 1e-10
     if not np.any(nondegenerate):
         return None
     a, b, c = a[nondegenerate], b[nondegenerate], c[nondegenerate]
     triangles, denom = triangles[nondegenerate], denom[nondegenerate]
     u = (
-        (b[:, 1] - c[:, 1]) * (x - c[:, 0])
-        + (c[:, 0] - b[:, 0]) * (z - c[:, 1])
+        (b[:, 1] - c[:, 1]) * (x - c[:, 0]) + (c[:, 0] - b[:, 0]) * (z - c[:, 1])
     ) / denom
     v = (
-        (c[:, 1] - a[:, 1]) * (x - c[:, 0])
-        + (a[:, 0] - c[:, 0]) * (z - c[:, 1])
+        (c[:, 1] - a[:, 1]) * (x - c[:, 0]) + (a[:, 0] - c[:, 0]) * (z - c[:, 1])
     ) / denom
     w = 1 - u - v
     inside = np.minimum(np.minimum(u, v), w) >= -1e-5
     if not np.any(inside):
         return None
-    y = (
-        u * triangles[:, 0, 1]
-        + v * triangles[:, 1, 1]
-        + w * triangles[:, 2, 1]
-    )[inside]
+    y = (u * triangles[:, 0, 1] + v * triangles[:, 1, 1] + w * triangles[:, 2, 1])[
+        inside
+    ]
     return float(y.min())
 
 
@@ -80,9 +76,7 @@ def _polyline_distance_xz(point_xz, polyline):
 
 def _historic_features_distance(point_xz, reference):
     names = ("y_nose_xz", "mouth_stem_xz", "mouth_left_xz", "mouth_right_xz")
-    strokes = {
-        name: _polyline_distance_xz(point_xz, reference[name]) for name in names
-    }
+    strokes = {name: _polyline_distance_xz(point_xz, reference[name]) for name in names}
     name = min(strokes, key=strokes.get)
     eyes = []
     for eye in reference["eyes"]:
@@ -100,7 +94,10 @@ def audit_front_paths(
 ):
     """Report main-shell front-side path samples near historic nose/eyes/mouth."""
     xyz, tri = _source_arrays(points, faces)
-    if face_reference.get("revision") != "surface14" or face_reference.get("units") != "mm":
+    if (
+        face_reference.get("revision") != "surface14"
+        or face_reference.get("units") != "mm"
+    ):
         raise ValueError("historical front-face registration format mismatch")
     if not 0 < near_mm <= 2 or not 0 < alert_mm <= 10:
         raise ValueError("unbounded preliminary geometric screening distance")
@@ -110,7 +107,11 @@ def audit_front_paths(
         ids = np.asarray(seam["original_source_vertex_ids"])
         if ids.ndim != 1 or len(ids) < 2 or not np.issubdtype(ids.dtype, np.integer):
             raise ValueError("invalid source-linked radial seam path IDs")
-        if np.any(ids < 0) or np.any(ids >= len(xyz)) or len(np.unique(ids)) != len(ids):
+        if (
+            np.any(ids < 0)
+            or np.any(ids >= len(xyz))
+            or len(np.unique(ids)) != len(ids)
+        ):
             raise ValueError("source radial seam contains invalid or repeated vertices")
         pts = xyz[ids]
         measured = np.linalg.norm(np.diff(pts, axis=0), axis=1).sum()
@@ -125,7 +126,9 @@ def audit_front_paths(
             gaps.append(gap)
             near = gap is not None and gap <= near_mm
             visible.append(near)
-            name, distance, eyes = _historic_features_distance(p[[0, 2]], face_reference)
+            name, distance, eyes = _historic_features_distance(
+                p[[0, 2]], face_reference
+            )
             if near and (distance <= alert_mm or eyes):
                 witnesses.append(
                     {
