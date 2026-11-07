@@ -18,6 +18,7 @@ on:
       - 'scripts/propose_stage6_shell_panels.py'
       - 'scripts/unroll_stage6_leftfront.py'
       - 'scripts/compare_stage6_leftfront_fairing.py'
+      - 'scripts/compare_stage6_multidisk_radial.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -339,6 +340,35 @@ jobs:
           assert all(not row['accepted_for_production'] for row in data['trials'])
           assert not data['manufacturer_seam_or_cut_pattern_approved']
           print('STAGE6_FAIRING_AB_3D_SOURCE_SEAMS_PROTECTED_NO_CUT_PATTERNS')
+          PY
+      - name: Partition actual leftfront into source-paired two/three disks and audit UV
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/compare_stage6_multidisk_radial.py \
+            --input "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --baseline "$RUNNER_TEMP/stage6-reference/leftfront_unroll_summary.json" \
+            --summary "$RUNNER_TEMP/stage6-reference/leftfront_multidisk_summary.json" \
+            --detail "$RUNNER_TEMP/stage6-reference/leftfront_multidisk_detail.json"
+          python - <<'PY'
+          import json, os, pathlib
+          p = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/leftfront_multidisk_summary.json'
+          d = json.loads(p.read_text(encoding='utf8'))
+          assert d['schema'] == 'stage6-source-pinned-multi-disk-lscm-research-v1'
+          assert d['source_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert d['source_original_leftfront_faces'] == 36833
+          assert [r['disk_count'] for r in d['candidates']] == [2, 3]
+          assert all(r['all_source_faces_preserved_once'] for r in d['candidates'])
+          assert all(r['all_3d_radial_seam_edges_paired_exactly'] for r in d['candidates'])
+          assert all(not r['approved_for_cutting'] for r in d['candidates'])
+          assert d['approved_cutting_patterns'] == 0
+          print('STAGE6_REAL_TWO_THREE_DISK_SEAM_PAIRING_NO_CUTTING', json.dumps([
+              {'candidate': r['candidate'], 'faces': r['individual_panel_face_counts'],
+               'extra_seam_mm': r['extra_radial_seam_mm'],
+               'uv_status': [p['status'] for p in r['panel_uv_quality']]}
+              for r in d['candidates']
+          ]))
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
