@@ -22,8 +22,10 @@ def _unique_edges(faces):
     f = np.asarray(faces, dtype=np.int64)
     pairs = np.concatenate((f[:, [0, 1]], f[:, [1, 2]], f[:, [2, 0]]))
     return np.unique(
-        np.sort(pairs, axis=1), axis=0,
-        return_inverse=True, return_counts=True,
+        np.sort(pairs, axis=1),
+        axis=0,
+        return_inverse=True,
+        return_counts=True,
     )
 
 
@@ -34,9 +36,7 @@ def _boundary_components(edges, vertex_count):
         raise ValueError("open or branched manufactured panel boundary")
     a = np.r_[edges[:, 0], edges[:, 1]]
     b = np.r_[edges[:, 1], edges[:, 0]]
-    graph = coo_matrix(
-        (np.ones(len(a)), (a, b)), shape=(vertex_count, vertex_count)
-    )
+    graph = coo_matrix((np.ones(len(a)), (a, b)), shape=(vertex_count, vertex_count))
     _, labels = connected_components(graph.tocsr(), directed=False)
     return len(np.unique(labels[ids]))
 
@@ -118,14 +118,13 @@ def _dual_labels(faces, source_edges, inverse, counts, paths):
     )
     keep = np.fromiter(
         (tuple(edge) not in cut for edge in source_edges[ids]),
-        dtype=bool, count=len(ids),
+        dtype=bool,
+        count=len(ids),
     )
     attached = endpoints[keep]
     row = np.r_[attached[:, 0], attached[:, 1]]
     col = np.r_[attached[:, 1], attached[:, 0]]
-    graph = coo_matrix(
-        (np.ones(len(row)), (row, col)), shape=(len(faces), len(faces))
-    )
+    graph = coo_matrix((np.ones(len(row)), (row, col)), shape=(len(faces), len(faces)))
     parts, labels = connected_components(graph.tocsr(), directed=False)
     if parts != len(paths):
         raise ValueError("radial seams did not split into expected number of disks")
@@ -133,10 +132,7 @@ def _dual_labels(faces, source_edges, inverse, counts, paths):
 
 
 def _source_pairs(path):
-    return {
-        tuple(sorted((int(a), int(b))))
-        for a, b in zip(path[:-1], path[1:])
-    }
+    return {tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])}
 
 
 def _panel(face_ids, region_faces, source_vertices, source_face_ids, roles, paths, xyz):
@@ -208,8 +204,13 @@ def _assert_source_edge_pairing(panels, roles):
 def _make_panels(region_faces, region_vertices, selected, roles, paths, xyz, labels):
     panels = [
         _panel(
-            np.flatnonzero(labels == i), region_faces, region_vertices,
-            selected, roles, paths, xyz,
+            np.flatnonzero(labels == i),
+            region_faces,
+            region_vertices,
+            selected,
+            roles,
+            paths,
+            xyz,
         )
         for i in range(len(paths))
     ]
@@ -220,7 +221,11 @@ def _make_panels(region_faces, region_vertices, selected, roles, paths, xyz, lab
 
 
 def split_annulus_by_radial_paths(
-    xyz, all_faces, selected, base_source_path, extra_specs,
+    xyz,
+    all_faces,
+    selected,
+    base_source_path,
+    extra_specs,
     expected_cuff_edges=512,
 ):
     """Return source-verified 2/3 disk candidates from one real annulus.
@@ -228,9 +233,7 @@ def split_annulus_by_radial_paths(
     extra_specs: (fraction of ordered original cuff, minimum outer Z in mm).
     The fraction is NOT an anatomically approved seam orientation.
     """
-    points, all_faces, selected = _validated_source_inputs(
-        xyz, all_faces, selected
-    )
+    points, all_faces, selected = _validated_source_inputs(xyz, all_faces, selected)
     region_vertices, region_faces, edges, inverse, counts, _, cuff, outer = (
         _region_topology(points, all_faces, selected, expected_cuff_edges)
     )
@@ -250,9 +253,7 @@ def split_annulus_by_radial_paths(
         if not 0 < fraction < 1:
             raise ValueError("invalid cuff arc fraction")
         anchor = int(cuff_order[round(fraction * len(cuff_order)) % len(cuff_order)])
-        path = _route_high(
-            coords, edges, counts, cuff, outer, anchor, used, min_z
-        )
+        path = _route_high(coords, edges, counts, cuff, outer, anchor, used, min_z)
         paths.append(path)
         used.update(path.tolist())
     interiors = {tuple(edge) for edge in edges[counts == 2]}
