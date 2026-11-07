@@ -1,0 +1,141 @@
+{
+  "schema": "stage6-source-pinned-bthree-arap-lscm-real-run-evidence-v1",
+  "evidence_date_utc": "2026-11-07",
+  "trusted_main_real_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42403534959",
+  "trusted_main_run_commit": "6b82f9dce2c0da352cc17c7d0755fd9ed1f9635e",
+  "trusted_main_run_conclusion": "success",
+  "trusted_main_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42403534975",
+  "python_ci_tests_passed": 400,
+  "python_ci_quality_gate": "PASS",
+  "source_original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_25pct_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "run_artifact": {
+    "artifact_id": 13585984329,
+    "artifact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "artifact_zip_sha256": "27645430c7c07234937e4926c52e52711eae0d1014db6beef2f08ab8df0a603a",
+    "source_summary_member": "leftfront_uv_solver_ab_summary.json",
+    "summary_member_sha256": "a141ebc6a58d6130326eae3053892fec7aa155e8b6968715f6484e1a047a4f40",
+    "source_face_linked_uv_detail_member": "leftfront_uv_solver_ab_detail.json",
+    "detail_member_sha256": "b60982f3aa0292b0714ed23ead824ab531733738d3e0ea3ae57509e09023ac72",
+    "artifact_retention_is_temporary": true
+  },
+  "source_candidate": "B_three_disks",
+  "source_triangles_total": 36833,
+  "source_panel_faces": [
+    20915,
+    6904,
+    9014
+  ],
+  "uv_methods": [
+    "LSCM",
+    "ARAP_PCA",
+    "ARAP_LSCM"
+  ],
+  "solver_iterations_each_arap": 30,
+  "arap_pin_policy": "3d_euclidean_chord",
+  "lscm_pin_policy": "3d_original_source_mesh_slit_path_length",
+  "different_pins_are_reported_not_equated": true,
+  "panels": [
+    {
+      "panel_id": 0,
+      "source_faces": 20915,
+      "lscm": {
+        "triangle_edge_relative_error_p95": 0.9883665435643059,
+        "unique_source_edges_best_uniform_scale": 1.0461,
+        "uniform_rescaled_edge_error_p95": 0.9877,
+        "uv_overlap_pairs": 26,
+        "uv_flipped_faces": 3
+      },
+      "arap_pca": {
+        "triangle_edge_relative_error_p95": 0.5229093889772485,
+        "uv_overlap_pairs": 23734,
+        "uv_flipped_faces": 569
+      },
+      "arap_lscm": {
+        "triangle_edge_relative_error_p95": 0.6129921650981921,
+        "uv_overlap_pairs": 14157,
+        "uv_flipped_faces": 305
+      },
+      "no_accepted_solution": true
+    },
+    {
+      "panel_id": 1,
+      "source_faces": 6904,
+      "lscm": {
+        "triangle_edge_relative_error_p95": 0.43226432826318184,
+        "unique_source_edges_best_uniform_scale": 1.3402,
+        "uniform_rescaled_edge_error_p95": 0.40748,
+        "uv_overlap_pairs": 0,
+        "uv_flipped_faces": 0
+      },
+      "arap_pca": {
+        "triangle_edge_relative_error_p95": 0.41239828350419805,
+        "uv_overlap_pairs": 4057,
+        "uv_flipped_faces": 3
+      },
+      "arap_lscm": {
+        "triangle_edge_relative_error_p95": 0.47500061578606934,
+        "uv_overlap_pairs": 5610,
+        "uv_flipped_faces": 5
+      },
+      "no_accepted_solution": true
+    },
+    {
+      "panel_id": 2,
+      "source_faces": 9014,
+      "lscm": {
+        "triangle_edge_relative_error_p95": 0.819420511656893,
+        "unique_source_edges_best_uniform_scale": 2.3119,
+        "uniform_rescaled_edge_error_p95": 0.98706,
+        "uv_overlap_pairs": 10540,
+        "uv_flipped_faces": 1
+      },
+      "arap_pca": {
+        "triangle_edge_relative_error_p95": 0.31799290915178746,
+        "uv_overlap_pairs": 4049,
+        "uv_flipped_faces": 3
+      },
+      "arap_lscm": {
+        "triangle_edge_relative_error_p95": 0.2976965684582129,
+        "uv_overlap_pairs": 3019,
+        "uv_flipped_faces": 2
+      },
+      "no_accepted_solution": true
+    }
+  ],
+  "exact_source_linked_3d_seam_pairing_preserved": true,
+  "source_radial_paths_3d_mm": [
+    40.89211016973698,
+    224.92003861220397,
+    210.64578128579944
+  ],
+  "per_method_two_sided_uv_length_disagreement_mm": {
+    "LSCM": [
+      0.031,
+      217.706,
+      32.216
+    ],
+    "ARAP_PCA": [
+      6.04,
+      42.25,
+      69.461
+    ],
+    "ARAP_LSCM": [
+      12.266,
+      71.301,
+      75.84
+    ]
+  },
+  "interpretation": {
+    "uniform_scale_is_diagnostic_not_material_calibration": true,
+    "scaling_alone_cannot_eliminate_nonuniform_strain": true,
+    "length_error_reduction_does_not_guarantee_nonoverlap": true,
+    "two_sided_uv_lengths_not_sewable": true,
+    "arap_did_not_produce_bijective_global_parameterization": true,
+    "design_visible_seams_checked": false,
+    "fabric_material_or_safety_validation": false,
+    "all_real_2d_candidates_rejected": true,
+    "industrial_paper_patterns_approved": 0
+  },
+  "next_action": "Study injective/boundary-controlled parameterization and visually verify seam positions against design four views; retain all original 3D source seams, source face IDs, and physical material gates."
+}
