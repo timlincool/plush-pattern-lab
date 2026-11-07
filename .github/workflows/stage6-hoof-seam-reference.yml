@@ -19,6 +19,7 @@ on:
       - 'scripts/unroll_stage6_leftfront.py'
       - 'scripts/compare_stage6_leftfront_fairing.py'
       - 'scripts/compare_stage6_multidisk_radial.py'
+      - 'scripts/compare_stage6_uv_solvers.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -369,6 +370,32 @@ jobs:
                'uv_status': [p['status'] for p in r['panel_uv_quality']]}
               for r in d['candidates']
           ]))
+          PY
+      - name: Recheck actual B three disks with independent scale and ARAP UV solvers
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/compare_stage6_uv_solvers.py \
+            --input "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --previous-summary "$RUNNER_TEMP/stage6-reference/leftfront_multidisk_summary.json" \
+            --previous-detail "$RUNNER_TEMP/stage6-reference/leftfront_multidisk_detail.json" \
+            --summary "$RUNNER_TEMP/stage6-reference/leftfront_uv_solver_ab_summary.json" \
+            --detail "$RUNNER_TEMP/stage6-reference/leftfront_uv_solver_ab_detail.json"
+          python - <<'PY'
+          import json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          j = json.loads((root/'leftfront_uv_solver_ab_summary.json').read_text(encoding='utf8'))
+          assert j['schema'] == 'stage6-source-pinned-b-three-uv-solver-comparison-v1'
+          assert j['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert j['full_source_region_faces'] == 36833
+          assert j['methods'] == ['LSCM', 'ARAP_PCA', 'ARAP_LSCM']
+          assert len(j['independent_panel_results']) == 3
+          assert all(set(p['methods']) == set(j['methods']) for p in j['independent_panel_results'])
+          assert len(j['paired_original_radial_seams']['ARAP_PCA']) == 3
+          assert not j['visual_design_or_seam_placement_reviewed']
+          assert j['production_cut_patterns_approved'] == 0
+          print('STAGE6_ACTUAL_ARAP_LSCM_REJECT_UNVERIFIED_CUTTING')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
