@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-07",
+  "updated_at": "2026-11-08",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_real_leftfront_multidisk_geometry_paired_but_lscm_uv_rejected",
+    "stage": "stage6_bthree_real_lscm_arap_and_uniform_scale_comparison_ci_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -171,6 +171,10 @@
         {
           "path": "experiments/stage6_multi_radial_20261107/summary.json",
           "kind": "trusted_real_stage6_2_3_source_paired_disks_complete_uv_rejection"
+        },
+        {
+          "path": "docs/STAGE6_UV_SOLVER_ARAP_AB.md",
+          "kind": "source_pinned_real_bthree_lscm_vs_arap_offline_preflight_pending_trusted_ci"
         }
       ],
       "blockers": [
@@ -180,7 +184,8 @@
         "尚无真实2D净缝/裁剪线、缝份、经纬毛向、返口与聚酯填棉物理试验、供应商设备/材料确认、实物打样",
         "独立3D内禀曲率筛查：17,889内部顶点中807点角亏绝对值超过3°；制造所需省道数与实际面料应变尚无法推导",
         "真实Stage6受信Runner #42004163013已实测A/B；虽降低角亏但面积比仅43%/22%，2D重叠反而增至24,178/24,401对，整片仍不可裁；需要原设计认可的新切缝/省道与合适的制造曲面",
-        "真实Stage6受信 Runner 已完成两/三片全UV：A两片P95边长误差99.77%/87.80%，B三片98.84%/43.14%/81.96%；尽管B一片无重叠，新增224.92mm三维缝两侧UV相差217.51mm，全部纸样拒绝。高位缝可能跨越可见头脸/云团，未获设计签核"
+        "真实Stage6受信 Runner 已完成两/三片全UV：A两片P95边长误差99.77%/87.80%，B三片98.84%/43.14%/81.96%；尽管B一片无重叠，新增224.92mm三维缝两侧UV相差217.51mm，全部纸样拒绝。高位缝可能跨越可见头脸/云团，未获设计签核",
+        "B三片离线独立ARAP(两个初值、30轮)虽可能降低某些P95边长误差，却产生/增加UV重叠及翻面；最优统一缩放也不能消除边长非均匀失真。需可信主干复现同源结果，再设计边界无交叠/设计可见缝约束，禁止自动生成厂商纸样"
       ]
     },
     {
@@ -476,6 +481,55 @@
       "B_seam1_two_uv_sides_difference_mm": 217.51144483083777,
       "research_no_auto_paper_pattern": true,
       "approved_for_manufacture": false
+    },
+    "stage6_uv_solver_arap_offline_preflight": {
+      "evidence_path": "docs/STAGE6_UV_SOLVER_ARAP_AB.md",
+      "source_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "source_uv_artifact_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42332683339",
+      "evidence_level": "offline_independent_recomputation_trusted_main_ci_pending",
+      "candidate": "B_three_disks",
+      "source_faces": [
+        20915,
+        6904,
+        9014
+      ],
+      "method_names": [
+        "LSCM",
+        "ARAP_PCA",
+        "ARAP_LSCM"
+      ],
+      "lscm_p95_triangle_edge_relative_errors": [
+        0.9883812440407665,
+        0.4314095472315539,
+        0.8195852182150875
+      ],
+      "arap_pca_30_p95_triangle_edge_relative_errors": [
+        0.5229093889772819,
+        0.41239828350421326,
+        0.31799290915177814
+      ],
+      "arap_lscm_seed_30_p95_triangle_edge_relative_errors": [
+        0.6133680039389835,
+        0.4749954247529422,
+        0.2976998198952573
+      ],
+      "lscm_overlap_triangle_pairs": [
+        26,
+        0,
+        10536
+      ],
+      "arap_pca_30_overlap_triangle_pairs": [
+        23734,
+        4057,
+        4049
+      ],
+      "arap_lscm_seed_30_overlap_triangle_pairs": [
+        14150,
+        5610,
+        3014
+      ],
+      "all_are_research_only": true,
+      "approved_paper_patterns": 0
     }
   },
   "next_actions": [
@@ -483,8 +537,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "不再按二维重叠减少或增加分片数量就晋升纸样。先在同一冻结真实Stage6两/三片源面与径向路径上比较更可靠的几何展平求解器/参数化初值，严查每片2D边长P95、全局重叠、翻面、源3D缝与两侧UV长度；并在真实外观四视图标注220mm/190mm两条高位缝是否穿过脸/云团。之后才讨论可隐藏的省道/分片与两处四线交汇",
-      "done_when": "求解器A/B和设计正侧顶背示意均有可追溯真实Stage6来源、逐缝两侧UV差及清晰否决结论；不存在用0重叠替代真实边长验收的情况"
+      "action": "可信Stage6 main独立复算同一B方案3片下原LSCM、最优单一尺度诊断以及真实内禀局部/全局ARAP（PCA与LSCM两初值30轮）并核对逐片UV边长误差/翻面/重叠/原3D径向缝两侧UV净缝差。即使局部数字改善也不自动认可，下一步需要无交叠边界约束和真实正侧顶背可见缝设计确认",
+      "done_when": "固定SHA的可信主分支产生完整各片/各方法UV和两侧净缝JSON及独立回归证据，正确区别整体尺度与非均匀应变；保持P4未启动"
     },
     {
       "priority": "P0",
@@ -526,6 +580,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-08",
+      "event": "基于固定Stage6真实PLY和前轮B三片逐面UV独立离线试验比较ARAP 30轮(PCA/LSCM初始化)及最优统一尺度；ARAP可降低部分边误差但在原无重叠子片产生上千UV交叠，尚非合格纸样。新源码和可信主干真实A/B工作流待验证，P3继续",
+      "evidence_path": "docs/STAGE6_UV_SOLVER_ARAP_AB.md"
+    },
     {
       "date": "2026-11-07",
       "event": "可信Stage6主分支#42332683339完整实测左前真实两/三盘新增径向缝。原面拓扑、3D源边配对正确，但2D均拒绝：A重叠[23541,11698]，B[26,0,10536]；B虽有零重叠片，其边误差P95仍43.14%，且一条224.92mm原3D配缝对应两侧UV相差217.51mm。P3继续，P4未启动",
