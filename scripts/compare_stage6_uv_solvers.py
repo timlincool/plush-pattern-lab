@@ -38,12 +38,8 @@ def _source_boundary(record, faces, source_ids):
         raise ValueError("unknown source boundary vertex")
     if not np.array_equal(source_ids[index], edge_ids):
         raise ValueError("fabric boundary source vertex identity drifted")
-    pair = np.concatenate(
-        (faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [2, 0]])
-    )
-    unique, counts = np.unique(
-        np.sort(pair, axis=1), axis=0, return_counts=True
-    )
+    pair = np.concatenate((faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [2, 0]]))
+    unique, counts = np.unique(np.sort(pair, axis=1), axis=0, return_counts=True)
     if not np.array_equal(
         unique[counts == 1], np.unique(np.sort(index, axis=1), axis=0)
     ):
@@ -64,9 +60,7 @@ def _source_pin_ids(source_ids, boundary_edges, radial_paths):
     boundary = {tuple(sorted(pair)) for pair in boundary_edges.tolist()}
     for row in radial_paths:
         path = row["original_source_vertex_ids"]
-        edges = [
-            tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])
-        ]
+        edges = [tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])]
         if all(edge in boundary for edge in edges):
             index = np.searchsorted(source_ids, [path[0], path[-1]])
             if np.any(index >= len(source_ids)):
@@ -124,9 +118,7 @@ def _two_sided_radial_seams(radial_paths, mappings):
     measured = []
     for original in radial_paths:
         path = original["original_source_vertex_ids"]
-        pairs = [
-            tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])
-        ]
+        pairs = [tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])]
         sides = []
         for index, lengths in enumerate(mappings):
             present = [edge in lengths for edge in pairs]
@@ -134,7 +126,10 @@ def _two_sided_radial_seams(radial_paths, mappings):
                 raise ValueError("source-linked radial seam is only partially present")
             if all(present):
                 sides.append(
-                    {"panel_id": index, "candidate_2d_mm": sum(lengths[e] for e in pairs)}
+                    {
+                        "panel_id": index,
+                        "candidate_2d_mm": sum(lengths[e] for e in pairs),
+                    }
                 )
         if len(sides) != 2:
             raise ValueError("original radial seam must have exactly two UV sides")
@@ -161,9 +156,9 @@ def _quality(disk, uv):
         "unique_edge_similarity_fit": best_similarity_scale(
             disk["points_xyz_mm"], faces, uv
         ),
-        "raw_triangle_edge_relative_error_p95": strain[
-            "triangle_edge_relative_error"
-        ]["p95"],
+        "raw_triangle_edge_relative_error_p95": strain["triangle_edge_relative_error"][
+            "p95"
+        ],
         "uv_flipped_faces": strain["inverted_winding_triangles"],
         "uv_near_zero_faces": strain["near_zero_uv_area_triangles"],
         "uv_nonzero_area_overlap_face_pairs": overlap[
@@ -201,9 +196,11 @@ def _study_one(disk, old_uv, panel_id, iterations):
         },
         "approved_for_cutting": False,
     }
-    return summary, detail, {
-        name: _source_pair_lengths(disk, uv) for name, uv in solutions.items()
-    }
+    return (
+        summary,
+        detail,
+        {name: _source_pair_lengths(disk, uv) for name, uv in solutions.items()},
+    )
 
 
 def compare_stage6_b_solvers(points, faces, summary, detail, iterations=30):
@@ -234,8 +231,7 @@ def compare_stage6_b_solvers(points, faces, summary, detail, iterations=30):
     if sum(item["source_face_count"] for item in reports) != SOURCE_FACES:
         raise ValueError("source triangles missing from three-disk comparison")
     seam_report = {
-        name: _two_sided_radial_seams(a["radial_seams"], maps[name])
-        for name in METHODS
+        name: _two_sided_radial_seams(a["radial_seams"], maps[name]) for name in METHODS
     }
     return {
         "schema": "stage6-source-pinned-b-three-uv-solver-comparison-v1",
@@ -286,9 +282,7 @@ def main():
     if source.get("detail_sha256") != hashlib.sha256(previous).hexdigest():
         raise ValueError("trusted current-run multi-panel UV detail SHA mismatch")
     xyz, faces = load_pinned_proxy(args.input)
-    result, detail = compare_stage6_b_solvers(
-        xyz, faces, source, json.loads(previous)
-    )
+    result, detail = compare_stage6_b_solvers(xyz, faces, source, json.loads(previous))
     packed = (json.dumps(detail, ensure_ascii=False) + "\n").encode("utf8")
     result["detail_sha256"] = hashlib.sha256(packed).hexdigest()
     args.summary.parent.mkdir(parents=True, exist_ok=True)
@@ -305,8 +299,12 @@ def main():
                     "panel": row["panel_id"],
                     "methods": {
                         name: {
-                            "p95": value["geometry"]["raw_triangle_edge_relative_error_p95"],
-                            "overlaps": value["geometry"]["uv_nonzero_area_overlap_face_pairs"],
+                            "p95": value["geometry"][
+                                "raw_triangle_edge_relative_error_p95"
+                            ],
+                            "overlaps": value["geometry"][
+                                "uv_nonzero_area_overlap_face_pairs"
+                            ],
                             "flips": value["geometry"]["uv_flipped_faces"],
                         }
                         for name, value in row["methods"].items()

@@ -42,9 +42,7 @@ def _cut_cylinder(n=32):
 def test_developable_open_cylinder_arap_recovers_isometry_without_uv_overlap(seed):
     disk, source_uv = _cut_cylinder()
     source = disk["points_xyz_mm"].copy()
-    result, method = solve_research_arap(
-        disk, source_uv, iterations=20, seed=seed
-    )
+    result, method = solve_research_arap(disk, source_uv, iterations=20, seed=seed)
     metric = best_similarity_scale(disk["points_xyz_mm"], disk["faces"], result)
     overlap = _overlap_metrics(result[disk["faces"]])
     assert metric["unscaled_relative_edge_error_p95"] < 1e-6
@@ -57,23 +55,17 @@ def test_developable_open_cylinder_arap_recovers_isometry_without_uv_overlap(see
 
 def test_uniform_similarity_scaling_is_only_a_diagnostic_not_manufacturing():
     disk, real_uv = _cut_cylinder()
-    report = best_similarity_scale(
-        disk["points_xyz_mm"], disk["faces"], 0.1 * real_uv
-    )
+    report = best_similarity_scale(disk["points_xyz_mm"], disk["faces"], 0.1 * real_uv)
     assert report["unscaled_relative_edge_error_p95"] > 0.8
     assert report["rescaled_relative_edge_error_p95"] < 0.01
-    assert report["best_fit_uniform_similarity_scale"] == pytest.approx(
-        10.0, rel=0.01
-    )
+    assert report["best_fit_uniform_similarity_scale"] == pytest.approx(10.0, rel=0.01)
     assert not report["approval_after_rescaling"]
 
 
 def test_nonuniform_stretch_survives_optimal_similarity_scale():
     disk, real_uv = _cut_cylinder()
     deformed = real_uv * np.array([2.0, 0.2])
-    report = best_similarity_scale(
-        disk["points_xyz_mm"], disk["faces"], deformed
-    )
+    report = best_similarity_scale(disk["points_xyz_mm"], disk["faces"], deformed)
     assert report["rescaled_relative_edge_error_p95"] > 0.1
 
 
