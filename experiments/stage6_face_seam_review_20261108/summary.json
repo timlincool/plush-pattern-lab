@@ -93,5 +93,18 @@
   },
   "decision": "FAIL_VISIBLE_FACIAL_SEAM_CLEARANCE_PRELIMINARY_SCREEN_UNDER_HISTORIC_V14; HOLD_B_HIGH_ROUTE_2_FOR_DESIGN_REVIEW",
   "manufacturer_paper_patterns_approved": 0,
-  "next": "Use complete pinned Stage6 42 Mesh scene to assess visible face/cloud/ear/tail concealment and compare original design four views; reroute B high source seam near historic nose/mouth if the proposed design is confirmed, then rerun topology and whole-panel UV. Do not upgrade P4."
+  "next": "Use complete pinned Stage6 42 Mesh scene to assess visible face/cloud/ear/tail concealment and compare original design four views; reroute B high source seam near historic nose/mouth if the proposed design is confirmed, then rerun topology and whole-panel UV. Do not upgrade P4.",
+  "post_refactor_full_stage6_reproduction": {
+    "run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42411704833",
+    "conclusion": "success",
+    "artifact_id": 13590130464,
+    "artifact_zip_sha256": "aacd4f720fd829ea92bd47176fc3d6dead5301ce45a667ff26fe160888a82e64",
+    "study_json_member_sha256": "78f28fcf6a04f27670d2e06218a8a76b371f827152e223442f684c2b6755fccd",
+    "five_view_svg_sha256": "19f8ff6ac9ae075dfbccc36cb4fdcd74fa5563cfa6cab9ca95be59dbfbc23412",
+    "same_view_svg_raw_sha_as_prior_run": true,
+    "identical_vertex_and_face_proximity_risk_counts": true,
+    "study_json_sha_diff_only_in_current_run_multidisk_summary_hash": true,
+    "source_prior_multidisk_summary_sha256": "d7044bdb4de730ff2e17b9e7501d9a60b797144324e03780d558cd25e7a8666b",
+    "numeric_upstream_lscm_optimization_may_be_nondeterministic": true
+  }
 }
