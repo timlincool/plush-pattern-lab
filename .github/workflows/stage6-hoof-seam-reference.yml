@@ -21,6 +21,7 @@ on:
       - 'scripts/compare_stage6_multidisk_radial.py'
       - 'scripts/compare_stage6_uv_solvers.py'
       - 'scripts/compare_stage6_tutte_control.py'
+      - 'scripts/audit_stage6_face_seams.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -427,6 +428,36 @@ jobs:
                   'overlap': x['uv_qa']['uv_nonzero_area_overlap_face_pairs'],
                   'flips': x['uv_qa']['uv_flipped_faces']
               } for x in data['panels']
+          ]))
+          PY
+      - name: Audit real B radial source seams against historic front face and 5 views
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_stage6_face_seams.py \
+            --input "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --multidisk-summary "$RUNNER_TEMP/stage6-reference/leftfront_multidisk_summary.json" \
+            --face-reference design/reference-v25/face_embroidery_registration_v14.json \
+            --output "$RUNNER_TEMP/stage6-reference/leftfront_source_face_review.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/leftfront_body_only_5views_face_review.svg"
+          python - <<'PY'
+          import json, os, pathlib
+          p = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/leftfront_source_face_review.json'
+          d = json.loads(p.read_text(encoding='utf8'))
+          assert d['schema'] == 'stage6-pinned-source-front-shell-historical-face-v14-review-v1'
+          assert d['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert d['candidate'] == 'B_three_disks'
+          assert len(d['routes']) == 3
+          assert d['routes'][2]['historical_front_face_feature_alert_vertex_count'] > 0
+          assert d['historic_registration_is_not_verified_stage6_facial_geometry']
+          assert d['cloud_fur_eye_mesh_occlusion_not_tested']
+          assert d['factory_approved_cut_patterns'] == 0
+          print('STAGE6_REAL_SOURCE_FACE_PROXIMITY_DESIGN_REVIEW_REQUIRED', json.dumps([
+              {'path': row['path_id'],
+               'front_source_samples': row['source_front_near_side_vertex_count'],
+               'historic_face_alert_samples': row['historical_front_face_feature_alert_vertex_count']}
+              for row in d['routes']
           ]))
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
