@@ -20,6 +20,7 @@ on:
       - 'scripts/compare_stage6_leftfront_fairing.py'
       - 'scripts/compare_stage6_multidisk_radial.py'
       - 'scripts/compare_stage6_uv_solvers.py'
+      - 'scripts/compare_stage6_tutte_control.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -396,6 +397,37 @@ jobs:
           assert not j['visual_design_or_seam_placement_reviewed']
           assert j['production_cut_patterns_approved'] == 0
           print('STAGE6_ACTUAL_ARAP_LSCM_REJECT_UNVERIFIED_CUTTING')
+          PY
+      - name: Test real B-three convex boundary Tutte control against fabrication gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/compare_stage6_tutte_control.py \
+            --input "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --prior-summary "$RUNNER_TEMP/stage6-reference/leftfront_multidisk_summary.json" \
+            --prior-detail "$RUNNER_TEMP/stage6-reference/leftfront_multidisk_detail.json" \
+            --summary "$RUNNER_TEMP/stage6-reference/leftfront_tutte_summary.json" \
+            --detail "$RUNNER_TEMP/stage6-reference/leftfront_tutte_detail.json"
+          python - <<'PY'
+          import json, os, pathlib
+          p = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/leftfront_tutte_summary.json'
+          data = json.loads(p.read_text(encoding='utf8'))
+          assert data['schema'] == 'stage6-source-pinned-tutte-bthree-control-v1'
+          assert data['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert data['full_original_source_face_count'] == 36833
+          assert len(data['panels']) == 3
+          assert len(data['paired_original_source_radial_seams']) == 3
+          assert all(not x['approved_for_cutting'] for x in data['panels'])
+          assert data['approved_industrial_paper_patterns'] == 0
+          print('STAGE6_TUTTE_REAL_DISK_FABRIC_DISTORTION_REJECTED', json.dumps([
+              {
+                  'panel': x['panel_id'],
+                  'p95_edge_error': x['uv_qa']['raw_triangle_edge_relative_error_p95'],
+                  'overlap': x['uv_qa']['uv_nonzero_area_overlap_face_pairs'],
+                  'flips': x['uv_qa']['uv_flipped_faces']
+              } for x in data['panels']
+          ]))
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
