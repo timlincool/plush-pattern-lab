@@ -72,6 +72,33 @@ def _face_features(convert, face):
     return out
 
 
+def _draw_routes(convert, routes, name):
+    """Preserve route draw order while separating renderer complexity."""
+    strokes = []
+    for k, route in enumerate(routes):
+        source = np.asarray(route["source_points_xyz_mm"])
+        projected = convert(source)
+        flags = route["front_main_shell_near_side_flags"]
+        for j in range(len(projected) - 1):
+            visible = name == "front" and flags[j] and flags[j + 1]
+            strokes.append(
+                _polyline(
+                    projected[j : j + 2],
+                    1.45,
+                    stroke=ROUTE_STROKES[k],
+                    dashed=name == "front" and not visible,
+                )
+            )
+        if name == "front":
+            for witness in route["historic_face_proximity_witnesses"]:
+                x, y = convert(np.asarray([witness["xyz_mm"]]))[0]
+                strokes.append(
+                    f'<circle cx="{x:.2f}" cy="{y:.2f}" r="2.6" '
+                    'fill="none" stroke="#d7191c" stroke-width="1"/>'
+                )
+    return strokes
+
+
 def render_source_seam_orthoview_svg(source_points, report, face_reference):
     """Body proxy; front solid=near shell, dashed=self-hidden; other views projected."""
     points = np.asarray(source_points, dtype=np.float64)
@@ -113,27 +140,7 @@ def render_source_seam_orthoview_svg(source_points, report, face_reference):
             )
         if name == "front":
             svg.extend(_face_features(convert, face_reference))
-        for k, route in enumerate(report["routes"]):
-            source = np.asarray(route["source_points_xyz_mm"])
-            projected = convert(source)
-            flags = route["front_main_shell_near_side_flags"]
-            for j in range(len(projected) - 1):
-                visible = name == "front" and flags[j] and flags[j + 1]
-                svg.append(
-                    _polyline(
-                        projected[j : j + 2],
-                        1.45,
-                        stroke=ROUTE_STROKES[k],
-                        dashed=name == "front" and not visible,
-                    )
-                )
-            if name == "front":
-                for witness in route["historic_face_proximity_witnesses"]:
-                    x, y = convert(np.asarray([witness["xyz_mm"]]))[0]
-                    svg.append(
-                        f'<circle cx="{x:.2f}" cy="{y:.2f}" r="2.6" '
-                        'fill="none" stroke="#d7191c" stroke-width="1"/>'
-                    )
+        svg.extend(_draw_routes(convert, report["routes"], name))
         svg.append(
             f'<text x="{left + 11}" y="{top + height - 7}" '
             'font-family="sans-serif" font-size="10">'
