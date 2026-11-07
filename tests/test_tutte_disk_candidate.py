@@ -3,6 +3,7 @@
 import numpy as np
 import pytest
 
+from plush_pattern_lab.patterns.mesh_lscm_candidate import _overlap_metrics
 from plush_pattern_lab.patterns.tutte_disk_candidate import tutte_convex_disk_candidate
 
 
@@ -47,6 +48,7 @@ def test_convex_border_can_be_overlap_free_but_stretched():
     uv_lengths = np.linalg.norm(flat[:, [1, 2, 0]] - flat, axis=2)
     assert np.quantile(np.abs(uv_lengths / original_lengths - 1), 0.95) > 0.5
     assert np.all(_signed_areas(flat) > 0)
+    assert _overlap_metrics(flat)["overlapping_nonzero_area_triangle_pairs"] == 0
     assert report["does_not_limit_interior_nonuniform_stretch"]
 
 
