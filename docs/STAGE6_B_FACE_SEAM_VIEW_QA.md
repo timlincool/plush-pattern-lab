@@ -26,6 +26,8 @@
 
 **研发判断：B的原路径2很可能穿越拟定的鼻口刺绣区，不应当作已经隐藏的缝线使用。** 即便其二维无重叠/边长误差日后改善，也必须先完成外观避让与工艺接合审查。
 
+受信主分支在纯代码格式修正后重跑 [Stage6 #42411704833](https://github.com/timlincool/plush-pattern-lab/actions/runs/42411704833)，**五视图SVG原始字节SHA-256与前次完全一致**，三条路径正面近侧采样/五官警报也全部一致。唯一 JSON 哈希差异来自同次生成的**上游multi-disk LSCM摘要SHA字段**，不代表本次缝线几何或历史五官距离发生变化；两次原始JSON及ZIP的具体SHA均在[永久摘要](../experiments/stage6_face_seam_review_20261108/summary.json)中列明。
+
 ## 五视角SVG是什么、不是什么
 
 `patterns/source_seam_view_svg.py` 从固定真实25% PLY投影**正、背、左、右、顶**五个正交视图，画出原B三条源Vertex ID径向缝。仅正面用实际主壳首表面深度将自遮挡线段画虚线，粉色眼椭圆/鼻嘴属于历史X/Z注册参考；红圈标出前表面且临近历史鼻嘴的实际网格顶点。
