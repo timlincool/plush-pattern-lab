@@ -42,9 +42,7 @@ def review_visible_b_routes(points, triangles, multi, face_registration):
     report["source_original_blend_sha256"] = SOURCE_SHA256
     report["source_proxy_ply_sha256"] = PROXY_SHA256
     report["candidate"] = "B_three_disks"
-    svg = render_source_seam_orthoview_svg(
-        points, report, face_registration
-    )
+    svg = render_source_seam_orthoview_svg(points, report, face_registration)
     return report, svg
 
 
@@ -82,16 +80,12 @@ def main():
     face = json.loads(reference_bytes)
     points, faces = load_pinned_proxy(args.input)
     report, svg = review_visible_b_routes(points, faces, summary, face)
-    report["source_multidisk_summary_sha256"] = hashlib.sha256(
-        multi_bytes
-    ).hexdigest()
+    report["source_multidisk_summary_sha256"] = hashlib.sha256(multi_bytes).hexdigest()
     report["historical_face_reference_sha256"] = hashlib.sha256(
         reference_bytes
     ).hexdigest()
     svg_bytes = svg.encode("utf8")
-    report["body_only_five_view_svg_sha256"] = hashlib.sha256(
-        svg_bytes
-    ).hexdigest()
+    report["body_only_five_view_svg_sha256"] = hashlib.sha256(svg_bytes).hexdigest()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.svg.parent.mkdir(parents=True, exist_ok=True)
     args.svg.write_bytes(svg_bytes)
