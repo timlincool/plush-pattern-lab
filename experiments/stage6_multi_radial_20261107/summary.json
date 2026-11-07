@@ -1,0 +1,243 @@
+{
+  "schema": "stage6-real-source-linked-multi-disk-uv-evidence-v1",
+  "date_utc": "2026-11-07",
+  "trusted_main_real_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42332683339",
+  "trusted_main_run_commit": "33fee611ed1c7c8ebb216f957b31e48edc6e00bc",
+  "trusted_main_run_result": "success",
+  "post_format_main_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42332786935",
+  "post_format_main_python_tests_passed": 388,
+  "post_format_main_real_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42332786973",
+  "research_artifact_id": 13558352639,
+  "downloaded_action_artifact_zip_sha256": "7ebdfa339e683fd5cb1e4f0255d38e086e5f60e285be24d96058a3e5e43f0ece",
+  "member_summary": "leftfront_multidisk_summary.json",
+  "member_summary_sha256": "5708e845b4e1bc00072260ad4cf9c1581da912a30caddffa471a23f56e261b9e",
+  "member_face_linked_uv_detail": "leftfront_multidisk_detail.json",
+  "member_face_linked_uv_detail_sha256": "eb7eb5c8e0e639c5f9b04f6d3bca6bb048fbd4b6af3b6573a53e2ea80371882a",
+  "source_original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_25pct_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "source_region": "left_front (x<0, y<20mm, original face centroids)",
+  "source_faces": 36833,
+  "original_hoof_source_edges": 512,
+  "original_interzone_outer_edges": 481,
+  "baseline_radial_seam_3d_mm": 40.89211016973698,
+  "geometry_only_topology_gates": {
+    "all_source_faces_assigned_exactly_once": true,
+    "all_panels_single_connected_closed_boundary_disk_euler_one": true,
+    "original_hoof_and_outer_edge_source_ids_preserved": true,
+    "new_radial_source_edges_have_exactly_two_panel_sides": true,
+    "source_3d_points_not_moved": true,
+    "not_a_fabric_material_or_silhouette_test": true
+  },
+  "original_single_disk_rejected": {
+    "original_single_disk_edge_error_p95": 0.995919867433165,
+    "nonzero_uv_overlap_face_pairs": 23672,
+    "approved": false
+  },
+  "candidates": [
+    {
+      "name": "A_two_disks",
+      "routing_conditions": [
+        {
+          "cuff_arc_fraction": 0.5,
+          "min_outer_height_mm": 220
+        }
+      ],
+      "individual_source_faces": [
+        25680,
+        11153
+      ],
+      "largest_panel_fraction": 0.6972008796459697,
+      "added_radial_3d_seam_mm": 228.6191943052948,
+      "total_radial_3d_seam_mm": 269.5113044750318,
+      "panels": [
+        {
+          "id": 0,
+          "source_faces": 25680,
+          "uv_edge_error_relative_p95": 0.9976776233090602,
+          "uv_overlapping_nonzero_area_pairs": 23541,
+          "uv_flipped_faces": 7,
+          "uv_near_zero_faces": 116,
+          "hoof_original_3d_mm": 50.82,
+          "hoof_candidate_uv_mm": 25.61,
+          "original_outer_3d_mm": 438.2,
+          "candidate_outer_uv_mm": 139.81,
+          "status": "REJECTED"
+        },
+        {
+          "id": 1,
+          "source_faces": 11153,
+          "uv_edge_error_relative_p95": 0.878013632256174,
+          "uv_overlapping_nonzero_area_pairs": 11698,
+          "uv_flipped_faces": 0,
+          "uv_near_zero_faces": 0,
+          "hoof_original_3d_mm": 50.82,
+          "hoof_candidate_uv_mm": 23.86,
+          "original_outer_3d_mm": 530.44,
+          "candidate_outer_uv_mm": 150.12,
+          "status": "REJECTED"
+        }
+      ],
+      "radial_seam_endpoints": {
+        "new_cut_source_xyz_mm": [
+          [
+            -44.4293,
+            -32.111,
+            20
+          ],
+          [
+            -0.906,
+            -18.1632,
+            220.7083
+          ]
+        ]
+      },
+      "two_side_lscm_net_seam_candidate_disagreements_mm": [
+        {
+          "path_id": 0,
+          "original_3d_seam_mm": 40.89211016973698,
+          "side_uv_mm": [
+            45.670188802360194,
+            43.24027343382775
+          ],
+          "difference_mm": 2.4299153685324413
+        },
+        {
+          "path_id": 1,
+          "original_3d_seam_mm": 228.6191943052948,
+          "side_uv_mm": [
+            39.73817113476823,
+            42.41388234084502
+          ],
+          "difference_mm": 2.675711206076791
+        }
+      ],
+      "approved": false
+    },
+    {
+      "name": "B_three_disks",
+      "routing_conditions": [
+        {
+          "cuff_arc_fraction": 0.6666666666666666,
+          "min_outer_height_mm": 220
+        },
+        {
+          "cuff_arc_fraction": 0.5,
+          "min_outer_height_mm": 190
+        }
+      ],
+      "individual_source_faces": [
+        20915,
+        6904,
+        9014
+      ],
+      "largest_panel_fraction": 0.5678331930605707,
+      "added_radial_3d_seam_mm": 435.5658198980034,
+      "total_radial_3d_seam_mm": 476.4579300677404,
+      "panels": [
+        {
+          "id": 0,
+          "source_faces": 20915,
+          "uv_edge_error_relative_p95": 0.9883812440407665,
+          "uv_overlapping_nonzero_area_pairs": 26,
+          "uv_flipped_faces": 3,
+          "uv_near_zero_faces": 0,
+          "status": "REJECTED"
+        },
+        {
+          "id": 1,
+          "source_faces": 6904,
+          "uv_edge_error_relative_p95": 0.4314095472315539,
+          "uv_overlapping_nonzero_area_pairs": 0,
+          "uv_flipped_faces": 0,
+          "uv_near_zero_faces": 0,
+          "status": "REJECTED"
+        },
+        {
+          "id": 2,
+          "source_faces": 9014,
+          "uv_edge_error_relative_p95": 0.8195852182150875,
+          "uv_overlapping_nonzero_area_pairs": 10536,
+          "uv_flipped_faces": 1,
+          "uv_near_zero_faces": 0,
+          "status": "REJECTED"
+        }
+      ],
+      "radial_seam_endpoints": [
+        {
+          "path_id": 1,
+          "xyz_mm": [
+            [
+              -35.2833,
+              -18.7231,
+              20
+            ],
+            [
+              -0.906,
+              -18.1632,
+              220.7083
+            ]
+          ]
+        },
+        {
+          "path_id": 2,
+          "xyz_mm": [
+            [
+              -44.4293,
+              -32.111,
+              20
+            ],
+            [
+              -0.9331,
+              -86.3353,
+              190.2309
+            ]
+          ]
+        }
+      ],
+      "two_side_lscm_net_seam_candidate_disagreements_mm": [
+        {
+          "path_id": 0,
+          "original_3d_mm": 40.89211016973698,
+          "uv_sides_mm": [
+            42.66564760694194,
+            42.633648755218964
+          ],
+          "difference_mm": 0.031998851722974564
+        },
+        {
+          "path_id": 1,
+          "original_3d_mm": 224.92003861220397,
+          "uv_sides_mm": [
+            284.90270175471545,
+            67.39125692387768
+          ],
+          "difference_mm": 217.51144483083777
+        },
+        {
+          "path_id": 2,
+          "original_3d_mm": 210.64578128579944,
+          "uv_sides_mm": [
+            166.4462915371752,
+            134.27797335033588
+          ],
+          "difference_mm": 32.168318186839315
+        }
+      ],
+      "approved": false
+    }
+  ],
+  "interpretation": {
+    "both_designs_not_factory_cuttable": true,
+    "zero_uv_overlap_alone_is_insufficient": true,
+    "candidate_b_panel_1_has_zero_overlap_but_43pct_p95_edge_distortion": true,
+    "largest_source_seam_two_side_mismatch_mm": 217.51144483083777,
+    "geometry_is_not_a_fabric_at_rest_pattern": true,
+    "high_220mm_route_may_cross_visible_character_features": true,
+    "visibility_and_assembly_not_checked": true,
+    "two_original_four_way_junctions_not_resolved": true,
+    "proposed_next": "Validate alternative UV parameterization and design-aware 3D seam visibility before adding more physical seams; preserve 3D source seam/hoof identity and all failed LSCM counterexamples."
+  },
+  "production_phase": "P3_in_progress",
+  "industrial_pattern_phase": "P4_not_started",
+  "approved_factory_paper_patterns": 0
+}
