@@ -38,8 +38,7 @@ def test_sewing_seam_gap_and_progress_must_not_prematurely_promote_p4():
     assert p3["status"] == "in_progress"
     assert p4["status"] == "not_started"
     assert any(
-        row["path"] == EVIDENCE.relative_to(ROOT).as_posix()
-        for row in p3["evidence"]
+        row["path"] == EVIDENCE.relative_to(ROOT).as_posix() for row in p3["evidence"]
     )
     assert not progress["overall"]["factory_sample_pack_ready"]
     assert not progress["overall"]["mass_production_ready"]
