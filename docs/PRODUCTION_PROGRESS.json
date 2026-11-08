@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_upper_source_slice_4_gore_cap_mother_trial_12_pairings_trusted_ci_pending",
+    "stage": "stage6_real_upper_4_gore_cap_12_digital_seams_measured_neck_topology_rejected",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -223,6 +223,10 @@
         {
           "path": "docs/STAGE6_UPPER_MOTHER_TOILE.md",
           "kind": "new_source_envelope_informed_4_torso_gore_top_cap_research_match_band_to_upper_12_seams_pending_main_real_run"
+        },
+        {
+          "path": "experiments/stage6_upper_mother_toile_20261108/summary.json",
+          "kind": "trusted_real_source_upper_four_gore_cap_12_matched_digital_seams_five_A4_but_sculpt_neck_71mm_and_surrogate_89mm_mismatch_rejection"
         }
       ],
       "blockers": [
@@ -239,7 +243,7 @@
         "受信Stage6 #42431619685已测41个真实产品原Mesh、五方向BVH：B高位缝2在正面有71点近原主壳表面、55点被其他原Mesh挡住、5点主体自挡、1点不确定；历史鼻口8个警报顶点全部第一命中主壳而非云团或其他原产品Mesh，故不能宣称该缝被覆层隐藏，需重新设计避脸源边路径",
         "受信真实Stage6 #42443067478已完整复算C/D避脸路线。历史鼻口警报双方归零，但C的原新缝157.59mm对应两侧UV112.33/121.70mm、旧高位缝两侧差217.46mm，且54/95新源点靠近正面主壳；D形成仅2309面狭窄片、与旧缝点间最小约1.06mm，新增缝两侧UV差208.19mm；六片LSCM存在严重边误差、翻面或重叠，全部拒绝工厂裁布",
         "两次受信main Stage6真实复算原4x512源蹄口并字节相同地生成13片研究下腹母版/4页A4/逐段2D缝配对，但新YOKE Z60外轮廓XY包络与原Stage6真实Z≈60壳的1%-99%分位范围有8.43–9.88mm差，且4条上围边仍全部未配头身；平面4蹄底非3D原鼓蹄、真实材料和工厂未验证，不得按成品裁布",
-        "4个旧BAND上沿→4上身胸颈头身试验片+1顶部盖片已进入待可信真实Stage6测试：12组新缝线虽然按数字逐段设计可配，但原Stage6在Z130至155之间Y向截面中心跳约71mm，单环连接头颈与后部躯干不真实；新代理3D与2D纵缝长度不一定相符，缺现行外观/真实面料/头身工艺签核，不能晋升P4"
+        "可信Stage6 #42489916617/#42490091653完整复算原13片下腹+新4片上身/1试验盖，共18片研究数字纸样9页A4。4条BAND上沿、4条纵缝、4×16顶盖缝的12组数字净线段均配对，但原Z130至155中心跳71.386mm，新3D包络与2D纵缝差最大89.121mm且真实原顶Z248.676比研究盖Z230高18.676mm；此单环头身母版对原造型不保真，P3仍失败，需拆分头/颈/后躯设计"
       ]
     },
     {
@@ -1049,6 +1053,44 @@
       "actual_fabric_material_measured": false,
       "all_eight_real_artifact_files_byte_identical_across_two_runs": true,
       "complete_manufacturing_approval": false
+    },
+    "stage6_upper_mother_real_two_runs_18piece_research": {
+      "first_blender_main": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42489916617",
+      "repeat_blender_main": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42490091653",
+      "python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42490091496",
+      "full_python_tests_passed": 488,
+      "evidence_path": "experiments/stage6_upper_mother_toile_20261108/summary.json",
+      "original_source_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "source_25pct_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "original_true_hoof_512source_ring_identity_unchanged": true,
+      "original_13_lower_trial_pieces_unchanged": true,
+      "new_upper_torso_trial_pieces": 4,
+      "new_synthetic_top_cap_trial_pieces": 1,
+      "combined_trial_total_pieces": 18,
+      "original_four_A4_pages": 4,
+      "new_five_A4_pages": 5,
+      "new_stitching_relations": 12,
+      "band_to_upper_count": 4,
+      "upper_to_upper_vertical_seams": 4,
+      "upper_to_cap_seams": 4,
+      "source_profile_source_z_mm": [
+        130,
+        155,
+        180,
+        205,
+        230
+      ],
+      "base_z100_is_relocated_lower_yoke_proxy_not_source_stitch_face": true,
+      "max_original_cross_section_center_jump_mm": 71.3860678352653,
+      "original_source_neck_disconnect_still_unresolved": true,
+      "surrogate_source_inspired_3d_vs_2d_meridian_gap_mm": 89.1207542601966,
+      "full_original_25cm_source_head_body_not_fitted": true,
+      "original_stage6_head_top_z_mm": 248.6762237548828,
+      "proposed_top_cap_z_mm": 230,
+      "new_5_A4_svg_sha256_repeated_exactly_across_two_runs": true,
+      "experimental_numeric_json_last_bits_differ_by_about_mm": 2e-14,
+      "real_fabric_stuffing_bom_cloud_ear_tail_embroideries_not_tested": true,
+      "factory_patterns_approved": 0
     }
   },
   "next_actions": [
@@ -1056,8 +1098,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "从源SHA固定真实Stage6 25% PLY及同一次Runner生成的13片下腹母版实测连接上身四片/顶盖研究试样：四个原BAND顶缘16段净缝↔新UPPER1..4下缘、四条相邻纵缝逐高程对位、UPPER与1个64边顶部试验盖缝线，12组新关系分别独立数字QA。需额外报告原Stage6在Z130→155mm颈部截面中心偏移/新3D代理与2D纵缝偏差，输出5页100% A4与SHA，保证旧四蹄源IDs不变。即使能用18片纸上构成闭合研究壳，也不能视为原羊驼形状或实体布料已验证；随后拆分胸/颈/头母版再做实物试缝",
-      "done_when": "真实可信main完整运行下腹13片+新上身5片共18片、12组新缝逐段可复核、5张新A4和原四张合计9张可量测研究纸样；原头颈跳变和3D布料差异有数值否决证据，P4仍保持not_started"
+      "action": "现已可信Stage6实测下腹13片与新上身4UPPER+顶盖共18片/9张A4研究纸样，旧4条BAND上沿/新4条纵缝/4组顶盖缝12项数字净缝可配，但原头颈Z130→155的Y中心跳71.386mm且新包络3D与2D纵缝差89.121mm，证明单一四片连到头顶不保真。**下一步必须按实际解剖把后部躯干与前部颈/头拆为独立制造母版**：保留源四蹄和13片下腹、将4条上缘配对的设计作为单纯数值正例；通过真Stage6分区来源/原设计四视图确认颈根、头部/胸云背云接合可隐藏的实物缝，分别给出可制造的两片/多片、配缝/装配工序/3D形状误差；待样布和工厂真实试样反馈再讨论P4",
+      "done_when": "至少一个原后身与前部头颈不硬连的结构A/B，真实来源与设计四视图、完整缝线身份/方向/返口、纸样净长、无交叠与材料样本均有证据；现有18片只是研究纸样且P4仍not_started"
     },
     {
       "priority": "P0",
@@ -1099,6 +1141,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-08",
+      "event": "可信main Blender #42489916617和#42490091653在固定Stage6 25%真源与同次下腹母版上生成4片UPPER+1盖片，共18片/9张A4。新增12组数字拼缝（4BAND→UPPER、4UPPER纵缝、4UPPER→TOP CAP）逐段配缝均通过，5张SVG与装配指南字节SHA两Run完全一致；但原Z130→155头颈相邻截面中心跳71.386mm，新代理3D纵向弦与二维纵缝差最大89.121mm，顶盖Z230未覆盖原顶Z248.676mm。该单环结构无法保真原角色，拒绝P4，下一步拆分头颈与后躯母版。Python488项成功",
+      "evidence_path": "experiments/stage6_upper_mother_toile_20261108/summary.json"
+    },
     {
       "date": "2026-11-08",
       "event": "基于受信实测四蹄13片下腹试样，新增四条上围BAND的16段净缝分别配一个四高程形状可变的上身研究片，4个UPPER侧缝按共同数字纵向站位配对，再加64边顶部研究盖片，共18片研究母版与9张A4。采用固定Stage6源Z100/130/155/180/205/230截面1%-99%范围指导轮廓，但原Z130→155头颈中心骤移约71mm，必须保留造型与原3D纵缝失配的研发警报；信任main待运行，严禁称完整工业可裁布",
