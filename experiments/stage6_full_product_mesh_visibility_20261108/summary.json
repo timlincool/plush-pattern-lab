@@ -185,5 +185,20 @@
   "factory_paper_patterns_approved": 0,
   "production_phase": "P3_in_progress",
   "P4_industrial_cut_patterns_status": "not_started",
-  "next_action": "Reroute high B radial source-edge path away from nose/mouth and constrain to realistically concealed panel boundary locations after comparing complete 41 raw-Mesh view with original design references; rerun topology, matched 3D seams, strain, UV overlap, real fabric and factory gates."
+  "next_action": "Reroute high B radial source-edge path away from nose/mouth and constrain to realistically concealed panel boundary locations after comparing complete 41 raw-Mesh view with original design references; rerun topology, matched 3D seams, strain, UV overlap, real fabric and factory gates.",
+  "after_format_trusted_blender_reproduction": {
+    "run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42431869165",
+    "main_commit": "d1e05c54517d5c176bcb5281b484b58d1a2a670d",
+    "conclusion": "success",
+    "artifact_id": 13597728022,
+    "research_zip_sha256": "30253a9b80f5bfc9d737e432b33c09b57eba57378a3a4da5db1c2626fc4963eb",
+    "full_41mesh_json_sha256": "ea7cba7a35f209746084165995a65e691d0a91ff80ca0b1f5c2e599bbcd690a0",
+    "five_view_svg_sha256": "d55c2374da9e93c846e193b1fdcb9eab8eb5940cceb32acf7be042917f88ed94",
+    "five_view_metadata_sha256": "ce7434f51c270b35678b7e2e5d676eac82af05fc28679df7c76e8e34a27b878f",
+    "original_upstream_current_run_multidisk_summary_sha256": "d7044bdb4de730ff2e17b9e7501d9a60b797144324e03780d558cd25e7a8666b",
+    "five_view_svg_byte_identical_to_first_run": true,
+    "full_json_view_results_structurally_and_numerically_identical_to_first_run": true,
+    "only_full_json_difference_is_upstream_multidisk_current_run_summary_sha256": true,
+    "source_geometry_and_historic_v14_alerts_unchanged": true
+  }
 }
