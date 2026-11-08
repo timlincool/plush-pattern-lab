@@ -147,3 +147,7 @@ Mori & Igarashi, *Plushie* (2007), DOI 10.1145/1276377.1276433；Jin et al., *To
 [受信真实Blender #42460875416](https://github.com/timlincool/plush-pattern-lab/actions/runs/42460875416) 与 [重复 #42461595241](https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595241) 已从公开固定SHA的Stage6 25% PLY原始边拓扑提取**4×512边**原蹄口，各自周长FL101.640317、FR93.309140、RL119.100288、RR119.100290mm。新增4孔YOKE+4LEG直布筒+4平面试验SOLE+4外沿带BAND共**13片**，输出四张真正210×297mm、100%打印A4研究SVG与逐源边净缝检查/源SHA manifest；四蹄对应的单段长度误差最大约7.1e-15mm是相同原数字点集的浮点计算精度，不是面料工艺公差。原输出8份研究文件在两次独立可信Run中字节SHA完全一致，详见[母版技术文档](STAGE6_LOWER_MOTHER_TOILE.md)和[永久源/产物SHA](../experiments/stage6_lower_mother_toile_20261108/summary.json)。受信[Python #42461595194](https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595194) 474项测试与Ruff通过。
 
 **不得据此晋升P4**：新下腹外缘YOKE假设Z60，XY包络与真实Stage6同处壳体Z≈60mm的1%-99%范围差约8.43–9.88mm；4条BAND上边未配到原胸颈和头身，平面SOLE非真正鼓起3D蹄底的展开；面料绒向、翻面、填充与整只羊驼配片均未实测。下一P3动作以原设计审查为基础设计低复杂度可缝的上半身/颈胸主壳，严格把4条开口上围各段配对、研究省道和真实返口，再连接7云团、耳尾、五官与10雨滴部件。
+
+## 2026-11-08 原13片下腹接上身4片/顶盖研究：数字闭合≠真实造型
+
+基于真实[原Stage6四蹄13片下腹母版](STAGE6_LOWER_MOTHER_TOILE.md)，新增[上部研究母版4片UPPER+1试验盖](STAGE6_UPPER_MOTHER_TOILE.md)：原BAND-1..4各16段净缝与新4个UPPER底边逐段配对，4条UPPER纵缝按5级高程站位配对，TOP-CAP-TRIAL按64段与UPPER顶边配对，共 **12组新数字缝线关系、18片研究裁片、9张A4毫米纸样**（原4+新增5，均非工业批准）。高程参考真源25% PLY在Z100/130/155/180/205/230的截面X/Y1%～99%包络，但原源约Z130→155mm截面中心Y跳约71mm，连续单环拟合有严重头颈/后躯体积混合风险；不能将缝份、数字几何等式假装物理拉伸或设计批准。代码与工作流待受信main再实跑；本轮若成功也仅能证明4条旧开口有研究性上身拼缝，不代表原羊驼头身已可工业裁切、改版或打样。P3仍进行中，P4不开始。
