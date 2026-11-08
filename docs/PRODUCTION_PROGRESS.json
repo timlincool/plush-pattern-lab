@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_source_hoof_anchored_13piece_lower_mother_toile_two_trusted_runs_verified_upper_body_unpaired",
+    "stage": "stage6_upper_source_slice_4_gore_cap_mother_trial_12_pairings_trusted_ci_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -219,6 +219,10 @@
         {
           "path": "experiments/stage6_lower_mother_toile_20261108/summary.json",
           "kind": "two_trusted_real_main_blender_stage6_original4x512_hoof_13piece_lower_research_A4_digital_seams_and_full_SHA_matched"
+        },
+        {
+          "path": "docs/STAGE6_UPPER_MOTHER_TOILE.md",
+          "kind": "new_source_envelope_informed_4_torso_gore_top_cap_research_match_band_to_upper_12_seams_pending_main_real_run"
         }
       ],
       "blockers": [
@@ -234,7 +238,8 @@
         "可信Stage6 Run #42411444680实跑正面first-hit审查：B高位缝2的132个源顶点中126位于主壳正面，8个与旧surface14鼻口线投影距离≤3mm；端点ID40436约0.5754mm。高位缝靠近鼻口，待完整42Mesh云团/眼/耳/尾与原设计多视角遮挡及设计审核，禁止视为已隐藏或可裁布",
         "受信Stage6 #42431619685已测41个真实产品原Mesh、五方向BVH：B高位缝2在正面有71点近原主壳表面、55点被其他原Mesh挡住、5点主体自挡、1点不确定；历史鼻口8个警报顶点全部第一命中主壳而非云团或其他原产品Mesh，故不能宣称该缝被覆层隐藏，需重新设计避脸源边路径",
         "受信真实Stage6 #42443067478已完整复算C/D避脸路线。历史鼻口警报双方归零，但C的原新缝157.59mm对应两侧UV112.33/121.70mm、旧高位缝两侧差217.46mm，且54/95新源点靠近正面主壳；D形成仅2309面狭窄片、与旧缝点间最小约1.06mm，新增缝两侧UV差208.19mm；六片LSCM存在严重边误差、翻面或重叠，全部拒绝工厂裁布",
-        "两次受信main Stage6真实复算原4x512源蹄口并字节相同地生成13片研究下腹母版/4页A4/逐段2D缝配对，但新YOKE Z60外轮廓XY包络与原Stage6真实Z≈60壳的1%-99%分位范围有8.43–9.88mm差，且4条上围边仍全部未配头身；平面4蹄底非3D原鼓蹄、真实材料和工厂未验证，不得按成品裁布"
+        "两次受信main Stage6真实复算原4x512源蹄口并字节相同地生成13片研究下腹母版/4页A4/逐段2D缝配对，但新YOKE Z60外轮廓XY包络与原Stage6真实Z≈60壳的1%-99%分位范围有8.43–9.88mm差，且4条上围边仍全部未配头身；平面4蹄底非3D原鼓蹄、真实材料和工厂未验证，不得按成品裁布",
+        "4个旧BAND上沿→4上身胸颈头身试验片+1顶部盖片已进入待可信真实Stage6测试：12组新缝线虽然按数字逐段设计可配，但原Stage6在Z130至155之间Y向截面中心跳约71mm，单环连接头颈与后部躯干不真实；新代理3D与2D纵缝长度不一定相符，缺现行外观/真实面料/头身工艺签核，不能晋升P4"
       ]
     },
     {
@@ -1051,8 +1056,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "已证实四个原Stage6蹄口512边、13片研究下腹母版、真实A4 4页和逐段来源配缝在两次受信Runner字节一致；下一阶段应将四条现仍开放的上围BAND净缝实际连接到**低复杂度真角色头身/胸颈母版**，并明确合理省道、可缝侧后隐藏线和返口，不可把临时Z60平面YOKE视为原曲面。重点检查新外缘XY范围相比真实Z60壳包络8.43–9.88mm差异、原4三维鼓蹄底/腿根的真实展开、七云团眼鼻耳尾及十水滴承接和2处四线交汇，之后以实际2D分段配缝、材料样布/实体试样证据审核。没有完整身体和厂商输入，P4仍 not_started",
-      "done_when": "包含真来源四蹄、完整新头身/颈胸/下腹结构且所有开放BAND上口各有有序对位的真实制造母版A/B，逐片净缝线/拼缝/方向/返口/真实四视图差异可复核，至少一组实际试布记录后再决定P4工业整角色纸样"
+      "action": "从源SHA固定真实Stage6 25% PLY及同一次Runner生成的13片下腹母版实测连接上身四片/顶盖研究试样：四个原BAND顶缘16段净缝↔新UPPER1..4下缘、四条相邻纵缝逐高程对位、UPPER与1个64边顶部试验盖缝线，12组新关系分别独立数字QA。需额外报告原Stage6在Z130→155mm颈部截面中心偏移/新3D代理与2D纵缝偏差，输出5页100% A4与SHA，保证旧四蹄源IDs不变。即使能用18片纸上构成闭合研究壳，也不能视为原羊驼形状或实体布料已验证；随后拆分胸/颈/头母版再做实物试缝",
+      "done_when": "真实可信main完整运行下腹13片+新上身5片共18片、12组新缝逐段可复核、5张新A4和原四张合计9张可量测研究纸样；原头颈跳变和3D布料差异有数值否决证据，P4仍保持not_started"
     },
     {
       "priority": "P0",
@@ -1094,6 +1099,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-08",
+      "event": "基于受信实测四蹄13片下腹试样，新增四条上围BAND的16段净缝分别配一个四高程形状可变的上身研究片，4个UPPER侧缝按共同数字纵向站位配对，再加64边顶部研究盖片，共18片研究母版与9张A4。采用固定Stage6源Z100/130/155/180/205/230截面1%-99%范围指导轮廓，但原Z130→155头颈中心骤移约71mm，必须保留造型与原3D纵缝失配的研发警报；信任main待运行，严禁称完整工业可裁布",
+      "evidence_path": "docs/STAGE6_UPPER_MOTHER_TOILE.md"
+    },
     {
       "date": "2026-11-08",
       "event": "受信Blender main #42460875416及#42461595241已从固定Stage6 Blend源重算4原512边蹄口Z20，并字节相同生成13片研究性下腹试缝母版与4页A4。真实原周长FL101.640317/FR93.309140/RL119.100288/RR119.100290mm，原2D接口数值逐段误差最大7.1e-15mm（同源数字精度），新YOKE外围566.506mm、拟返口42.487mm；原Z60主壳XY包络对比差8.43~9.88mm，4条上围未配胸颈主壳、3D鼓蹄底未展开，整身/工厂仍拒绝。Python474项成功，真实8个生成试样文件SHA重复一致",

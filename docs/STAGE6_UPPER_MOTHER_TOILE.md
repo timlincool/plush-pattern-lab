@@ -1,0 +1,45 @@
+# Stage6 下腹母版上沿闭合研究：四片胸颈头身试片 + 顶盖
+
+**本研究只证明新设计的纸面净缝可以成对，不证明它能缝成原25cm羊驼的外观。** 真实制造阶段仍为 P3；P4 1:1 工厂正式纸样不得启动。
+
+## 输入：四条真实蹄口锚定的下腹结构
+
+继承[两次真实Stage6已验证的下腹13片试布](STAGE6_LOWER_MOTHER_TOILE.md)，固定公开原Blend SHA-256 `38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a`，25% PLY SHA-256 `5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd`。
+
+- 下腹的四条 `BAND-1…4` 上沿分别为 **141.6231、141.6305、141.6227、141.6292 mm**；每条包含来自原研究YOKE的**16个有序源外缘段**，必须原位保留，不允许四舍五入或缩放成相同长度。
+- 下腹已保留的 **4×512真实Stage6蹄口源边与 source vertex IDs 不变**；本次新造的是上身，不改变蹄口、LEG、SOLE与YOKE原几何。
+- 新接合形式：`BAND-i.upper` 对应 `UPPER-i.bottom`（每处16段）；四条上身纵缝 `UPPER-i.right` 与下一片 `UPPER-(i+1).left` 逐站成对；`TOP-CAP-TRIAL` 的64个上缘源**研究段**各16个与一块上身片顶部边逐段配对。新增 **4片上身+1片顶盖=5片**，和现有13片构成 **18片研究性母版**，原4张A4+新增5张A4共9张，全部实际尺寸打印。
+- 原下腹暂定**6mm缝份**与BAND-3返口保留；上身直线/曲线二维净缝只是新的几何试样，不等于经材料验证的实体翻面可行性。
+
+## 原模型截面反例：为什么必须同时拒绝未经核实的造型
+
+通过固定25%源PLY在 `Z=[100,130,155,180,205,230] mm` 的高程抽取原始点云：除新试样起点外，每层±3mm采样，取 X/Y 方向1%、99%分位包络。每层拟合一个**人为单环截面**，用于生成四片的净缝上、下边宽度；这不是原Stage6三角曲面的真实缝线、也不是源雕塑已经有单一连续环的证明。
+
+此前真实源测试在 Z130mm 到 Z155mm 之间发现**Y方向截面中心位移约71mm**，几何上反映了后部躯干与前部头颈不可能简单用一整根圆筒连接。新四片单环母版刻意保留此处严重的3D合成轮廓长度与2D缝线长度差，**记录为设计反例，不用提高所谓“面料弹性”来消除警报**。真实面料、真实头身局部体积、填棉和收缩仍必须独立测试。
+
+四片二维试样在各高度站位按相邻高程的面积轮廓宽度变化生成；共享纵缝在5段上通过等长几何构造分别求二维坐标，同时记录与新三维代理轮廓中对应纵边的差异。**数值缝长完全相等只证明新的二维缝线关系成立，不代表还原原雕塑或实体加工已通过。**
+
+## 可复现交付与检查
+
+模块：
+- `patterns/stage6_upper_mother_toile.py`：只读源PLY包络、新4片净缝、64段盖片、源截面跳变/新设计3D-2D差别。
+- `validation/stage6_upper_mother_toile_qc.py`：不依赖生成器内部结果结论，独立检查12组新缝口（4下腹上缘↔上身下缘、4纵缝、4顶部盖片↔上身上缘）的逐段长度、16段和64段源序、2D裁片简单多边形和缝份容纳；同时保存颈部不连续与不等于真实3D的否决证据。
+- `patterns/stage6_upper_mother_toile_svg.py`：5页`210×297mm`真尺寸A4试样，净缝、裁线与索引定位点、10mm校准方框；不会输出工厂级DXF。
+- `scripts/build_stage6_upper_mother_toile.py`：只接受与同次真实PLY一致的下腹13片 `lower_toile_source_geometry.json`，重新核实四蹄 512源边ID与XY坐标，不依赖未签名旧模型；输出新`upper_mother_source_profile.json`、独立`upper_mother_seam_audit.json`、5张SVG、`assembly_sequence.md`、逐文件SHA-256 `manifest.json`，新路径存在即拒绝覆盖。
+
+运行路径：
+```bash
+python scripts/build_stage6_upper_mother_toile.py \
+  --proxy /tmp/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply \
+  --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+  --lower-source /tmp/stage6-reference/lower_mother_toile_research/lower_toile_source_geometry.json \
+  --out-dir /tmp/stage6-reference/upper_mother_toile_research
+```
+
+所有资产只由受信`main`的Blender4.3.2 + SHA固定25%代理在原workflow中生成，不运行外部PR的用户提供Blend；4个旧band、4源环、5上身研究件、9页A4的身份和 SHA 写到同一临时Action Artifact。**完全真实的供应商试布和设计许可另行记录。**
+
+## 下一个 P3 设计决定
+
+这是为了把“开放的四条下腹上沿”转换为**机器可核验的12个新缝线关系**，提供一个以后改造成真实胸/颈/头身的**对照样本**。若审查记录证实头颈中心突变或源3D纵边不等长，下一步必须明确拆分躯干与头颈、寻找侧/腹隐藏省道和独立耳/尾/云团承接点，而不是把这5片当最终P4产品母版。
+
+当前工厂仍缺实际材料拉伸与绒毛数据、下腹与真实原Z60轮廓匹配、原四个三维鼓蹄底纸样、7云团/4耳/尾/10水滴承接、现行五官与企业工厂图层/刺绣格式。完整项目状态以[唯一生产进度](PRODUCTION_PROGRESS.json)为准。
