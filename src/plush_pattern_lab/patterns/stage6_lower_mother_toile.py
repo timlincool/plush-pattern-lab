@@ -8,6 +8,7 @@ Only sewing length and paper geometry are checked; no material/fit approval.
 from __future__ import annotations
 
 from collections import defaultdict
+import hashlib
 
 import numpy as np
 from shapely.geometry import LineString, MultiPoint, Polygon
@@ -168,10 +169,14 @@ def _quarter_bands(outer_ring, height_mm):
 
 def _toe_and_sleeve(ring, identity, height_mm):
     stations = np.r_[0.0, np.cumsum(ring["source_edge_lengths_mm"])]
+    ids = ring["original_vertex_ids"].astype("<i8")
+    xy = ring["original_xy_mm"].astype("<f8")
+    source_ring_sha = hashlib.sha256(ids.tobytes() + xy.tobytes()).hexdigest()
     return {
         "id": identity,
         "source_vertex_ids": ring["original_vertex_ids"].tolist(),
         "source_stitch_ring_xy_mm": ring["original_xy_mm"].tolist(),
+        "source_3d_source_id_and_projected_xy_sha256": source_ring_sha,
         "source_original_center_xyz_mm": ring["source_centroid_xyz_mm"].tolist(),
         "source_original_3d_z_mm": SOURCE_HOOF_PLANE_Z_MM,
         "source_original_hoof_edges": len(ring["original_vertex_ids"]),
