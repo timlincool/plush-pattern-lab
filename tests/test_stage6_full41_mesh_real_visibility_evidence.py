@@ -6,7 +6,9 @@ from pathlib import Path
 from plush_pattern_lab.validation.component_inventory import SOURCE_SHA256
 
 ROOT = Path(__file__).resolve().parents[1]
-EVIDENCE = ROOT / "experiments/stage6_full_product_mesh_visibility_20261108/summary.json"
+EVIDENCE = (
+    ROOT / "experiments/stage6_full_product_mesh_visibility_20261108/summary.json"
+)
 PROGRESS = ROOT / "docs/PRODUCTION_PROGRESS.json"
 
 
@@ -21,7 +23,9 @@ def test_real_full_product_mesh_source_and_five_view_sha():
     repeat = row["after_format_trusted_blender_reproduction"]
     assert repeat["conclusion"] == "success"
     assert repeat["five_view_svg_byte_identical_to_first_run"]
-    assert repeat["full_json_view_results_structurally_and_numerically_identical_to_first_run"]
+    assert repeat[
+        "full_json_view_results_structurally_and_numerically_identical_to_first_run"
+    ]
     assert repeat["source_geometry_and_historic_v14_alerts_unchanged"]
 
 
@@ -35,7 +39,9 @@ def test_all_eight_historic_nose_alerts_first_hit_main_shell_not_cloud():
     assert face["near_coincident_with_other_product_Mesh_unresolved"] == 1
     assert face["historic_nose_mouth_v14_alerts"] == 8
     assert face["all_eight_historic_alert_source_points_first_hit_original_main_body"]
-    assert face["all_eight_historic_alert_source_points_without_separate_product_Mesh_occlusion"]
+    assert face[
+        "all_eight_historic_alert_source_points_without_separate_product_Mesh_occlusion"
+    ]
     ids = [v["id"] for v in face["historic_face_warning_vertex_witnesses"]]
     assert len(ids) == len(set(ids)) == 8
     assert 40436 in ids
