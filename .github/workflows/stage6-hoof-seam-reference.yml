@@ -24,6 +24,8 @@ on:
       - 'scripts/audit_stage6_face_seams.py'
       - 'scripts/audit_stage6_full_mesh_visibility.py'
       - 'scripts/render_stage6_full_mesh_seam_views.py'
+      - 'scripts/compare_stage6_b2_reroute_ab.py'
+      - 'scripts/audit_stage6_b2_reroute_visibility.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -516,6 +518,90 @@ jobs:
           assert b'NO APPROVED FABRIC CUTTING PATTERNS' in svg
           assert meta['not_a_design_aligned_render'] and meta['not_a_cutting_pattern']
           print('STAGE6_RAW_COMPLETE_MESH_FIVE_VIEW_STILL_REJECTS_FACTORY_CUTTING')
+          PY
+      - name: Reroute B source high2 off historic face and audit all six real panel LSCMs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/compare_stage6_b2_reroute_ab.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --previous-summary "$RUNNER_TEMP/stage6-reference/leftfront_multidisk_summary.json" \
+            --previous-face "$RUNNER_TEMP/stage6-reference/leftfront_source_face_review.json" \
+            --historic-face design/reference-v25/face_embroidery_registration_v14.json \
+            --summary "$RUNNER_TEMP/stage6-reference/leftfront_B2_reroute_ab_summary.json" \
+            --detail "$RUNNER_TEMP/stage6-reference/leftfront_B2_reroute_ab_detail.json" \
+            --svg-dir "$RUNNER_TEMP/stage6-reference"
+          python - <<'PY'
+          import json, os, pathlib
+          f = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/leftfront_B2_reroute_ab_summary.json'
+          d = json.loads(f.read_text(encoding='utf8'))
+          assert d['schema'] == 'stage6-source-linked-B-high2-anatomic-avoidance-ab-v1'
+          assert d['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert d['source_faces'] == 36833
+          assert [c['candidate'] for c in d['candidates']] == ['C_low_neck_boundary', 'D_lateral_high_boundary']
+          assert all(c['original_B_first_two_source_paths_exact'] for c in d['candidates'])
+          assert all(c['original_source_faces_preserved_once'] for c in d['candidates'])
+          assert all(c['three_single_boundary_euler_one_disks'] for c in d['candidates'])
+          assert all(c['real_source_3d_radial_seams_paired'] for c in d['candidates'])
+          assert all(c['new_path_historic_v14_feature_alerts'] == 0 for c in d['candidates'])
+          assert all(c['cutting_patterns_approved'] == 0 for c in d['candidates'])
+          assert d['approved_industrial_cutting_patterns'] == 0
+          print('STAGE6_B2_SOURCE_AVOIDANCE_TOPOLOGY_BUT_NOT_FABRIC_CUTS', json.dumps([
+              {'trial': c['candidate'], 'faces': c['source_panels'],
+               'new_source_3d_seam_mm': c['source_original_radial_paths_3d_mm'][2],
+               'nose_alert': c['new_path_historic_v14_feature_alerts'],
+               'lscm_overlaps': [p['uv_positive_area_overlaps'] for p in c['all_original_source_panel_2d_lscm_qa']]}
+              for c in d['candidates']
+          ]))
+          PY
+      - name: Independently raycast both alternative original source routes against 41 product Meshes
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/audit_stage6_b2_reroute_visibility.py -- \
+            --input "$RUNNER_TEMP/stage6.blend" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --reroute "$RUNNER_TEMP/stage6-reference/leftfront_B2_reroute_ab_summary.json" \
+            --registry design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json \
+            --output-dir "$RUNNER_TEMP/stage6-reference"
+          python - <<'PY'
+          import json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          for candidate in ('C_low_neck_boundary', 'D_lateral_high_boundary'):
+              d = json.loads((root/f'{candidate}_full41mesh.json').read_text(encoding='utf8'))
+              assert d['source_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+              assert d['product_meshes_raytested'] == 41
+              assert [v['view'] for v in d['view_results']] == ['front', 'back', 'left', 'right', 'top']
+              assert all(len(v['paths']) == 3 for v in d['view_results'])
+              assert len(d['view_results'][0]['paths'][2]['historic_v14_alert_samples']) == 0
+              assert d['approved_for_manufacturer_cutting'] is False
+          print('STAGE6_41_PRODUCT_MESH_REROUTED_B2_A_B_RESEARCH_NO_APPROVAL')
+          PY
+      - name: Save real source-linked five-view SVGs for each alternative reroute
+        shell: bash
+        run: |
+          set -euo pipefail
+          for candidate in C_low_neck_boundary D_lateral_high_boundary; do
+            python scripts/render_stage6_full_mesh_seam_views.py \
+              --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+              --visibility "$RUNNER_TEMP/stage6-reference/${candidate}_full41mesh.json" \
+              --historic-face design/reference-v25/face_embroidery_registration_v14.json \
+              --svg "$RUNNER_TEMP/stage6-reference/${candidate}_full41mesh_5views.svg" \
+              --metadata "$RUNNER_TEMP/stage6-reference/${candidate}_full41mesh_5views_metadata.json"
+          done
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          for name in ('C_low_neck_boundary', 'D_lateral_high_boundary'):
+              meta = json.loads((root/f'{name}_full41mesh_5views_metadata.json').read_text(encoding='utf8'))
+              svg = (root/f'{name}_full41mesh_5views.svg').read_bytes()
+              assert meta['svg_sha256'] == hashlib.sha256(svg).hexdigest()
+              assert meta['product_meshes_raw_geometry_raycasted'] == 41
+              assert b'NO APPROVED FABRIC CUTTING PATTERNS' in svg
+              assert meta['not_a_cutting_pattern']
+          print('STAGE6_TWO_ALTERNATE_B2_FIVE_VIEWS_NO_MANUFACTURING_CUTTING')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
