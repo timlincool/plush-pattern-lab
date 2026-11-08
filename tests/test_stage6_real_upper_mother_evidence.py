@@ -21,9 +21,8 @@ def test_real_stage6_true_lower_to_upper_source_and_seam_counts_are_fixed():
     assert trial["total_100percent_A4_paper_pages"] == 9
     assert trial["total_new_matched_2d_stitch_relations"] == 12
     assert trial["all_12_digital_sew_stitch_relations_matched"]
-    assert max(
-        trial["indexed_band_to_upper_gore_max_segment_mismatch_mm"]
-    ) < 1e-11
+    max_band_error = max(trial["indexed_band_to_upper_gore_max_segment_mismatch_mm"])
+    assert max_band_error < 1e-11
     assert trial["adjacent_upper_side_segment_max_mismatch_mm"] < 1e-11
     assert not trial["actual_animal_body_fabric_pattern_approved"]
 
@@ -33,12 +32,10 @@ def test_real_original_neck_source_anatomy_is_not_a_stitch_length_proof():
     source = e["source_sculpt_observation"]
     assert source["source_130_to155mm_envelope_center_shift_mm"] > 70
     assert source["source_neck_and_rear_torso_separation_review_required"]
-    assert (
-        source[
-            "new_synthetic_3d_envelope_meridian_to_2d_sewing_line_max_length_mismatch_mm"
-        ]
-        > 89
-    )
+    meridian_gap = source[
+        "new_synthetic_3d_envelope_meridian_to_2d_sewing_line_max_length_mismatch_mm"
+    ]
+    assert meridian_gap > 89
     assert source["real_original_sculpt_3d_2d_meridian_pairing_was_not_proved"]
     assert not source["final_25cm_alpaca_3d_silhouette_or_stuffed_shape_matched"]
     assert not source["original_material_grain_stretch_fur_or_stuffing_tested"]
