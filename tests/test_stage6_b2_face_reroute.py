@@ -54,8 +54,7 @@ def test_source_face_high_region_is_hard_excluded_even_if_boundary_is_a_target()
     outer = np.asarray([[1, 2]])
     with pytest.raises(ValueError, match="facial exclusion"):
         _allowed_mesh_edges(
-            coords, edges, cuff, outer, [np.array([3, 4])],
-            np.asarray([1]), 0
+            coords, edges, cuff, outer, [np.array([3, 4])], np.asarray([1]), 0
         )
 
 
