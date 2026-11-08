@@ -123,7 +123,9 @@ def _place_yoke(spec):
     return _translated_group(parts, *translation, identity="VENTRAL-YOKE")
 
 
-def _draw_straight_band(length, height, allowance, *, opening=False):
+def _draw_straight_band(
+    length, height, allowance, notch_stations, *, opening=False
+):
     half = float(allowance)
     parts = [
         f'<rect class="cut" x="{-half:.4f}" y="{-half:.4f}" '
@@ -145,9 +147,12 @@ def _draw_straight_band(length, height, allowance, *, opening=False):
         )
     else:
         parts.append(f'<path class="stitch" d="M0,0 L{length:.4f},0"/>')
-    for share in (0.25, 0.5, 0.75):
-        pos = length * share
-        parts.append(f'<circle class="mark" cx="{pos:.4f}" cy="0" r=".75"/>')
+    for position in notch_stations:
+        if not 0 < position < length:
+            raise ValueError("source-linked notch not inside original stitch line")
+        parts.append(
+            f'<circle class="mark" cx="{position:.4f}" cy="0" r=".75"/>'
+        )
     return parts
 
 
@@ -163,17 +168,23 @@ def _place_four_strips(spec, *, kind):
             height = float(row["sleeve_height_mm"])
             label = f"LEG-{identity}"
             opening = False
+            stitch_stations = row["sleeve_stitch_station_x_mm"]
+            notch_stations = [stitch_stations[j] for j in (128, 256, 384)]
         else:
             row = spec["outer_quarter_bands"][index]
             length = row["yoke_outer_section_stitch_mm"]
             height = float(row["stitch_rectangle_xy_mm"][2][1])
             label = row["id"]
             opening = label == spec["turning_gap_research"]["band_id"]
+            stitch_stations = row["stitch_bottom_station_x_mm"]
+            notch_stations = [stitch_stations[j] for j in (4, 8, 12)]
         if length + 2 * allowance > 183 or height + 2 * allowance > 55:
             raise ValueError("trial band/sleeve violates unscaled A4 page geometry")
         if top + height + allowance > 269:
             raise ValueError("four trial pieces do not fit 1:1 A4 page")
-        shapes = _draw_straight_band(length, height, allowance, opening=opening)
+        shapes = _draw_straight_band(
+            length, height, allowance, notch_stations, opening=opening
+        )
         shapes.append(
             f'<text x="1" y="{height * 0.50:.3f}" class="id">{label}</text>'
         )
