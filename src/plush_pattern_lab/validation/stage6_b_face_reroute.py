@@ -118,7 +118,18 @@ def _route_candidate(coords, edges, counts, cuff, outer, paths, mode):
     return _source_edge_shortest(coords, allowed, anchor, targets)
 
 
-def _build_source_pieces(coords, region_ids, region_faces, selected, edges, inverse, counts, cuff, outer, paths):
+def _build_source_pieces(
+    coords,
+    region_ids,
+    region_faces,
+    selected,
+    edges,
+    inverse,
+    counts,
+    cuff,
+    outer,
+    paths,
+):
     labels = _dual_labels(region_faces, edges, inverse, counts, paths)
     source_paths = [region_ids[p] for p in paths]
     roles = {
@@ -130,8 +141,7 @@ def _build_source_pieces(coords, region_ids, region_faces, selected, edges, inve
         region_faces, region_ids, selected, roles, paths, coords, labels
     )
     lengths = [
-        float(np.linalg.norm(np.diff(coords[p], axis=0), axis=1).sum())
-        for p in paths
+        float(np.linalg.norm(np.diff(coords[p], axis=0), axis=1).sum()) for p in paths
     ]
     return panels, source_paths, lengths
 
@@ -141,20 +151,26 @@ def reroute_original_b_high2(xyz, all_faces, selected, original_B_paths):
     points, triangles, selected = _validated_source_inputs(xyz, all_faces, selected)
     if len(selected) != EXPECTED_REGION_FACES:
         raise ValueError("not the 36833-face immutable Stage6 left-front source")
-    region_ids, region_faces, edges, inverse, counts, _, cuff, outer = (
-        _region_topology(points, triangles, selected, 512)
+    region_ids, region_faces, edges, inverse, counts, _, cuff, outer = _region_topology(
+        points, triangles, selected, 512
     )
     old = _old_source_paths(region_ids, points, original_B_paths)
     coords = points[region_ids]
     result = []
     for mode in RESEARCH_ROUTES:
-        new_path = _route_candidate(
-            coords, edges, counts, cuff, outer, old, mode
-        )
+        new_path = _route_candidate(coords, edges, counts, cuff, outer, old, mode)
         paths = [old[0], old[1], new_path]
         panels, source_paths, lengths = _build_source_pieces(
-            coords, region_ids, region_faces, selected, edges, inverse,
-            counts, cuff, outer, paths
+            coords,
+            region_ids,
+            region_faces,
+            selected,
+            edges,
+            inverse,
+            counts,
+            cuff,
+            outer,
+            paths,
         )
         result.append(
             {
