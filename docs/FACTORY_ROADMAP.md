@@ -121,3 +121,9 @@ Mori & Igarashi, *Plushie* (2007), DOI 10.1145/1276377.1276433；Jin et al., *To
 ## 2026-11-08 Stage6 真源B高位缝与历史五官：优先处理鼻口设计风险
 
 [受信Stage6 #42411444680](https://github.com/timlincool/plush-pattern-lab/actions/runs/42411444680) 已实际从固定Blender源/25% PLY及同源B三片径向缝顶点IDs，按负Y正面射线First Hit测试历史face-v14五官X/Z注册。高位路径2 **126/132**源点位于当前主壳正面、其中**8点**距历史鼻/嘴绣线≤3mm；终点 40436 坐标约(-0.9331,-86.3353,190.2309)mm、投影距旧鼻线**0.5754mm**。原路径0无此警报，高位路径1正面全被主壳遮挡。以上是**历史五官与原主壳研究代理的设计风险筛查**，未覆盖完整42Mesh、毛绒、云团及最终绣花设计，不能当成最终相交/隐藏结论。源Face/Vertex ID与5正交视图、研究SVG+JSON哈希见[真实技术报告](STAGE6_B_FACE_SEAM_VIEW_QA.md)及[归档摘要](../experiments/stage6_face_seam_review_20261108/summary.json)。P3下一步先做完整部件可见性和真正的缝位避让/省道设计，再重跑完整2D/两侧净缝；P4仍未开始。
+
+## 2026-11-08 全41产品Mesh五视角真实审查：B高位缝2的鼻口风险不可依赖云团覆盖
+
+[受信真实 Stage6 #42431619685](https://github.com/timlincool/plush-pattern-lab/actions/runs/42431619685) 与 [重复 #42431869165](https://github.com/timlincool/plush-pattern-lab/actions/runs/42431869165) 已对登记的**全部42原Mesh逐件核对名称/源面数**，排除摄影棚地面、用另外41个产品Mesh的真实世界原始三角形作正背左右顶五视角源径向缝第一命中BVH审查。B高位路径2的132原点，正面71接近主壳首可见面、55受其他原产品Mesh挡、5主壳自挡、1近重合；**历史鼻口警报8点全部首命中原主壳（深度差<0.011mm），没有其他云团Mesh优先遮住**。两次输出可视化SVG字节SHA一致；完整研究见[技术说明](STAGE6_FULL_SCENE_SEAM_VISIBILITY.md)和[原始文件哈希/源ID永久证据](../experiments/stage6_full_product_mesh_visibility_20261108/summary.json)。
+
+该几何证据不包含原423条曲线/毛发、Blender修改器与光照材质、真实面料及正式五官设计，不等同物理缝制可见性认证。**下步P3先改B高位缝2的面部避让结构**，选择能由车缝完成的实际侧/背或云团承接省道，再重做整片3D↔2D边长/翻面/接缝两侧/实物材料门禁。P4工业纸样、P5技术包仍不存在。
