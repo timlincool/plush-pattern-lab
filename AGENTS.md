@@ -40,6 +40,8 @@
 
 **2026-11-08 继续开发优先级：** [Stage6 原始完整41产品Mesh五视角源缝遮挡审查](docs/STAGE6_FULL_SCENE_SEAM_VISIBILITY.md) 正在由可信main Blender重新验证。使用与 [鼻口风险审查](docs/STAGE6_B_FACE_SEAM_VIEW_QA.md) 相同的B三条真实源顶点ID、全部原始产品Mesh的世界坐标BVH（排除Studio floor），分别报告遮挡对象/深度和历史鼻口8个警报。**不能把有云团Mesh遮挡误称实际毛绒工艺可隐藏**：原毛发曲线/修改器/正式设计图、材料、车缝仍未知。后续优先根据全场景可见性设计避脸且工厂可缝的分片/省道，再复核原3D接缝与完整2D门禁；P4仍未开始。
 
+**2026-11-08 完整Stage6可见性最新结论：** [原始41产品Mesh五视角 BVH](docs/STAGE6_FULL_SCENE_SEAM_VISIBILITY.md) 已由 [可信真实Run #42431619685](https://github.com/timlincool/plush-pattern-lab/actions/runs/42431619685) 与 [#42431869165](https://github.com/timlincool/plush-pattern-lab/actions/runs/42431869165) 重复执行，5视角源点对象/深度/遮挡分类及SVG字节一致。**B高位缝2鼻口历史v14警报8个源顶点全部第一命中原始主壳本身，没有独立云团、脸部、耳尾Mesh挡住**（正面71近主壳、55其他Mesh遮挡、5主壳自挡、1未决）。423个曲线/毛发及修改器、材料/正式设计未审，绝不宣称成品缝线一定外露。下一轮重点不是换UV算法，而是**基于真实3D源边避开历史眼鼻嘴，提出两个侧/背或云团真实可缝分片的避脸路径A/B**，复核全部源缝与真实低应变2D；P3仍未完成。
+
 ## 代码与验证契约
 
 - 从数字研究转向实体打样时，优先交付能实尺打印的逐片纸样、缝线/对位/返口说明、试布测量记录；当前 [试缝套件](docs/PHYSICAL_PROTOTYPE.md) 只覆盖合成椭球而非真实角色。
