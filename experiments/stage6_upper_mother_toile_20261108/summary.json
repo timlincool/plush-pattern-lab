@@ -1,0 +1,129 @@
+{
+  "schema": "stage6-real-lower-band-to-upper-four-gore-cap-toile-evidence-v1",
+  "measurement_date_utc": "2026-11-08",
+  "first_trusted_main_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42489916617",
+  "first_run_head_commit": "fdc7555b71c74787eec28bfb7ff0e5daad583ee4",
+  "first_run_conclusion": "success",
+  "after_code_format_main_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42490091653",
+  "after_code_format_commit": "5a2e4c4b616fe7e03018f520a9fe940ea2411fe4",
+  "repeated_stage6_conclusion": "success",
+  "trusted_main_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42490091496",
+  "python_test_suite_passed": 488,
+  "python_ruff_complexity_and_packaging": "PASS",
+  "source_original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_stage6_proxy_25pct_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "same_run_lower_mother_source_geometry_sha256": "1427c7bdfc376431378e516f90540cb56e3b9adfb4695a3d5858c584041eea59",
+  "historic_original_four_hoof_source_ring_count_each": 512,
+  "original_lower_band_four_unpaired_lengths_mm": [
+    141.62311993777672,
+    141.63050495523248,
+    141.62266928723773,
+    141.62923774744155
+  ],
+  "new_trial": {
+    "upper_gore_piece_count": 4,
+    "synthetic_top_cap_piece_count": 1,
+    "lower_already_generated_piece_count": 13,
+    "entire_research_piece_count": 18,
+    "lower_existing_A4_pages": 4,
+    "new_upper_A4_pages": 5,
+    "total_100percent_A4_paper_pages": 9,
+    "new_band_lower_to_gore_stitch_relations": 4,
+    "new_gore_adjacent_side_stitch_relations": 4,
+    "new_gore_to_top_cap_stitch_relations": 4,
+    "total_new_matched_2d_stitch_relations": 12,
+    "indexed_band_to_upper_gore_max_segment_mismatch_mm": [
+      7.105427357601002e-15,
+      3.552713678800501e-15,
+      0,
+      0
+    ],
+    "shared_upper_side_seam_length_mm": 159.92524894946644,
+    "adjacent_upper_side_segment_max_mismatch_mm": 1.7763568394002505e-14,
+    "top_cap_16edge_quarter_stitch_perimeters_mm": [
+      57.82293825057383,
+      101.70249942823506,
+      57.130083806040936,
+      103.11501133786459
+    ],
+    "top_cap_max_per_indexed_segment_2d_mismatch_mm": 7.105427357601002e-15,
+    "all_12_digital_sew_stitch_relations_matched": true,
+    "actual_animal_body_fabric_pattern_approved": false
+  },
+  "source_sculpt_observation": {
+    "source_slice_heights_mm": [
+      130,
+      155,
+      180,
+      205,
+      230
+    ],
+    "additional_base_level_z100_is_relocated_lower_yoke_surrogate_not_original_source_surface": true,
+    "source_slice_half_thickness_mm": 3,
+    "source_observed_slice_vertex_counts": [
+      1395,
+      772,
+      975,
+      732,
+      1348
+    ],
+    "source_1pct_99pct_profiles_not_proven_single_connected_surface": true,
+    "slice_center_xy_130_mm": [
+      0.026858749389635506,
+      27.89263565063476
+    ],
+    "slice_center_xy_155_mm": [
+      0.03832990646361978,
+      -43.49343126296997
+    ],
+    "source_130_to155mm_envelope_center_shift_mm": 71.3860678352653,
+    "source_neck_and_rear_torso_separation_review_required": true,
+    "new_synthetic_3d_envelope_meridian_to_2d_sewing_line_max_length_mismatch_mm": 89.1207542601966,
+    "real_original_sculpt_3d_2d_meridian_pairing_was_not_proved": true,
+    "source_original_top_z_mm": 248.6762237548828,
+    "synthetic_top_cap_z_mm": 230,
+    "omitted_original_source_top_height_mm": 18.6762237548828,
+    "final_25cm_alpaca_3d_silhouette_or_stuffed_shape_matched": false,
+    "original_material_grain_stretch_fur_or_stuffing_tested": false
+  },
+  "first_stage6_action_artifact": {
+    "artifact_id": 13621101901,
+    "name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "research_archive_zip_sha256": "31221b3eb640019cd2f9d26c1fddffbd1db34666f9a4a07bc16718cf201e6a88",
+    "archived_folder": "upper_mother_toile_research",
+    "upper_mother_source_profile_json_sha256": "572850c2bee4c93ea24b09dbcc17e5aa75f8b45cd69d71f9ac9c1e95e9ac9ce0",
+    "upper_mother_seam_audit_json_sha256": "f2256be088e45b21e7be3c71ee1ffe436af26392b86aab9145f8fb1892c7dae7",
+    "assembly_sequence_markdown_sha256": "8bacdba40f16054b2fa91de0ee40b0c3bd9c5df07330c00f96877a3bdc113747",
+    "upper_A4_svg_sha256": [
+      "77eac3d44bcbedf9b5a8edff58ef867dccd37f986354d1f1d69381b230cdc4a0",
+      "1c54fdce60ee9d8d8c8e53d006f0996914f669ee86a253c59a1dd2958e17003b",
+      "5383bcaa85ba7869b59f060fae5ca2b4a55de98cd08a3175627f0f5c94c8b417",
+      "4bf11df774243995add2ad4b17f5c58c9b092951dcaa841d92303135b48331d5",
+      "10c1947701471ddb5b685cb21597473097bfa6386df1ccb9796b268021078fa1"
+    ],
+    "all_manifest_file_members_sha256_verified_independently": true,
+    "action_artifact_expires_per_retention_policy": true
+  },
+  "repeat_after_style_action_artifact": {
+    "artifact_id": 13620264733,
+    "name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "research_archive_zip_sha256": "07be6d02e17a43c0552f5101ebd8fd697d95e02762ee0c6a371ec325bdd40b00",
+    "all_five_upper_svg_files_byte_identical_to_first_run": true,
+    "assembly_sequence_bytes_identical": true,
+    "after_format_source_profile_json_sha256": "a6e52ba73ab3590160cb307294362052ac2a19b95b304c38ed06288d4b8604f4",
+    "after_format_seam_audit_json_sha256": "cc48b9b42d975b8ba75ed299f9cc73c3f72cf01152b181bee57265bc5bafae75",
+    "full_json_only_numeric_change": "source_center_jump_mm 71.3860678352653 -> 71.38606783526528 due refactored NumPy floating reduction; 2e-14mm not geometric layout difference",
+    "same_physical_cutting_approved_status_false": true
+  },
+  "convenient_research_bundle": {
+    "includes_nine_A4_svg_pages_original_two_manifests_and_two_sewing_guides": true,
+    "preview_rendered_from_original_stage6_svg": true,
+    "standalone_zip_sha256": "6c5b781aa7132d4dd0f11161440e266e42072951fc0e0ce4324a5e843bc8b937",
+    "no_production_ready_or_physical_fabric_assurance": true
+  },
+  "decision": "PASS_12_SOURCE_LOWER_TO_RESEARCH_UPPER_INDEXED_2D_STITCH_RELATIONS__REJECT_ORIGINAL_25CM_ALPACA_ANATOMICAL_PATTERN",
+  "P3_phase": "in_progress",
+  "P4_industrial_cut_pattern_phase": "not_started",
+  "industrial_cut_patterns_approved": 0,
+  "next_action": "Split source rear torso vs front neck/head geometry before new upper physical pattern. Model separate head-neck connection, real fabric seam allowance/nap, cloud/ear/face/tail/drop anchoring. Keep four source hoof rings immutable and all 18 paper-trial seam checks; no factory signoff until actual material and physical sample."
+}
