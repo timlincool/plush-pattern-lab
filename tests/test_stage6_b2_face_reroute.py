@@ -58,8 +58,6 @@ def test_source_face_high_region_is_hard_excluded_even_if_boundary_is_a_target()
         )
 
 
-
-
 def test_partially_unsafe_target_set_keeps_only_valid_original_source_exit():
     coords = np.asarray(
         [
