@@ -68,21 +68,19 @@ def _guide(upper, audit):
     ]
     for item in pairs:
         result.append(
-            f'- {item["sewing_pair"]}: {item["paired_net_stitch_mm"]:.3f} mm，'
+            f"- {item['sewing_pair']}: {item['paired_net_stitch_mm']:.3f} mm，"
             "按旧母版16个原外围分段及编号缝，禁止拉伸到统一长度。"
         )
     result.extend(["", "## 新上身四条纵向缝"])
     for item in side:
         result.append(
-            f'- {item["sewing_pair"]}: '
-            f'{item["shared_side_stitch_mm"]:.3f} mm，'
+            f"- {item['sewing_pair']}: "
+            f"{item['shared_side_stitch_mm']:.3f} mm，"
             "按6层截面站位标记连接。"
         )
     result.extend(["", "## 上端盖片"])
     for item in top:
-        result.append(
-            f'- {item["sewing_pair"]}: {item["stitch_mm"]:.3f} mm。'
-        )
+        result.append(f"- {item['sewing_pair']}: {item['stitch_mm']:.3f} mm。")
     result.extend(
         [
             "",
@@ -98,12 +96,12 @@ def _guide(upper, audit):
             "   填棉支撑均**未测试**；填充或工厂打样前先作廉价样布试缝。",
             "",
             "## 自动检查发现的结构性否决",
-            f'- 原真实截面中心最大相邻偏移 {upper["max_source_observed_profile_center_step_mm"]:.2f} mm；'
+            f"- 原真实截面中心最大相邻偏移 {upper['max_source_observed_profile_center_step_mm']:.2f} mm；"
             "此跳变暗示原颈、后部身壳需拆分而非一片连续笼罩。",
-            f'- 新母版设计二维纵向缝与其3D拟合包络纵向弦长最大差 '
-            f'{audit["original_source_surrogate_meridian_length_mismatch_mm"]:.2f} mm；'
+            f"- 新母版设计二维纵向缝与其3D拟合包络纵向弦长最大差 "
+            f"{audit['original_source_surrogate_meridian_length_mismatch_mm']:.2f} mm；"
             "这不是测得的布料伸长，而是新试验母版不能保真还原原雕塑的证据。",
-            '- 原Stage6顶部最高点高于本试验盖片Z=230mm；耳、云团、'
+            "- 原Stage6顶部最高点高于本试验盖片Z=230mm；耳、云团、"
             "尾根、10水滴、真实绒向、材料/绣花/实际站姿均未签核。",
             "- 4条旧BAND上沿在新研究装配里已数字配缝，"
             "但不意味着完整原Stage6造型、真实缝份和两处四线交汇均已经通过。",
@@ -117,13 +115,11 @@ def _guide(upper, audit):
 
 
 def _payloads(upper, qa, lower_sha):
+    source_json = json.dumps(upper, ensure_ascii=False, indent=2)
+    audit_json = json.dumps(qa, ensure_ascii=False, indent=2)
     files = {
-        "upper_mother_source_profile.json": json.dumps(
-            upper, ensure_ascii=False, indent=2
-        ) + "\n",
-        "upper_mother_seam_audit.json": json.dumps(
-            qa, ensure_ascii=False, indent=2
-        ) + "\n",
+        "upper_mother_source_profile.json": source_json + "\n",
+        "upper_mother_seam_audit.json": audit_json + "\n",
         "assembly_sequence.md": _guide(upper, qa),
         **render_stage6_upper_mother_a4(upper),
     }

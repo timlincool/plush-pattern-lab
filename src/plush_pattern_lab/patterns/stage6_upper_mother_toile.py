@@ -50,12 +50,8 @@ def _source_profile(source_xyz, ring):
                 "source_disconnected_components_not_checked": True,
             }
         )
-    jump = [
-        float(np.linalg.norm(np.diff(np.asarray([
-            np.asarray(row["source_envelope_center_xy_mm"]) for row in rows
-        ]), axis=0)[i]))
-        for i in range(len(rows) - 1)
-    ]
+    centers = np.asarray([row["source_envelope_center_xy_mm"] for row in rows])
+    jump = np.linalg.norm(np.diff(centers, axis=0), axis=1).tolist()
     return np.asarray(profiles), rows, jump
 
 
@@ -85,16 +81,16 @@ def _balanced_seam_steps(widths):
 def _planar_panel(index, rings, side_segment_mm, seam_allowance_mm):
     stations = [_panel_arc(ring, index)[0] for ring in rings]
     widths = np.asarray([row[-1] for row in stations])
-    dy = np.sqrt(
-        np.maximum(side_segment_mm**2 - (np.diff(widths) / 2) ** 2, 0.0)
-    )
+    dy = np.sqrt(np.maximum(side_segment_mm**2 - (np.diff(widths) / 2) ** 2, 0.0))
     if np.any(dy <= 1e-5):
         raise ValueError("upper surrogate panel has collapsed meridian increment")
     longitudinal = np.r_[0.0, np.cumsum(dy)]
     left = np.column_stack((-widths / 2, longitudinal))
     right = np.column_stack((widths / 2, longitudinal))
     bottom = np.column_stack((stations[0] - widths[0] / 2, np.zeros(17)))
-    upper = np.column_stack((stations[-1] - widths[-1] / 2, np.full(17, longitudinal[-1])))
+    upper = np.column_stack(
+        (stations[-1] - widths[-1] / 2, np.full(17, longitudinal[-1]))
+    )
     outline = np.vstack((bottom, right[1:], upper[-2::-1], left[-2:0:-1]))
     seam = Polygon(outline)
     if seam.geom_type != "Polygon" or not seam.is_valid or seam.area <= 100:
@@ -113,9 +109,7 @@ def _planar_panel(index, rings, side_segment_mm, seam_allowance_mm):
         "stitch_outline_xy_mm": np.asarray(seam.exterior.coords).tolist(),
         "cut_outline_xy_mm": np.asarray(cut.exterior.coords).tolist(),
         "station_horizontal_stitch_widths_mm": widths.tolist(),
-        "bottom_source_ring_edge_indices": list(
-            range(index * 16, (index + 1) * 16)
-        ),
+        "bottom_source_ring_edge_indices": list(range(index * 16, (index + 1) * 16)),
         "side_segment_design_lengths_mm": side_segment_mm.tolist(),
         "area_2d_net_mm2": float(seam.area),
         "source_original_surface_flattened": False,
@@ -150,9 +144,7 @@ def _meridian_mismatch_mm(rings, design_segments):
             for ring, z in zip(rings, PROFILE_Z_MM)
         ]
     )
-    source_chord = np.linalg.norm(
-        np.diff(points[:, [0, 16, 32, 48]], axis=0), axis=2
-    )
+    source_chord = np.linalg.norm(np.diff(points[:, [0, 16, 32, 48]], axis=0), axis=2)
     return {
         "original_source_inspired_meridian_chord_mm": source_chord.tolist(),
         "new_2d_shared_meridian_step_mm": design_segments.tolist(),
@@ -182,9 +174,7 @@ def build_upper_mother_from_lower(lower, source_xyz):
     allowance = float(lower["material_seam_allowance_is_unverified_mm"])
     if not 3 <= allowance <= 8:
         raise ValueError("unsafe or unverified mother toile seam allowance")
-    pieces = [
-        _planar_panel(i, rings, segments, allowance) for i in range(4)
-    ]
+    pieces = [_planar_panel(i, rings, segments, allowance) for i in range(4)]
     cap = _cap(rings[-1], allowance)
     return {
         "schema": "stage6-source-profile-informed-upper-mother-toile-v1",

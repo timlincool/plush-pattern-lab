@@ -31,13 +31,9 @@ def _body_interface(lower, upper, epsilon):
             raise ValueError("upper panel order does not match lower true-hoof band")
         if panel["paired_lower_band"] != base["id"]:
             raise ValueError("source band 16-edge identity changed")
-        if panel["bottom_source_ring_edge_indices"] != base[
-            "source_ring_edge_indices"
-        ]:
+        if panel["bottom_source_ring_edge_indices"] != base["source_ring_edge_indices"]:
             raise ValueError("source yoke segment IDs are not paired")
-        expected = np.diff(
-            np.asarray(base["stitch_bottom_station_x_mm"], dtype=float)
-        )
+        expected = np.diff(np.asarray(base["stitch_bottom_station_x_mm"], dtype=float))
         observed = _distance_steps(panel["bottom_stitch_xy_mm"])
         if len(expected) != BAND_EDGES or len(observed) != BAND_EDGES:
             raise ValueError("source band/gore lower edge must have 16 parts")
@@ -57,9 +53,7 @@ def _body_interface(lower, upper, epsilon):
 
 def _side_seams(upper, epsilon):
     pieces = upper["upper_gore_pieces"]
-    expected = np.asarray(
-        upper["common_panel_side_step_lengths_mm"], dtype=np.float64
-    )
+    expected = np.asarray(upper["common_panel_side_step_lengths_mm"], dtype=np.float64)
     rows = []
     for index in range(PANELS):
         right = _distance_steps(pieces[index]["right_stitch_xy_mm"])
@@ -67,7 +61,9 @@ def _side_seams(upper, epsilon):
         if right.shape != (5,) or left.shape != (5,):
             raise ValueError("upper surrogate must have five indexed side sections")
         mismatch = float(np.max(np.abs(right - left)))
-        source_error = float(max(np.max(np.abs(right - expected)), np.max(np.abs(left - expected))))
+        source_error = float(
+            max(np.max(np.abs(right - expected)), np.max(np.abs(left - expected)))
+        )
         if mismatch > epsilon or source_error > epsilon:
             raise ValueError("new upper side seam is not paired segment by segment")
         rows.append(

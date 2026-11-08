@@ -20,9 +20,11 @@ def _path(vertices):
         raise ValueError("invalid upper research stitch/cut polyline")
     if not np.isfinite(p).all():
         raise ValueError("nonfinite mother toile plot coordinates")
-    return f"M {p[0, 0]:.4f},{p[0, 1]:.4f} " + " ".join(
-        f"L{x:.4f},{y:.4f}" for x, y in p[1:]
-    ) + " Z"
+    return (
+        f"M {p[0, 0]:.4f},{p[0, 1]:.4f} "
+        + " ".join(f"L{x:.4f},{y:.4f}" for x, y in p[1:])
+        + " Z"
+    )
 
 
 def _start_page(label, number):
@@ -37,7 +39,7 @@ def _start_page(label, number):
         f'<text x="12" y="12">UPPER MOTHER - SOURCE-ENVELOPE TRIAL {number}/5</text>',
         f'<text x="12" y="18">{escape(label)}</text>',
         '<text x="12" y="24">A4 100% scale / RESEARCH ONLY / '
-        'NOT ORIGINAL STAGE6 CUTTING PATTERN</text>',
+        "NOT ORIGINAL STAGE6 CUTTING PATTERN</text>",
     ]
 
 
@@ -74,8 +76,7 @@ def _placement(cut):
 def _notches(points, rows):
     xy = np.asarray(points, dtype=np.float64)
     return [
-        f'<circle class="notch" cx="{xy[i, 0]:.4f}" '
-        f'cy="{xy[i, 1]:.4f}" r=".8"/>'
+        f'<circle class="notch" cx="{xy[i, 0]:.4f}" cy="{xy[i, 1]:.4f}" r=".8"/>'
         for i in rows
     ]
 
@@ -100,19 +101,18 @@ def _gore_page(part, index):
     middle = np.asarray(part["stitch_outline_xy_mm"]).mean(axis=0)
     content.append(
         f'<text x="{middle[0]:.3f}" y="{middle[1]:.3f}">'
-        f'{escape(part["id"])} / {escape(part["paired_lower_band"])}</text>'
+        f"{escape(part['id'])} / {escape(part['paired_lower_band'])}</text>"
     )
     content.append("</g>")
-    return "\n".join(
-        [
-            *_start_page(
-                f'{part["id"]} lower -> {part["paired_lower_band"]} top / 16 shared edges',
-                index + 1,
-            ),
-            *content,
-            *_footer(),
-        ]
-    ) + "\n"
+    lines = [
+        *_start_page(
+            f"{part['id']} lower -> {part['paired_lower_band']} top / 16 shared edges",
+            index + 1,
+        ),
+        *content,
+        *_footer(),
+    ]
+    return "\n".join(lines) + "\n"
 
 
 def _cap_page(cap):
@@ -130,9 +130,8 @@ def _cap_page(cap):
         "4 x 16 indexed upper-gore seams</text>",
         '<text x="12" y="44">This cap is synthetic, not the Stage6 ear/head sculpt.</text>',
     ]
-    return "\n".join(
-        [*_start_page("Top cap surrogate at Z=230mm", 5), *content, *_footer()]
-    ) + "\n"
+    lines = [*_start_page("Top cap surrogate at Z=230mm", 5), *content, *_footer()]
+    return "\n".join(lines) + "\n"
 
 
 def render_stage6_upper_mother_a4(upper):
