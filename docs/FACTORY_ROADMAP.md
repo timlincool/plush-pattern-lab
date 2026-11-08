@@ -151,3 +151,9 @@ Mori & Igarashi, *Plushie* (2007), DOI 10.1145/1276377.1276433；Jin et al., *To
 ## 2026-11-08 原13片下腹接上身4片/顶盖研究：数字闭合≠真实造型
 
 基于真实[原Stage6四蹄13片下腹母版](STAGE6_LOWER_MOTHER_TOILE.md)，新增[上部研究母版4片UPPER+1试验盖](STAGE6_UPPER_MOTHER_TOILE.md)：原BAND-1..4各16段净缝与新4个UPPER底边逐段配对，4条UPPER纵缝按5级高程站位配对，TOP-CAP-TRIAL按64段与UPPER顶边配对，共 **12组新数字缝线关系、18片研究裁片、9张A4毫米纸样**（原4+新增5，均非工业批准）。高程参考真源25% PLY在Z100/130/155/180/205/230的截面X/Y1%～99%包络，但原源约Z130→155mm截面中心Y跳约71mm，连续单环拟合有严重头颈/后躯体积混合风险；不能将缝份、数字几何等式假装物理拉伸或设计批准。代码与工作流待受信main再实跑；本轮若成功也仅能证明4条旧开口有研究性上身拼缝，不代表原羊驼头身已可工业裁切、改版或打样。P3仍进行中，P4不开始。
+
+## 2026-11-08 两次真Stage6上身闭合对照：数字拼缝成立，头颈外观失败
+
+[可信Stage6真实 #42489916617](https://github.com/timlincool/plush-pattern-lab/actions/runs/42489916617) 和 [重复 #42490091653](https://github.com/timlincool/plush-pattern-lab/actions/runs/42490091653) 基于原公开源Blend/25%代理及已有13片四蹄下腹，新增**4片上身UPPER＋1块试验TOP-CAP**，连同旧13片形成**18片/9页A4研究性试缝母版**。旧四条BAND16段上沿、4条新纵向侧缝和4组顶盖16段的新净缝合计**12组均有数字逐段等长配对**，5页上身SVG及试验指南在两次Runner中字节SHA完全一致。[Python #42490091496](https://github.com/timlincool/plush-pattern-lab/actions/runs/42490091496) **488项测试及Ruff/打包通过**。
+
+然而原Stage6的Z130→155mm截面中心**移动71.386mm**，新环形轮廓代理的三维纵向弦长与二维试缝线最大差**89.121mm**；研究顶盖Z230低于原雕塑最高Z248.676mm。此单环四片上身将后部体积与前部头颈硬连，**不符合原羊驼头颈制造造型**，不能用布料弹性/已配缝数字声称完成。技术说明 [上身试样](STAGE6_UPPER_MOTHER_TOILE.md) 和[永久源与两Runner SHA](../experiments/stage6_upper_mother_toile_20261108/summary.json)保存所有反例。下一P3优先真正拆开后部躯干与前部颈/头、设置可用的侧腹/胸云隐藏接缝，解决真鼓蹄/云团耳尾雨滴/绣花与真实材料样本。P4-P7仍未开始。
