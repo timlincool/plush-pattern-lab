@@ -7,8 +7,8 @@ Only sewing length and paper geometry are checked; no material/fit approval.
 
 from __future__ import annotations
 
-from collections import defaultdict
 import hashlib
+from collections import defaultdict
 
 import numpy as np
 from shapely.geometry import LineString, MultiPoint, Polygon
