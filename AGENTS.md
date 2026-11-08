@@ -48,6 +48,8 @@
 
 **2026-11-08 最新P3结构推进：** [Stage6四真实蹄口锚定的13片下半身制造母版研究](docs/STAGE6_LOWER_MOTHER_TOILE.md)。基于真公开25% PLY核对四个Z20真实512源边：FL/FR/RL/RR周长分别101.6403/93.3091/119.1003/119.1003mm（前蹄不同）。已实现新YOKE一片（四原孔净缝）、4试验LEG筒、4平面试验SOLE、4上围带，4页A4毫米1:1 SVG、源点对位、独立逐段净缝检验和研究返口。这只是母版局部下半身**新制造设计假设**：YOKE临时Z60、平面SOLE非原Rounded hoof base，4条上围边未连接真实头身、眼鼻耳云尾、水滴/材料与首样；CI未运行前仅本地源环预检。不准从13片研究样纸升级P4正式工业纸样。未来“继续”优先把4个上围口通过可缝的躯干/颈胸母版实际接合，回看原设计多视图差异并试布。
 
+**2026-11-08 可信主干已验下半身母版：** [13片真源蹄口锚定低复杂度试缝](docs/STAGE6_LOWER_MOTHER_TOILE.md) 已经由 [真实Stage6 #42460875416](https://github.com/timlincool/plush-pattern-lab/actions/runs/42460875416) 与 [#42461595241](https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595241) 两次独立生成，4张A4 SVG、源source ID几何、独立缝线QC及manifest**8文件字节SHA相同**；[Python CI #42461595194](https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595194) 474项绿灯。四个原Z20蹄口周长FL101.6403/FR93.3091/RL119.1003/RR119.1003mm，每环512原边。**新YOKE Z60、4直LEG、4平面SOLE和4上围BAND仅13片研究试布**，4上沿未连接真实头身，且XY包络与原Stage6 Z60源壳差约8–10mm；无真实3D鼓蹄展开、真实材料/云团耳尾/厂商签核。永久证据在 [实验摘要](experiments/stage6_lower_mother_toile_20261108/summary.json)。下一轮优先**让4条开放上围净缝与低复杂度真实角色胸/颈/头母版逐段有序成对**，再审返口、分片和试布；P3未完成，P4未开始。
+
 ## 代码与验证契约
 
 - 从数字研究转向实体打样时，优先交付能实尺打印的逐片纸样、缝线/对位/返口说明、试布测量记录；当前 [试缝套件](docs/PHYSICAL_PROTOTYPE.md) 只覆盖合成椭球而非真实角色。
