@@ -20,7 +20,9 @@ REGISTRY = ROOT / "design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json"
 
 def _fixture():
     registry = json.loads(REGISTRY.read_text(encoding="utf8"))
-    counts = {row["source_mesh"]: row["source_faces"] for row in registry["component_rows"]}
+    counts = {
+        row["source_mesh"]: row["source_faces"] for row in registry["component_rows"]
+    }
     return registry, counts
 
 
@@ -60,7 +62,13 @@ def test_tampered_mesh_names_polygon_counts_or_roles_fail_closed(corruption):
 @pytest.mark.parametrize(
     ("axis", "sign", "hit", "role", "label"),
     [
-        (1, 1, [0, -2, 0], "decorative_cloud_layers", "occluded_by_another_product_mesh"),
+        (
+            1,
+            1,
+            [0, -2, 0],
+            "decorative_cloud_layers",
+            "occluded_by_another_product_mesh",
+        ),
         (1, 1, [0, -2, 0], "core_body_mesh", "self_occluded_by_original_body"),
         (1, 1, [0, 0.1, 0], "core_body_mesh", "near_original_body_first_surface"),
         (
@@ -81,9 +89,7 @@ def test_tampered_mesh_names_polygon_counts_or_roles_fail_closed(corruption):
         (2, -1, [0, 0, 2], "tail_overlay", "occluded_by_another_product_mesh"),
     ],
 )
-def test_signed_orthographic_first_hit_classification(
-    axis, sign, hit, role, label
-):
+def test_signed_orthographic_first_hit_classification(axis, sign, hit, role, label):
     row = classify_first_surface([0, 0, 0], hit, role, axis, sign, 0.7)
     assert row["classification"] == label
 
