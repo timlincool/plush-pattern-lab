@@ -45,9 +45,10 @@ def test_all_eight_historic_nose_alerts_first_hit_main_shell_not_cloud():
     ids = [v["id"] for v in face["historic_face_warning_vertex_witnesses"]]
     assert len(ids) == len(set(ids)) == 8
     assert 40436 in ids
-    assert max(
-        abs(v["depth_mm"]) for v in face["historic_face_warning_vertex_witnesses"]
-    ) < 0.011
+    assert (
+        max(abs(v["depth_mm"]) for v in face["historic_face_warning_vertex_witnesses"])
+        < 0.011
+    )
 
 
 def test_geometry_evidence_does_not_promote_manufacturing_gates():
