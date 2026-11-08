@@ -114,7 +114,7 @@ def extract_original_hoof_rings(xyz, faces, *, expected_edges=512):
         raise ValueError("source hoof openings are not four independent rings")
     rows.sort(
         key=lambda item: (
-            item["source_centroid_xyz_mm"][1],
+            item["source_centroid_xyz_mm"][1] >= 20.0,
             item["source_centroid_xyz_mm"][0],
         )
     )
