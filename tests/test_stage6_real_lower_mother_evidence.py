@@ -24,9 +24,10 @@ def test_real_stage6_four_different_hoof_source_rings_and_seam_lengths():
     lengths = hoof["actual_ring_3d_perimeters_mm"]
     assert lengths["FL"] > lengths["FR"]
     assert abs(lengths["RL"] - lengths["RR"]) < 0.001
-    assert max(
-        hoof["each_hoof_to_yoke_to_sleeve_to_flat_toe_max_segment_difference_mm"]
-    ) < 1e-11
+    assert (
+        max(hoof["each_hoof_to_yoke_to_sleeve_to_flat_toe_max_segment_difference_mm"])
+        < 1e-11
+    )
     assert hoof["original_3d_rounded_hoof_soles_have_not_been_unrolled"]
 
 
@@ -54,9 +55,12 @@ def test_original_sculpt_and_open_upper_body_still_fail_manufacturing_gate():
     study = proof["new_mother_study"]
     assert study["count_unpaired_upper_band_edges"] == 4
     assert study["new_four_upper_band_edges_to_real_torso_unpaired"]
-    assert proof["original_stage6_body_at_z60_comparison"][
-        "real_original_silhouette_matched"
-    ] is False
+    assert (
+        proof["original_stage6_body_at_z60_comparison"][
+            "real_original_silhouette_matched"
+        ]
+        is False
+    )
     assert proof["approved_industrial_cutting_patterns"] == 0
     progress = json.loads(PROGRESS.read_text(encoding="utf8"))
     p3 = next(row for row in progress["phases"] if row["id"] == "P3")
