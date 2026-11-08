@@ -52,10 +52,38 @@ def test_source_face_high_region_is_hard_excluded_even_if_boundary_is_a_target()
     edges = np.asarray([[0, 2], [2, 1], [3, 4]])
     cuff = np.empty((0, 2), dtype=int)
     outer = np.asarray([[1, 2]])
-    with pytest.raises(ValueError, match="facial exclusion"):
+    with pytest.raises(ValueError, match="protected source region"):
         _allowed_mesh_edges(
             coords, edges, cuff, outer, [np.array([3, 4])], np.asarray([1]), 0
         )
+
+
+def test_partially_unsafe_target_set_keeps_only_valid_original_source_exit():
+    coords = np.asarray(
+        [
+            [-45, -32, 20],
+            [-0.9, -86, 190],
+            [-0.8, -85, 185],
+            [-44, -30, 20],
+            [-40, -25, 50],
+            [-0.9, -19, 195],
+            [-1, -21, 194],
+        ]
+    )
+    edges = np.asarray([[0, 5], [0, 2], [2, 1], [3, 4]])
+    outer = np.asarray([[1, 2], [5, 6]])
+    usable, targets = _allowed_mesh_edges(
+        coords,
+        edges,
+        np.empty((0, 2), dtype=int),
+        outer,
+        [np.array([3, 4])],
+        np.asarray([1, 5]),
+        0,
+    )
+    assert targets.tolist() == [5]
+    assert [0, 5] in usable.tolist()
+    assert [2, 1] not in usable.tolist()
 
 
 def test_trusted_old_source_path_ids_and_length_must_match_original_xyz():
