@@ -165,5 +165,18 @@
   "P3_status": "in_progress",
   "P4_status": "not_started",
   "approved_industrial_cutting_patterns": 0,
-  "next_step": "Join upper four yoke band edges to a real character-like low-detail torso/neck mother shell with explicit sewing relationships and closed turning sequence; compare original Stage6 four views, raw body silhouette, clouds, ears, tail, original rounded hoof cap and physical fabric testing before P4."
+  "next_step": "Join upper four yoke band edges to a real character-like low-detail torso/neck mother shell with explicit sewing relationships and closed turning sequence; compare original Stage6 four views, raw body silhouette, clouds, ears, tail, original rounded hoof cap and physical fabric testing before P4.",
+  "independent_post_fix_main_reproduction": {
+    "run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595241",
+    "main_commit": "f525101b049da75f2bd12516b711c5759fc45356",
+    "run_result": "success",
+    "artifact_id": 13610230784,
+    "research_zip_sha256": "89ae3bbe1dd7ebd04ae9095b8749b1e0399fdc4b6017c736921a6ec20ffe9c05",
+    "all_eight_lower_mother_research_members_SHA256_identical_to_first_run": true,
+    "all_four_1_to_1_A4_SVG_byte_identical": true,
+    "manifest_and_original_source_geometry_QA_byte_identical": true,
+    "source_rings_and_independent_seam_errors_repeat_identical": true,
+    "whole_zip_sha256_differs_because_unrelated_pipeline_artifacts": true,
+    "original_source_blender_and_proxy_sha_unchanged": true
+  }
 }
