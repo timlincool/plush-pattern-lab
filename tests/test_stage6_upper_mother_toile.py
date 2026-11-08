@@ -39,12 +39,7 @@ def _lower_and_source(*, facial_jump=True):
         offset = len(xyz)
         xyz.extend(np.column_stack((xy, np.full(n, 20.0))).tolist())
         xyz.append([cx, cy, 20])
-        faces.extend(
-            [
-                [offset + i, offset + (i + 1) % n, offset + n]
-                for i in range(n)
-            ]
-        )
+        faces.extend([[offset + i, offset + (i + 1) % n, offset + n] for i in range(n)])
     hoof_count = len(xyz)
     for z, cy, xhalf, yhalf in (
         (130, 28, 36, 93),
@@ -60,9 +55,7 @@ def _lower_and_source(*, facial_jump=True):
             ).tolist()
         )
     all_points = np.asarray(xyz, dtype=float)
-    rings = extract_original_hoof_rings(
-        all_points[:hoof_count], np.asarray(faces)
-    )
+    rings = extract_original_hoof_rings(all_points[:hoof_count], np.asarray(faces))
     lower = build_source_hoof_lower_toile(rings)
     return lower, all_points
 
@@ -112,9 +105,7 @@ def test_upper_five_a4_svgs_stay_true_size_and_not_production_patterns():
         assert "NOT ORIGINAL STAGE6 CUTTING PATTERN" in data
         assert "Calibration 10 x 10 mm" in data
     for i in range(4):
-        assert f'data-part="UPPER-{i + 1}"' in pages[
-            f"upper-sheet-{i + 1:02d}.svg"
-        ]
+        assert f'data-part="UPPER-{i + 1}"' in pages[f"upper-sheet-{i + 1:02d}.svg"]
     assert 'data-part="TOP-CAP-TRIAL"' in pages["upper-sheet-05.svg"]
     assert lower["yoke"]["upper_body_shell_seam_unpaired"]
 
