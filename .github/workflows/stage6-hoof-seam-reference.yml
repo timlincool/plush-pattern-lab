@@ -27,6 +27,7 @@ on:
       - 'scripts/compare_stage6_b2_reroute_ab.py'
       - 'scripts/audit_stage6_b2_reroute_visibility.py'
       - 'scripts/build_stage6_lower_mother_toile.py'
+      - 'scripts/build_stage6_upper_mother_toile.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -642,6 +643,49 @@ jobs:
               'approved':False
           }))
           PY
+      - name: Join all four lower source-indexed BAND rims to 4 torso gores and one trial cap
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_stage6_upper_mother_toile.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --lower-source "$RUNNER_TEMP/stage6-reference/lower_mother_toile_research/lower_toile_source_geometry.json" \
+            --out-dir "$RUNNER_TEMP/stage6-reference/upper_mother_toile_research"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/upper_mother_toile_research'
+          upper = json.loads((root/'upper_mother_source_profile.json').read_text(encoding='utf8'))
+          qa = json.loads((root/'upper_mother_seam_audit.json').read_text(encoding='utf8'))
+          manifest = json.loads((root/'manifest.json').read_text(encoding='utf8'))
+          assert upper['schema'] == 'stage6-source-profile-informed-upper-mother-toile-v1'
+          assert manifest['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert manifest['source_proxy_25pct_ply_sha256'] == '5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd'
+          assert qa['all_12_new_sewing_relations_matched_in_2d']
+          assert len(qa['four_real_lower_band_to_upper_source_stitch_relations']) == 4
+          assert len(qa['four_independent_new_upper_side_seam_relations']) == 4
+          assert len(qa['four_top_cap_indexed_16_edge_stitch_relations']) == 4
+          assert upper['new_upper_piece_count'] == 5
+          assert upper['total_research_stitch_pieces'] == 18
+          assert upper['source_profile_z_mm'] == [100, 130, 155, 180, 205, 230]
+          assert qa['neck_split_or_anatomical_articulation_review_required']
+          assert qa['original_stage6_source_cross_section_center_jump_mm'] > 50
+          assert qa['source_3d_meridian_lengths_not_preserved']
+          assert qa['factory_cutting_approved'] == 0
+          assert manifest['combined_research_A4_pages'] == 9
+          assert all((root/f'upper-sheet-{i:02d}.svg').exists() for i in range(1,6))
+          assert all(hashlib.sha256((root/name).read_bytes()).hexdigest() == sha
+                     for name, sha in manifest['research_file_sha256'].items())
+          print('STAGE6_UPPER_SOURCE_PROFILE_FOUR_GORES_CAP_REJECT_NECK', json.dumps({
+              'band_seams_paired':len(qa['four_real_lower_band_to_upper_source_stitch_relations']),
+              'new_vertical_seams_paired':len(qa['four_independent_new_upper_side_seam_relations']),
+              'cap_seams_paired':len(qa['four_top_cap_indexed_16_edge_stitch_relations']),
+              'source_neck_center_jump_mm':qa['original_stage6_source_cross_section_center_jump_mm'],
+              'max_surrogate_3D_vs_2D_meridian_mismatch_mm':
+                  qa['original_source_surrogate_meridian_length_mismatch_mm'],
+              'approved':False
+          }))
+          PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
         run: |
@@ -676,5 +720,6 @@ jobs:
             ${{ runner.temp }}/stage6-reference/*.svg
             ${{ runner.temp }}/stage6-reference/*.png
             ${{ runner.temp }}/stage6-reference/lower_mother_toile_research/**
+            ${{ runner.temp }}/stage6-reference/upper_mother_toile_research/**
           if-no-files-found: warn
           retention-days: 7
