@@ -1,0 +1,182 @@
+{
+  "schema": "stage6-source-hoof-anchored-lower-mother-toile-real-evidence-v1",
+  "measurement_date_utc": "2026-11-08",
+  "trusted_main_actual_blender_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42460875416",
+  "actual_blender_run_commit": "a9806e456e42b4026e615263e4c0d630f539520b",
+  "actual_blender_run_result": "success",
+  "latest_passing_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595194",
+  "latest_python_ci_commit": "f525101b049da75f2bd12516b711c5759fc45356",
+  "python_tests_passed": 474,
+  "python_static_quality_and_package_build": "PASS",
+  "original_public_blender_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "original_25_percent_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "original_four_source_hoof_rings": {
+    "source_z_mm": 20,
+    "each_source_edge_count": 512,
+    "total_original_source_hoof_edges": 2048,
+    "original_centers_xy_mm": {
+      "FL": [
+        -29,
+        -34
+      ],
+      "FR": [
+        29,
+        -34
+      ],
+      "RL": [
+        -29,
+        81
+      ],
+      "RR": [
+        29,
+        81
+      ]
+    },
+    "actual_ring_3d_perimeters_mm": {
+      "FL": 101.64031705608458,
+      "FR": 93.30914028993689,
+      "RL": 119.10028808740223,
+      "RR": 119.10028952375686
+    },
+    "source_vertex_id_to_xy_mapping_sha_verified": true,
+    "each_hoof_to_yoke_to_sleeve_to_flat_toe_max_segment_difference_mm": [
+      7.105427357601002e-15,
+      7.077671781985373e-15,
+      7.077671781985373e-15,
+      7.105427357601002e-15
+    ],
+    "original_3d_rounded_hoof_soles_have_not_been_unrolled": true
+  },
+  "new_mother_study": {
+    "research_geometry_not_derived_actual_stage6_body_surface": true,
+    "actual_source_hoof_xy_stitch_holes": true,
+    "relocated_yoke_hypothesis_z_mm": 60,
+    "synthetic_leg_sleeve_height_mm": 40,
+    "unverified_tentative_seam_allowance_mm": 6,
+    "yoke_source_hull_buffer_mm": 18,
+    "new_yoke_outer_64_edge_stitch_perimeter_mm": 566.5055319276886,
+    "minimum_hoof_hole_to_yoke_outer_stitch_clearance_mm": 17.637814533622908,
+    "new_four_holed_yoke_cut_area_mm2": 24423.43059657743,
+    "source_hoof_to_64_research_hem_band_arcs_mm": [
+      141.62311993777672,
+      141.63050495523248,
+      141.62266928723773,
+      141.62923774744155
+    ],
+    "max_yoke_to_outer_band_seam_segment_mismatch_mm": 1.4210854715202004e-14,
+    "constructed_individual_pattern_pieces": 13,
+    "roles": {
+      "ventral_yoke": 1,
+      "leg_sleeves": 4,
+      "flat_test_sole_caps": 4,
+      "outer_quarter_bands": 4
+    },
+    "new_four_upper_band_edges_to_real_torso_unpaired": true,
+    "count_unpaired_upper_band_edges": 4,
+    "proposed_BAND3_return_opening_mm": 42.486800786171315,
+    "full_shell_turning_proven": false,
+    "official_stitch_notches_based_on_source_vertex_ids": [
+      0,
+      128,
+      256,
+      384
+    ],
+    "printed_paper": {
+      "standard": "A4",
+      "units": "mm",
+      "pages": 4,
+      "svg_width_mm": 210,
+      "svg_height_mm": 297,
+      "printer_scale": "100_percent",
+      "calibration_square_mm": [
+        10,
+        10
+      ]
+    },
+    "certified_factory_output": false
+  },
+  "original_stage6_body_at_z60_comparison": {
+    "source_proxy_slab_z_mm": [
+      57,
+      63
+    ],
+    "source_vertex_count": 2019,
+    "original_source_body_1st_to_99th_percentile_xy_bounds_mm": [
+      [
+        -53.1384334564209,
+        -60.04133911132813
+      ],
+      [
+        51.375671234130856,
+        113.6152961730957
+      ]
+    ],
+    "new_yoke_outer_xy_bounds_mm": [
+      [
+        -62.51274713982115,
+        -68.73123053268901
+      ],
+      [
+        61.26032257080078,
+        122.04667663574219
+      ]
+    ],
+    "new_yoke_extent_minus_original_percentile_bounds_mm": [
+      [
+        -9.374313683400253,
+        -8.689891421360883
+      ],
+      [
+        9.884651336669926,
+        8.431380462646487
+      ]
+    ],
+    "these_are_envelope_bound_differences_not_3d_surface_fit_error": true,
+    "real_original_silhouette_matched": false
+  },
+  "temporary_github_action_artifact": {
+    "id": 13609516815,
+    "name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "zip_sha256": "2459d7a7977d6ca9726e730077aee56fc2fb82770103ed97b9138c2b7dc73013",
+    "retention_limited": true,
+    "folder": "lower_mother_toile_research",
+    "exact_member_sha256": {
+      "lower_toile_seam_audit.json": "5d608cac52412688123dd08a869e4d1f6f462347880151d6cf3eb8ae4a46abf8",
+      "lower_toile_source_geometry.json": "1427c7bdfc376431378e516f90540cb56e3b9adfb4695a3d5858c584041eea59",
+      "manifest.json": "cf78c9a0118bf004a998d04b0e9606dc506a9c86651a566f9c75a988f7807a27",
+      "sewing_guide.md": "57cf5e33128a57dcf02ed4a7786d9dc900a1e5aa67a61daa9a23e5407c1696bc",
+      "sheet-01.svg": "2993d35af0eba0cf65acc8eff1fe7a1c2af19c4ca8ee6110d9bd958f2414adee",
+      "sheet-02.svg": "d263291403bc968abfb2386499adc2d94b02732f29ad0ba2d629720a1729dd1f",
+      "sheet-03.svg": "8be1b060fd68d8b5d263f67d7994d55d92fab6a065123e161df8951b90737a53",
+      "sheet-04.svg": "73d83d3dfa8b9d7086c6cc9f74aebace2407618e317931e33d738b3ea2897ee1"
+    },
+    "all_manifest_member_sha256_verified_independently": true,
+    "A4_svg_rendered_and_inspected": true
+  },
+  "scope_and_limits": [
+    "All hoof ring points are original open 3D source mesh vertices, each at original Z20 plane. Four-hoof asymmetric 512-edge geometry is authentic.",
+    "YOKE at Z60, straight leg sleeves and upper bands are newly designed research trial shapes, not actual source Stage6 torso surface or stable filled silhouette.",
+    "Four flat test soles are synthetic closures, not real 3D rounded hoof base flattenings.",
+    "Four open upper band edges have no matching source-aligned torso/head/neck panels, so this does not form an assembled plush character.",
+    "No measured material, grain/nap, stuffing pressure, visual design signoff, sewing industrial tolerances, factory physical sample, or safety certification.",
+    "Source ring step mismatch ~1e-14mm is algebraic mapping from same original samples, not independently verified fabric tolerance."
+  ],
+  "decision": "PASS_SOURCE_HOOF_RING_ID_AND_2D_STEP_PAIRING_ONLY__REJECT_COMPLETE_CHARACTER_AND_FACTORY_CUTTING",
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "approved_industrial_cutting_patterns": 0,
+  "next_step": "Join upper four yoke band edges to a real character-like low-detail torso/neck mother shell with explicit sewing relationships and closed turning sequence; compare original Stage6 four views, raw body silhouette, clouds, ears, tail, original rounded hoof cap and physical fabric testing before P4.",
+  "independent_post_fix_main_reproduction": {
+    "run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595241",
+    "main_commit": "f525101b049da75f2bd12516b711c5759fc45356",
+    "run_result": "success",
+    "artifact_id": 13610230784,
+    "research_zip_sha256": "89ae3bbe1dd7ebd04ae9095b8749b1e0399fdc4b6017c736921a6ec20ffe9c05",
+    "all_eight_lower_mother_research_members_SHA256_identical_to_first_run": true,
+    "all_four_1_to_1_A4_SVG_byte_identical": true,
+    "manifest_and_original_source_geometry_QA_byte_identical": true,
+    "source_rings_and_independent_seam_errors_repeat_identical": true,
+    "whole_zip_sha256_differs_because_unrelated_pipeline_artifacts": true,
+    "original_source_blender_and_proxy_sha_unchanged": true
+  }
+}
