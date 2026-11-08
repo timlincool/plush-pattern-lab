@@ -42,9 +42,7 @@ def _hoof_pairs(spec, tolerance_mm):
         source_xy_bytes = np.asarray(
             p["source_stitch_ring_xy_mm"], dtype="<f8"
         ).tobytes()
-        evidence_sha = hashlib.sha256(
-            encoded_source_ids + source_xy_bytes
-        ).hexdigest()
+        evidence_sha = hashlib.sha256(encoded_source_ids + source_xy_bytes).hexdigest()
         if evidence_sha != p["source_3d_source_id_and_projected_xy_sha256"]:
             raise ValueError("original source ID-to-XY stitch ring identity changed")
         if len(source) != 512 or len(set(source)) != 512:
@@ -53,12 +51,16 @@ def _hoof_pairs(spec, tolerance_mm):
             raise ValueError("original four hoof source vertex rings overlap")
         ids.update(source)
         if stations.shape != (513,) or not np.isfinite(stations).all():
-            raise ValueError("missing source-indexed upper/lower sleeve stitch stations")
+            raise ValueError(
+                "missing source-indexed upper/lower sleeve stitch stations"
+            )
         error = float(np.max(np.abs(np.diff(stations) - edge)))
         mismatch = abs(float(edge.sum()) - p["source_original_hoof_perimeter_mm"])
         mismatch += abs(float(stations[-1] - stations[0]) - float(edge.sum()))
         if error > tolerance_mm or mismatch > tolerance_mm:
-            raise ValueError("real source 3D hoof boundary and sleeve stitches diverged")
+            raise ValueError(
+                "real source 3D hoof boundary and sleeve stitches diverged"
+            )
         target = EXPECTED_SOURCE_HOOF_PERIMETERS_MM[label]
         if abs(float(edge.sum()) - target) > 0.003:
             raise ValueError("original real Stage6 source hoof perimeter changed")
@@ -92,7 +94,9 @@ def _yoke_holes(spec, allowance):
     if not all(holes[key].covers(cut_holes[i]) for i, key in enumerate(ORDER)):
         raise ValueError("four source hoop cut holes are not inset toward the hole")
     if any(outer.exterior.distance(hole) <= 2 * allowance for hole in holes.values()):
-        raise ValueError("insufficient belly bridge between source hoof and outer stitch")
+        raise ValueError(
+            "insufficient belly bridge between source hoof and outer stitch"
+        )
     cut = cut_outer.difference(unary_union(cut_holes))
     if not cut.is_valid or cut.geom_type != "Polygon" or len(cut.interiors) != 4:
         raise ValueError("lower yoke cut must contain exactly four real source holes")
@@ -118,7 +122,9 @@ def _outer_band_pairs(spec, outer, tolerance):
             raise ValueError("unmatched source-linked outer band seam stations")
         error = float(np.max(np.abs(np.diff(stations) - steps[expected_ids])))
         if error > tolerance:
-            raise ValueError("yoke outer and lower band stitch segment lengths disagree")
+            raise ValueError(
+                "yoke outer and lower band stitch segment lengths disagree"
+            )
         used.extend(expected_ids)
         if not band["open_upper_edge_not_paired_to_body"]:
             raise ValueError("cannot claim finished outer torso shell")
@@ -132,7 +138,10 @@ def _outer_band_pairs(spec, outer, tolerance):
         )
     if sorted(used) != list(range(64)):
         raise ValueError("not all original mother yoke outer edges have a partner")
-    if abs(sum(b["yoke_to_band_stitch_mm"] for b in results) - outer.length) > tolerance:
+    if (
+        abs(sum(b["yoke_to_band_stitch_mm"] for b in results) - outer.length)
+        > tolerance
+    ):
         raise ValueError("unpaired new outer yoke circumference")
     return results
 

@@ -59,12 +59,12 @@ def test_four_source_hoof_rings_have_distinct_actual_512_edge_identities():
     rings = extract_original_hoof_rings(xyz, f)
     assert set(rings) == {"FL", "FR", "RL", "RR"}
     assert [len(rings[x]["original_vertex_ids"]) for x in rings] == [512] * 4
-    assert [rings[x]["source_centroid_xyz_mm"][0] for x in ("FL", "FR")] == pytest.approx(
-        [-29, 29], abs=1e-5
-    )
-    assert [rings[x]["source_centroid_xyz_mm"][1] for x in ("RL", "RR")] == pytest.approx(
-        [81, 81], abs=1e-5
-    )
+    assert [
+        rings[x]["source_centroid_xyz_mm"][0] for x in ("FL", "FR")
+    ] == pytest.approx([-29, 29], abs=1e-5)
+    assert [
+        rings[x]["source_centroid_xyz_mm"][1] for x in ("RL", "RR")
+    ] == pytest.approx([81, 81], abs=1e-5)
 
 
 def test_source_hoof_yoke_has_four_real_size_stitch_holes_and_13_pieces():
@@ -91,7 +91,7 @@ def test_source_hoof_panel_a4_sheets_are_true_mm_and_not_print_scaled():
         assert root.attrib["viewBox"] == "0 0 210 297"
         assert "10 x 10 mm calibration square" in body
         assert "NOT FACTORY APPROVED" in body
-    assert "data-part=\"VENTRAL-YOKE\"" in pages["sheet-01.svg"]
+    assert 'data-part="VENTRAL-YOKE"' in pages["sheet-01.svg"]
     assert pages["sheet-02.svg"].count('data-part="LEG-') == 4
     assert pages["sheet-03.svg"].count('data-part="TEST-SOLE-') == 4
     assert pages["sheet-04.svg"].count('data-part="BAND-') == 4

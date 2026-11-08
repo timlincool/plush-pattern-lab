@@ -25,11 +25,7 @@ BAND_STITCH_EDGES = 16
 def _checked_mesh(xyz, faces):
     vertices = np.asarray(xyz, dtype=np.float64)
     tri = np.asarray(faces)
-    if (
-        vertices.ndim != 2
-        or vertices.shape[1] != 3
-        or not np.isfinite(vertices).all()
-    ):
+    if vertices.ndim != 2 or vertices.shape[1] != 3 or not np.isfinite(vertices).all():
         raise ValueError("expected actual finite Stage6 millimetre vertices")
     if (
         tri.ndim != 2
@@ -44,12 +40,8 @@ def _checked_mesh(xyz, faces):
 
 
 def _original_open_boundary(faces):
-    pairs = np.concatenate(
-        (faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [2, 0]])
-    )
-    unique, counts = np.unique(
-        np.sort(pairs, axis=1), axis=0, return_counts=True
-    )
+    pairs = np.concatenate((faces[:, [0, 1]], faces[:, [1, 2]], faces[:, [2, 0]]))
+    unique, counts = np.unique(np.sort(pairs, axis=1), axis=0, return_counts=True)
     if np.any(counts > 2) or not np.any(counts == 1):
         raise ValueError("nonmanifold original hoof boundary")
     return unique[counts == 1]
@@ -113,7 +105,11 @@ def extract_original_hoof_rings(xyz, faces, *, expected_edges=512):
     visited, rows = set(), []
     for start in sorted(adjacent):
         if start not in visited:
-            rows.append(_source_ring(_one_ring(start, adjacent, visited), points, expected_edges))
+            rows.append(
+                _source_ring(
+                    _one_ring(start, adjacent, visited), points, expected_edges
+                )
+            )
     if len(rows) != 4 or len(visited) != 4 * expected_edges:
         raise ValueError("source hoof openings are not four independent rings")
     rows.sort(
@@ -158,8 +154,10 @@ def _quarter_bands(outer_ring, height_mm):
                 "yoke_outer_section_stitch_mm": float(local.sum()),
                 "stitch_bottom_station_x_mm": x.tolist(),
                 "stitch_rectangle_xy_mm": [
-                    [0, 0], [float(x[-1]), 0],
-                    [float(x[-1]), height_mm], [0, height_mm],
+                    [0, 0],
+                    [float(x[-1]), 0],
+                    [float(x[-1]), height_mm],
+                    [0, height_mm],
                 ],
                 "open_upper_edge_not_paired_to_body": True,
             }
@@ -245,8 +243,7 @@ def build_source_hoof_lower_toile(
     outer_ring = np.asarray(outside.exterior.coords[:-1], dtype=float)
     bands = _quarter_bands(outer_ring, height_mm)
     items = {
-        name: _toe_and_sleeve(ring, name, height_mm)
-        for name, ring in rings.items()
+        name: _toe_and_sleeve(ring, name, height_mm) for name, ring in rings.items()
     }
     source_edges = sum(item["source_original_hoof_edges"] for item in items.values())
     return {
@@ -260,8 +257,7 @@ def build_source_hoof_lower_toile(
         "original_source_hoofs": items,
         "yoke": {
             "source_hoof_holes_stitch_xy_mm": {
-                key: item["source_stitch_ring_xy_mm"]
-                for key, item in items.items()
+                key: item["source_stitch_ring_xy_mm"] for key, item in items.items()
             },
             "outer_stitch_xy_mm": outer_ring.tolist(),
             "outer_cut_xy_mm": np.asarray(outer_cut.exterior.coords).tolist(),
@@ -275,8 +271,10 @@ def build_source_hoof_lower_toile(
         "outer_quarter_bands": bands,
         "piece_count": 13,
         "piece_roles": {
-            "ventral_yoke": 1, "four_leg_sleeves": 4,
-            "four_synthetic_flat_hoof_soles": 4, "four_upper_outer_bands": 4,
+            "ventral_yoke": 1,
+            "four_leg_sleeves": 4,
+            "four_synthetic_flat_hoof_soles": 4,
+            "four_upper_outer_bands": 4,
         },
         "turning_gap_research": {
             "band_id": "BAND-3",
