@@ -80,8 +80,7 @@ def _mesh_bvh(obj, role):
 
 def _object_bvh_cache(roles):
     rows = [
-        _mesh_bvh(bpy.data.objects[name], role)
-        for name, role in sorted(roles.items())
+        _mesh_bvh(bpy.data.objects[name], role) for name, role in sorted(roles.items())
     ]
     if len(rows) != 41:
         raise ValueError("expected 41 original Stage6 product Mesh BVH candidates")
@@ -97,9 +96,7 @@ def _ray_object(record, origin, direction, max_distance, transverse_axes):
         uv > bbox[1, list(transverse_axes)] + 1e-9
     ):
         return None
-    position, _, _, distance = record["tree"].ray_cast(
-        origin, direction, max_distance
-    )
+    position, _, _, distance = record["tree"].ray_cast(origin, direction, max_distance)
     if position is None:
         return None
     return position, float(distance)
@@ -179,8 +176,10 @@ def _sample_one_path(records, bounds, prior, view):
             "source_3d_length_mm": prior["source_3d_seam_length_mm"],
             "source_vertex_ids_exactly_preserved": True,
             "first_hit_product_mesh_counts": dict(
-                sorted(Counter(s["first_product_mesh"] for s in samples).items(),
-                       key=lambda item: str(item[0]))
+                sorted(
+                    Counter(s["first_product_mesh"] for s in samples).items(),
+                    key=lambda item: str(item[0]),
+                )
             ),
             "historic_v14_alert_samples": [
                 s for s in samples if s["historic_face_v14_alert"]
@@ -240,9 +239,7 @@ def _report(roles, cache, bounds, prior):
         "original_other_curve_objects_not_raycasted": sum(
             obj.type in ("CURVE", "CURVES") for obj in bpy.data.objects
         ),
-        "product_mesh_roles": dict(
-            sorted(Counter(roles.values()).items())
-        ),
+        "product_mesh_roles": dict(sorted(Counter(roles.values()).items())),
         "product_meshes_unlinked_to_active_scene": [
             x["name"] for x in cache if not x["in_active_scene"]
         ],
@@ -299,7 +296,9 @@ def main():
         json.dumps(
             {
                 "meshes": len(cache),
-                "curves_not_raytested": report["original_other_curve_objects_not_raycasted"],
+                "curves_not_raytested": report[
+                    "original_other_curve_objects_not_raycasted"
+                ],
                 "front": [
                     {
                         "path": x["path_id"],
