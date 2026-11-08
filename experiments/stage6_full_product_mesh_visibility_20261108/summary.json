@@ -1,0 +1,204 @@
+{
+  "schema": "stage6-real-all-product-mesh-five-view-seam-visibility-evidence-v1",
+  "measurement_date_utc": "2026-11-08",
+  "first_trusted_real_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42431619685",
+  "first_trusted_main_commit": "99b9a385590d9a30acedf34cf362e66a214f1f40",
+  "first_trusted_run_conclusion": "success",
+  "after_code_style_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42431869219",
+  "after_code_style_python_ci_result": "success",
+  "python_tests_passed": 445,
+  "source_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "mesh_registry_path": "design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json",
+  "authored_mesh_objects_total": 42,
+  "excluded_studio_floor_mesh": 1,
+  "source_product_meshes_raycasted": 41,
+  "source_curve_or_hair_objects_not_raycasted": 423,
+  "source_product_mesh_objects_unlinked_to_active_scene": [],
+  "source_product_mesh_objects_hidden_from_render": [],
+  "original_mesh_category_counts": {
+    "core_body_mesh": 1,
+    "decorative_cloud_layers": 7,
+    "ears": 4,
+    "fabric_drops": 10,
+    "facial_markers": 4,
+    "flat_connectors": 10,
+    "four_hooves": 4,
+    "tail_overlay": 1
+  },
+  "view_names": [
+    "front",
+    "back",
+    "left",
+    "right",
+    "top"
+  ],
+  "view_orthographic_directions_mm": [
+    "+Y",
+    "-Y",
+    "+X",
+    "-X",
+    "-Z"
+  ],
+  "source_old_historic_face_registration": "design/reference-v25/face_embroidery_registration_v14.json",
+  "source_historic_registration_is_not_approved_stage6_design": true,
+  "source_historic_nose_mouth_buffer_mm": 3,
+  "source_to_first_hit_depth_tolerance_mm": 0.7,
+  "research_source_point_count_each_B_radial_path": [
+    33,
+    143,
+    132
+  ],
+  "front": {
+    "path0": {
+      "first_product_Mesh_names": {
+        "PRIMARY continuous sculpt | new anatomy": 22,
+        "Rounded hoof base": 1,
+        "none": 10
+      },
+      "first_hit_classification": {
+        "coincident_with_another_product_mesh_unresolved": 1,
+        "near_original_body_first_surface": 21,
+        "no_authored_mesh_first_hit": 10,
+        "proxy_source_ahead_of_full_mesh_surface_unresolved": 1
+      },
+      "historic_face_v14_alerts": 0
+    },
+    "path1": {
+      "nearest_product_mesh_group_counts": {
+        "core_body_mesh": 93,
+        "decorative_cloud_layers": 40,
+        "fabric_drops": 9,
+        "four_hooves": 1
+      },
+      "other_product_mesh_occluded": 50,
+      "original_main_body_self_occluded": 93,
+      "historic_face_v14_alerts": 0
+    },
+    "path2": {
+      "original_source_vertices": 132,
+      "nearest_product_mesh_group_counts": {
+        "core_body_mesh": 76,
+        "decorative_cloud_layers": 55,
+        "four_hooves": 1
+      },
+      "near_original_main_body_first_surface": 71,
+      "occluded_by_another_product_Mesh": 55,
+      "original_main_body_self_occluded": 5,
+      "near_coincident_with_other_product_Mesh_unresolved": 1,
+      "historic_nose_mouth_v14_alerts": 8,
+      "all_eight_historic_alert_source_points_first_hit_original_main_body": true,
+      "all_eight_historic_alert_source_points_without_separate_product_Mesh_occlusion": true,
+      "historic_face_warning_vertex_witnesses": [
+        {
+          "id": 40406,
+          "depth_mm": -0.00635
+        },
+        {
+          "id": 40409,
+          "depth_mm": -0.00616
+        },
+        {
+          "id": 40423,
+          "depth_mm": -0.00278
+        },
+        {
+          "id": 40427,
+          "depth_mm": -0.00692
+        },
+        {
+          "id": 40424,
+          "depth_mm": -0.00787
+        },
+        {
+          "id": 40425,
+          "depth_mm": -0.01025
+        },
+        {
+          "id": 40426,
+          "depth_mm": 0.00317
+        },
+        {
+          "id": 40436,
+          "depth_mm": -0.00799
+        }
+      ],
+      "critical_witness_original_source_vertex_id": 40436,
+      "critical_witness_source_xyz_mm": [
+        -0.93307,
+        -86.3353,
+        190.23085
+      ],
+      "critical_witness_historic_nose_xz_distance_mm": 0.5754
+    }
+  },
+  "path2_five_view_first_hit_category_counts": {
+    "front": {
+      "near_main_body": 71,
+      "other_product_mesh_occluded": 55,
+      "self_body_occluded": 5,
+      "other_near_coincident": 1
+    },
+    "back": {
+      "near_main_body": 3,
+      "other_product_mesh_occluded": 62,
+      "self_body_occluded": 65,
+      "source_ahead_unresolved": 1,
+      "other_near_coincident": 1
+    },
+    "left": {
+      "near_main_body": 73,
+      "other_product_mesh_occluded": 57,
+      "no_hit": 1,
+      "other_near_coincident": 1
+    },
+    "right": {
+      "other_product_mesh_occluded": 73,
+      "self_body_occluded": 58,
+      "no_hit": 1
+    },
+    "top": {
+      "other_product_mesh_occluded": 85,
+      "self_body_occluded": 47
+    }
+  },
+  "first_run_artifact": {
+    "artifact_id": 13598275348,
+    "name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "source_zip_sha256": "ac12aa298fdc8ef739298a388e9fd15434207d58a61b153dcabe3bea2b973d3f",
+    "full_41mesh_visibility_json_member": "leftfront_full_scene_mesh_visibility.json",
+    "full_41mesh_visibility_json_sha256": "9a2009ef6163c1b9668a8c03392ea456a014d0cb7d794df02302d0742f289b95",
+    "full_41mesh_five_view_svg_member": "leftfront_full_41mesh_5views.svg",
+    "full_41mesh_five_view_svg_sha256": "d55c2374da9e93c846e193b1fdcb9eab8eb5940cceb32acf7be042917f88ed94",
+    "full_41mesh_five_view_metadata_sha256": "a3c30155f5222a9111181971108f555ef4d80b697999b5f346c54218b3652f38",
+    "github_artifact_is_temporary": true
+  },
+  "scope_and_limitations": [
+    "Original world-space unevaluated authored source Mesh triangles only; excluded render studio floor.",
+    "Original mesh data includes all 41 product Mesh objects, while 423 non-mesh curves/hair are not raytested.",
+    "No actual physical fabric geometry, sewing allowance, material density or final fur occlusion.",
+    "Object first-hit at a source vertex is not continuous visibility along an entire 3D seam segment.",
+    "Previous historical facial feature XZ came from structural12 surface14, not a signed Stage6 design."
+  ],
+  "decision": "REJECT_B_HIGH_SOURCE_ROUTE_2_FOR_CURRENT_HISTORICAL_FACIAL_LAYOUT_PENDING_DESIGN_REALIGNMENT",
+  "design_approved_in_full_scene": false,
+  "factory_paper_patterns_approved": 0,
+  "production_phase": "P3_in_progress",
+  "P4_industrial_cut_patterns_status": "not_started",
+  "next_action": "Reroute high B radial source-edge path away from nose/mouth and constrain to realistically concealed panel boundary locations after comparing complete 41 raw-Mesh view with original design references; rerun topology, matched 3D seams, strain, UV overlap, real fabric and factory gates.",
+  "after_format_trusted_blender_reproduction": {
+    "run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42431869165",
+    "main_commit": "d1e05c54517d5c176bcb5281b484b58d1a2a670d",
+    "conclusion": "success",
+    "artifact_id": 13597728022,
+    "research_zip_sha256": "30253a9b80f5bfc9d737e432b33c09b57eba57378a3a4da5db1c2626fc4963eb",
+    "full_41mesh_json_sha256": "ea7cba7a35f209746084165995a65e691d0a91ff80ca0b1f5c2e599bbcd690a0",
+    "five_view_svg_sha256": "d55c2374da9e93c846e193b1fdcb9eab8eb5940cceb32acf7be042917f88ed94",
+    "five_view_metadata_sha256": "ce7434f51c270b35678b7e2e5d676eac82af05fc28679df7c76e8e34a27b878f",
+    "original_upstream_current_run_multidisk_summary_sha256": "d7044bdb4de730ff2e17b9e7501d9a60b797144324e03780d558cd25e7a8666b",
+    "five_view_svg_byte_identical_to_first_run": true,
+    "full_json_view_results_structurally_and_numerically_identical_to_first_run": true,
+    "only_full_json_difference_is_upstream_multidisk_current_run_summary_sha256": true,
+    "source_geometry_and_historic_v14_alerts_unchanged": true
+  }
+}
