@@ -87,13 +87,11 @@ def test_incompatible_source_region_cannot_be_promoted_to_real_reroute():
 @pytest.mark.parametrize(
     "mode",
     [
-        ("bad", 150.0, -20.0, -5.0),
+        ("no_lateral_boundary", 150.0, -10.0, -5.0),
         ("none", 250.0, -78.0, -65.0),
     ],
 )
 def test_missing_anatomical_source_boundary_stops_instead_of_guessing(mode):
     coords = np.asarray([[-0.9, -69, 150], [-0.9, -19, 220]])
-    if mode[0] == "bad":
-        mode = (mode[0], mode[1], mode[2], mode[3])
     with pytest.raises(ValueError):
         _candidate_targets(coords, np.arange(2), mode)
