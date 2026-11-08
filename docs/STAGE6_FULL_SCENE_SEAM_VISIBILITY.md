@@ -69,6 +69,8 @@
 
 原始逐顶点五视角JSON、可重建SVG、数值SHA与Artifact来源存于[永久实测摘要](../experiments/stage6_full_product_mesh_visibility_20261108/summary.json)。早一轮首个真实Run的临时 Artifact ID为`13598275348`，详细文件可通过固定SHA来源重新从受信Runner生成，不依赖历史私有库。
 
+**独立复现**：排版修复后可信主干 [Stage6 #42431869165](https://github.com/timlincool/plush-pattern-lab/actions/runs/42431869165) 再次完整运行。从源Blend重建的**五视角SVG字节SHA-256与首个Run完全一致**；两份详细JSON的全部5视角逐源点first-hit对象、分类、深度、警报也完全一致。详细JSON总SHA不同，**唯一差异是本次上游多盘LSCM摘要SHA字符串变化**，不能据此声称原始求解器100%字节确定性。两次完整Zip/JSON/SVG源SHA见[永久证据](../experiments/stage6_full_product_mesh_visibility_20261108/summary.json)。
+
 ## 下一个真正生产相关动作
 
 用全场景五视角统计定位 B 高位缝2与眼鼻嘴、云团/耳尾实际原Mesh的遮挡或重叠：如果完整原Mesh也无法隐藏鼻口附近的点，优先沿真实3D源边避让脸部，寻找被云团覆盖且工厂可缝的缝位。任何改线必须从原源Face/Vertex ID重新进行 Euler=1分片、配缝、2D边长/重叠/翻向/面积及实际材料伸长评估；不得只看0重叠或近似左右缝长。两处四线交汇、返口、料样与制造商接口仍未解决。
