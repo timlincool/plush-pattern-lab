@@ -151,9 +151,7 @@ def _files(spec, qa, profile):
         "approved_industrial_paper_patterns": 0,
         "files_sha256": hashes,
     }
-    output["manifest.json"] = json.dumps(
-        manifest, indent=2, ensure_ascii=False
-    ) + "\n"
+    output["manifest.json"] = json.dumps(manifest, indent=2, ensure_ascii=False) + "\n"
     return output
 
 
