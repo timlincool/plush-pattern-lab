@@ -843,7 +843,12 @@
       "historic_v14_face_alerts_first_hit_other_mesh_count": 0,
       "historic_face_source_12_not_final_stage6_approved": true,
       "original_3d_sewing_body_mesh_material_visibility_not_certified": true,
-      "factory_cutting_approved": 0
+      "factory_cutting_approved": 0,
+      "repeat_main_stage6_blender_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42431869165",
+      "repeat_full_five_view_svg_sha256": "d55c2374da9e93c846e193b1fdcb9eab8eb5940cceb32acf7be042917f88ed94",
+      "five_view_svg_bytes_identical_across_two_main_runs": true,
+      "per_vertex_five_view_first_hit_objects_depths_statuses_identical_across_two_main_runs": true,
+      "only_different_json_header_is_nondeterministic_previous_lscm_multidisk_summary_sha": true
     }
   },
   "next_actions": [
@@ -894,6 +899,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-08",
+      "event": "独立受信主干Stage6 #42431869165重复全部41产品Mesh五视角源切缝BVH审查：SVG SHA严格与#42431619685相同，5视角逐顶点的first-hit类别、对象、深度和历史鼻口8点完全相同。仅上游同次多盘LSCM summary SHA不同，故本轮JSON总哈希不同；高位缝2仍应优先避开面部，P3不晋升P4",
+      "evidence_path": "experiments/stage6_full_product_mesh_visibility_20261108/summary.json"
+    },
     {
       "date": "2026-11-08",
       "event": "受信Stage6 #42431619685已实跑全部原41产品Mesh(42原Mesh剔除摄影棚地面)五视角BVH真实源切缝。B高位缝2的132源点正面71近主壳、55其他Mesh遮挡、5主体自遮、1近重合；全部8个历史鼻口警报源ID第一命中主壳本身，距原面0.01mm量级，未被任何独立云团Mesh遮挡。423曲线/毛发未审，P3继续且优先避脸重布真实缝位",
