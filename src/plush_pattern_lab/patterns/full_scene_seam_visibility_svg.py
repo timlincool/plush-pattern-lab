@@ -28,8 +28,7 @@ def _view_body_dots(convert, source):
     result = []
     for x, y in convert(dots):
         result.append(
-            f'<circle cx="{x:.2f}" cy="{y:.2f}" r="0.5" '
-            'fill="#79848c" opacity="0.19"/>'
+            f'<circle cx="{x:.2f}" cy="{y:.2f}" r="0.5" fill="#79848c" opacity="0.19"/>'
         )
     return result
 
@@ -98,7 +97,7 @@ def _view_panel(points, report, historic, view, index):
     parts.append(
         f'<text x="{left + 11}" y="{top + PANEL_HEIGHT - 8}" '
         'font-family="sans-serif" font-size="10">'
-        f'B2: near body {near} | other Mesh occluded {overlay} | unresolved {unknown}'
+        f"B2: near body {near} | other Mesh occluded {overlay} | unresolved {unknown}"
         "</text>"
     )
     return parts
@@ -122,10 +121,10 @@ def render_product_mesh_five_view_svg(source_points, report, historic_face):
         f'height="{CANVAS_HEIGHT}" viewBox="0 0 {CANVAS_WIDTH} {CANVAS_HEIGHT}">',
         '<rect width="1500" height="950" fill="#fbfbfb"/>',
         '<text x="15" y="22" font-family="sans-serif" font-size="17">'
-        'STAGE6 B THREE RADIAL SEAMS | 41 PRODUCT MESH FIRST-HIT, 5 VIEWS</text>',
+        "STAGE6 B THREE RADIAL SEAMS | 41 PRODUCT MESH FIRST-HIT, 5 VIEWS</text>",
         '<text x="15" y="43" font-family="sans-serif" font-size="11">'
-        'Historical face v14 shown only as a warning;'
-        ' original body proxy is not final face embroidery.</text>',
+        "Historical face v14 shown only as a warning;"
+        " original body proxy is not final face embroidery.</text>",
     ]
     for index, view in enumerate(VIEWS):
         result.extend(
@@ -134,17 +133,17 @@ def render_product_mesh_five_view_svg(source_points, report, historic_face):
     result.extend(
         [
             '<text x="1015" y="535" font-family="sans-serif" font-size="13">'
-            'Source path colors: red old, amber high-1, blue high-2.</text>',
+            "Source path colors: red old, amber high-1, blue high-2.</text>",
             '<text x="1015" y="559" font-family="sans-serif" font-size="12">'
-            'Solid = source near first body mesh; gray dashed = otherwise.</text>',
+            "Solid = source near first body mesh; gray dashed = otherwise.</text>",
             '<text x="1015" y="582" font-family="sans-serif" font-size="12">'
-            'Front orange/red circles = historic eye/nose/mouth alert vertices.</text>',
+            "Front orange/red circles = historic eye/nose/mouth alert vertices.</text>",
             '<text x="1015" y="605" font-family="sans-serif" font-size="12">'
-            'Other Mesh occlusion is NOT a verified hidden manufacturing stitch.</text>',
+            "Other Mesh occlusion is NOT a verified hidden manufacturing stitch.</text>",
             '<text x="1015" y="628" font-family="sans-serif" font-size="12">'
-            'No curves/fur, modifiers, material response or design alignment.</text>',
+            "No curves/fur, modifiers, material response or design alignment.</text>",
             '<text x="1015" y="651" font-family="sans-serif" font-size="12">'
-            'NO APPROVED FABRIC CUTTING PATTERNS.</text>',
+            "NO APPROVED FABRIC CUTTING PATTERNS.</text>",
             "</svg>",
         ]
     )
