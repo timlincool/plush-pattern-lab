@@ -1,0 +1,192 @@
+{
+  "schema": "stage6-real-source-b2-face-avoidance-full-2d-41mesh-evidence-v1",
+  "date_utc": "2026-11-08",
+  "trusted_main_real_stage6_workflow": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42443067478",
+  "trusted_main_head_commit": "3f8f01095e9b3611a9e3ddb5a0b8fc4a6e73171c",
+  "trusted_main_workflow_conclusion": "success",
+  "trusted_main_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42443067480",
+  "trusted_main_python_ci_conclusion": "success",
+  "python_tests_passed": 456,
+  "ruff_and_package_quality_gate": "PASS",
+  "immutable_public_original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "immutable_proxy_25percent_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "immutable_source_region_faces": 36833,
+  "source_original_B_radial_prefix_routes_unchanged": true,
+  "original_B_hoof_source_edges_unchanged": true,
+  "research_artifact": {
+    "artifact_id": 13602417705,
+    "name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "download_zip_sha256": "0ae889b14ae3a6228462e535c13719c4b3b5dfba6d3446e993a8d865f9d6601e",
+    "summary_member": "leftfront_B2_reroute_ab_summary.json",
+    "summary_sha256": "26c050e8072296612dc33f3d5846ea0190fd81281be6bfcad62fd362516b2664",
+    "detail_member": "leftfront_B2_reroute_ab_detail.json",
+    "detail_sha256": "962a5110dfef19483665b70bd3407e6fbfa50b3eb755b301fe93e0fddb9f1b1f",
+    "temporary_artifact_retention_days": 7
+  },
+  "original_B_high2_rejected_source_3d_mm": 210.64578128579944,
+  "source_current_historic_face_reference": "design/reference-v25/face_embroidery_registration_v14.json",
+  "historic_face_reference_is_old_structural12_not_signed_stage6": true,
+  "face_exclusion_is_research_proxy_not_signed_material_buffer": {
+    "max_abs_x_mm": 20,
+    "front_y_below_mm": -70,
+    "min_z_mm": 155
+  },
+  "new_research_candidates": [
+    {
+      "name": "C_low_neck_boundary",
+      "source_new_radial_start_vertex_id": 54539,
+      "source_new_radial_end_vertex_id": 40531,
+      "source_3d_exit_xyz_mm": [
+        -0.8638,
+        -68.2767,
+        150.5215
+      ],
+      "source_new_radial_vertex_count": 95,
+      "source_new_radial_3d_length_mm": 157.5929217499372,
+      "true_original_panel_faces": [
+        22184,
+        5635,
+        9014
+      ],
+      "all_source_faces_exactly_once": true,
+      "all_three_panels_topological_disk_euler_one": true,
+      "all_3d_original_source_radial_edges_two_sided": true,
+      "historic_v14_nose_mouth_alerts": 0,
+      "front_41product_mesh_first_hit_path2": {
+        "source_vertices": 95,
+        "near_original_main_body_source_surface": 54,
+        "occluded_by_another_product_mesh": 36,
+        "original_main_body_self_occluded": 5,
+        "unresolved": 0
+      },
+      "source_vertex_to_preserved_high1_nearest_3d_mm": 15.519024595526028,
+      "source_vertex_to_preserved_high1_seam_endpoint_gap_mm": 86.24129953678727,
+      "full_original_LSCM_by_piece": [
+        {
+          "faces": 22184,
+          "relative_edge_error_p95": 0.986931484646738,
+          "uv_positive_area_overlap_pairs": 26,
+          "uv_flipped_faces": 3,
+          "uv_near_zero_faces": 0
+        },
+        {
+          "faces": 5635,
+          "relative_edge_error_p95": 0.27713684265704264,
+          "uv_positive_area_overlap_pairs": 0,
+          "uv_flipped_faces": 0,
+          "uv_near_zero_faces": 0
+        },
+        {
+          "faces": 9014,
+          "relative_edge_error_p95": 0.8194205142273636,
+          "uv_positive_area_overlap_pairs": 10540,
+          "uv_flipped_faces": 1,
+          "uv_near_zero_faces": 0
+        }
+      ],
+      "radial_path_original_source_3d_mm": [
+        40.89211016973698,
+        224.92003861220397,
+        157.5929217499372
+      ],
+      "radial_two_independent_UV_side_length_disagreement_mm": [
+        0.11163443572633724,
+        217.4577824703394,
+        9.371830855566088
+      ],
+      "new_source_radial_path2_independent_uv_sides_mm": [
+        112.33293839875418,
+        121.70476925432027
+      ],
+      "full_41mesh_first_hit_sha256": "0709cec9c560173c7938f90cb5a8554b445310cdf2499a05606164733c5712db",
+      "real_41mesh_five_view_svg_sha256": "aff819da142bb716cab4678d021f4e7cedb8c142fd22d8695396856a7b87f04b",
+      "real_41mesh_five_view_svg_metadata_sha256": "f261261806add1a390eba942f8e7603eb7dea431d58b418e2c9b37848c0342dd",
+      "status": "REJECTED_FOR_FABRIC_CUTTING",
+      "why": "No historic nose alert but majority of new seam still near front shell; original high1 seam remains 217.46 mm mismatched in planar LSCM, and other panels still have heavy local distortion/overlaps."
+    },
+    {
+      "name": "D_lateral_high_boundary",
+      "source_new_radial_start_vertex_id": 54539,
+      "source_new_radial_end_vertex_id": 44584,
+      "source_3d_exit_xyz_mm": [
+        -0.9005,
+        -19.5719,
+        222.6951
+      ],
+      "source_new_radial_vertex_count": 141,
+      "source_new_radial_3d_length_mm": 234.61735093883428,
+      "true_original_panel_faces": [
+        25510,
+        2309,
+        9014
+      ],
+      "all_source_faces_exactly_once": true,
+      "all_three_panels_topological_disk_euler_one": true,
+      "all_3d_original_source_radial_edges_two_sided": true,
+      "historic_v14_nose_mouth_alerts": 0,
+      "front_41product_mesh_first_hit_path2": {
+        "source_vertices": 141,
+        "near_original_main_body_source_surface": 0,
+        "occluded_by_another_product_mesh": 45,
+        "original_main_body_self_occluded": 96,
+        "unresolved": 0
+      },
+      "source_vertex_to_preserved_high1_nearest_3d_mm": 1.0570275803599396,
+      "source_vertex_to_preserved_high1_seam_endpoint_gap_mm": 2.43549004440264,
+      "full_original_LSCM_by_piece": [
+        {
+          "faces": 25510,
+          "relative_edge_error_p95": 0.9977276283309763,
+          "uv_positive_area_overlap_pairs": 23732,
+          "uv_flipped_faces": 6,
+          "uv_near_zero_faces": 121
+        },
+        {
+          "faces": 2309,
+          "relative_edge_error_p95": 0.4770134158087953,
+          "uv_positive_area_overlap_pairs": 0,
+          "uv_flipped_faces": 0,
+          "uv_near_zero_faces": 0
+        },
+        {
+          "faces": 9014,
+          "relative_edge_error_p95": 0.8194205142273636,
+          "uv_positive_area_overlap_pairs": 10540,
+          "uv_flipped_faces": 1,
+          "uv_near_zero_faces": 0
+        }
+      ],
+      "radial_path_original_source_3d_mm": [
+        40.89211016973698,
+        224.92003861220397,
+        234.61735093883428
+      ],
+      "radial_two_independent_UV_side_length_disagreement_mm": [
+        3.012361990374643,
+        170.7382996959118,
+        208.18957933426253
+      ],
+      "new_source_radial_path2_independent_uv_sides_mm": [
+        40.68747947824929,
+        248.87705881251182
+      ],
+      "full_41mesh_first_hit_sha256": "f669d8804cd955ee34d24753a6e2274eb1392d7f35ca3bb2fe1fc314445727cf",
+      "real_41mesh_five_view_svg_sha256": "acdd2f15474903a36796413db65a22df32e3b9751fe4e3b1cf3acecedbddd647",
+      "real_41mesh_five_view_svg_metadata_sha256": "a314b6ca4a424e1551efafb9771af6bdaa9917d83e87cc21b41886bfc7e692c9",
+      "status": "REJECTED_FOR_FABRIC_CUTTING",
+      "why": "Avoids old facial source-proximity but creates 2309-face narrow island, two route source vertices within about 1.06mm, and a severe 208.19mm two-sided UV length discrepancy with 23732 overlap pairs."
+    }
+  ],
+  "research_method_limits": [
+    "Both variants were generated along real frozen original 3D mesh edges; original source faces, hoop and two B base radial seams were not moved.",
+    "Old surface14 historic facial X/Z registration is not a factory-signed current Stage6 design.",
+    "Full 41 raw product Mesh BVH does not cover 423 hair/curve objects or evaluated Blender modifiers, cloth thickness, fur direction, embroidery or user signoff.",
+    "Nearest 3D separation is an independent finite SOURCE VERTEX-to-vertex sample, not continuous curve-to-curve clearance certification.",
+    "Neither real six-panel LSCM solution satisfies nonoverlap and low strain simultaneously; source 3D edge pairing does not ensure 2D sewing alignment."
+  ],
+  "engineering_preference": "C_IS_LESS_BAD_THAN_D_FOR_RESEARCH_NOT_APPROVED",
+  "permanent_production_phase": "P3_in_progress",
+  "P4_factory_pattern_phase": "not_started",
+  "approved_industrial_cutting_patterns": 0,
+  "next_action": "Do not add more UV solvers or promote either layout. Compare source-linked actual front-chest visibility against original character design, then create a manufacturable low-detail mother shell with defensible side/underside seam design; retain 41mesh, 3D source pairing, full UV and materials gates."
+}

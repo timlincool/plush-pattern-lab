@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_original_B2_face_avoidance_C_D_source_topology_local_success_full_uv_ci_pending",
+    "stage": "stage6_B2_face_avoidance_C_D_complete_true_source_uv_41mesh_rejected_mother_shell_next",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -207,6 +207,10 @@
         {
           "path": "docs/STAGE6_B2_FACE_AVOIDANCE_AB.md",
           "kind": "C_D_3D_original_25pct_source_edge_reroute_euler_single_boundary_local_preflight_trusted_main_uv_and_full41mesh_pending"
+        },
+        {
+          "path": "experiments/stage6_b2_reroute_20261108/summary.json",
+          "kind": "real_Stage6_C_D_original_source_face_avoidance_complete_six_panel_UV_41mesh_rejected_factories_not_approved"
         }
       ],
       "blockers": [
@@ -221,7 +225,7 @@
         "可信Stage6 #42409834633实测B三片Tutte凸边界0翻面/0二维重叠、径向边界同源两侧差<0.002mm（约束构造效应），但内部三角边P95误差217%/593%/784%，明确全部拒绝，须优先审核高位缝在真实完整角色/脸/云团上的可见位置",
         "可信Stage6 Run #42411444680实跑正面first-hit审查：B高位缝2的132个源顶点中126位于主壳正面，8个与旧surface14鼻口线投影距离≤3mm；端点ID40436约0.5754mm。高位缝靠近鼻口，待完整42Mesh云团/眼/耳/尾与原设计多视角遮挡及设计审核，禁止视为已隐藏或可裁布",
         "受信Stage6 #42431619685已测41个真实产品原Mesh、五方向BVH：B高位缝2在正面有71点近原主壳表面、55点被其他原Mesh挡住、5点主体自挡、1点不确定；历史鼻口8个警报顶点全部第一命中主壳而非云团或其他原产品Mesh，故不能宣称该缝被覆层隐藏，需重新设计避脸源边路径",
-        "B高位缝2离线真源边已提出C前颈低位和D侧高位两条避脸研究：C三片[22184,5635,9014]面/新缝157.593mm，可能前胸可见；D三片[25510,2309,9014]面/新缝234.617mm，产生2309面窄片。两者仅已本地证实源面单圆盘/源双侧边拓扑；完整真实2D失真与41Mesh五视角遮挡待可信主分支验证，禁止生产"
+        "受信真实Stage6 #42443067478已完整复算C/D避脸路线。历史鼻口警报双方归零，但C的原新缝157.59mm对应两侧UV112.33/121.70mm、旧高位缝两侧差217.46mm，且54/95新源点靠近正面主壳；D形成仅2309面狭窄片、与旧缝点间最小约1.06mm，新增缝两侧UV差208.19mm；六片LSCM存在严重边误差、翻面或重叠，全部拒绝工厂裁布"
       ]
     },
     {
@@ -854,6 +858,89 @@
       "five_view_svg_bytes_identical_across_two_main_runs": true,
       "per_vertex_five_view_first_hit_objects_depths_statuses_identical_across_two_main_runs": true,
       "only_different_json_header_is_nondeterministic_previous_lscm_multidisk_summary_sha": true
+    },
+    "stage6_real_B2_face_avoidance_C_D_full_uv_and_41mesh": {
+      "main_blender_workflow": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42443067478",
+      "main_commit": "3f8f01095e9b3611a9e3ddb5a0b8fc4a6e73171c",
+      "python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42443067480",
+      "full_python_tests_passed": 456,
+      "evidence_path": "experiments/stage6_b2_reroute_20261108/summary.json",
+      "original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "original_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "original_leftfront_source_faces": 36833,
+      "original_source_hoof_and_first_two_B_radial_seams_unchanged": true,
+      "both_three_disk_euler_one_closed_boundaries_and_original_3d_seam_pairing": true,
+      "historic_v14_nose_mouth_warning_path2_counts": {
+        "C": 0,
+        "D": 0
+      },
+      "source_3d_new_seam_length_mm": {
+        "C": 157.5929217499372,
+        "D": 234.61735093883428
+      },
+      "source_three_panel_faces": {
+        "C": [
+          22184,
+          5635,
+          9014
+        ],
+        "D": [
+          25510,
+          2309,
+          9014
+        ]
+      },
+      "uv_positive_area_overlap_pairs": {
+        "C": [
+          26,
+          0,
+          10540
+        ],
+        "D": [
+          23732,
+          0,
+          10540
+        ]
+      },
+      "uv_edge_relative_error_p95": {
+        "C": [
+          0.986931484646738,
+          0.27713684265704264,
+          0.8194205142273636
+        ],
+        "D": [
+          0.9977276283309763,
+          0.4770134158087953,
+          0.8194205142273636
+        ]
+      },
+      "source_new_radial_two_uv_sides_difference_mm": {
+        "C": 9.371830855566088,
+        "D": 208.18957933426253
+      },
+      "preserved_high_1_radial_two_uv_sides_difference_mm": {
+        "C": 217.4577824703394,
+        "D": 170.7382996959118
+      },
+      "front_full41mesh_firsthit_counts_path2": {
+        "C": {
+          "near_original_body": 54,
+          "other_mesh_occluded": 36,
+          "body_self_occluded": 5
+        },
+        "D": {
+          "near_original_body": 0,
+          "other_mesh_occluded": 45,
+          "body_self_occluded": 96
+        }
+      },
+      "C_potential_visible_front_chest_source_vertices_count": 54,
+      "D_narrow_piece_faces": 2309,
+      "D_nearest_two_original_source_seam_vertex_sample_mm": 1.0570275803599396,
+      "curve_or_hair_objects_not_raycasted": 423,
+      "design_signoff_missing": true,
+      "fabric_material_validation_missing": true,
+      "factory_cut_pattern_approved": 0
     }
   },
   "next_actions": [
@@ -861,8 +948,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "在固定Stage6可信main用两条B高位缝2避脸源网格路径C(低前颈Z≈150.5mm)与D(侧面Z≈222.7mm)做同条件源Face/Vertex/四蹄保留、每片单边界Euler=1、源3D缝双侧严格配对、全6片2D LSCM误差/翻面/重叠/两侧UV缝长度对照；再经全41产品Mesh五方向原三角面BVH分别检查历史v14鼻口警报是否避开以及前胸/侧面实际可见分布。即使警报0或UV优化也必须依据真实外观与厂商材料回归拒绝/人工审核，不自动晋升纸样",
-      "done_when": "两条冻结源3D候选的受信Main真实3D及6片LSCM逐片UV、双侧缝长、五视角41Mesh来源映射、设计可见风险比较报告与可下载研究资产都有哈希证据，P3仍保持未签核"
+      "action": "完整真实Stage6避脸A/B（C前低颈、D侧高位）已经验证历史鼻口v14警报均0，但仍严重2D失真且无法直接车缝：C新增缝3D 157.59mm却2D两侧112.33/121.70mm、前胸54点接近可见；D新增234.62mm对应两侧40.69/248.88mm，出现2309面细长片且与旧高位缝局部源点接近1.06mm。不要继续只加切线或替换LSCM/ARAP/Tutte，应先对照完整原始25cm造型四视图设计**低复杂度可制造母版+实际隐藏前胸/下腹或侧背省道**，复核五官云团耳尾的结构承接，提出可车缝的裁片关系，再用源SHA/双侧3D缝、全片低应变2D和厂家材料样片做真实门禁",
+      "done_when": "至少一个真实角色可解释的低复杂度制造母版与成对实际裁片缝线、缝制/翻面顺序及原设计四视图风险审查具可追溯源身份；仍需工业1:1纸样和工厂材料/首样验证才可进入P4"
     },
     {
       "priority": "P0",
@@ -904,6 +991,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-08",
+      "event": "受信真实Stage6 #42443067478完成原B高位缝2避脸C/D两方案的3D完整拓扑、六原源片LSCM及41产品Mesh五视角。两者历史旧鼻口警报从8降0，但C三片UV重叠[26,0,10540]、边长P95[98.69%,27.71%,81.94%]且前胸54/95点近原主壳可见；D重叠[23732,0,10540]、边长P95[99.77%,47.70%,81.94%]，新增源缝两侧UV差208.19mm且2309面窄片。全部拒绝工厂裁布，转可制造母版/设计线位研究",
+      "evidence_path": "experiments/stage6_b2_reroute_20261108/summary.json"
+    },
     {
       "date": "2026-11-08",
       "event": "基于同一固定公开Stage6 25% PLY和原B两条未改径向缝，在历史鼻口代理区硬排除后离线真源边搜索两条高位缝2替代：C前颈低位新缝157.5929mm/3分片22184+5635+9014；D侧高位新缝234.6174mm/3分片25510+2309+9014。均能形成3个单闭边界Euler1盘，但C可能前胸显缝、D出现窄片，尚需可信Main完整2D和41Mesh五视角实测，不批准裁布",
