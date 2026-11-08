@@ -26,6 +26,7 @@ on:
       - 'scripts/render_stage6_full_mesh_seam_views.py'
       - 'scripts/compare_stage6_b2_reroute_ab.py'
       - 'scripts/audit_stage6_b2_reroute_visibility.py'
+      - 'scripts/build_stage6_lower_mother_toile.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -603,6 +604,44 @@ jobs:
               assert meta['not_a_cutting_pattern']
           print('STAGE6_TWO_ALTERNATE_B2_FIVE_VIEWS_NO_MANUFACTURING_CUTTING')
           PY
+      - name: Build 13-piece source-anchored lower mother toile A4 research sheets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_stage6_lower_mother_toile.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --out-dir "$RUNNER_TEMP/stage6-reference/lower_mother_toile_research"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/lower_mother_toile_research'
+          spec = json.loads((root/'lower_toile_source_geometry.json').read_text(encoding='utf8'))
+          qc = json.loads((root/'lower_toile_seam_audit.json').read_text(encoding='utf8'))
+          manifest = json.loads((root/'manifest.json').read_text(encoding='utf8'))
+          assert manifest['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert manifest['source_proxy_25pct_ply_sha256'] == '5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd'
+          assert spec['source_hoof_open_edges'] == 2048
+          assert spec['piece_count'] == 13 and len(spec['outer_quarter_bands']) == 4
+          assert qc['unpaired_upper_band_edges'] == 4
+          assert qc['four_source_hoofs_to_sleeve_to_flat_test_sole_paired_per_segment']
+          assert qc['four_original_source_hoof_rings_and_all_2048_source_edges_preserved']
+          assert not qc['full_character_or_3d_body_silhouette_matched']
+          assert not qc['physical_fabric_and_material_tested']
+          assert qc['factory_patterns_approved'] == 0
+          assert manifest['printing'] == {'paper':'A4', 'scale':'100_percent', 'pages':4}
+          assert all((root/f'sheet-{i:02d}.svg').exists() for i in range(1,5))
+          assert all(hashlib.sha256((root/name).read_bytes()).hexdigest() == sha
+                     for name, sha in manifest['files_sha256'].items())
+          assert manifest['approved_industrial_paper_patterns'] == 0
+          print('STAGE6_SOURCE_4_REAL_HOOF_RING_13_PIECE_TOILE_ONLY', json.dumps({
+              'hoof_ring_perimeter_mm':{
+                  x['hoof']:x['source_3d_ring_perimeter_mm'] for x in qc['source_hoofs']
+              },
+              'outer_yoke_mm':spec['yoke']['outer_stitch_perimeter_mm'],
+              'A4_research_pages':4,
+              'approved':False
+          }))
+          PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
         run: |
@@ -636,5 +675,6 @@ jobs:
             ${{ runner.temp }}/stage6-reference/*.json
             ${{ runner.temp }}/stage6-reference/*.svg
             ${{ runner.temp }}/stage6-reference/*.png
+            ${{ runner.temp }}/stage6-reference/lower_mother_toile_research/**
           if-no-files-found: warn
           retention-days: 7
