@@ -34,20 +34,22 @@ def test_two_real_original_source_reroutes_avoid_old_nose_not_fabric_research():
 def test_real_seam_stretch_and_visibility_still_reject_both_candidates():
     j = json.loads(EVIDENCE.read_text(encoding="utf8"))
     c, d = j["new_research_candidates"]
-    assert c["front_41product_mesh_first_hit_path2"][
-        "near_original_main_body_source_surface"
-    ] == 54
-    assert d["front_41product_mesh_first_hit_path2"][
-        "near_original_main_body_source_surface"
-    ] == 0
+    assert (
+        c["front_41product_mesh_first_hit_path2"][
+            "near_original_main_body_source_surface"
+        ]
+        == 54
+    )
+    assert (
+        d["front_41product_mesh_first_hit_path2"][
+            "near_original_main_body_source_surface"
+        ]
+        == 0
+    )
     assert c["radial_two_independent_UV_side_length_disagreement_mm"][1] > 217
     assert d["radial_two_independent_UV_side_length_disagreement_mm"][2] > 208
-    assert c["full_original_LSCM_by_piece"][2][
-        "uv_positive_area_overlap_pairs"
-    ] > 10000
-    assert d["full_original_LSCM_by_piece"][0][
-        "uv_positive_area_overlap_pairs"
-    ] > 23000
+    assert c["full_original_LSCM_by_piece"][2]["uv_positive_area_overlap_pairs"] > 10000
+    assert d["full_original_LSCM_by_piece"][0]["uv_positive_area_overlap_pairs"] > 23000
     assert d["true_original_panel_faces"][1] == 2309
     assert d["source_vertex_to_preserved_high1_nearest_3d_mm"] < 1.1
     assert j["P4_factory_pattern_phase"] == "not_started"
