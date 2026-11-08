@@ -50,6 +50,8 @@
 
 **2026-11-08 可信主干已验下半身母版：** [13片真源蹄口锚定低复杂度试缝](docs/STAGE6_LOWER_MOTHER_TOILE.md) 已经由 [真实Stage6 #42460875416](https://github.com/timlincool/plush-pattern-lab/actions/runs/42460875416) 与 [#42461595241](https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595241) 两次独立生成，4张A4 SVG、源source ID几何、独立缝线QC及manifest**8文件字节SHA相同**；[Python CI #42461595194](https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595194) 474项绿灯。四个原Z20蹄口周长FL101.6403/FR93.3091/RL119.1003/RR119.1003mm，每环512原边。**新YOKE Z60、4直LEG、4平面SOLE和4上围BAND仅13片研究试布**，4上沿未连接真实头身，且XY包络与原Stage6 Z60源壳差约8–10mm；无真实3D鼓蹄展开、真实材料/云团耳尾/厂商签核。永久证据在 [实验摘要](experiments/stage6_lower_mother_toile_20261108/summary.json)。下一轮优先**让4条开放上围净缝与低复杂度真实角色胸/颈/头母版逐段有序成对**，再审返口、分片和试布；P3未完成，P4未开始。
 
+**2026-11-08 上身母版新增研究：** [固定Stage6真实截面引导的4片上身+1顶盖研究](docs/STAGE6_UPPER_MOTHER_TOILE.md)，在原可信13片下腹四蹄来源不动的前提下，新增4条BAND上缘16段对应4条UPPER下缘、4条UPPER两侧纵缝、4组16段顶盖缝线，形成18片/新5页+旧4页共9页A4的研究假设。**核心风险**：实际源Stage6在Z130→155mm相邻高程截面中心可能跳约71mm，表明头颈不能无条件作为一根连续单环圆筒。代码可测数字配缝不等于真实3D头身造型/填棉可行；可信main真实数据与样纸待复核，尚未装耳/云团/尾/五官/雨滴，P3未完、P4禁启动。未来“继续”优先审源3D纵边差、可分离头颈/躯干结构和真实材料试样，而非只看缝长零差。
+
 ## 代码与验证契约
 
 - 从数字研究转向实体打样时，优先交付能实尺打印的逐片纸样、缝线/对位/返口说明、试布测量记录；当前 [试缝套件](docs/PHYSICAL_PROTOTYPE.md) 只覆盖合成椭球而非真实角色。
