@@ -155,6 +155,6 @@ def test_relocated_yoke_or_test_sole_cannot_claim_original_body_sculpt():
     assert spec["new_ventral_yoke_is_not_original_body_surface"]
     assert spec["real_hoof_base_3d_mesh_not_flattened"]
     assert spec["head_neck_upper_body_ears_tail_clouds_not_connected"]
-    assert not spec["physical_fabric_test_not_done"] is False
+    assert spec["physical_fabric_test_not_done"] is not False
     with pytest.raises(ValueError):
         build_source_hoof_lower_toile({}, seam_allowance_mm=6)
