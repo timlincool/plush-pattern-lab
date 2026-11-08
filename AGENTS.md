@@ -38,6 +38,8 @@
 
 **2026-11-08 可信五官风险结论：** [真Stage6 B高位径向缝正面首表面与历史鼻口审查](docs/STAGE6_B_FACE_SEAM_VIEW_QA.md) 已由 [Stage6 #42411444680](https://github.com/timlincool/plush-pattern-lab/actions/runs/42411444680) 跑完并存 [永久证据](experiments/stage6_face_seam_review_20261108/summary.json)：B新高位缝2在真实原主壳正面126/132源点，**8个**与历史surface14鼻口注册X/Z线距离≤3mm，末端Source Vertex 40436距鼻线仅**0.5754mm**。历史surface14基于早期结构版，不是已经核验的新Stage6脸；完整42Mesh云团/眼/耳/尾与毛绒遮挡还没审计。未来“继续”优先真正全场景缝位可见性/工厂避让，不要因2D算法或3D拓扑数字过关擅自升级P4。
 
+**2026-11-08 继续开发优先级：** [Stage6 原始完整41产品Mesh五视角源缝遮挡审查](docs/STAGE6_FULL_SCENE_SEAM_VISIBILITY.md) 正在由可信main Blender重新验证。使用与 [鼻口风险审查](docs/STAGE6_B_FACE_SEAM_VIEW_QA.md) 相同的B三条真实源顶点ID、全部原始产品Mesh的世界坐标BVH（排除Studio floor），分别报告遮挡对象/深度和历史鼻口8个警报。**不能把有云团Mesh遮挡误称实际毛绒工艺可隐藏**：原毛发曲线/修改器/正式设计图、材料、车缝仍未知。后续优先根据全场景可见性设计避脸且工厂可缝的分片/省道，再复核原3D接缝与完整2D门禁；P4仍未开始。
+
 ## 代码与验证契约
 
 - 从数字研究转向实体打样时，优先交付能实尺打印的逐片纸样、缝线/对位/返口说明、试布测量记录；当前 [试缝套件](docs/PHYSICAL_PROTOTYPE.md) 只覆盖合成椭球而非真实角色。
