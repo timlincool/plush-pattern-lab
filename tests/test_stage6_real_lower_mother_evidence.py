@@ -36,7 +36,9 @@ def test_real_A4_four_sheets_manifest_reproduced_byte_identical_on_main():
     repeat = report["independent_post_fix_main_reproduction"]
     assert first["all_manifest_member_sha256_verified_independently"]
     assert len(first["exact_member_sha256"]) == 8
-    assert repeat["all_eight_lower_mother_research_members_SHA256_identical_to_first_run"]
+    assert repeat[
+        "all_eight_lower_mother_research_members_SHA256_identical_to_first_run"
+    ]
     assert repeat["all_four_1_to_1_A4_SVG_byte_identical"]
     assert repeat["run_result"] == "success"
     study = report["new_mother_study"]
