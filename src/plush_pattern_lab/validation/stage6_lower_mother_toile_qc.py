@@ -6,6 +6,8 @@ certificate. The projected original hoof rims are NOT source torso seams.
 
 from __future__ import annotations
 
+import hashlib
+
 import numpy as np
 from shapely.geometry import Polygon
 from shapely.ops import unary_union
@@ -36,6 +38,15 @@ def _hoof_pairs(spec, tolerance_mm):
         edge = _ring_edges(p["source_stitch_ring_xy_mm"])
         stations = np.asarray(p["sleeve_stitch_station_x_mm"], dtype=float)
         source = p["source_vertex_ids"]
+        encoded_source_ids = np.asarray(source, dtype="<i8").tobytes()
+        source_xy_bytes = np.asarray(
+            p["source_stitch_ring_xy_mm"], dtype="<f8"
+        ).tobytes()
+        evidence_sha = hashlib.sha256(
+            encoded_source_ids + source_xy_bytes
+        ).hexdigest()
+        if evidence_sha != p["source_3d_source_id_and_projected_xy_sha256"]:
+            raise ValueError("original source ID-to-XY stitch ring identity changed")
         if len(source) != 512 or len(set(source)) != 512:
             raise ValueError("original 512-edge hoop identities were not preserved")
         if set(source) & ids:
