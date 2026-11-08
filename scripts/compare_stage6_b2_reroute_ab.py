@@ -121,7 +121,9 @@ def _score_candidate(xyz, faces, source, historic, trial):
     return summary, detail, svg
 
 
-def run_actual_source_reroute_ab(xyz, faces, previous, previous_face, historic, current_hash):
+def run_actual_source_reroute_ab(
+    xyz, faces, previous, previous_face, historic, current_hash
+):
     routes = _trusted_previous(previous, previous_face, current_hash)
     selected = _source_region(xyz, faces)
     trials = reroute_original_b_high2(xyz, faces, selected, routes)
@@ -131,28 +133,34 @@ def run_actual_source_reroute_ab(xyz, faces, previous, previous_face, historic, 
         results.append(row)
         details.append(detail)
         svg[trial["candidate"]] = plot
-    return {
-        "schema": "stage6-source-linked-B-high2-anatomic-avoidance-ab-v1",
-        "source_original_blend_sha256": SOURCE_SHA256,
-        "source_proxy_ply_sha256": PROXY_SHA256,
-        "original_B_current_run_summary_sha256": current_hash,
-        "source_faces": EXPECTED_REGION_FACES,
-        "candidates": results,
-        "historical_v14_face_not_design_approved": True,
-        "original_41_Mesh_visibility_to_be_checked_in_next_step": True,
-        "cannot_use_lscm_failure_as_approved_fabric_rest": True,
-        "approved_industrial_cutting_patterns": 0,
-    }, {
-        "schema": "stage6-source-linked-B-high2-anatomic-avoidance-detail-v1",
-        "source_original_blend_sha256": SOURCE_SHA256,
-        "candidates": details,
-        "approved_for_cutting": False,
-    }, svg
+    return (
+        {
+            "schema": "stage6-source-linked-B-high2-anatomic-avoidance-ab-v1",
+            "source_original_blend_sha256": SOURCE_SHA256,
+            "source_proxy_ply_sha256": PROXY_SHA256,
+            "original_B_current_run_summary_sha256": current_hash,
+            "source_faces": EXPECTED_REGION_FACES,
+            "candidates": results,
+            "historical_v14_face_not_design_approved": True,
+            "original_41_Mesh_visibility_to_be_checked_in_next_step": True,
+            "cannot_use_lscm_failure_as_approved_fabric_rest": True,
+            "approved_industrial_cutting_patterns": 0,
+        },
+        {
+            "schema": "stage6-source-linked-B-high2-anatomic-avoidance-detail-v1",
+            "source_original_blend_sha256": SOURCE_SHA256,
+            "candidates": details,
+            "approved_for_cutting": False,
+        },
+        svg,
+    )
 
 
 def _validate_output_paths(args):
     destinations = [
-        args.summary, args.detail, args.svg_dir / "C_low_neck_boundary.svg",
+        args.summary,
+        args.detail,
+        args.svg_dir / "C_low_neck_boundary.svg",
         args.svg_dir / "D_lateral_high_boundary.svg",
     ]
     if (
@@ -209,7 +217,9 @@ def main():
                     "name": x["candidate"],
                     "face_counts": x["source_panels"],
                     "source_seam_mm": x["source_original_radial_paths_3d_mm"][2],
-                    "historic_v14_face_alerts": x["new_path_historic_v14_feature_alerts"],
+                    "historic_v14_face_alerts": x[
+                        "new_path_historic_v14_feature_alerts"
+                    ],
                     "uv_overlap_pairs": [
                         p["uv_positive_area_overlaps"]
                         for p in x["all_original_source_panel_2d_lscm_qa"]

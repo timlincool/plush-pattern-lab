@@ -39,7 +39,9 @@ def _validated_reroute(current, source_hash):
         raise ValueError("not same-run source-linked research B2 reroute")
     names = [row["candidate"] for row in current.get("candidates", [])]
     if names != list(CANDIDATES):
-        raise ValueError("two exact previously validated B2 reroute candidates required")
+        raise ValueError(
+            "two exact previously validated B2 reroute candidates required"
+        )
     return current["candidates"]
 
 
@@ -143,7 +145,10 @@ def main():
     args.output_dir.mkdir(parents=True, exist_ok=True)
     for item, path in zip(original, outputs):
         report = _research_scene_report(
-            item, cache, world_bounds, previous,
+            item,
+            cache,
+            world_bounds,
+            previous,
             hashlib.sha256(previous_bytes).hexdigest(),
         )
         path.write_text(
