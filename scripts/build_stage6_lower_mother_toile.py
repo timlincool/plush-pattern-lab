@@ -59,7 +59,9 @@ def _guide(spec, qa):
     ]
     for item in qa["source_hoofs"]:
         value = item["source_3d_ring_perimeter_mm"]
-        rows.append(f'| {item["hoof"]} | {value:.4f} mm | {value:.4f} / {value:.4f} mm |')
+        rows.append(
+            f"| {item['hoof']} | {value:.4f} mm | {value:.4f} / {value:.4f} mm |"
+        )
     rows.extend(
         [
             "",
@@ -79,7 +81,7 @@ def _guide(spec, qa):
             "   与YOKE外围四等分段对位，再按实际布料疏缝。",
             "5. BAND-3与YOKE缝纫线约35%～65%的紫色段暂留作**研究返口**，"
             "   开口约"
-            f' {qa["proposed_return_gap_mm"]:.1f}mm；**上围条目前仍是整圈开放**，'
+            f" {qa['proposed_return_gap_mm']:.1f}mm；**上围条目前仍是整圈开放**，"
             "   因此这只是将来全身闭合后的预留位置，而非已经实测的翻面路径。",
             "6. 当前试缝件可检查四蹄及下腹相对站位，却**不能直接安装眼鼻嘴、"
             "   耳、七云团、尾、十雨滴或填充为目标成品**。禁止把开放上围",
@@ -120,13 +122,11 @@ def _source_profile_check(xyz, spec):
 def _files(spec, qa, profile):
     sheets = render_lower_mother_toile_a4(spec)
     spec["original_stage6_body_at_z60_geometry_comparison"] = profile
+    spec_data = json.dumps(spec, ensure_ascii=False, indent=2)
+    qa_data = json.dumps(qa, ensure_ascii=False, indent=2)
     output = {
-        "lower_toile_source_geometry.json": json.dumps(
-            spec, ensure_ascii=False, indent=2
-        ) + "\n",
-        "lower_toile_seam_audit.json": json.dumps(
-            qa, ensure_ascii=False, indent=2
-        ) + "\n",
+        "lower_toile_source_geometry.json": spec_data + "\n",
+        "lower_toile_seam_audit.json": qa_data + "\n",
         "sewing_guide.md": _guide(spec, qa),
         **sheets,
     }
@@ -134,26 +134,25 @@ def _files(spec, qa, profile):
         name: hashlib.sha256(body.encode("utf8")).hexdigest()
         for name, body in output.items()
     }
+    manifest = {
+        "schema": "stage6-hoof-anchored-lower-toile-asset-manifest-v1",
+        "status": WARNING,
+        "source_original_blend_sha256": SOURCE_SHA256,
+        "source_proxy_25pct_ply_sha256": PROXY_SHA256,
+        "source_hoof_reference": SOURCE_HOOF_REFERENCE,
+        "original_source_hoof_edges_retained": 2048,
+        "research_new_ventral_z_mm": 60,
+        "stitch_units": "mm",
+        "printing": {"paper": "A4", "scale": "100_percent", "pages": 4},
+        "piece_count": 13,
+        "geometry": "new yoke + synthetic tubes/soles + open upper bands",
+        "not_entire_stage6_character_pattern": True,
+        "future_torso_neck_head_and_cloud_links_missing": True,
+        "approved_industrial_paper_patterns": 0,
+        "files_sha256": hashes,
+    }
     output["manifest.json"] = json.dumps(
-        {
-            "schema": "stage6-hoof-anchored-lower-toile-asset-manifest-v1",
-            "status": WARNING,
-            "source_original_blend_sha256": SOURCE_SHA256,
-            "source_proxy_25pct_ply_sha256": PROXY_SHA256,
-            "source_hoof_reference": SOURCE_HOOF_REFERENCE,
-            "original_source_hoof_edges_retained": 2048,
-            "research_new_ventral_z_mm": 60,
-            "stitch_units": "mm",
-            "printing": {"paper": "A4", "scale": "100_percent", "pages": 4},
-            "piece_count": 13,
-            "geometry": "new yoke + synthetic tubes/soles + open upper bands",
-            "not_entire_stage6_character_pattern": True,
-            "future_torso_neck_head_and_cloud_links_missing": True,
-            "approved_industrial_paper_patterns": 0,
-            "files_sha256": hashes,
-        },
-        indent=2,
-        ensure_ascii=False,
+        manifest, indent=2, ensure_ascii=False
     ) + "\n"
     return output
 
