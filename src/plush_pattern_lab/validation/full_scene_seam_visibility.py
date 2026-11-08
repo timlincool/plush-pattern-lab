@@ -33,6 +33,19 @@ VALID_GROUPS = frozenset(
 )
 
 
+def _validated_registry_role(row):
+    name = row["source_mesh"]
+    role = row["scene_group"]
+    expected_faces = row["source_faces"]
+    if not isinstance(expected_faces, int) or expected_faces < 1:
+        raise ValueError("malformed original product Mesh polygon count")
+    if role not in VALID_GROUPS | {"studio_floor_not_plush"}:
+        raise ValueError("unexpected Stage6 mesh category")
+    if (name == STUDIO_FLOOR) != (role == "studio_floor_not_plush"):
+        raise ValueError("studio floor cannot be a product visibility occluder")
+    return name, role, expected_faces
+
+
 def verified_scene_registry(registry, original_mesh_counts):
     """Fail closed if any source Mesh name/face count differs from the 42 draft."""
     if (
@@ -46,17 +59,9 @@ def verified_scene_registry(registry, original_mesh_counts):
         raise ValueError("Stage6 manufacturing registry must contain 42 Mesh rows")
     roles = {}
     for row in rows:
-        name = row["source_mesh"]
-        role = row["scene_group"]
-        expected_faces = row["source_faces"]
-        if name in roles or not isinstance(expected_faces, int) or expected_faces < 1:
-            raise ValueError("duplicate or malformed Stage6 original mesh")
-        if role not in VALID_GROUPS | {"studio_floor_not_plush"}:
-            raise ValueError("unexpected Stage6 mesh category")
-        if name == STUDIO_FLOOR and role != "studio_floor_not_plush":
-            raise ValueError("studio floor must be excluded from product visibility")
-        if name != STUDIO_FLOOR and role == "studio_floor_not_plush":
-            raise ValueError("product Mesh cannot be silently excluded")
+        name, role, expected_faces = _validated_registry_role(row)
+        if name in roles:
+            raise ValueError("duplicate Stage6 source Mesh identity")
         roles[name] = (role, expected_faces)
     if set(roles) != set(original_mesh_counts):
         raise ValueError("actual source Mesh names differ from verified registry")
