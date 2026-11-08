@@ -81,9 +81,11 @@ def _allowed_mesh_edges(coords, interior, cuff, outer, preserved, targets, ancho
         & (coords[:, 2] >= face["face_z_above_mm"])
     )
     forbidden[anchor] = False
-    if np.any(forbidden[targets]):
-        raise ValueError("candidate endpoint overlaps facial exclusion or existing cut")
-    return interior[~(forbidden[interior[:, 0]] | forbidden[interior[:, 1]])]
+    safe_targets = targets[~forbidden[targets]]
+    if not len(safe_targets):
+        raise ValueError("all candidate endpoints intersect a protected source region")
+    valid_edges = interior[~(forbidden[interior[:, 0]] | forbidden[interior[:, 1]])]
+    return valid_edges, safe_targets
 
 
 def _source_edge_shortest(coords, allowed, anchor, targets):
@@ -112,10 +114,10 @@ def _route_candidate(coords, edges, counts, cuff, outer, paths, mode):
     anchor = int(paths[2][0])
     boundary = np.unique(outer)
     targets = _candidate_targets(coords, boundary, mode)
-    allowed = _allowed_mesh_edges(
+    allowed, safe_targets = _allowed_mesh_edges(
         coords, edges[counts == 2], cuff, outer, paths[:2], targets, anchor
     )
-    return _source_edge_shortest(coords, allowed, anchor, targets)
+    return _source_edge_shortest(coords, allowed, anchor, safe_targets)
 
 
 def _build_source_pieces(
