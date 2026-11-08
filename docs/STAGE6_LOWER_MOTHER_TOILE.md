@@ -60,6 +60,8 @@ python scripts/build_stage6_lower_mother_toile.py \
 
 **局部软件与源净缝已经过第一阶段验证，但下腹母版的真实造型、两处四线交汇工艺、布料、上身对接与翻面未验证；目前不发布制造级1:1 DXF或正式工业纸样。**
 
+**独立重复验证：**可信后修复 [Stage6 #42461595241](https://github.com/timlincool/plush-pattern-lab/actions/runs/42461595241) 实际完成。与先前 #42460875416 两个独立Job上传的源13片试布文件**逐成员字节完全相同**：4个SVG、`lower_toile_source_geometry.json`、`lower_toile_seam_audit.json`、`sewing_guide.md`、`manifest.json` 的SHA-256逐项一致。两个完整Artifact ZIP哈希不同是因内含其他阶段实验资产，而非这8个母版文件变化；原始ZIP哈希和成员详见[永久证据](../experiments/stage6_lower_mother_toile_20261108/summary.json)。
+
 ## 明确尚未解决的真正制造结构
 
 **本轮交付的是局部四蹄承接试样，不是整只羊驼可缝制的母版。** 尤其仍缺：
