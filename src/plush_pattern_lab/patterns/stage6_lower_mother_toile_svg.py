@@ -28,9 +28,11 @@ def _path(points):
     xy = np.asarray(points, dtype=float)
     if xy.ndim != 2 or xy.shape[1] != 2 or len(xy) < 3:
         raise ValueError("invalid research cutting/stitching polygon")
-    return f"M {xy[0, 0]:.4f},{xy[0, 1]:.4f} " + " ".join(
-        f"L {x:.4f},{y:.4f}" for x, y in xy[1:]
-    ) + " Z"
+    return (
+        f"M {xy[0, 0]:.4f},{xy[0, 1]:.4f} "
+        + " ".join(f"L {x:.4f},{y:.4f}" for x, y in xy[1:])
+        + " Z"
+    )
 
 
 def _frame(index):
@@ -49,7 +51,7 @@ def _frame(index):
         f'<text x="13" y="12" class="id">STAGE6 LOWER MOTHER - RESEARCH SHEET {index + 1}/4</text>',
         f'<text x="13" y="18" class="small">{name}</text>',
         '<text x="13" y="23" class="small">PRINT 100% / A4 / mm / '
-        'SOURCE RINGS + NEW MOTHER SURROGATE / NOT FACTORY APPROVED</text>',
+        "SOURCE RINGS + NEW MOTHER SURROGATE / NOT FACTORY APPROVED</text>",
     ]
 
 
@@ -59,9 +61,9 @@ def _footer():
         'stroke="#111" stroke-width=".4"/>',
         '<text x="27" y="279" class="small">10 x 10 mm calibration square</text>',
         '<text x="27" y="283" class="small">Black CUT / dashed blue STITCH '
-        '/ orange NOTCH / purple TURNING GAP</text>',
+        "/ orange NOTCH / purple TURNING GAP</text>",
         '<text x="13" y="290" class="small">Do not fit-to-page. '
-        'Real fabric, stuffing, whole-character shape NOT validated.</text>',
+        "Real fabric, stuffing, whole-character shape NOT validated.</text>",
         "</svg>",
     ]
 
@@ -123,9 +125,7 @@ def _place_yoke(spec):
     return _translated_group(parts, *translation, identity="VENTRAL-YOKE")
 
 
-def _draw_straight_band(
-    length, height, allowance, notch_stations, *, opening=False
-):
+def _draw_straight_band(length, height, allowance, notch_stations, *, opening=False):
     half = float(allowance)
     parts = [
         f'<rect class="cut" x="{-half:.4f}" y="{-half:.4f}" '
@@ -150,9 +150,7 @@ def _draw_straight_band(
     for position in notch_stations:
         if not 0 < position < length:
             raise ValueError("source-linked notch not inside original stitch line")
-        parts.append(
-            f'<circle class="mark" cx="{position:.4f}" cy="0" r=".75"/>'
-        )
+        parts.append(f'<circle class="mark" cx="{position:.4f}" cy="0" r=".75"/>')
     return parts
 
 
@@ -185,12 +183,10 @@ def _place_four_strips(spec, *, kind):
         shapes = _draw_straight_band(
             length, height, allowance, notch_stations, opening=opening
         )
-        shapes.append(
-            f'<text x="1" y="{height * 0.50:.3f}" class="id">{label}</text>'
-        )
+        shapes.append(f'<text x="1" y="{height * 0.50:.3f}" class="id">{label}</text>')
         shapes.append(
             f'<text x="1" y="{height * 0.72:.3f}" class="small">'
-            f'Stitch {length:.2f} mm / H {height:.1f} mm</text>'
+            f"Stitch {length:.2f} mm / H {height:.1f} mm</text>"
         )
         parts.extend(_translated_group(shapes, 22, top, identity=label))
     return parts
@@ -206,9 +202,7 @@ def _place_sole_copies(spec):
             raise ValueError("not the original 512-edge source hoop ring")
         from shapely.geometry import Polygon
 
-        cut = np.asarray(
-            Polygon(ring).buffer(allowance, quad_segs=12).exterior.coords
-        )
+        cut = np.asarray(Polygon(ring).buffer(allowance, quad_segs=12).exterior.coords)
         minimum = cut.min(axis=0)
         size = cut.max(axis=0) - minimum
         if size[0] > 75 or size[1] > 72:
