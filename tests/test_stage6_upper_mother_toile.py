@@ -95,7 +95,7 @@ def test_historic_neck_cross_section_jumps_even_when_all_stitches_match():
     assert upper["max_source_observed_profile_center_step_mm"] > 50
     assert report["neck_split_or_anatomical_articulation_review_required"]
     assert report["source_3d_meridian_lengths_not_preserved"]
-    assert not report["actual_source_body_silhouette_not_certified"] is False
+    assert report["actual_source_body_silhouette_not_certified"] is not False
     assert not report["real_fabric_and_stuffing_tested"]
     assert upper["source_proxy_used_only_as_envelope_reference"]
 
