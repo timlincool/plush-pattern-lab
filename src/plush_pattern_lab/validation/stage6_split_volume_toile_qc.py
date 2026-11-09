@@ -33,27 +33,37 @@ def _band_to_torso(lower, trial, tolerance):
         actual = _steps(row["lower_stitch_xy_mm"])
         expected = np.diff(np.asarray(band["stitch_bottom_station_x_mm"]))
         if actual.shape != (16,) or np.max(np.abs(actual - expected)) > tolerance:
-            raise ValueError("real-source lower BAND upper edge does not fit torso lower")
+            raise ValueError(
+                "real-source lower BAND upper edge does not fit torso lower"
+            )
         pairs.append(
-            {"pair": f"BAND-{i + 1}.top :: TORSO-{i + 1}.bottom",
-             "mm": float(actual.sum()),
-             "max_segment_difference_mm": float(np.max(np.abs(actual - expected)))}
+            {
+                "pair": f"BAND-{i + 1}.top :: TORSO-{i + 1}.bottom",
+                "mm": float(actual.sum()),
+                "max_segment_difference_mm": float(np.max(np.abs(actual - expected))),
+            }
         )
     return pairs
 
 
 def _four_gore_sides(trial, role, tolerance):
-    pieces = trial["torso_gore_pieces"] if role == "TORSO" else trial["headneck_gore_pieces"]
+    pieces = (
+        trial["torso_gore_pieces"] if role == "TORSO" else trial["headneck_gore_pieces"]
+    )
     rows = []
     for i in range(4):
         right = _steps(pieces[i]["right_stitch_xy_mm"])
         left = _steps(pieces[(i + 1) % 4]["left_stitch_xy_mm"])
         if right.shape != left.shape or np.max(np.abs(right - left)) > tolerance:
-            raise ValueError("body/head seam meridian cannot be sewn segment by segment")
+            raise ValueError(
+                "body/head seam meridian cannot be sewn segment by segment"
+            )
         rows.append(
-            {"pair": f"{role}-{i + 1}.right :: {role}-{(i + 1) % 4 + 1}.left",
-             "mm": float(right.sum()),
-             "indexed_segment_max_error_mm": float(np.max(np.abs(right - left)))}
+            {
+                "pair": f"{role}-{i + 1}.right :: {role}-{(i + 1) % 4 + 1}.left",
+                "mm": float(right.sum()),
+                "indexed_segment_max_error_mm": float(np.max(np.abs(right - left))),
+            }
         )
     return rows
 
@@ -70,9 +80,11 @@ def _cap_quarters(trial, role, cap, field, tolerance):
         if actual.shape != (QUARTER,) or np.max(np.abs(actual - expected)) > tolerance:
             raise ValueError("cap has no exact matching 16-edge mother stitch")
         result.append(
-            {"pair": f"{piece['id']}.{field} :: {cap['id']}.quarter-{i + 1}",
-             "length_mm": float(actual.sum()),
-             "indexed_max_error_mm": float(np.max(np.abs(actual - expected)))}
+            {
+                "pair": f"{piece['id']}.{field} :: {cap['id']}.quarter-{i + 1}",
+                "length_mm": float(actual.sum()),
+                "indexed_max_error_mm": float(np.max(np.abs(actual - expected))),
+            }
         )
     return result
 
@@ -80,9 +92,7 @@ def _cap_quarters(trial, role, cap, field, tolerance):
 def _allowance_and_topology(trial, allowance):
     shoulder = trial["shoulder_cap"]
     outer = Polygon(shoulder["outer_stitch_xy_mm"])
-    cut = Polygon(
-        shoulder["cut_outer_xy_mm"], shoulder["cut_inner_holes_xy_mm"]
-    )
+    cut = Polygon(shoulder["cut_outer_xy_mm"], shoulder["cut_inner_holes_xy_mm"])
     guide = Polygon(trial["neck_source_inspired_guide"]["ring_xy_mm"])
     if not outer.is_valid or not cut.is_valid or not cut.covers(outer.exterior):
         raise ValueError("invalid source-inspired shoulder cap cutting geometry")
@@ -105,13 +115,15 @@ def _allowance_and_topology(trial, allowance):
 
 def _neck_join(trial, tolerance):
     guide = _steps(trial["neck_source_inspired_guide"]["ring_xy_mm"], ring=True)
-    root = np.concatenate([
-        _steps(part["lower_stitch_xy_mm"]) for part in trial["headneck_gore_pieces"]
-    ])
+    root = np.concatenate(
+        [_steps(part["lower_stitch_xy_mm"]) for part in trial["headneck_gore_pieces"]]
+    )
     if guide.shape != (64,) or root.shape != (64,):
         raise ValueError("head-neck root must retain 64 indexed source-inspired arcs")
     if float(np.max(np.abs(root - guide))) > tolerance:
-        raise ValueError("neck panel bases do not match an actual source-inspired guide")
+        raise ValueError(
+            "neck panel bases do not match an actual source-inspired guide"
+        )
     shared = {
         "headneck_root_and_shoulder_guide_mm": float(guide.sum()),
         "maximum_segment_difference_mm": float(np.max(np.abs(root - guide))),
@@ -148,7 +160,9 @@ def audit_separated_stage6_toile(lower, study, *, tolerance_mm=1e-4):
         or len(study.get("options", [])) != 2
         or not 0 < tolerance_mm <= 0.001
     ):
-        raise ValueError("invalid signed research source or unauthorized factory status")
+        raise ValueError(
+            "invalid signed research source or unauthorized factory status"
+        )
     results = []
     for trial in study["options"]:
         if (
@@ -160,8 +174,9 @@ def audit_separated_stage6_toile(lower, study, *, tolerance_mm=1e-4):
         ):
             raise ValueError("head / torso separated research piece inventory changed")
         for row in (*trial["torso_gore_pieces"], *trial["headneck_gore_pieces"]):
-            seam, cut = Polygon(row["stitch_polygon_xy_mm"]), Polygon(
-                row["cut_polygon_xy_mm"]
+            seam, cut = (
+                Polygon(row["stitch_polygon_xy_mm"]),
+                Polygon(row["cut_polygon_xy_mm"]),
             )
             if not seam.is_valid or not cut.is_valid or not cut.covers(seam):
                 raise ValueError("some 2D research gore is self-crossed or clipped")
@@ -180,7 +195,9 @@ def audit_separated_stage6_toile(lower, study, *, tolerance_mm=1e-4):
         neck = _neck_join(trial, tolerance_mm)
         if trial["name"].startswith("A_"):
             if not neck["surface_join_is_not_a_cut_edge_seam_certified"]:
-                raise ValueError("unvalidated external head attachment must remain flagged")
+                raise ValueError(
+                    "unvalidated external head attachment must remain flagged"
+                )
         elif not neck["neck_opening_still_requires_physical_turning_test"]:
             raise ValueError("internal collar assembly cannot assert stuffing success")
         else:
@@ -206,9 +223,12 @@ def audit_separated_stage6_toile(lower, study, *, tolerance_mm=1e-4):
             }
         )
     if [row["candidate"] for row in results] != [
-        "A_separate_stuffed_head", "B_integrated_neck_port"
+        "A_separate_stuffed_head",
+        "B_integrated_neck_port",
     ]:
-        raise ValueError("independent head and integrated neck variants must both exist")
+        raise ValueError(
+            "independent head and integrated neck variants must both exist"
+        )
     return {
         "schema": "stage6-two-anatomic-volumes-stitch-and-port-qc-v1",
         "two_distinct_manufacturing_trial_variants": results,

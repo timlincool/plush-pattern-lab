@@ -23,10 +23,10 @@ def _page_shell(name, option, page):
     return [
         '<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" '
         'viewBox="0 0 210 297">',
-        '<style>.cut{stroke:#1d3345;stroke-width:.4;fill:#eaf0f3;fill-rule:evenodd}'
-        '.seam{stroke:#28618e;stroke-width:.35;fill:none;stroke-dasharray:2 1.5}'
-        '.guide{stroke:#bb4f20;stroke-width:.45;fill:none;stroke-dasharray:1.1 1.2}'
-        '.mark{fill:#b34c35} text{font:3.4px Arial,sans-serif;fill:#1d3345}'
+        "<style>.cut{stroke:#1d3345;stroke-width:.4;fill:#eaf0f3;fill-rule:evenodd}"
+        ".seam{stroke:#28618e;stroke-width:.35;fill:none;stroke-dasharray:2 1.5}"
+        ".guide{stroke:#bb4f20;stroke-width:.45;fill:none;stroke-dasharray:1.1 1.2}"
+        ".mark{fill:#b34c35} text{font:3.4px Arial,sans-serif;fill:#1d3345}"
         '</style><rect x="0" y="0" width="210" height="297" fill="white"/>',
         f'<text x="11" y="12">STAGE6 SPLIT VOLUMES {escape(option)} | PAGE {page}/11</text>',
         f'<text x="11" y="18">{escape(name)}</text>',
@@ -49,7 +49,9 @@ def _shift(cut):
     bounds = np.vstack((p.min(axis=0), p.max(axis=0)))
     size = bounds[1] - bounds[0]
     if size[0] > 184 or size[1] > 236:
-        raise ValueError("large source-informed cut must be tiled, never silently scaled")
+        raise ValueError(
+            "large source-informed cut must be tiled, never silently scaled"
+        )
     move = np.array([105, 148]) - bounds.mean(axis=0)
     result = p + move
     if (
@@ -94,16 +96,16 @@ def _gore_page(row, option, page):
         *_marks(row["left_stitch_xy_mm"], range(len(row["left_stitch_xy_mm"]))),
         *_marks(row["right_stitch_xy_mm"], range(len(row["right_stitch_xy_mm"]))),
     ]
-    return "\n".join(
-        [
-            *_page_shell(row["id"], option, page),
-            f'<g data-part="{escape(row["id"])}" '
-            f'transform="translate({offset[0]:.5f} {offset[1]:.5f})">',
-            *render,
-            "</g>",
-            *_footer(),
-        ]
-    ) + "\n"
+    content = [
+
+        *_page_shell(row["id"], option, page),
+        f'<g data-part="{escape(row["id"])}" '
+        f'transform="translate({offset[0]:.5f} {offset[1]:.5f})">',
+        *render,
+        "</g>",
+        *_footer(),
+    ]
+    return "\n".join(content) + "\n"
 
 
 def _cap_page(row, option, page, *, guide=None):
@@ -118,18 +120,18 @@ def _cap_page(row, option, page, *, guide=None):
         marks.extend(_marks(guide, (0, 16, 32, 48)))
     for hole in row["upper_head_opening_stitch_xy_mm"]:
         marks.append(_stitch(hole, guide=True))
-    return "\n".join(
-        [
-            *_page_shell(row["id"], option, page),
-            f'<g data-part="{escape(row["id"])}" '
-            f'transform="translate({offset[0]:.5f} {offset[1]:.5f})">',
-            _cut(cut, holes),
-            _stitch(ring),
-            *marks,
-            "</g>",
-            *_footer(),
-        ]
-    ) + "\n"
+    content = [
+
+        *_page_shell(row["id"], option, page),
+        f'<g data-part="{escape(row["id"])}" '
+        f'transform="translate({offset[0]:.5f} {offset[1]:.5f})">',
+        _cut(cut, holes),
+        _stitch(ring),
+        *marks,
+        "</g>",
+        *_footer(),
+    ]
+    return "\n".join(content) + "\n"
 
 
 def _collar_page(row, option, page):
@@ -139,28 +141,24 @@ def _collar_page(row, option, page):
     height = row["height_mm"]
     marks = []
     for i in (0, 16, 32, 48, 64):
-        marks.append(
-            f'<circle class="mark" cx="{x[i]:.4f}" cy="0" r=".8"/>'
-        )
-        marks.append(
-            f'<circle class="mark" cx="{x[i]:.4f}" cy="{height:.4f}" r=".8"/>'
-        )
+        marks.append(f'<circle class="mark" cx="{x[i]:.4f}" cy="0" r=".8"/>')
+        marks.append(f'<circle class="mark" cx="{x[i]:.4f}" cy="{height:.4f}" r=".8"/>')
     stitch = [
         f'<path class="seam" d="M0,0 L{x[-1]:.4f},0 '
         f'L{x[-1]:.4f},{height:.4f} L0,{height:.4f} Z"/>'
     ]
-    return "\n".join(
-        [
-            *_page_shell(row["id"], option, page),
-            f'<g data-part="COLLAR-TRIAL" '
-            f'transform="translate({offset[0]:.5f} {offset[1]:.5f})">',
-            _cut(cut),
-            *stitch,
-            *marks,
-            "</g>",
-            *_footer(),
-        ]
-    ) + "\n"
+    content = [
+
+        *_page_shell(row["id"], option, page),
+        f'<g data-part="COLLAR-TRIAL" '
+        f'transform="translate({offset[0]:.5f} {offset[1]:.5f})">',
+        _cut(cut),
+        *stitch,
+        *marks,
+        "</g>",
+        *_footer(),
+    ]
+    return "\n".join(content) + "\n"
 
 
 def render_split_volume_A4(study):
@@ -181,14 +179,15 @@ def render_split_volume_A4(study):
         guide = trial["neck_source_inspired_guide"]["ring_xy_mm"]
         pages.append(
             _cap_page(
-                shoulder, option, len(pages) + 1,
-                guide=guide if trial["separate_head_is_stuffed_and_externally_attached"]
+                shoulder,
+                option,
+                len(pages) + 1,
+                guide=guide
+                if trial["separate_head_is_stuffed_and_externally_attached"]
                 else None,
             )
         )
-        pages.append(
-            _cap_page(trial["head_top_cap"], option, len(pages) + 1)
-        )
+        pages.append(_cap_page(trial["head_top_cap"], option, len(pages) + 1))
         if trial["head_bottom_cap_if_separate"] is not None:
             pages.append(
                 _cap_page(trial["head_bottom_cap_if_separate"], option, len(pages) + 1)

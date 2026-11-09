@@ -57,9 +57,11 @@ def _source_and_lower():
     for z, lo_x, hi_x, lo_y, hi_y in bounds:
         theta = 2 * np.pi * np.arange(180) / 180
         ring = np.column_stack(
-            ((hi_x - lo_x) / 2 * np.cos(theta) + (hi_x + lo_x) / 2,
-             (hi_y - lo_y) / 2 * np.sin(theta) + (hi_y + lo_y) / 2,
-             np.full(180, z))
+            (
+                (hi_x - lo_x) / 2 * np.cos(theta) + (hi_x + lo_x) / 2,
+                (hi_y - lo_y) / 2 * np.sin(theta) + (hi_y + lo_y) / 2,
+                np.full(180, z),
+            )
         )
         xyz.extend(ring.tolist())
     return lower, np.asarray(xyz, dtype=float)
@@ -79,7 +81,8 @@ def test_two_anatomically_separated_volume_options_remain_finite_and_signed():
     ]
     assert [row["new_pattern_pieces"] for row in study["options"]] == [11, 11]
     assert [row["new_plus_existing_research_pieces"] for row in study["options"]] == [
-        24, 24
+        24,
+        24,
     ]
     assert len(qc["two_distinct_manufacturing_trial_variants"]) == 2
     assert all(
@@ -111,15 +114,20 @@ def test_unverified_neck_root_contraction_and_original_source_gap_are_reported()
     _, study = _trial()
     a, b = study["options"]
     assert study["real_source_135_to145_center_shift_xy_mm"] > 20
-    assert [row["source_neck_port_modification"][
-        "explicit_source_head_root_xy_scale"
-    ] for row in (a, b)] == [0.74, 0.64]
+    assert [
+        row["source_neck_port_modification"]["explicit_source_head_root_xy_scale"]
+        for row in (a, b)
+    ] == [0.74, 0.64]
     assert all(
         row["source_neck_port_modification"][
             "max_source_head_root_to_2d_port_vertex_xy_shift_mm"
-        ] > 5 for row in (a, b)
+        ]
+        > 5
+        for row in (a, b)
     )
-    assert all(not row["original_real_sculpt_cutting_patterns_generated"] for row in (a, b))
+    assert all(
+        not row["original_real_sculpt_cutting_patterns_generated"] for row in (a, b)
+    )
 
 
 def test_source_linked_band_pieces_keep_exact_old_16_edge_ids_and_stitch_mm():

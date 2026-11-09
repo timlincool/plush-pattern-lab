@@ -57,14 +57,13 @@ def _arc(ring, i):
 
 def _meridian_steps(rings, heights):
     xyz = np.stack(
-        [np.column_stack((ring, np.full(RING_VERTICES, z))) for ring, z in zip(rings, heights)]
+        [
+            np.column_stack((ring, np.full(RING_VERTICES, z)))
+            for ring, z in zip(rings, heights)
+        ]
     )
-    main_3d = np.linalg.norm(
-        np.diff(xyz[:, [0, 16, 32, 48]], axis=0), axis=2
-    )
-    widths = np.asarray(
-        [[_arc(ring, i)[0][-1] for i in range(4)] for ring in rings]
-    )
+    main_3d = np.linalg.norm(np.diff(xyz[:, [0, 16, 32, 48]], axis=0), axis=2)
+    widths = np.asarray([[_arc(ring, i)[0][-1] for i in range(4)] for ring in rings])
     half_width_shifts = np.abs(np.diff(widths, axis=0)) / 2
     steps = np.maximum(main_3d.max(axis=1), half_width_shifts.max(axis=1))
     steps += 0.2
@@ -119,7 +118,11 @@ def _cap(ring, allowance, label, port=None):
             raise ValueError("neck port cutting allowance collapses")
         cut = cut.difference(inside)
         holes.append(port.tolist())
-    if not cut.is_valid or cut.geom_type != "Polygon" or len(cut.interiors) != len(holes):
+    if (
+        not cut.is_valid
+        or cut.geom_type != "Polygon"
+        or len(cut.interiors) != len(holes)
+    ):
         raise ValueError("invalid standalone shoulder cap cutting perimeter")
     return {
         "id": label,
@@ -170,7 +173,9 @@ def _collar(guide, allowance):
     return {
         "id": "COLLAR-TRIAL",
         "height_mm": NECK_CONNECTOR_HEIGHT_MM,
-        "lower_and_upper_stitch_station_x_mm": np.r_[0.0, np.cumsum(lengths["indexed_64_segment_mm"])].tolist(),
+        "lower_and_upper_stitch_station_x_mm": np.r_[
+            0.0, np.cumsum(lengths["indexed_64_segment_mm"])
+        ].tolist(),
         "cut_rectangle_xy_mm": [
             [-allowance, -allowance],
             [total + allowance, -allowance],
@@ -205,8 +210,10 @@ def _one_variant(source, old_lower_ring, body_profiles, body_rows, option):
         for i in range(4)
     ]
     shoulder = _cap(
-        body_profiles[-1], allowance, "SHOULDER-CAP-TRIAL",
-        port if name.startswith("B_") else None
+        body_profiles[-1],
+        allowance,
+        "SHOULDER-CAP-TRIAL",
+        port if name.startswith("B_") else None,
     )
     head_top = _cap(head_profiles[-1], allowance, "HEAD-TOP-CAP-TRIAL")
     neck_base = None
@@ -267,8 +274,7 @@ def build_split_volume_mother_ab(lower, source_xyz):
         profiles.append(ring)
         rows.append(observation)
     variants = [
-        _one_variant(source, base, profiles, rows, setting)
-        for setting in OPTIONS
+        _one_variant(source, base, profiles, rows, setting) for setting in OPTIONS
     ]
     center_135 = np.asarray(rows[-1]["source_center_xy_mm"])
     center_145 = np.asarray(

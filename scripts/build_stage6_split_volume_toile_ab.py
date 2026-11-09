@@ -66,22 +66,22 @@ def _assembly_guide(study, qa):
         observation = variant["source_neck_port_modification"]
         results.extend(
             [
-                f'- {variant["name"]}: 颈根相对源Stage6 Z145截面XY缩小为 '
-                f'{observation["explicit_source_head_root_xy_scale"]:.0%}；'
-                f'源点到新纸样根部轮廓最大平面差 '
-                f'{observation["max_source_head_root_to_2d_port_vertex_xy_shift_mm"]:.2f}mm；'
-                f'肩片开孔/导引线到外围最短净缝间距 '
-                f'{observation["minimum_body_cap_boundary_to_port_mm"]:.2f}mm。',
+                f"- {variant['name']}: 颈根相对源Stage6 Z145截面XY缩小为 "
+                f"{observation['explicit_source_head_root_xy_scale']:.0%}；"
+                f"源点到新纸样根部轮廓最大平面差 "
+                f"{observation['max_source_head_root_to_2d_port_vertex_xy_shift_mm']:.2f}mm；"
+                f"肩片开孔/导引线到外围最短净缝间距 "
+                f"{observation['minimum_body_cap_boundary_to_port_mm']:.2f}mm。",
             ]
         )
     results.extend(
         [
-            f'- 原Z135→145主壳与头颈源截面中心XY偏移 '
-            f'{study["real_source_135_to145_center_shift_xy_mm"]:.2f}mm；'
-            '此处新结构并非源雕塑中真实的可直接对接缝线。',
-            f'- 研究头顶在Z230，原公开源顶Z≈'
-            f'{study["reference_only_source_top_z_mm"]:.2f}mm，'
-            f'仍留{study["source_3d_top_height_not_represented_mm"]:.2f}mm高度造型未解释。',
+            f"- 原Z135→145主壳与头颈源截面中心XY偏移 "
+            f"{study['real_source_135_to145_center_shift_xy_mm']:.2f}mm；"
+            "此处新结构并非源雕塑中真实的可直接对接缝线。",
+            f"- 研究头顶在Z230，原公开源顶Z≈"
+            f"{study['reference_only_source_top_z_mm']:.2f}mm，"
+            f"仍留{study['source_3d_top_height_not_represented_mm']:.2f}mm高度造型未解释。",
             "- 真正耳朵、七云团、眼鼻嘴、尾根、10雨滴、长短绒及原鼓起蹄底均未配置。",
             "- 原真实Stage6连续主壳未有已获批的厂家DXF展开；两个实验只是",
             "  数字净缝配对对照，不允许据此宣称布料无褶皱、同原设计或可量产。",
@@ -94,13 +94,11 @@ def _assembly_guide(study, qa):
 
 
 def _outputs(study, qc, lower_sha):
+    source_json = json.dumps(study, ensure_ascii=False, indent=2)
+    audit_json = json.dumps(qc, ensure_ascii=False, indent=2)
     assets = {
-        "two_volume_source_envelope_ab.json": json.dumps(
-            study, ensure_ascii=False, indent=2
-        ) + "\n",
-        "two_volume_seam_and_port_qc.json": json.dumps(
-            qc, ensure_ascii=False, indent=2
-        ) + "\n",
+        "two_volume_source_envelope_ab.json": source_json + "\n",
+        "two_volume_seam_and_port_qc.json": audit_json + "\n",
         "assembly_A_B.md": _assembly_guide(study, qc),
     }
     pages = render_split_volume_A4(study)
@@ -126,9 +124,7 @@ def _outputs(study, qc, lower_sha):
         "approved_industrial_patterns": 0,
         "files_sha256": hashes,
     }
-    assets["manifest.json"] = json.dumps(
-        manifest, ensure_ascii=False, indent=2
-    ) + "\n"
+    assets["manifest.json"] = json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
     return assets
 
 
