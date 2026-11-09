@@ -47,7 +47,7 @@ def _source_and_lower():
     bounds = (
         (115, -41, 41, -69, 138),
         (125, -38, 38, -67, 132),
-        (135, -34, 34, -66, 68),
+        (135, -35, 35, -68, 70),
         (145, -32, 32, -68, -2),
         (155, -33, 33, -77, -10),
         (180, -53, 53, -88, -14),
@@ -191,3 +191,12 @@ def test_missing_original_source_slice_and_falsified_factory_flag_are_refused():
     study["factory_cutting_patterns_approved"] = 1
     with pytest.raises(ValueError):
         audit_separated_stage6_toile(lower, study)
+
+
+def test_synthetic_shoulder_that_cannot_hold_two_allowances_is_refused():
+    lower, points = _source_and_lower()
+    corrupted = points.copy()
+    slab = np.abs(corrupted[:, 2] - 135) < 0.01
+    corrupted[slab, 0] *= 0.6
+    with pytest.raises(ValueError, match="shoulder seam clearance"):
+        build_split_volume_mother_ab(lower, corrupted)
