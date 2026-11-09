@@ -702,7 +702,7 @@ jobs:
           m = json.loads((root/'manifest.json').read_text(encoding='utf8'))
           study = json.loads((root/'two_volume_source_envelope_ab.json').read_text(encoding='utf8'))
           qa = json.loads((root/'two_volume_seam_and_port_qc.json').read_text(encoding='utf8'))
-          assert m['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert m['original_public_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
           assert m['original_proxy_25pct_sha256'] == '5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd'
           assert m['pieces_in_each_complete_lower_plus_option'] == 24
           assert m['new_variant_A_B_svg_total'] == 22
