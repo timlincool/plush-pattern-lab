@@ -195,7 +195,9 @@ def audit_separated_stage6_toile(lower, study, *, tolerance_mm=1e-4):
                 "headneck_gore_to_top_cap_pairs": top,
                 "neck_connection": neck,
                 "shoulder_port_2d_clearance": port,
-                "sewing_relations_checked": 21,
+                "sewing_relations_checked": (
+                    25 if trial["name"].startswith("A_") else 23
+                ),
                 "all_new_mathematical_seam_lengths_paired": True,
                 "surrogate_3d_source_gore_lengths_and_head_shape_not_approved": True,
                 "source_root_polygon_repositioned_and_rescaled": True,
