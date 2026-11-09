@@ -15,7 +15,9 @@ def test_real_stage6_two_split_volume_source_sha_and_digital_seams():
     assert item["original_public_blend_sha256"] == SOURCE_SHA256
     assert item["stage6_result"] == "success"
     assert item["python_tests_passed"] == 503
-    assert item["original_four_512_edge_hoof_rings_and_13_lower_trial_pieces_unmodified"]
+    assert item[
+        "original_four_512_edge_hoof_rings_and_13_lower_trial_pieces_unmodified"
+    ]
     variants = item["alternatives"]
     assert [x["name"] for x in variants] == [
         "A_separate_stuffed_head",
@@ -38,9 +40,12 @@ def test_actual_neck_shape_drift_and_minimal_b_port_margin_remain_blockers():
     assert b["extra_clearance_over_two_unverified_6mm_allowances_plus_1mm_mm"] < 0.5
     assert not a["actual_external_hand_ladder_seam_strength_tested"]
     assert not b["turning_and_stuffing_through_original_BAND3_trial_gap_tested"]
-    assert j["source_anatomic_section_observation"][
-        "original_front_neck_source_ring_is_not_an_actual_mesh_cut_edge"
-    ] is not False
+    assert (
+        j["source_anatomic_section_observation"][
+            "original_front_neck_source_ring_is_not_an_actual_mesh_cut_edge"
+        ]
+        is not False
+    )
 
 
 def test_research_svg_manifests_and_factory_stage_are_not_misrepresented():
@@ -57,8 +62,6 @@ def test_research_svg_manifests_and_factory_stage_are_not_misrepresented():
     p4 = next(x for x in p["phases"] if x["id"] == "P4")
     assert p3["status"] == "in_progress"
     assert p4["status"] == "not_started"
-    assert EVIDENCE.relative_to(ROOT).as_posix() in [
-        x["path"] for x in p3["evidence"]
-    ]
+    assert EVIDENCE.relative_to(ROOT).as_posix() in [x["path"] for x in p3["evidence"]]
     assert not p["overall"]["factory_sample_pack_ready"]
     assert not p["overall"]["mass_production_ready"]
