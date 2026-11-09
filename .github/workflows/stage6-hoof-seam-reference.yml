@@ -28,6 +28,7 @@ on:
       - 'scripts/audit_stage6_b2_reroute_visibility.py'
       - 'scripts/build_stage6_lower_mother_toile.py'
       - 'scripts/build_stage6_upper_mother_toile.py'
+      - 'scripts/build_stage6_split_volume_toile_ab.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -686,6 +687,53 @@ jobs:
               'approved':False
           }))
           PY
+      - name: Compare separate stuffed head vs integrated shoulder-port head on real source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_stage6_split_volume_toile_ab.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --lower-source "$RUNNER_TEMP/stage6-reference/lower_mother_toile_research/lower_toile_source_geometry.json" \
+            --out-dir "$RUNNER_TEMP/stage6-reference/split_volume_toile_AB_research"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/split_volume_toile_AB_research'
+          m = json.loads((root/'manifest.json').read_text(encoding='utf8'))
+          study = json.loads((root/'two_volume_source_envelope_ab.json').read_text(encoding='utf8'))
+          qa = json.loads((root/'two_volume_seam_and_port_qc.json').read_text(encoding='utf8'))
+          assert m['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert m['original_proxy_25pct_sha256'] == '5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd'
+          assert m['pieces_in_each_complete_lower_plus_option'] == 24
+          assert m['new_variant_A_B_svg_total'] == 22
+          assert [row['name'] for row in study['options']] == ['A_separate_stuffed_head', 'B_integrated_neck_port']
+          assert len(qa['two_distinct_manufacturing_trial_variants']) == 2
+          assert all(row['all_new_mathematical_seam_lengths_paired']
+                     for row in qa['two_distinct_manufacturing_trial_variants'])
+          assert qa['all_actual_material_or_stuffing_validation_missing']
+          assert qa['approved_industrial_patterns'] == 0
+          assert study['source_slice_envelope_is_not_original_mesh_cut_contour']
+          assert study['factory_cutting_patterns_approved'] == 0
+          assert all((root/v/f'page-{k:02d}.svg').exists()
+                     for v in m['variants'] for k in range(1,12))
+          assert all(hashlib.sha256((root/name).read_bytes()).hexdigest() == sha
+                     for name, sha in m['files_sha256'].items())
+          print('STAGE6_REAL_SPLIT_HEAD_BODY_A_B_RESEARCH_WITH_NECK_CLEARANCE_GATE', json.dumps({
+              'actual_source_shoulder_to_neck_center_xy_shift_mm':
+                  study['real_source_135_to145_center_shift_xy_mm'],
+              'each_variant_piece_count':24,
+              'printed_new_A4_sheets':22,
+              'each_variant':[
+                  {'name':row['name'],
+                   'source_root_relocation_max_mm':
+                     row['source_neck_port_modification']['max_source_head_root_to_2d_port_vertex_xy_shift_mm'],
+                   'shoulder_clearance_mm':
+                     row['source_neck_port_modification']['minimum_body_cap_boundary_to_port_mm']}
+                  for row in study['options']
+              ],
+              'factory_approved':False
+          }))
+          PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
         run: |
@@ -721,5 +769,6 @@ jobs:
             ${{ runner.temp }}/stage6-reference/*.png
             ${{ runner.temp }}/stage6-reference/lower_mother_toile_research/**
             ${{ runner.temp }}/stage6-reference/upper_mother_toile_research/**
+            ${{ runner.temp }}/stage6-reference/split_volume_toile_AB_research/**
           if-no-files-found: warn
           retention-days: 7
