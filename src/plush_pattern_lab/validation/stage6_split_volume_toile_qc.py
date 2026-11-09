@@ -72,7 +72,9 @@ def _cap_quarters(trial, role, cap, field, tolerance):
     ring = _steps(cap["outer_stitch_xy_mm"], ring=True)
     if ring.shape != (64,):
         raise ValueError("cannot stitch a cap without 64 indexed surrogate edges")
-    pieces = trial["torso_gore_pieces"] if role == "TORSO" else trial["headneck_gore_pieces"]
+    pieces = (
+        trial["torso_gore_pieces"] if role == "TORSO" else trial["headneck_gore_pieces"]
+    )
     result = []
     for i, piece in enumerate(pieces):
         actual = _steps(piece[field])
