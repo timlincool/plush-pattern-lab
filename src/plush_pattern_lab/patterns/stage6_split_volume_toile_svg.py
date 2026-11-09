@@ -97,7 +97,6 @@ def _gore_page(row, option, page):
         *_marks(row["right_stitch_xy_mm"], range(len(row["right_stitch_xy_mm"]))),
     ]
     content = [
-
         *_page_shell(row["id"], option, page),
         f'<g data-part="{escape(row["id"])}" '
         f'transform="translate({offset[0]:.5f} {offset[1]:.5f})">',
@@ -121,7 +120,6 @@ def _cap_page(row, option, page, *, guide=None):
     for hole in row["upper_head_opening_stitch_xy_mm"]:
         marks.append(_stitch(hole, guide=True))
     content = [
-
         *_page_shell(row["id"], option, page),
         f'<g data-part="{escape(row["id"])}" '
         f'transform="translate({offset[0]:.5f} {offset[1]:.5f})">',
@@ -148,7 +146,6 @@ def _collar_page(row, option, page):
         f'L{x[-1]:.4f},{height:.4f} L0,{height:.4f} Z"/>'
     ]
     content = [
-
         *_page_shell(row["id"], option, page),
         f'<g data-part="COLLAR-TRIAL" '
         f'transform="translate({offset[0]:.5f} {offset[1]:.5f})">',
