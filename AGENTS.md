@@ -56,6 +56,8 @@
 
 **2026-11-10 头颈与后躯独立体积A/B研究：** 原[Stage6真实18片研究母版](docs/STAGE6_UPPER_MOTHER_TOILE.md)已证明12组新数字净缝可对，但真源Z130→155截面中心位移71.386mm、新3D代理与2D缝长差89.121mm，单环上身不保真。本轮[独立头颈A/B设计](docs/STAGE6_SPLIT_TORSO_NECK_AB.md)：保留真源下腹13片/4个512边蹄口和4个旧BAND上沿，分开TORSO4片+肩盖与HEADNECK4片+头盖。A封头底、分开填充后手缝于肩表面；B肩盖开颈孔，COLLAR 10mm/64段一体连接。每方案研究24片/15页A4（旧4+新11），真实源Z135/145剖面用于设计验证，**新颈根轮廓缩放0.74/0.64不是原3D切缝**，6mm缝份及实体翻面仍缺签核。等待受信Stage6实际运行后才能写实测，不得把数学配缝宣称P4工业可制造。下轮先验两方案原源/安全肩孔/静止纸样图，再明确设计四视图和廉价实体样布选择。
 
+**2026-11-10 最新P3真实分体头身实测：** [独立后躯/前头颈母版A/B](docs/STAGE6_SPLIT_TORSO_NECK_AB.md) 在 [真实Stage6 #42659101637](https://github.com/timlincool/plush-pattern-lab/actions/runs/42659101637) 从固定公开Blend/25% PLY和同次真源四蹄下腹13片生成了A独立填充头外缝/B肩盖真孔+10mm COLLAR两种研究方案，各24片/15张A4，原4×512蹄口与13片下腹未变，数字净缝检验通过；[主干Python #42659614281](https://github.com/timlincool/plush-pattern-lab/actions/runs/42659614281) **503项通过**，另有肩孔缝份不足必须拒绝的反例。**真实源颈Z145相对新颈根轮廓最大XY移动A25.55/B29.14mm、源后身3D代理与2D母版纵缝差54.36mm**，不能称原25cm造型已还原。B肩盖颈孔离外缘13.41mm，仅比研究双6mm缝份＋1mm多0.41mm，真实材料/工厂仍未知；A不剪肩孔但外部手缝强度未知。**下一轮优先低成本A试布与四视角/源41Mesh云团/面部避缝审查**，B只做缝份安全小样；现场记录模板见[工艺试布清单](docs/STAGE6_SPLIT_HEAD_BODY_PHYSICAL_TRIAL_CHECKLIST.md)，永久源与A/B SVG SHA见[真实证据](experiments/stage6_two_volume_headneck_ab_20261110/summary.json)。P3未完成，P4坚决不开。
+
 ## 代码与验证契约
 
 - 从数字研究转向实体打样时，优先交付能实尺打印的逐片纸样、缝线/对位/返口说明、试布测量记录；当前 [试缝套件](docs/PHYSICAL_PROTOTYPE.md) 只覆盖合成椭球而非真实角色。
