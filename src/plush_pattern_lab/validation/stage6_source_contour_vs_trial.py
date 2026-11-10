@@ -79,13 +79,17 @@ def compare_true_contours_to_split_study(real, study):
         "metric": "XY plane boundary Hausdorff distance at identical source Z",
         "actual_closed_component_count_125": reference[125][
             "true_source_plane_intersection_component_count"
-        ] if 125 in reference else None,
+        ]
+        if 125 in reference
+        else None,
         "actual_closed_component_count_230": reference[230][
             "true_source_plane_intersection_component_count"
         ],
         "actual_closed_component_count_245": reference[245][
             "true_source_plane_intersection_component_count"
-        ] if 245 in reference else None,
+        ]
+        if 245 in reference
+        else None,
         "candidates": candidates,
         "true_source_slice_is_not_fabric_rest_shape": True,
         "source_to_trial_sewing_not_proven": True,
@@ -106,7 +110,7 @@ def render_true_source_contours_svg(report):
         f'height="{height}" viewBox="0 0 {width} {height}">',
         f'<rect width="{width}" height="{height}" fill="white"/>',
         '<text x="13" y="20" font-family="sans-serif" font-size="15">'
-        'REAL STAGE6 original triangle-plane contours | NOT FABRIC CUTTING</text>',
+        "REAL STAGE6 original triangle-plane contours | NOT FABRIC CUTTING</text>",
     ]
     for i, section in enumerate(slices):
         out.extend(_draw_source_section_panel(section, i))
@@ -122,7 +126,7 @@ def _draw_source_section_panel(section, index):
         'fill="#fafafa" stroke="#cdd2d5" stroke-width=".8"/>',
         f'<text x="{left + 10}" y="{top + 17}" font-family="sans-serif" '
         f'font-size="12">Z={section["plane_z_mm"]}mm | '
-        f'{section["true_source_plane_intersection_component_count"]} source loops</text>',
+        f"{section['true_source_plane_intersection_component_count']} source loops</text>",
     ]
     for order, contour in enumerate(section["source_contours"]):
         points = np.asarray(contour["true_interpolated_contour_xy_mm"], dtype=float)
@@ -137,6 +141,6 @@ def _draw_source_section_panel(section, index):
     result.append(
         f'<text x="{left + 10}" y="{top + 217}" '
         'font-family="sans-serif" font-size="9">'
-        'True 3D mesh intersections; common 0.74 px/mm XY scale</text>'
+        "True 3D mesh intersections; common 0.74 px/mm XY scale</text>"
     )
     return result
