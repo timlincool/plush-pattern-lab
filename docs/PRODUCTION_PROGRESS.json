@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_original_source_triangle_true_contour_multiloop_a_b_2d_fit_ci_pending",
+    "stage": "stage6_real_13_source_contour_multiloop_A_B_38mm_head_cap_rejected",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -239,6 +239,10 @@
         {
           "path": "docs/STAGE6_TRUE_SOURCE_CONTOUR_GATE.md",
           "kind": "original_real_source_triangle_plane_graph_multi_connected_loops_z125_and_z230_source_to_2d_trial_geometry_research_pending_trusted_main"
+        },
+        {
+          "path": "experiments/stage6_real_mesh_sections_20261111/summary.json",
+          "kind": "2_trusted_real_stage6_triangle_plane_z13_source_vertex_id_mesh_contours_persisted_and_original_head_cap_multiloop_misfit"
         }
       ],
       "blockers": [
@@ -257,7 +261,7 @@
         "两次受信main Stage6真实复算原4x512源蹄口并字节相同地生成13片研究下腹母版/4页A4/逐段2D缝配对，但新YOKE Z60外轮廓XY包络与原Stage6真实Z≈60壳的1%-99%分位范围有8.43–9.88mm差，且4条上围边仍全部未配头身；平面4蹄底非3D原鼓蹄、真实材料和工厂未验证，不得按成品裁布",
         "可信Stage6 #42489916617/#42490091653完整复算原13片下腹+新4片上身/1试验盖，共18片研究数字纸样9页A4。4条BAND上沿、4条纵缝、4×16顶盖缝的12组数字净线段均配对，但原Z130至155中心跳71.386mm，新3D包络与2D纵缝差最大89.121mm且真实原顶Z248.676比研究盖Z230高18.676mm；此单环头身母版对原造型不保真，P3仍失败，需拆分头/颈/后躯设计",
         "真实Stage6 #42659101637已成功从锁定真源构建A独立头颈/B开颈孔+10mm圈，每方案24片/15页A4，数学净缝QA均通过；但相对真实Z145颈根两方案XY缩放为74%/64%、源根最大偏移25.55/29.14mm，后躯3D代理纵向/纸样缝线差54.36mm，B双6mm净缝只多0.41mm研究裕量，且真实绒布、脸/耳/尾/云和实体翻面未验，不能称25cm制造母版或批准P4",
-        "本地固定Stage6 25%原真实三角面切Z125得到2条源闭合轮廓、Z230得到3条、Z245得到2条。此前A/B和单环上身母版以每层全部XYZ点的1%-99%分位做1条环，可能错误合并分离的左右侧突起或后部小轮廓；需由受信main真正源边交图、source原Vertex ID、13截面SVG和A/B轮廓XY Hausdorff确认，不可凭数字配缝继续制造"
+        "两次受信真实Stage6 #42858263036/#42858988846已复核：59,306原源顶点/116,568真三角面得到Z125=2独立闭合源环、Z230=3、Z245=2；Z230真中央环长153.094mm，两侧原突出环45.52/45.51mm，而旧A/B研究单一顶盖环319.77mm，同Z Hausdorff误差38.212mm，无法复制原头顶/旁侧突起。须由完整41产品Mesh/原四视图确定侧突起归属后重设计顶盖与独立装配缝，不能凭数学配缝晋升P4"
       ]
     },
     {
@@ -1143,6 +1147,66 @@
       "all_25_generated_research_files_manifest_sha256_validated": true,
       "real_original_sculpt_body_face_silhouette_fitted": false,
       "factory_manufacturing_patterns_approved": 0
+    },
+    "stage6_real_true_triangle_plane_13section_AB": {
+      "first_trusted_runner": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42858263036",
+      "repeat_trusted_runner": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42858988846",
+      "trusted_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42858988866",
+      "python_tests_passed": 514,
+      "evidence_path": "experiments/stage6_real_mesh_sections_20261111/summary.json",
+      "original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "original_25pct_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "source_vertices": 59306,
+      "source_triangles": 116568,
+      "Zs_mm": [
+        60,
+        100,
+        115,
+        125,
+        130,
+        135,
+        140,
+        145,
+        155,
+        180,
+        205,
+        230,
+        245
+      ],
+      "source_closed_intersected_contour_counts": [
+        1,
+        1,
+        1,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3,
+        2
+      ],
+      "source_true_z230_closed_loop_perimeters_mm": [
+        153.0939971276184,
+        45.51675545730191,
+        45.510986167806784
+      ],
+      "source_true_z230_lateral_loop_centers_x_mm": [
+        -54.54841841991147,
+        54.554364933411165
+      ],
+      "source_z135_to145_true_closed_contour_centroid_shift_y_mm": 24.07490626554892,
+      "prior_135_to145_box_quantile_center_shift_mm": 35.462478486593355,
+      "true_centroid_does_not_equal_prior_box_center_metric": true,
+      "A_single_head_cap_z230_true_source_xy_hausdorff_mm": 38.212240865383805,
+      "B_single_head_cap_z230_true_source_xy_hausdorff_mm": 38.212240865383805,
+      "raw_source_contour_summary_json_and_detail_json_and_atlas_svg_identical_across_two_runs": true,
+      "original_3d_source_edge_id_pairs_retained": true,
+      "source_contours_are_not_approved_2d_fabric_rest_shapes": true,
+      "lateral_lobe_ear_or_cloud_identity_not_confirmed": true,
+      "factory_patterns_approved": 0
     }
   },
   "next_actions": [
@@ -1150,8 +1214,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "优先从可信Stage6原始25% PLY全部116568真三角面做Z60/100/115/125/130/135/140/145/155/180/205/230/245水平面**真实源边交线**，检验每条闭合源原Mesh截线的连通分量、周长、原顶点ID身份及相交环形状。独立预检Z125=2环、Z230=3环、Z245=2环，单环包络错把实际不同几何体积合并；同时从同Run A/B头颈母版对比Z135/145/155/180/205/230的源真实闭环与新2D环Hausdorff、差额周长与被忽略的分离环。合并实测后优先设计源Z230两侧独立突起的真实装配/耳云归属与隐藏接缝，再做A廉价废布样本；不允许假造源雕塑真实裁布",
-      "done_when": "受信main固定源原三角面13截面真实交线、各环源Vertex ID边对/周长/面积/XY与可视图均有SHA证据，A/B逐Z层相对真实源差距经程序给出具体毫米与额外环；未得现行四视图/实体材料设计许可仍停P3"
+      "action": "受信Stage6完整原网格13个真实源边/水平面交线发现Z125=2环、Z230=3环、Z245=2环；旧A/B各24片头顶单环试验盖与真源Z230中央头顶的二维Hausdorff差38.212mm、周长319.77对153.094mm，且直接遗漏原左右源突出环（各45.5mm）。应先在完整Stage6 41个产品Mesh/42场景中叠加真正中间头顶及两个侧突出源轮廓的source Edge ID，定位其是否属于原耳根/头侧云团/其他突出，并与原设计正背左右顶四视图做可视化遮挡或结构承接对照，再设计“中央头盖/两侧独立结构”与头颈连线和可隐藏缝。继承原四蹄512源边与13片下腹不变；A废布试样只能用于无饰面结构评审，正式25cm装饰/工业纸样须源3D→2D低应变及真实厂商材料/样布反馈，不得越过P3",
+      "done_when": "真实Z230三个原主壳源边闭合环能与完整41产品Mesh/正式设计正侧背顶对应到工艺身份，头盖和侧突出结构独立母版具真实源边/净缝位置及材料测试/返口记录，A/B与原源环形/三维外观差异改善并可重算"
     },
     {
       "priority": "P0",
@@ -1193,6 +1257,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-11",
+      "event": "可信main Stage6 #42858263036和#42858988846真实59,306顶点116,568三角面水平交线13层重算，全部三份原始摘要/详细源ID/SVG字节SHA一致。Z125有2独立环、Z230有3(中央153.094mm+左右45.517/45.511mm)、Z245有2；旧A/B在Z230错误的一条母版顶盖319.77mm与原主环同Z Hausdorff 38.212mm。原Z135/145真轮廓质心Y变化24.075mm不同于之前包围盒中心位移35.462mm。单顶盖制造方案明确失败，P3重新拆实际侧突出来源与真实云耳承接，P4仍不开始",
+      "evidence_path": "experiments/stage6_real_mesh_sections_20261111/summary.json"
+    },
     {
       "date": "2026-11-11",
       "event": "对固定真实Stage6 25% PLY全部116568三角面本地独立原边-水平面求交，发现Z125两个原闭合XY交环、Z230三个、Z245两个；此前单环母版把侧部独立突出/后部小轮廓用百分位包络错误合并的风险严重。新增真实边源ID/度2闭环/分位包络替代拒绝以及A/B同Z轮廓Hausdorff研发门禁，待可信main再确认，P3继续不生产",

@@ -1,0 +1,187 @@
+{
+  "schema": "stage6-original-true-triangle-plane-multi-loop-13section-A-B-qa-evidence-v1",
+  "measurement_date_utc": "2026-11-11",
+  "first_trusted_main_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42858263036",
+  "first_main_commit": "4845b3abce9fe2a5bc4f999708e3026be8f45d30",
+  "first_stage6_run_result": "success",
+  "repeat_trusted_main_stage6_run": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42858988846",
+  "repeat_main_commit": "a1232246213e8959effdfa7873febe78b0813b3c",
+  "repeat_stage6_run_result": "success",
+  "current_python_ci": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42858988866",
+  "python_tests_passed": 514,
+  "python_ruff_complexity_and_package": "PASS",
+  "public_original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_original_stage6_25pct_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "original_mesh_vertex_count": 59306,
+  "original_mesh_triangle_count": 116568,
+  "method": "Exact original-triangle horizontal plane cross-edge interpolation; intersection graph degree exactly two and every source polygon closed/simple; all original edge vertex ID pairs retained; no single envelope assumption",
+  "source_true_plane_heights_mm": [
+    60,
+    100,
+    115,
+    125,
+    130,
+    135,
+    140,
+    145,
+    155,
+    180,
+    205,
+    230,
+    245
+  ],
+  "source_true_connected_closed_loop_counts": [
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    3,
+    2
+  ],
+  "actual_original_source_key_heights": {
+    "z125": {
+      "loops": 2,
+      "intersected_source_triangle_segments": 618,
+      "perimeters_mm": [
+        392.17148702575287,
+        78.45591993974877
+      ],
+      "areas_mm2": [
+        9293.421470630128,
+        441.5714407150721
+      ],
+      "centroid_xy_mm": [
+        [
+          -0.0004463667085622375,
+          6.96744184160652
+        ],
+        [
+          -0.00003495090239442059,
+          113.97509109176397
+        ]
+      ]
+    },
+    "z135": {
+      "loops": 1,
+      "centroid_xy_mm": [
+        0.0006322994340019147,
+        -12.261386593343843
+      ],
+      "perimeter_mm": 324.5824682808926,
+      "area_mm2": 5649.597052293922
+    },
+    "z145": {
+      "loops": 1,
+      "centroid_xy_mm": [
+        -0.0008033022501096184,
+        -36.33629285889276
+      ],
+      "perimeter_mm": 199.94182465842601,
+      "area_mm2": 3168.4229025422815
+    },
+    "z230": {
+      "loops": 3,
+      "intersected_source_triangle_segments": 414,
+      "perimeters_mm": [
+        153.0939971276184,
+        45.51675545730191,
+        45.510986167806784
+      ],
+      "areas_mm2": [
+        1787.5181625493535,
+        151.99268499748015,
+        151.92265474351447
+      ],
+      "centroids_xy_mm": [
+        [
+          0.00007830132044129516,
+          -47.00054451507138
+        ],
+        [
+          -54.54841841991147,
+          -44.74570302599639
+        ],
+        [
+          54.554364933411165,
+          -44.74329715819148
+        ]
+      ]
+    },
+    "z245": {
+      "loops": 2,
+      "perimeters_mm": [
+        22.02724028563704,
+        22.026740111552304
+      ],
+      "centroids_xy_mm": [
+        [
+          -61.24835633397471,
+          -43.10895450910817
+        ],
+        [
+          61.24492728744423,
+          -43.111789058745025
+        ]
+      ]
+    }
+  },
+  "actual_source_135_to145_true_contour_centroid_y_shift_mm": 24.07490626554892,
+  "previous_source_135_to145_percentile_envelope_center_shift_is_not_same_metric": true,
+  "ab_trial_true_source_boundary_xy_hausdorff_mm": {
+    "height_z_mm": [
+      135,
+      145,
+      155,
+      180,
+      205,
+      230
+    ],
+    "A_separate_stuffed_head": [
+      19.244,
+      25.604,
+      12.948,
+      9.706,
+      10.79,
+      38.212240865383805
+    ],
+    "B_integrated_neck_port": [
+      19.244,
+      28.87,
+      12.948,
+      9.706,
+      10.79,
+      38.212240865383805
+    ]
+  },
+  "source_z230_true_middle_loop_perimeter_mm": 153.0939971276184,
+  "ab_research_one_loop_top_cap_z230_perimeter_mm": 319.77,
+  "both_trial_heads_ignore_two_side_components_at_z230": true,
+  "two_extra_side_contours_not_yet_approved_as_ears_or_clouds": true,
+  "both_single_head_caps_fail_true_original_source_topology": true,
+  "true_source_3d_contour_is_not_a_fabric_rest_pattern": true,
+  "research_artifacts": {
+    "first_main_stage6_artifact_id": 13784112381,
+    "first_artifact_original_zip_sha256": "40362ab30597d63e1779b2f151d4dadca3dde064af850c182718d42f4d9de2e0",
+    "repeat_main_stage6_artifact_id": 13783508283,
+    "repeat_artifact_original_zip_sha256": "db41d1531473d8d1e4ed72c0a5419575cd0b39e130b8979ebb5f4e2dc99906d8",
+    "exact_raw_research_file_sha256": {
+      "true_stage6_source_section_summary.json": "071acfced61e6bbf52584dc3a68c54bb72d838e87b7c87fe6a1e46181efe2b46",
+      "true_stage6_source_section_detail.json": "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717",
+      "true_stage6_source_section_atlas.svg": "ad5a76ad6c3dfbf510ef4f5c60d9f991250d6c48904f2f03c15903dace868534"
+    },
+    "all_three_source_research_files_byte_identical_across_two_trusted_main_runs": true,
+    "full_action_zip_sha_differs_due_other_stage_assets": true
+  },
+  "decision": "PASS_TRUE_SOURCE_INTERSECTION_GRAPH__FAIL_SINGLE_ENVELOPE_TOP_CAP_ANATOMY",
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "approved_manufacturer_patterns": 0,
+  "next": "Audit the two Z230 lateral closed source main-shell contours against actual complete Stage6 product Mesh ear/cloud parts and design frontal/side/back/top imagery; define separate manufacturable lateral protrusion and central head-cap structures, rerun 3D source-to-2D seam and real fabric trial. Preserve original 4x512 hoof lower source and both A/B trials as negative evidence."
+}
