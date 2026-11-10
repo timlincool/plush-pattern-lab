@@ -20,7 +20,7 @@ def _source_mesh(points, faces, z):
     if (
         xyz.ndim != 2
         or xyz.shape[1] != 3
-        or not 12 <= len(xyz) <= 300000
+        or not 8 <= len(xyz) <= 300000
         or not np.isfinite(xyz).all()
     ):
         raise ValueError("true source surface must contain finite millimetre XYZ")
