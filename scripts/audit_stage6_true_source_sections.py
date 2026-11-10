@@ -111,13 +111,14 @@ def main():
         json.dumps(
             {
                 "source_planes": [
-                    [row["source_plane_z_mm"], row["actual_original_closed_contour_count"]]
+                    [
+                        row["source_plane_z_mm"],
+                        row["actual_original_closed_contour_count"],
+                    ]
                     for row in qa["actual_source_section_compact_summary"]
                 ],
                 "candidate_max_true_vs_surrogate_boundary_gap_mm": {
-                    row["name"]: row[
-                        "max_2d_true_source_contour_boundary_hausdorff_mm"
-                    ]
+                    row["name"]: row["max_2d_true_source_contour_boundary_hausdorff_mm"]
                     for row in qa["candidates"]
                 },
                 "source_3d_sculpt_fabric_pattern_approved": False,
