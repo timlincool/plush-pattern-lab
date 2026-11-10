@@ -65,7 +65,7 @@ def test_two_disconnected_source_columns_are_two_contours_not_one_bbox():
 def test_plane_at_a_source_vertex_must_fail_instead_of_guessing_topology():
     xyz, faces = _synthetic_column()
     with pytest.raises(ValueError, match="through original vertex"):
-        intersect_real_source_at_z(xyz, faces, 0)
+        intersect_real_source_at_z(xyz, faces, 2)
 
 
 def test_missing_side_triangle_fails_nonclosed_original_source_contour():
