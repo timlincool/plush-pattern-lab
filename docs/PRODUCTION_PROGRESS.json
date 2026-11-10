@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-10",
+  "updated_at": "2026-11-11",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_two_torso_headneck_source_A_B_24piece_true_ci_geometric_seams_pass_but_3d_fit_rejected",
+    "stage": "stage6_original_source_triangle_true_contour_multiloop_a_b_2d_fit_ci_pending",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -235,6 +235,10 @@
         {
           "path": "experiments/stage6_two_volume_headneck_ab_20261110/summary.json",
           "kind": "trusted_real_blender_stage6_source_separate_torso_front_neck_A_B_22_a4_24piece_each_64seam_pairing_with_25mm_root_3d_drift_rejection"
+        },
+        {
+          "path": "docs/STAGE6_TRUE_SOURCE_CONTOUR_GATE.md",
+          "kind": "original_real_source_triangle_plane_graph_multi_connected_loops_z125_and_z230_source_to_2d_trial_geometry_research_pending_trusted_main"
         }
       ],
       "blockers": [
@@ -252,7 +256,8 @@
         "受信真实Stage6 #42443067478已完整复算C/D避脸路线。历史鼻口警报双方归零，但C的原新缝157.59mm对应两侧UV112.33/121.70mm、旧高位缝两侧差217.46mm，且54/95新源点靠近正面主壳；D形成仅2309面狭窄片、与旧缝点间最小约1.06mm，新增缝两侧UV差208.19mm；六片LSCM存在严重边误差、翻面或重叠，全部拒绝工厂裁布",
         "两次受信main Stage6真实复算原4x512源蹄口并字节相同地生成13片研究下腹母版/4页A4/逐段2D缝配对，但新YOKE Z60外轮廓XY包络与原Stage6真实Z≈60壳的1%-99%分位范围有8.43–9.88mm差，且4条上围边仍全部未配头身；平面4蹄底非3D原鼓蹄、真实材料和工厂未验证，不得按成品裁布",
         "可信Stage6 #42489916617/#42490091653完整复算原13片下腹+新4片上身/1试验盖，共18片研究数字纸样9页A4。4条BAND上沿、4条纵缝、4×16顶盖缝的12组数字净线段均配对，但原Z130至155中心跳71.386mm，新3D包络与2D纵缝差最大89.121mm且真实原顶Z248.676比研究盖Z230高18.676mm；此单环头身母版对原造型不保真，P3仍失败，需拆分头/颈/后躯设计",
-        "真实Stage6 #42659101637已成功从锁定真源构建A独立头颈/B开颈孔+10mm圈，每方案24片/15页A4，数学净缝QA均通过；但相对真实Z145颈根两方案XY缩放为74%/64%、源根最大偏移25.55/29.14mm，后躯3D代理纵向/纸样缝线差54.36mm，B双6mm净缝只多0.41mm研究裕量，且真实绒布、脸/耳/尾/云和实体翻面未验，不能称25cm制造母版或批准P4"
+        "真实Stage6 #42659101637已成功从锁定真源构建A独立头颈/B开颈孔+10mm圈，每方案24片/15页A4，数学净缝QA均通过；但相对真实Z145颈根两方案XY缩放为74%/64%、源根最大偏移25.55/29.14mm，后躯3D代理纵向/纸样缝线差54.36mm，B双6mm净缝只多0.41mm研究裕量，且真实绒布、脸/耳/尾/云和实体翻面未验，不能称25cm制造母版或批准P4",
+        "本地固定Stage6 25%原真实三角面切Z125得到2条源闭合轮廓、Z230得到3条、Z245得到2条。此前A/B和单环上身母版以每层全部XYZ点的1%-99%分位做1条环，可能错误合并分离的左右侧突起或后部小轮廓；需由受信main真正源边交图、source原Vertex ID、13截面SVG和A/B轮廓XY Hausdorff确认，不可凭数字配缝继续制造"
       ]
     },
     {
@@ -1145,8 +1150,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "可信真Stage6下腹13片来源保持不变，分离头身A/B两方案已生成24片各15张A4、全部独立数字配缝QA通过，但原Z145颈根相对A需改动最大25.55mm、相对B最大29.14mm，原后躯3D代理与2D试样缝差54.36mm，原Z135/145中心偏移35.46mm，均不能归为最终成品版型。**优先A进行低成本废布/白坯试验**：分头体填充、旧BAND-3约42.49mm返口、肩颈表面手缝，并用原角色四视角比对头身比例及云团/耳根实际遮挡、记录差异和工序耗时。B作为受控备选，肩颈孔13.41mm仅超过双6mm+1mm研究门槛0.41mm，需测量材料厚度、实际缝份、可翻面通道后再决定是否剪颈孔；任何试验图P3研究用，不得将数学QA作为工厂P4批准",
-      "done_when": "A废布24片试样的正侧背顶照片及关键尺寸/缝线强度/返口可翻性反馈有完整记录，原25cm设计四视图及后躯肩孔/真Z145颈根XY差异完成设计判断；B 13mm肩片缝份风险明确评审，源ID+新结构图仍可复算，实际材料/厂商批注后才考虑P4"
+      "action": "优先从可信Stage6原始25% PLY全部116568真三角面做Z60/100/115/125/130/135/140/145/155/180/205/230/245水平面**真实源边交线**，检验每条闭合源原Mesh截线的连通分量、周长、原顶点ID身份及相交环形状。独立预检Z125=2环、Z230=3环、Z245=2环，单环包络错把实际不同几何体积合并；同时从同Run A/B头颈母版对比Z135/145/155/180/205/230的源真实闭环与新2D环Hausdorff、差额周长与被忽略的分离环。合并实测后优先设计源Z230两侧独立突起的真实装配/耳云归属与隐藏接缝，再做A廉价废布样本；不允许假造源雕塑真实裁布",
+      "done_when": "受信main固定源原三角面13截面真实交线、各环源Vertex ID边对/周长/面积/XY与可视图均有SHA证据，A/B逐Z层相对真实源差距经程序给出具体毫米与额外环；未得现行四视图/实体材料设计许可仍停P3"
     },
     {
       "priority": "P0",
@@ -1188,6 +1193,11 @@
     "failure_rule": "失败 A/B 须保留，不能通过提高阈值伪造进度"
   },
   "history": [
+    {
+      "date": "2026-11-11",
+      "event": "对固定真实Stage6 25% PLY全部116568三角面本地独立原边-水平面求交，发现Z125两个原闭合XY交环、Z230三个、Z245两个；此前单环母版把侧部独立突出/后部小轮廓用百分位包络错误合并的风险严重。新增真实边源ID/度2闭环/分位包络替代拒绝以及A/B同Z轮廓Hausdorff研发门禁，待可信main再确认，P3继续不生产",
+      "evidence_path": "docs/STAGE6_TRUE_SOURCE_CONTOUR_GATE.md"
+    },
     {
       "date": "2026-11-10",
       "event": "真实Stage6 Blender main#42659101637成功生成分离后躯与头颈A(独立填充外缝)/B(开颈孔10mm连接圈)两套新研究结构，每方案结合原13片下腹共24片/15张100%A4，新22张SVG及两方案净缝QA由原固定SHA可信实跑，Python主分支#42659614281 503项成功。A颈根缩74%最大XY移25.55mm/肩边间隙10.22mm，B缩64%最大移29.14mm/肩孔间隙13.41mm(仅比研究双6mm+1mm余0.41mm)；虽新数学缝线配对成功，后躯3D代理与2D边差54.36mm，材料/实物外观未过，研究首选A废布试验，P3继续P4保持0",
