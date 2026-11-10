@@ -29,6 +29,7 @@ on:
       - 'scripts/build_stage6_lower_mother_toile.py'
       - 'scripts/build_stage6_upper_mother_toile.py'
       - 'scripts/build_stage6_split_volume_toile_ab.py'
+      - 'scripts/audit_stage6_true_source_sections.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -734,6 +735,45 @@ jobs:
               'factory_approved':False
           }))
           PY
+      - name: Audit actual original triangle-plane multi-loop anatomy and split A/B surrogate misfit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_stage6_true_source_sections.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --trial "$RUNNER_TEMP/stage6-reference/split_volume_toile_AB_research/two_volume_source_envelope_ab.json" \
+            --summary "$RUNNER_TEMP/stage6-reference/true_stage6_source_section_summary.json" \
+            --detail "$RUNNER_TEMP/stage6-reference/true_stage6_source_section_detail.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/true_stage6_source_section_atlas.svg"
+          python - <<'PY'
+          import json, os, pathlib, hashlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          d = json.loads((root/'true_stage6_source_section_summary.json').read_text(encoding='utf8'))
+          assert d['schema'] == 'stage6-real-sculpt-contour-vs-split-A-B-trial-qa-v1'
+          assert d['original_public_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert d['source_25percent_proxy_ply_sha256'] == '5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd'
+          assert d['actual_closed_component_count_125'] == 2
+          assert d['actual_closed_component_count_230'] == 3
+          assert d['actual_closed_component_count_245'] == 2
+          assert len(d['candidates']) == 2
+          assert all(row['single_head_top_cap_fails_true_z230_component_structure']
+                     for row in d['candidates'])
+          assert all(row['max_2d_true_source_contour_boundary_hausdorff_mm'] > 10
+                     for row in d['candidates'])
+          for f, key in [
+              ('true_stage6_source_section_detail.json', 'full_original_source_contour_detail_sha256'),
+              ('true_stage6_source_section_atlas.svg', 'true_original_mesh_source_section_atlas_svg_sha256')
+          ]:
+              assert hashlib.sha256((root/f).read_bytes()).hexdigest() == d[key]
+          assert d['source_to_trial_sewing_not_proven']
+          assert d['factory_cutting_approved'] == 0
+          print('STAGE6_TRUE_TRIANGLE_PLANE_MESH_LOOPS_BLOCK_UNSUPPORTED_SINGLE_HEAD_CAP', json.dumps({
+              'source_components_at_z125_z230_z245': [d['actual_closed_component_count_125'],d['actual_closed_component_count_230'],d['actual_closed_component_count_245']],
+              'trial_boundary_misfit_mm': {row['name']:row['max_2d_true_source_contour_boundary_hausdorff_mm'] for row in d['candidates']},
+              'factory_approved': False
+          }))
+          PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
         run: |
@@ -770,5 +810,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/lower_mother_toile_research/**
             ${{ runner.temp }}/stage6-reference/upper_mother_toile_research/**
             ${{ runner.temp }}/stage6-reference/split_volume_toile_AB_research/**
+            ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
+            ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.svg
           if-no-files-found: warn
           retention-days: 7
