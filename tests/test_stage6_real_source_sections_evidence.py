@@ -36,7 +36,9 @@ def test_ab_single_head_top_cap_mismatch_and_true_centroid_are_not_fabric():
     assert real["ab_research_one_loop_top_cap_z230_perimeter_mm"] > 319
     assert real["both_trial_heads_ignore_two_side_components_at_z230"]
     assert 24 < real["actual_source_135_to145_true_contour_centroid_y_shift_mm"] < 25
-    assert real["previous_source_135_to145_percentile_envelope_center_shift_is_not_same_metric"]
+    assert real[
+        "previous_source_135_to145_percentile_envelope_center_shift_is_not_same_metric"
+    ]
     assert real["true_source_3d_contour_is_not_a_fabric_rest_pattern"]
 
 
@@ -46,7 +48,9 @@ def test_two_trusted_stage6_runs_have_identical_original_section_evidence():
     assert proof["first_stage6_run_result"] == "success"
     assert proof["repeat_stage6_run_result"] == "success"
     assert proof["python_tests_passed"] == 514
-    assert archive["all_three_source_research_files_byte_identical_across_two_trusted_main_runs"]
+    assert archive[
+        "all_three_source_research_files_byte_identical_across_two_trusted_main_runs"
+    ]
     assert len(archive["exact_raw_research_file_sha256"]) == 3
     progress = json.loads(PROGRESS.read_text(encoding="utf8"))
     p3 = next(row for row in progress["phases"] if row["id"] == "P3")
