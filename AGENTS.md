@@ -58,6 +58,8 @@
 
 **2026-11-10 最新P3真实分体头身实测：** [独立后躯/前头颈母版A/B](docs/STAGE6_SPLIT_TORSO_NECK_AB.md) 在 [真实Stage6 #42659101637](https://github.com/timlincool/plush-pattern-lab/actions/runs/42659101637) 从固定公开Blend/25% PLY和同次真源四蹄下腹13片生成了A独立填充头外缝/B肩盖真孔+10mm COLLAR两种研究方案，各24片/15张A4，原4×512蹄口与13片下腹未变，数字净缝检验通过；[主干Python #42659614281](https://github.com/timlincool/plush-pattern-lab/actions/runs/42659614281) **503项通过**，另有肩孔缝份不足必须拒绝的反例。**真实源颈Z145相对新颈根轮廓最大XY移动A25.55/B29.14mm、源后身3D代理与2D母版纵缝差54.36mm**，不能称原25cm造型已还原。B肩盖颈孔离外缘13.41mm，仅比研究双6mm缝份＋1mm多0.41mm，真实材料/工厂仍未知；A不剪肩孔但外部手缝强度未知。**下一轮优先低成本A试布与四视角/源41Mesh云团/面部避缝审查**，B只做缝份安全小样；现场记录模板见[工艺试布清单](docs/STAGE6_SPLIT_HEAD_BODY_PHYSICAL_TRIAL_CHECKLIST.md)，永久源与A/B SVG SHA见[真实证据](experiments/stage6_two_volume_headneck_ab_20261110/summary.json)。P3未完成，P4坚决不开。
 
+**2026-11-11 新增必须优先核验的原几何反例：** 直接对原Stage6 25% PLY全部116,568真实三角面按原Vertex ID边求水平截面，独立本地发现Z125有2个闭合分量、Z230有3个、Z245有2个（[真实源轮廓研究门禁](docs/STAGE6_TRUE_SOURCE_CONTOUR_GATE.md)）。此前A/B分离头颈母版用每层XYZ顶点1%～99%包围盒拟合**一条**64段环，可能把头顶左右侧独立突起与中间头部混在一起。新的纯数学源边图/重合门禁、13高度SVG和逐层A/B相对真实截面XY Hausdorff已经添加，**可信main未出结果前不能声称源切片实测通过**。下一轮优先真实全41产品Mesh与现行正侧背顶设计判定侧边突起属于耳/云/尾哪类工艺，再重新设计顶盖/隐藏承接；P3仍未完成，P4纸样零批准。
+
 ## 代码与验证契约
 
 - 从数字研究转向实体打样时，优先交付能实尺打印的逐片纸样、缝线/对位/返口说明、试布测量记录；当前 [试缝套件](docs/PHYSICAL_PROTOTYPE.md) 只覆盖合成椭球而非真实角色。
