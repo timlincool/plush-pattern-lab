@@ -54,10 +54,12 @@ def test_two_disconnected_source_columns_are_two_contours_not_one_bbox():
     faces = np.vstack((first, second + len(one)))
     s = intersect_real_source_at_z(xyz, faces, 1)
     assert s["true_source_plane_intersection_component_count"] == 2
-    assert sorted(round(c["contour_centroid_xy_mm"][0]) for c in s["source_contours"]) == [
-        -5, 5
-    ]
-    assert all(c["enclosed_plane_area_mm2"] == pytest.approx(4) for c in s["source_contours"])
+    assert sorted(
+        round(c["contour_centroid_xy_mm"][0]) for c in s["source_contours"]
+    ) == [-5, 5]
+    assert all(
+        c["enclosed_plane_area_mm2"] == pytest.approx(4) for c in s["source_contours"]
+    )
 
 
 def test_plane_at_a_source_vertex_must_fail_instead_of_guessing_topology():
@@ -84,9 +86,10 @@ def test_source_loop_sha_is_deterministic_even_when_reference_undisturbed():
     xyz, faces = _synthetic_column()
     first = intersect_real_source_at_z(xyz, faces, 1)["source_contours"][0]
     second = intersect_real_source_at_z(xyz, faces, 1)["source_contours"][0]
-    assert first["original_source_edge_and_interpolated_xy_sha256"] == second[
-        "original_source_edge_and_interpolated_xy_sha256"
-    ]
+    assert (
+        first["original_source_edge_and_interpolated_xy_sha256"]
+        == second["original_source_edge_and_interpolated_xy_sha256"]
+    )
 
 
 def test_missing_actual_original_contour_study_refuses_false_benchmark():

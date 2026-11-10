@@ -36,7 +36,9 @@ def _source_mesh(points, faces, z):
     if not np.isfinite(z) or not 0 < z < 1000:
         raise ValueError("invalid real section height in millimetres")
     if np.min(np.abs(xyz[:, 2] - z)) <= 1e-6:
-        raise ValueError("horizontal plane runs through original vertex; choose another z")
+        raise ValueError(
+            "horizontal plane runs through original vertex; choose another z"
+        )
     return xyz, tri.astype(np.int64)
 
 
@@ -56,9 +58,8 @@ def _true_intersection_graph(xyz, tri, z):
     unique, inverse = np.unique(actual_edges, axis=0, return_inverse=True)
     ordered = np.argsort(face_index, kind="stable")
     sorted_faces, sorted_edges = face_index[ordered], inverse[ordered]
-    if (
-        len(sorted_faces) != 2 * len(triangles)
-        or not np.array_equal(sorted_faces, np.repeat(np.arange(len(triangles)), 2))
+    if len(sorted_faces) != 2 * len(triangles) or not np.array_equal(
+        sorted_faces, np.repeat(np.arange(len(triangles)), 2)
     ):
         raise ValueError("degenerate source triangle-plane crossing")
     joined = sorted_edges.reshape(-1, 2)
@@ -102,7 +103,9 @@ def _source_loops(source_edges, xy, pairs):
         ).hexdigest()
         result.append(
             {
-                "crossed_original_mesh_vertex_id_edge_pairs": source_edges[loop].tolist(),
+                "crossed_original_mesh_vertex_id_edge_pairs": source_edges[
+                    loop
+                ].tolist(),
                 "true_interpolated_contour_xy_mm": vertices.tolist(),
                 "crossed_original_source_edges": len(loop),
                 "closed_loop": True,
