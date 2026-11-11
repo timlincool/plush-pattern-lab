@@ -162,8 +162,7 @@ def _score_arc(samples):
     counts = {}
     for view in views:
         labels = Counter(
-            sample["five_view_first_hit"][view]["classification"]
-            for sample in samples
+            sample["five_view_first_hit"][view]["classification"] for sample in samples
         )
         counts[view] = {
             "near_original_body_first_surface": labels[VISIBLE],
