@@ -28,11 +28,11 @@ def render_real_root_band_svg(report):
         [
             '<text x="24" y="622" font-family="sans-serif" font-size="16" '
             'fill="#9c3434">6mm + 6mm RESEARCH ALLOWANCE: '
-            'source triangle surface graph spacing is insufficient</text>',
+            "source triangle surface graph spacing is insufficient</text>",
             '<text x="24" y="649" font-family="sans-serif" font-size="12" '
             'fill="#475569">Cut coordinates derive from immutable PLY original edge IDs '
-            'and two exact Z intersections. Fabric thickness, hair and production '
-            'turnover have NOT been tested.</text>',
+            "and two exact Z intersections. Fabric thickness, hair and production "
+            "turnover have NOT been tested.</text>",
             "</svg>",
         ]
     )
@@ -48,10 +48,13 @@ def _draw_panel(patch, left):
     combined = xyz0 + xyz1
     center_x = sum(p[0] for p in combined) / len(combined)
     center_y = sum(p[1] for p in combined) / len(combined)
+
     def point(p):
         return left + 310 + 16 * (p[0] - center_x), 306 - 16 * (p[1] - center_y)
+
     def polygon(xyz):
         return " ".join(f"{u:.2f},{v:.2f}" for u, v in map(point, xyz))
+
     gap = patch["between_two_3d_seams_source_surface_graph"]
     lower_len = bottom["paired_3d_netline_length_each_side_mm"]
     upper_len = top["paired_3d_netline_length_each_side_mm"]
@@ -66,15 +69,15 @@ def _draw_panel(patch, left):
         'stroke="#bd7a28" stroke-width="2.8"/>',
         f'<text x="{left + 20}" y="506" font-family="sans-serif" '
         'font-size="14" fill="#215f94">'
-        f'Z230 paired seam: {lower_len:.3f}mm / '
-        f'{bottom["original_crossed_source_triangle_segment_count"]} source segments</text>',
+        f"Z230 paired seam: {lower_len:.3f}mm / "
+        f"{bottom['original_crossed_source_triangle_segment_count']} source segments</text>",
         f'<text x="{left + 20}" y="532" font-family="sans-serif" '
         'font-size="14" fill="#a36623">'
-        f'Z235 paired seam: {upper_len:.3f}mm / '
-        f'{top["original_crossed_source_triangle_segment_count"]} source segments</text>',
+        f"Z235 paired seam: {upper_len:.3f}mm / "
+        f"{top['original_crossed_source_triangle_segment_count']} source segments</text>",
         f'<text x="{left + 20}" y="558" font-family="sans-serif" '
         'font-size="13" fill="#943b34">'
-        'Smallest source graph gap: '
-        f'{gap["surface_graph_shortest_path_min_p05_median_p95_max_mm"][0]:.2f}mm'
-        '</text>',
+        "Smallest source graph gap: "
+        f"{gap['surface_graph_shortest_path_min_p05_median_p95_max_mm'][0]:.2f}mm"
+        "</text>",
     ]
