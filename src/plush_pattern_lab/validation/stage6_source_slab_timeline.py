@@ -24,7 +24,7 @@ def render_source_slab_timeline(reports):
     out.append(
         '<text x="30" y="385" font-family="sans-serif" font-size="12" '
         'fill="#334155">Blue: persists | Amber: branch/merge | '
-        'Red: ends | Source 25% proxy, not fabric pattern</text>'
+        "Red: ends | Source 25% proxy, not fabric pattern</text>"
     )
     out.append("</svg>")
     return "\n".join(out) + "\n"
@@ -50,13 +50,16 @@ def _panel(report, left):
         f'font-size="14" fill="#102a43">Z{zlo} - Z{zhi} mm</text>',
         f'<text x="{left + 14}" y="122" font-family="sans-serif" '
         f'font-size="10" fill="#475569">'
-        f'{report["source_triangle_count_in_open_slab"]} original triangles</text>',
+        f"{report['source_triangle_count_in_open_slab']} original triangles</text>",
     ]
     for slab in report["surface_components"]:
         a, b = slab["lower_loop_indices"], slab["upper_loop_indices"]
         color = (
-            "#9b3c35" if not b and a else "#bc7a22"
-            if len(a) != 1 or len(b) != 1 else "#206a9e"
+            "#9b3c35"
+            if not b and a
+            else "#bc7a22"
+            if len(a) != 1 or len(b) != 1
+            else "#206a9e"
         )
         for lo in a:
             for hi in b:
@@ -78,17 +81,16 @@ def _panel(report, left):
     ):
         for order, x in positions.items():
             out.append(
-                f'<circle cx="{x}" cy="{yy}" r="18" '
-                'fill="#f3f7fb" stroke="#31506b"/>'
+                f'<circle cx="{x}" cy="{yy}" r="18" fill="#f3f7fb" stroke="#31506b"/>'
             )
             out.append(
                 f'<text x="{x}" y="{yy + 4}" font-family="sans-serif" '
                 f'text-anchor="middle" font-size="12" fill="#152739">'
-                f'{k}{order}</text>'
+                f"{k}{order}</text>"
             )
     out.append(
         f'<text x="{left + 14}" y="338" font-family="sans-serif" '
         f'font-size="10" fill="#475569">'
-        f'{len(lower)} lower / {len(upper)} upper closed loops</text>'
+        f"{len(lower)} lower / {len(upper)} upper closed loops</text>"
     )
     return out
