@@ -254,7 +254,7 @@ def _ordered_original_seam_keys(segments):
     for a, b in segments:
         neighbors[a].append(b)
         neighbors[b].append(a)
-    if any(len(item) != 2 for item in neighbors.values()):
+    if not neighbors or any(len(item) != 2 for item in neighbors.values()):
         raise ValueError("original source cut is not a simple two-degree ring")
     start = min(neighbors)
     loop = [start]
