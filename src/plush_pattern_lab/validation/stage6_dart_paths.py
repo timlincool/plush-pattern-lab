@@ -113,8 +113,7 @@ def _route_graph(xyz, edges, lengths, center, target_z, blocked=()):
     graph = coo_matrix(
         (
             np.r_[weight, weight],
-            (np.r_[active[:, 0], active[:, 1]],
-             np.r_[active[:, 1], active[:, 0]]),
+            (np.r_[active[:, 0], active[:, 1]], np.r_[active[:, 1], active[:, 0]]),
         ),
         shape=(len(xyz), len(xyz)),
     ).tocsr()
@@ -165,16 +164,12 @@ def _candidate(xyz, edges, lengths, side, arc, target_z):
         raise ValueError("source arc endpoint outside fixed 3D route research band")
     tip = _root_tip(xyz, valid, center, target_z)
     distance, parent = dijkstra(graph, indices=tip, return_predecessors=True)
-    original = [
-        _route_to_tip(parent, tip, pair[0], len(xyz)) for pair in endpoints
-    ]
+    original = [_route_to_tip(parent, tip, pair[0], len(xyz)) for pair in endpoints]
     early_join = len(set(original[0][:-1]) & set(original[1][:-1]))
     _, detour = _route_graph(
         xyz, edges, lengths, center, target_z, set(original[0][:-1])
     )
-    other_dist, other_parent = dijkstra(
-        detour, indices=tip, return_predecessors=True
-    )
+    other_dist, other_parent = dijkstra(detour, indices=tip, return_predecessors=True)
     second = _route_to_tip(other_parent, tip, endpoints[1][0], len(xyz))
     first = original[0]
     if set(first[:-1]) & set(second[:-1]):
@@ -262,8 +257,7 @@ def explore_source_ear_dart_endings(points, faces, review, source):
     """Compare both ear sides and two fixed original source tip depths."""
     xyz, edges, lengths = original_edges(points, faces)
     if (
-        review.get("schema")
-        != "stage6-original-ear-root-quadrant-arc-41mesh-screen-v1"
+        review.get("schema") != "stage6-original-ear-root-quadrant-arc-41mesh-screen-v1"
         or review.get("approved_factory_cutting_patterns") != 0
         or review.get("P4_status") != "not_started"
         or review.get("input_pinned_proxy_sha256")

@@ -111,9 +111,7 @@ def test_candidate_source_dart_branches_remain_vertex_disjoint_except_tip():
     assert item["not_a_validated_two_sided_sewing_netline"]
 
 
-@pytest.mark.parametrize(
-    "mutation", ["bad_pair", "bad_xy", "same_z", "nonfinite"]
-)
+@pytest.mark.parametrize("mutation", ["bad_pair", "bad_xy", "same_z", "nonfinite"])
 def test_arc_endpoint_must_be_on_claimed_actual_source_mesh_edge(mutation):
     xyz, edges, _ = original_edges(*_mesh())
     pair, point = [0, 1], [0, 0, 230]
