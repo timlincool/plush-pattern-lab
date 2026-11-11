@@ -50,7 +50,7 @@ def _validate_heads(study, visibility):
         raise ValueError("unpinned or manufacturing-approved A/B input evidence")
 
 
-def _validated_samples(ring, visibility, z):
+def _validated_ring_geometry(ring, visibility):
     xy = ring["full_interpolated_original_source_xy_mm"]
     edges = ring["full_crossed_original_proxy_vertex_id_pairs"]
     samples = visibility["original_source_edge_samples"]
@@ -93,32 +93,39 @@ def _validated_samples(ring, visibility, z):
     y_range = max(point[1] for point in xy) - min(point[1] for point in xy)
     if min(x_range, y_range) >= 12:
         raise ValueError("source XY double-allowance risk flag changed")
-    for index, sample in enumerate(samples):
-        ordinal = index * len(xy) // SAMPLE_COUNT
+    return xy, edges, samples
+
+
+def _check_original_sample(sample, index, xy, edges, z):
+    ordinal = index * len(xy) // SAMPLE_COUNT
+    if (
+        sample.get("source_edge_ordinal") != ordinal
+        or sample.get("source_vertex_id_pair") != edges[ordinal]
+        or sample.get("source_xyz_mm") != [*xy[ordinal], z]
+        or set(sample.get("five_view_first_hit", {})) != set(VIEWS)
+        or sample.get("physical_attachment_or_ear_identity_proven") is not False
+    ):
+        raise ValueError("altered Stage6 original source ID, XYZ or five views")
+    observed_meshes = set()
+    for row in sample["nearby_raw_meshes_within_6mm"]:
         if (
-            sample.get("source_edge_ordinal") != ordinal
-            or sample.get("source_vertex_id_pair") != edges[ordinal]
-            or sample.get("source_xyz_mm") != [*xy[ordinal], z]
-            or len(xy[ordinal]) != 2
-            or not all(isfinite(v) for v in xy[ordinal])
-            or set(sample.get("five_view_first_hit", {})) != set(VIEWS)
-            or sample.get("physical_attachment_or_ear_identity_proven") is not False
+            row["mesh"] in observed_meshes
+            or not isfinite(row["distance_mm"])
+            or not 0 <= row["distance_mm"] <= 6.00001
         ):
-            raise ValueError("altered Stage6 original source ID, XYZ or five views")
-        observed_meshes = set()
-        for row in sample["nearby_raw_meshes_within_6mm"]:
-            if (
-                row["mesh"] in observed_meshes
-                or not isfinite(row["distance_mm"])
-                or not 0 <= row["distance_mm"] <= 6.00001
-            ):
-                raise ValueError("untrusted independent product Mesh proximity")
-            observed_meshes.add(row["mesh"])
-        for view in VIEWS:
-            if sample["five_view_first_hit"][view]["classification"] not in (
-                {VISIBLE, OTHER, SELF} | UNCERTAIN
-            ):
-                raise ValueError("unrecognized 41-Mesh original first-hit category")
+            raise ValueError("untrusted independent product Mesh proximity")
+        observed_meshes.add(row["mesh"])
+    for view in VIEWS:
+        if sample["five_view_first_hit"][view]["classification"] not in (
+            {VISIBLE, OTHER, SELF} | UNCERTAIN
+        ):
+            raise ValueError("unrecognized 41-Mesh original first-hit category")
+
+
+def _validated_samples(ring, visibility, z):
+    xy, edges, samples = _validated_ring_geometry(ring, visibility)
+    for index, sample in enumerate(samples):
+        _check_original_sample(sample, index, xy, edges, z)
     return xy, samples
 
 
