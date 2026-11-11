@@ -55,9 +55,11 @@ def test_each_real_source_ring_retains_48_samples_and_raw_vertex_provenance():
 
 def test_original_head_cloud_to_ear_observation_is_not_sewing_approval():
     data = _real()
-    rows = {(x["z_mm"], x["loop_index_by_perimeter"]): x for x in data[
-        "per_loop_original_source_research"
-    ]}
+    observations = data["per_loop_original_source_research"]
+    rows = {
+        (row["z_mm"], row["loop_index_by_perimeter"]): row
+        for row in observations
+    }
     center = rows[230, 0]["within_3mm_named_mesh_sample_counts"]
     left = rows[230, 1]["within_3mm_named_mesh_sample_counts"]
     right = rows[230, 2]["within_3mm_named_mesh_sample_counts"]
