@@ -9,8 +9,10 @@ import numpy as np
 import pytest
 
 from plush_pattern_lab.validation import stage6_ear_root_ab as root
-from plush_pattern_lab.validation.stage6_ear_root_contract import plan_side_source_samples
 from plush_pattern_lab.validation.stage6_ear_root_ab_svg import render_root_ab_svg
+from plush_pattern_lab.validation.stage6_ear_root_contract import (
+    plan_side_source_samples,
+)
 
 
 def _ring(cx, count=16):
