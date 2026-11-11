@@ -62,12 +62,16 @@ def _halfspace_clip(polygon, xyz, z, above):
         return []
     output = []
     prior = polygon[-1]
-    prior_inside = (_source_position(xyz, prior)[2] >= z) if above else (
-        _source_position(xyz, prior)[2] <= z
+    prior_inside = (
+        (_source_position(xyz, prior)[2] >= z)
+        if above
+        else (_source_position(xyz, prior)[2] <= z)
     )
     for current in polygon:
-        current_inside = (_source_position(xyz, current)[2] >= z) if above else (
-            _source_position(xyz, current)[2] <= z
+        current_inside = (
+            (_source_position(xyz, current)[2] >= z)
+            if above
+            else (_source_position(xyz, current)[2] <= z)
         )
         if current_inside != prior_inside:
             output.append(_original_intersection_key(prior, current, z))
@@ -284,15 +288,20 @@ def _paired_seam(a, ca, b, cb, height, subset=False):
         _oriented_edges(a, ca, height),
         _oriented_edges(b, cb, height),
     )
-    if any(winding_a[key] != tuple(reversed(value)) for key, value in winding_b.items()):
+    if any(
+        winding_a[key] != tuple(reversed(value)) for key, value in winding_b.items()
+    ):
         raise ValueError("original paired surface seams do not have opposite winding")
-    coords_a = {a["keys"][idx]: a["xyz"][idx] for item in first.values() for idx in item}
-    coords_b = {b["keys"][idx]: b["xyz"][idx] for item in second.values() for idx in item}
+    coords_a = {
+        a["keys"][idx]: a["xyz"][idx] for item in first.values() for idx in item
+    }
+    coords_b = {
+        b["keys"][idx]: b["xyz"][idx] for item in second.values() for idx in item
+    }
     if max(float(np.max(np.abs(coords_a[k] - p))) for k, p in coords_b.items()) > 1e-9:
         raise ValueError("original paired source seam XYZ locations do not agree")
     perimeter = sum(
-        float(np.linalg.norm(coords_a[start] - coords_a[end]))
-        for start, end in second
+        float(np.linalg.norm(coords_a[start] - coords_a[end])) for start, end in second
     )
     ordered = _ordered_original_seam_keys(second)
     return {
@@ -303,9 +312,7 @@ def _paired_seam(a, ca, b, cb, height, subset=False):
         "matching_original_source_seam_edge_keys": [
             [list(a), list(b)] for a, b in sorted(second)
         ],
-        "original_source_3d_ordered_ring_vertex_keys": [
-            list(key) for key in ordered
-        ],
+        "original_source_3d_ordered_ring_vertex_keys": [list(key) for key in ordered],
         "original_source_3d_ordered_ring_xyz_mm": [
             coords_a[key].tolist() for key in ordered
         ],
@@ -319,8 +326,12 @@ def _surface_graph_width(zone, component, low, high):
     xyz = zone["xyz"]
     length = np.linalg.norm(xyz[edges[:, 0]] - xyz[edges[:, 1]], axis=1)
     a, b = edges[:, 0], edges[:, 1]
-    lower = np.unique([v for pair in _seam_edges(zone, component, low).values() for v in pair])
-    upper = np.unique([v for pair in _seam_edges(zone, component, high).values() for v in pair])
+    lower = np.unique(
+        [v for pair in _seam_edges(zone, component, low).values() for v in pair]
+    )
+    upper = np.unique(
+        [v for pair in _seam_edges(zone, component, high).values() for v in pair]
+    )
     origin = len(xyz)
     rows = np.r_[a, b, np.full(len(lower), origin), lower]
     cols = np.r_[b, a, lower, np.full(len(lower), origin)]
@@ -348,18 +359,21 @@ def _surface_graph_width(zone, component, low, high):
 def _surface_area(points, faces):
     xyz = points[faces]
     return float(
-        (0.5 * np.linalg.norm(
-            np.cross(xyz[:, 1] - xyz[:, 0], xyz[:, 2] - xyz[:, 0]), axis=1
-        )).sum()
+        (
+            0.5
+            * np.linalg.norm(
+                np.cross(xyz[:, 1] - xyz[:, 0], xyz[:, 2] - xyz[:, 0]), axis=1
+            )
+        ).sum()
     )
 
 
 def _component_info(zone, component):
     return {
         "derived_source_triangle_count": len(component["faces"]),
-        "original_source_face_count": len(np.unique(
-            zone["source_face_ids"][component["face_ids"]]
-        )),
+        "original_source_face_count": len(
+            np.unique(zone["source_face_ids"][component["face_ids"]])
+        ),
         "derived_source_vertex_count": len(component["vertices"]),
         "source_surface_area_mm2": _surface_area(zone["xyz"], component["faces"]),
         "euler_characteristic": component["euler"],
@@ -390,11 +404,9 @@ def _ear_components(zones, parts, side, low, high):
     body = parts["below"][0]
     if root["euler"] != 0 or len(root["boundary_loops"]) != 2 or cap["euler"] != 1:
         raise ValueError("root annulus or ear tip cap source topology invalid")
-    if (
-        len(_seam_edges(zones["root"], root, low))
-        + len(_seam_edges(zones["root"], root, high))
-        != len(root["boundary"])
-    ):
+    if len(_seam_edges(zones["root"], root, low)) + len(
+        _seam_edges(zones["root"], root, high)
+    ) != len(root["boundary"]):
         raise ValueError("derived ear root contains an additional unpaired border")
     return {
         "side": side,
@@ -417,7 +429,9 @@ def _ear_components(zones, parts, side, low, high):
     }
 
 
-def analyze_real_source_ear_root_bands(points, triangles, lower=LOWER_Z_MM, upper=UPPER_Z_MM):
+def analyze_real_source_ear_root_bands(
+    points, triangles, lower=LOWER_Z_MM, upper=UPPER_Z_MM
+):
     """Cut actual source triangles in memory; pair body↔root↔ear tip seams."""
     xyz, faces = _source_mesh(points, triangles, lower, upper)
     zones = {
@@ -441,7 +455,9 @@ def analyze_real_source_ear_root_bands(points, triangles, lower=LOWER_Z_MM, uppe
         "research_z_levels_mm": [lower, upper],
         "original_source_area_mm2": original_area,
         "area_after_exact_triangle_clipping_mm2": reconstructed,
-        "source_area_absolute_reconstruction_error_mm2": abs(original_area - reconstructed),
+        "source_area_absolute_reconstruction_error_mm2": abs(
+            original_area - reconstructed
+        ),
         "source_cut_zone_component_counts": {
             key: len(value) for key, value in parts.items()
         },
