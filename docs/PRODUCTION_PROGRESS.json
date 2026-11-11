@@ -266,7 +266,11 @@
         },
         {
           "path": "docs/STAGE6_EAR_ROOT_QUADRANT_ARC_SCREEN.md",
-          "kind": "same_run_original_41mesh_real_a_b_source_quadrant_partial_arcs_with_original_edge_sha_16_hypotheses_and_unpaired_endpoints_pending_trusted_main_run"
+          "kind": "two_trusted_stage6_main_41mesh_original_source_ear_root_16_predeclared_partial_arc_replays_source_sha_and_open_endpoints"
+        },
+        {
+          "path": "experiments/stage6_ear_arc_quadrants_20261111/summary.json",
+          "kind": "two_independent_trusted_original_stage6_41mesh_runs_five_raw_files_identical_16_quadrant_arc_source_ids_distances_and_view_counts"
         }
       ],
       "blockers": [
@@ -291,7 +295,7 @@
         "锁定25%原Stage6 PLY本地计算得Z205→230单曲面1→3环，Z230→245中央源环封闭且两侧环延续，真实结构分叉/来源哈希/合成负例门禁已开发；尚待受信Stage6完整run，且不能据此批准耳根切线、云层隐藏缝、缝份、实体布料及P4",
         "两次受信Stage6 Run #42951036948/#42951246219 的三角面开高度带连通JSON/SVG逐字节一致：Z205→230单连通原曲面由1环分叉到3环（9597面），Z230→245中央环在上界前封闭（1571面）、左/右原主壳分别延续（1525/1595面）。这是主壳几何连通，并非耳根实际缝线；设计正侧背顶、源切缝净线及布样/翻面/材料仍待验证，P3未通过、P4不开始。",
         "Z230低位与Z235高位耳根环A/B源码和真源25% PLY本地预审：左右原3D闭环约45.52mm vs40.86mm，平面最窄包络约11.00mm vs9.87mm，均窄于双侧各6mm研究缝份；这是二维投影风险，尚非可裁布片。原41Mesh五视角针对两方案的独立受信重算、设计四视图注册、真实缝份、材料、翻面与2D净线仍缺，P3不能视为完成。",
-        "耳根完整水平环A/B的最窄XY宽度低于双6mm研究缝份。原41Mesh数据离线四象限弧筛查显示A Z230内侧12点原弧两侧约8.93/8.42mm，前/后/对应侧near-body first-hit均0，顶侧左2/12右6/12；该量不是布料外露证据。每段两个源切口端点仍无配对纸样、实际缝份/材料/返口/翻面/设计四视图仍未验证，主干Stage6四象限工作流须复算，不准按工厂纸样通过。"
+        "两次受信main #42965611336/#42966064172 已实跑并逐文件SHA一致地复核全部16条四象限原源弧：A Z230内侧左/右几何弧长8.927/8.418mm，四方向近主壳2/48、6/48；B Z235为7/48、6/48。A后侧弧左1/48、右17/48，证明镜像主壳不等于独立云层实际遮挡对称。所有研究弧各有两个未配对开放端点，原6mm双侧缝份/二维净缝、真实工艺四视图、材料/填充/翻面和实体样品未验证，不能认作隐藏接缝或厂商纸样。"
       ]
     },
     {
@@ -1244,7 +1248,7 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发+设计确认",
-      "action": "基于已受信Stage6 41产品Mesh原A/B，现新增左右源耳根完整环四个预声明局部方向研究（medial/lateral/posterior/anterior），固定每方向12个连续原源交边采样，复验每环来源Vertex ID+XY SHA及完整弧长、五视角首命中。A Z230内侧局部弧初步显示正背对应侧近主壳数为0，但顶视仍有2/12与6/12；B更高根不改善双侧且背面更明显，完整圆环仍不适于双6mm研究缝份。新工作流需要可信main复核。下一开发应给A内侧短弧两个开放端点设计真实源网格可缝连接/省道终止线，核验云层/耳朵实际装配、正侧背顶外观、真实3D→2D双侧净缝、缝份和返口。原四蹄4×512、13片下腹、否定性研究不动，P3不完成、P4不开启。",
+      "action": "已在两次受信Stage6 Blender 4.3.2 main #42965611336/#42966064172 获取16条预声明局部弧的完整真实来源ID与41 Mesh原射线风险，五份原始研究文件逐字节SHA一致；基准数据永久归档experiments/stage6_ear_arc_quadrants_20261111/summary.json。A Z230内侧12源交边弧左8.927mm/右8.418mm，近主壳四视角左2/48右6/48，优于B局部部分证据；但A后侧弧左右可见性极不对称（左1/48、右17/48），不可镜像工艺。下一开发先为A内侧两条开放短弧分别设计可追溯原source边路径的省道终止/耳根根片接合路线，核验两侧源3D净缝是否实际配对、云层遮挡与耳片装配、正/侧/背/顶原设计对位和最窄双侧6mm缝份及返口/填棉/材料。缺任何源净线或实体试缝证据则保持P3 in_progress、P4 not_started；原四蹄4x512、下腹13片及原失真负例不可改写。",
       "done_when": "真实Z230三个原主壳源边闭合环能与完整41产品Mesh/正式设计正侧背顶对应到工艺身份，头盖和侧突出结构独立母版具真实源边/净缝位置及材料测试/返口记录，A/B与原源环形/三维外观差异改善并可重算"
     },
     {
@@ -1476,6 +1480,11 @@
       "date": "2026-11-11",
       "event": "开发基于原Stage6 A/B真实41 Mesh的16条预声明四象限短弧审查，保留原source边ID和两端未配对状态，新增静态SVG与17项篡改/制造否决测试；尚待受信main重新生成研究JSON和正式证据，P3进行中",
       "evidence_path": "docs/STAGE6_EAR_ROOT_QUADRANT_ARC_SCREEN.md"
+    },
+    {
+      "date": "2026-11-11",
+      "event": "两次受信 main Stage6 Blender 4.3.2 对全16条源耳根四象限短弧真实复算，五份原始研究文件SHA逐字节一致；发现A内侧视角风险较低但存在未配对端点、后侧左右遮挡非对称，Python CI #42966064087 583项通过；永久归档，工厂纸样仍为0",
+      "evidence_path": "experiments/stage6_ear_arc_quadrants_20261111/summary.json"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Stage6 耳根：原 41 Mesh 五视角下的局部接缝弧研究（P3）
 
-**状态：A/B 源环与 41 Mesh 原始证据来自已通过的两次受信 Stage6；本轮“四象限局部弧”新脚本已使用原始研究包实跑并通过17项合成否决测试，等待新 main CI 独立复核。不是已设计的可缝接缝。**
+**状态：2026-11-11 已在两次受信 main Stage6 Blender 4.3.2 真实运行复算，全部16条研究弧的JSON、SVG及上游原始资料五份文件两次SHA逐字节一致；最新Python CI已通过583项测试。不是已设计的可缝接缝。**
 
 ## 为什么要从整圈接缝转向局部弧
 
@@ -32,6 +32,15 @@ A的内侧弧在上述四个静态视角的“近主壳”合计为左2/48、右
 - scripts/audit_stage6_ear_root_arcs.py：只读同次A/B源JSON与完整41Mesh BVH JSON，要求其来源 SHA 一致；分别写新JSON/SVG并固定文件SHA，拒绝覆盖历史结果。
 - tests/test_stage6_ear_arc_screen.py：17项合成与负例，包括伪造ID/原内部XY、丢失视角、提前宣称生产、伪造 Mesh 距离、伪造原哈希、不能以遮挡结果改变预定几何象限等。
 - 仅在维护者信任的main推送/手动派发下，既有Stage6 4.3.2真实工作流才追加执行本报告；所有16条弧都保留，严禁以更好看的一段自动批准纸样。
+
+
+## 可信两次原始研究复算与决定（2026-11-11 UTC）
+
+[受信Stage6第一次 #42965611336](https://github.com/timlincool/plush-pattern-lab/actions/runs/42965611336) 与 [第二次 #42966064172](https://github.com/timlincool/plush-pattern-lab/actions/runs/42966064172) 均完整成功。两轮**源局部弧详细JSON、研究SVG、原耳根A/B源JSON、41Mesh可见性JSON、原真源截面详情JSON五份文件的SHA256完全一致**；整个Action ZIP本身哈希不一致。永久复算索引、Run/Commit/Artifact ID、每文件SHA、全部16条源弧长与各视角原始分类见 [实验摘要](../experiments/stage6_ear_arc_quadrants_20261111/summary.json)。主分支 [Python CI #42966064087](https://github.com/timlincool/plush-pattern-lab/actions/runs/42966064087) 583项全部通过，包括Ruff、复杂度与打包。
+
+这次新增的最重要反例是：尽管Z230左右源环镜像Hausdorff仅约0.043mm，**后侧12点源弧左面四视角近主壳计数只有1/48，右面为17/48**。这是独立云覆层与真实主体射线遮挡差异造成的原场景几何风险，不能因为主壳近似对称就强迫左右耳根采用镜像工艺。
+
+A左/右内侧12点开弧在原正、背、对应侧视角均没有near_original_body_first_surface命中，顶视分别为2/12与6/12；B左内侧顶视7/12，B右内侧背视6/12。**仅据此允许将A内侧短弧列为下一轮“设计/工艺审阅优先”，绝不允许称隐藏缝已成立**。两侧内弧源几何长分别约8.927mm和8.418mm，每段都存在两个开放端点；下一步必须设计一个真实源边路径使端点可以终止/接合，且与原云层/耳部独立Mesh、设计四视图、双侧净缝、缝份、翻面和实际材料相容，否则拒绝。
 
 ## 真正的下一项结构工程
 

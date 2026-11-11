@@ -1,0 +1,341 @@
+{
+  "schema": "stage6-source-ear-root-16-quadrant-arcs-real-41mesh-v1",
+  "date_utc": "2026-11-11",
+  "source_original_public_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_fixed_25pct_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "source_proxy_original_triangle_count": 116568,
+  "trusted_python_ci": {
+    "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42966064087",
+    "tests_passed": 583,
+    "ruff_complexity_package": "PASS"
+  },
+  "trusted_stage6_blender_4_3_2_runs": [
+    {
+      "run_id": 42965611336,
+      "commit_sha": "a6a039178b9ee154946d3dc70c17e82bb6833e65",
+      "run_conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42965611336",
+      "artifact_id": 13831002159,
+      "artifact_zip_sha256": "fa44618e21448c129dd219563f7f776a6d67ea349413b9e0fd3c6903e91fd77a"
+    },
+    {
+      "run_id": 42966064172,
+      "commit_sha": "0ccc176bce477c5a2181d7b52895dd314d466f3e",
+      "run_conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42966064172",
+      "artifact_id": 13830834563,
+      "artifact_zip_sha256": "b6223facc09a8daa1a00be2d4cbec0722c6af8e1109bece3a5a2877bcf0b8ae1"
+    }
+  ],
+  "original_research_file_sha256_identical_across_both_trusted_runs": {
+    "ear_root_source_quadrant_arc_screen_json": "6a3eec0ad84f02939b8c91de783dbc545f5ee5428bca1be901fe40efe4cc7826",
+    "ear_root_source_quadrant_arc_screen_svg": "7f4f42aa9adf6fd3beb4976398617c6ee72207a11cbc544fd6d63181551af99f",
+    "ear_root_ab_source_study_json": "4c1af7d171891207012a783b101c8ab6fc9c75ab60ae31ae56fe080f9eb35aba",
+    "ear_root_ab_41mesh_visibility_json": "0b35907b67ceee6558e7fd733c8e33ca19f666f0d3ad100ba0b42a233d4fb8e0",
+    "true_stage6_source_section_detail_json": "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717"
+  },
+  "original_research_five_files_exact_byte_identical_twice": true,
+  "full_action_artifact_zip_byte_identical": false,
+  "method": "Four predefined anatomical directions (medial, lateral, posterior +Y, anterior -Y); each uses 12 consecutive deterministic original source-edge samples of 48 per side and height, centered on the XY extremum; all 16 candidate arcs reported, not visibility-optimized; original Vertex ID pairs and full original source plane XY arclength checked against fixed SHA.",
+  "measurement_columns": [
+    "variant",
+    "source_z_mm",
+    "source_side",
+    "predeclared_quadrant",
+    "original_source_plane_arc_length_mm_rounded_4dp",
+    "original_crossed_edge_start_ordinal",
+    "original_crossed_edge_end_ordinal",
+    "near_original_body_first_surface_counts_front_back_own_side_top_for_same_12_samples",
+    "independent_raw_product_mesh_sample_counts_within_3mm"
+  ],
+  "all_16_source_quadrant_observations": [
+    [
+      "A",
+      230,
+      "left",
+      "medial",
+      8.9268,
+      44,
+      70,
+      [
+        0,
+        0,
+        0,
+        2
+      ],
+      {
+        "Grey head cloud halo": 10
+      }
+    ],
+    [
+      "A",
+      230,
+      "left",
+      "lateral",
+      9.4663,
+      101,
+      14,
+      [
+        7,
+        3,
+        12,
+        3
+      ],
+      {
+        "Grey head cloud halo": 3
+      }
+    ],
+    [
+      "A",
+      230,
+      "left",
+      "posterior",
+      12.769,
+      16,
+      42,
+      [
+        0,
+        0,
+        1,
+        0
+      ],
+      {
+        "Grey head cloud halo": 6
+      }
+    ],
+    [
+      "A",
+      230,
+      "left",
+      "anterior",
+      11.2159,
+      75,
+      101,
+      [
+        8,
+        0,
+        6,
+        12
+      ],
+      {
+        "Grey head cloud halo": 6
+      }
+    ],
+    [
+      "A",
+      230,
+      "right",
+      "medial",
+      8.4183,
+      7,
+      32,
+      [
+        0,
+        0,
+        0,
+        6
+      ],
+      {
+        "Varied ivory forehead cloud": 7
+      }
+    ],
+    [
+      "A",
+      230,
+      "right",
+      "lateral",
+      9.5715,
+      58,
+      84,
+      [
+        6,
+        7,
+        12,
+        0
+      ],
+      {}
+    ],
+    [
+      "A",
+      230,
+      "right",
+      "posterior",
+      12.0779,
+      32,
+      58,
+      [
+        0,
+        11,
+        5,
+        1
+      ],
+      {}
+    ],
+    [
+      "A",
+      230,
+      "right",
+      "anterior",
+      12.8998,
+      88,
+      2,
+      [
+        0,
+        0,
+        7,
+        0
+      ],
+      {
+        "Varied ivory forehead cloud": 8
+      }
+    ],
+    [
+      "B",
+      235,
+      "left",
+      "medial",
+      8.5238,
+      52,
+      77,
+      [
+        0,
+        0,
+        0,
+        7
+      ],
+      {
+        "Grey head cloud halo": 11,
+        "Slender upright ivory ear -1": 5
+      }
+    ],
+    [
+      "B",
+      235,
+      "left",
+      "lateral",
+      8.4198,
+      105,
+      20,
+      [
+        7,
+        6,
+        12,
+        0
+      ],
+      {}
+    ],
+    [
+      "B",
+      235,
+      "left",
+      "posterior",
+      11.1425,
+      20,
+      45,
+      [
+        0,
+        9,
+        7,
+        0
+      ],
+      {
+        "Grey head cloud halo": 6,
+        "Slender upright ivory ear -1": 11
+      }
+    ],
+    [
+      "B",
+      235,
+      "left",
+      "anterior",
+      10.677,
+      77,
+      103,
+      [
+        8,
+        0,
+        5,
+        4
+      ],
+      {}
+    ],
+    [
+      "B",
+      235,
+      "right",
+      "medial",
+      7.3617,
+      109,
+      19,
+      [
+        0,
+        6,
+        0,
+        0
+      ],
+      {}
+    ],
+    [
+      "B",
+      235,
+      "right",
+      "lateral",
+      8.4611,
+      56,
+      82,
+      [
+        6,
+        7,
+        12,
+        2
+      ],
+      {}
+    ],
+    [
+      "B",
+      235,
+      "right",
+      "posterior",
+      9.8839,
+      21,
+      48,
+      [
+        0,
+        12,
+        5,
+        0
+      ],
+      {
+        "Slender upright ivory ear 1": 7
+      }
+    ],
+    [
+      "B",
+      235,
+      "right",
+      "anterior",
+      12.4073,
+      85,
+      112,
+      [
+        4,
+        0,
+        6,
+        0
+      ],
+      {}
+    ]
+  ],
+  "observations_are_12_geometry_sample_points_per_arc_not_statistically_independent": true,
+  "occluded_by_raw_mesh_not_actual_fur_or_hidden_seam": true,
+  "all_partial_arc_endpoints_unpaired": 2,
+  "both_full_root_loops_xy_minor_width_below_two_research_6mm_allowances": true,
+  "anatomical_design_four_views_signed_off": false,
+  "sewing_3d_to_2d_net_match_and_allowance_verified": false,
+  "physical_fabric_turnover_and_factory_verified": false,
+  "approved_manufacturer_cutting_patterns": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "engineering_interpretation": "The source geometry is near left-right symmetric but full-scene occlusion is not. A medial partial arcs show 2/48 and 6/48 near-body first-hit classifications across four views, versus 7/48 and 6/48 for B; A posterior left/right differ 1/48 vs 17/48. A medial arcs require direct design review, but neither arc has paired endpoints, real cloth allowances, tested 2D unroll or signed-off assembly.",
+  "next_gate": "Design specific source-edge-linked endpoints and 3D dual-sided matching seam or dart terminations for A medial arcs, check actual independent ear/cloud attachment and all design views, test fabric seam allowances, turnover, fill and appearance before advancing P3."
+}
