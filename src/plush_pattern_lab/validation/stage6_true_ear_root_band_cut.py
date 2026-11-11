@@ -248,6 +248,31 @@ def _oriented_edges(zone, component, height):
     return oriented
 
 
+def _ordered_original_seam_keys(segments):
+    """Return one simple original crossed-edge loop, with stable start/direction."""
+    neighbors = defaultdict(list)
+    for a, b in segments:
+        neighbors[a].append(b)
+        neighbors[b].append(a)
+    if any(len(item) != 2 for item in neighbors.values()):
+        raise ValueError("original source cut is not a simple two-degree ring")
+    start = min(neighbors)
+    loop = [start]
+    previous = None
+    current = start
+    while True:
+        other = min(i for i in neighbors[current] if i != previous)
+        if other == start:
+            break
+        if other in loop or len(loop) > len(segments):
+            raise ValueError("source seam double-backed or failed to close")
+        loop.append(other)
+        previous, current = current, other
+    if len(loop) != len(segments):
+        raise ValueError("source cut has untraced or nested extra segments")
+    return loop
+
+
 def _paired_seam(a, ca, b, cb, height, subset=False):
     first = _seam_edges(a, ca, height)
     second = _seam_edges(b, cb, height)
@@ -269,6 +294,7 @@ def _paired_seam(a, ca, b, cb, height, subset=False):
         float(np.linalg.norm(coords_a[start] - coords_a[end]))
         for start, end in second
     )
+    ordered = _ordered_original_seam_keys(second)
     return {
         "source_plane_z_mm": height,
         "original_crossed_source_triangle_segment_count": len(second),
@@ -276,6 +302,12 @@ def _paired_seam(a, ca, b, cb, height, subset=False):
         "max_source_3d_pair_position_error_mm": 0.0,
         "matching_original_source_seam_edge_keys": [
             [list(a), list(b)] for a, b in sorted(second)
+        ],
+        "original_source_3d_ordered_ring_vertex_keys": [
+            list(key) for key in ordered
+        ],
+        "original_source_3d_ordered_ring_xyz_mm": [
+            coords_a[key].tolist() for key in ordered
         ],
         "two_source_3d_sides_exactly_same_with_opposite_face_winding": True,
         "not_a_validated_two_sided_fabric_2d_netline": True,
@@ -335,6 +367,23 @@ def _component_info(zone, component):
     }
 
 
+def _source_band_geometry(zone, component):
+    """Derived patch triangle faces plus their immutable original source IDs."""
+    source = component["vertices"]
+    local_faces = np.searchsorted(source, component["faces"])
+    return {
+        "source_3d_xyz_mm": zone["xyz"][source].tolist(),
+        "original_source_vertex_or_edge_plane_keys": [
+            list(zone["keys"][int(i)]) for i in source
+        ],
+        "derived_triangle_local_vertex_ids": local_faces.tolist(),
+        "each_derived_face_original_triangle_id": zone["source_face_ids"][
+            component["face_ids"]
+        ].tolist(),
+        "not_industrial_2d_paper_pattern": True,
+    }
+
+
 def _ear_components(zones, parts, side, low, high):
     root = _side_component(parts["root"], side)
     cap = _side_component(parts["above"], side)
@@ -350,6 +399,9 @@ def _ear_components(zones, parts, side, low, high):
     return {
         "side": side,
         "actual_3d_root_band": _component_info(zones["root"], root),
+        "derived_3d_root_band_mesh_research_only": _source_band_geometry(
+            zones["root"], root
+        ),
         "actual_3d_ear_upper_tip": _component_info(zones["above"], cap),
         "body_to_root_3d_paired_netline": _paired_seam(
             zones["below"], body, zones["root"], root, low, subset=True
