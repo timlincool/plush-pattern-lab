@@ -116,8 +116,7 @@ def _label_components(selected, owners, union_find):
         for global_id in face_ids:
             component[global_id] = label
     edges_to_component = {
-        edge: component[int(selected[local_id])]
-        for edge, local_id in owners.items()
+        edge: component[int(selected[local_id])] for edge, local_id in owners.items()
     }
     return ordered, edges_to_component, len(selected)
 
@@ -125,8 +124,7 @@ def _label_components(selected, owners, union_find):
 def _face_connectivity(xyz, tri, lower, upper):
     heights = xyz[:, 2]
     selected = np.flatnonzero(
-        (np.max(heights[tri], axis=1) > lower)
-        & (np.min(heights[tri], axis=1) < upper)
+        (np.max(heights[tri], axis=1) > lower) & (np.min(heights[tri], axis=1) < upper)
     )
     if len(selected) == 0:
         raise ValueError("no source triangles intersect open slab")
@@ -158,8 +156,7 @@ def _loop_component(xyz, section, edges_to_component):
         zip(section["source_contours"], _source_contour_edges(xyz, section))
     ):
         groups = {
-            edges_to_component.get(tuple(sorted(map(int, edge))))
-            for edge in edges
+            edges_to_component.get(tuple(sorted(map(int, edge)))) for edge in edges
         }
         if None in groups or len(groups) != 1:
             raise ValueError("a source loop jumps disconnected slab surfaces")
