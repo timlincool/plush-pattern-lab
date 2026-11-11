@@ -26,7 +26,7 @@ def render_root_ab_svg(report):
     out.append(
         '<text x="20" y="463" font-family="sans-serif" font-size="12" '
         'fill="#52657b">Common 3 px/mm XY scale. XY gap and 6mm allowance '
-        'are only research screens, not seam feasibility.</text>'
+        "are only research screens, not seam feasibility.</text>"
     )
     out.append("</svg>")
     return "\n".join(out) + "\n"
@@ -43,9 +43,7 @@ def _panel(candidate, left):
     for side in candidate["source_side_loops"]:
         x0, y0 = left + 265, 248
         xy = side["full_interpolated_original_source_xy_mm"]
-        points = " ".join(
-            f"{x0 + 3 * x:.2f},{y0 - 3 * (y + 47):.2f}" for x, y in xy
-        )
+        points = " ".join(f"{x0 + 3 * x:.2f},{y0 - 3 * (y + 47):.2f}" for x, y in xy)
         color = "#216f9c" if side["side"] == "left" else "#aa6824"
         result.append(
             f'<polygon points="{points}" fill="none" stroke="{color}" '
@@ -62,7 +60,7 @@ def _panel(candidate, left):
         result.append(
             f'<text x="{label_x}" y="375" font-family="sans-serif" '
             f'font-size="12" fill="{color}">{side["side"]}: '
-            f'{side["source_3d_ring_perimeter_mm"]:.2f} mm, '
-            f'XY minor {minor:.2f} mm</text>'
+            f"{side['source_3d_ring_perimeter_mm']:.2f} mm, "
+            f"XY minor {minor:.2f} mm</text>"
         )
     return result
