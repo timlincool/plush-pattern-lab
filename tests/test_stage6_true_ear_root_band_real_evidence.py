@@ -35,31 +35,45 @@ def test_original_source_3d_paired_netlines_are_exact_but_root_band_too_narrow()
     report = _actual()
     patches = report["root_patch_research"]
     assert [x["side"] for x in patches] == ["left", "right"]
-    assert [x["original_3d_ear_root_band"]["derived_triangle_faces"] for x in patches] == [
-        829,
-        879,
+    triangle_counts = [
+        x["original_3d_ear_root_band"]["derived_triangle_faces"] for x in patches
     ]
-    assert [x["original_3d_ear_root_band"]["euler_characteristic"] for x in patches] == [
-        0,
-        0,
+    assert triangle_counts == [829, 879]
+    euler = [x["original_3d_ear_root_band"]["euler_characteristic"] for x in patches]
+    assert euler == [0, 0]
+    assert all(
+        x["original_3d_ear_root_band"]["closed_source_boundary_loops"] == 2
+        for x in patches
+    )
+    lower_counts = [
+        x["body_to_root_true_3d_paired_seam"]["source_triangle_crossing_segments"]
+        for x in patches
     ]
-    assert all(x["original_3d_ear_root_band"]["closed_source_boundary_loops"] == 2 for x in patches)
-    assert [x["body_to_root_true_3d_paired_seam"]["source_triangle_crossing_segments"] for x in patches] == [
-        113,
-        112,
+    assert lower_counts == [113, 112]
+    upper_counts = [
+        x["root_to_upper_source_ear_true_3d_paired_seam"][
+            "source_triangle_crossing_segments"
+        ]
+        for x in patches
     ]
-    assert [x["root_to_upper_source_ear_true_3d_paired_seam"]["source_triangle_crossing_segments"] for x in patches] == [
-        110,
-        117,
-    ]
+    assert upper_counts == [110, 117]
     for patch in patches:
-        for key in ("body_to_root_true_3d_paired_seam", "root_to_upper_source_ear_true_3d_paired_seam"):
+        for key in (
+            "body_to_root_true_3d_paired_seam",
+            "root_to_upper_source_ear_true_3d_paired_seam",
+        ):
             seam = patch[key]
             assert seam["paired_edge_xyz_max_abs_error_mm"] == 0
             assert seam["opposite_face_edge_winding"]
             assert len(seam["canonical_subtree_sha256"]) == 64
-        assert patch["source_triangle_surface_graph_min_p05_median_p95_max_width_mm"][0] < 6
-        assert patch["fraction_upper_seam_source_vertices_with_graph_path_under_12mm"] == 1.0
+        assert (
+            patch["source_triangle_surface_graph_min_p05_median_p95_max_width_mm"][0]
+            < 6
+        )
+        assert (
+            patch["fraction_upper_seam_source_vertices_with_graph_path_under_12mm"]
+            == 1.0
+        )
     assert report["source_surface_area_reconstruction_abs_error_mm2"] == 0
     assert not report["candidate_5mm_high_ear_root_band_suitable_for_two_nominal_6mm_2d_allowances"]
 
@@ -76,6 +90,6 @@ def test_true_source_3d_seams_do_not_advance_factory_stage():
     assert not progress["overall"]["factory_sample_pack_ready"]
     assert report["manufacturer_cutting_patterns_approved"] == 0
     assert report["measured_3d_paired_seams_are_not_material_2d_rest_netlines"]
-    assert not report["material_stretch_thread_grain_and_turnout_unverified"] is False
+    assert report["material_stretch_thread_grain_and_turnout_unverified"]
     assert not report["physical_fabric_sample_done"]
     assert report["full_density_original_stage6_466k_face_direct_cut_not_done"]
