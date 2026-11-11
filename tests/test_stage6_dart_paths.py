@@ -1,8 +1,8 @@
 """Original triangle-edge route tests, tampering negative controls and no fabric."""
 
-from copy import deepcopy
 import hashlib
 import struct
+from copy import deepcopy
 
 import numpy as np
 import pytest
