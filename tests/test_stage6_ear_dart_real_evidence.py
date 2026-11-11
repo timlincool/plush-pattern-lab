@@ -23,7 +23,8 @@ def test_two_trusted_main_blender_runs_have_five_matching_raw_source_proofs():
     first, repeat = report["trusted_stage6_main_blender_4_3_2_runs"]
     assert first["conclusion"] == repeat["conclusion"] == "success"
     assert {first["run_id"], repeat["run_id"]} == {
-        42971171926, 42971362151
+        42971171926,
+        42971362151,
     }
     assert first["artifact_id"] != repeat["artifact_id"]
     assert first["artifact_zip_sha256"] != repeat["artifact_zip_sha256"]
