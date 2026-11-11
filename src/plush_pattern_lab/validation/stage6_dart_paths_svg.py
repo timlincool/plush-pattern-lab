@@ -17,7 +17,7 @@ def render_dart_tip_comparison_svg(report):
         'viewBox="0 0 1200 800">',
         '<rect width="100%" height="100%" fill="#f8fafc"/>',
         '<text x="22" y="34" font-family="sans-serif" font-size="21">'
-        'Stage6 SOURCE-MESH ear dart route hypotheses (original Y/Z)</text>',
+        "Stage6 SOURCE-MESH ear dart route hypotheses (original Y/Z)</text>",
         '<text x="22" y="57" font-family="sans-serif" font-size="13" '
         'fill="#aa3931">NOT 2D FABRIC PATTERNS | NOT SEWABLE SEAMS</text>',
     ]
@@ -26,8 +26,8 @@ def render_dart_tip_comparison_svg(report):
     out.append(
         '<text x="22" y="775" font-family="sans-serif" font-size="12" '
         'fill="#475569">Actual source mesh edges, 10px/mm Y/Z; '
-        'disjoint paths must converge at one speculative tip. '
-        'Original 3D X differences are not shown.</text>'
+        "disjoint paths must converge at one speculative tip. "
+        "Original 3D X differences are not shown.</text>"
     )
     out.append("</svg>")
     return "\n".join(out) + "\n"
@@ -41,7 +41,7 @@ def _panel(item, index):
         'fill="white" stroke="#cbd5e1"/>',
         f'<text x="{left + 13}" y="{top + 25}" font-family="sans-serif" '
         f'font-size="15">{item["side"]} / target Z'
-        f'{item["tip_target_z_mm"]:.0f}mm</text>',
+        f"{item['tip_target_z_mm']:.0f}mm</text>",
     ]
 
     def loc(point):
@@ -55,15 +55,14 @@ def _panel(item, index):
         result.append(_polyline(points, loc, color, 2.8))
     tx, ty = loc(item["chosen_source_tip_xyz_mm"])
     result.append(
-        f'<circle cx="{tx:.2f}" cy="{ty:.2f}" r="4.6" '
-        'fill="#bd3546" stroke="white"/>'
+        f'<circle cx="{tx:.2f}" cy="{ty:.2f}" r="4.6" fill="#bd3546" stroke="white"/>'
     )
     gap = item["min_original_vertex_to_vertex_gap_beyond_tip_4mm_mm"]
     result.append(
         f'<text x="{left + 12}" y="{top + 296}" font-family="sans-serif" '
         'font-size="12" fill="#334155">source vertex gap after tip +4mm: '
-        f'{gap:.2f}mm; naive merge vertices: '
-        f'{item["unconstrained_shortest_routes_meet_early_vertex_count"]}</text>'
+        f"{gap:.2f}mm; naive merge vertices: "
+        f"{item['unconstrained_shortest_routes_meet_early_vertex_count']}</text>"
     )
     return result
 
