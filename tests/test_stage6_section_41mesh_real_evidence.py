@@ -85,3 +85,31 @@ def test_real_mesh_evidence_does_not_advance_manufacturing_milestones():
     assert EVIDENCE.relative_to(ROOT).as_posix() in {
         row["path"] for row in phase["P3"]["evidence"]
     }
+
+
+def test_two_trusted_stage6_runs_reproduce_exact_four_raw_research_files():
+    data = _real()
+    first = data["trusted_source_main"]
+    repeat = data["repeat_trusted_source_main"]
+    proof = data["trusted_two_run_byte_reproducibility"]
+    assert first["run_conclusion"] == repeat["run_conclusion"] == "success"
+    assert first["run_id"] != repeat["run_id"]
+    assert first["artifact_id"] != repeat["artifact_id"]
+    assert (
+        first["raw_full_41mesh_correspondence_json_sha256"]
+        == repeat["raw_full_41mesh_correspondence_json_sha256"]
+    )
+    assert (
+        first["original_section_summary_json_sha256"]
+        == repeat["original_section_summary_json_sha256"]
+    )
+    assert (
+        first["original_section_detail_json_sha256"]
+        == repeat["original_section_detail_json_sha256"]
+    )
+    assert proof["exact_byte_identical_original_41mesh_correspondence_json"]
+    assert proof["exact_byte_identical_true_source_summary_json"]
+    assert proof["exact_byte_identical_true_source_detail_json"]
+    assert proof["exact_byte_identical_true_source_13plane_atlas_svg"]
+    assert first["raw_artifact_zip_sha256"] != repeat["raw_artifact_zip_sha256"]
+    assert not proof["full_action_zip_bytes_identical"]
