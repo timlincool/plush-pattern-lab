@@ -1,0 +1,138 @@
+{
+  "schema": "stage6-actual-source-z230-z235-ear-root-bands-paired-3d-seams-evidence-v1",
+  "date_utc": "2026-11-11",
+  "source_original_public_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_locked_25pct_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "source_original_proxy_vertices": 59306,
+  "source_original_proxy_triangles": 116568,
+  "source_method": "True halfspace triangle clipping at z230 and z235 on immutable original proxy source; each derived seam intersection retains original source vertex-edge pair and height. Opposite face winding, exact same source edge IDs and 3D XYZ coordinate positions are checked against both neighboring surface pieces. Original triangle source Face ID retained in derived root patches.",
+  "trusted_python_ci": {
+    "run_id": 42980617164,
+    "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42980617164",
+    "conclusion": "success",
+    "tests_passed": 613,
+    "ruff_complexity_package": "PASS"
+  },
+  "two_independent_trusted_stage6_blender_4_3_2_runs": [
+    {
+      "run_id": 42980311292,
+      "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42980311292",
+      "commit_sha": "38f6e5108df435b6d1eb09c19fed787ff58fa606",
+      "conclusion": "success",
+      "artifact_id": 13837052505,
+      "artifact_zip_sha256": "8918fe8d3699d7a89acd8e1cfe6ecc0ade1fb3051c2db232400a2895cc5fae23"
+    },
+    {
+      "run_id": 42980617110,
+      "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42980617110",
+      "commit_sha": "902c0c2ce5dc42d978314e2eaefad5d46aa312de",
+      "conclusion": "success",
+      "artifact_id": 13836554587,
+      "artifact_zip_sha256": "34b95c813c71e0144e6b8e6437e369617c1cc7844ccb527cc82d019b010a5643"
+    }
+  ],
+  "six_original_raw_research_file_sha256_exactly_identical_across_two_trusted_runs": {
+    "true_stage6_ear_root_band_3d_paired_seams_json": "64eb0dbabb17d3da6eca984ce5f2147b18bac71aca62f050010490c17b0aeff4",
+    "true_stage6_ear_root_band_3d_paired_seams_svg": "9d3aae8761a4d62b9b7e3109be0e0957c371ac54efb34a1ec3df3034177c78c5",
+    "ear_root_ab_source_study_json": "4c1af7d171891207012a783b101c8ab6fc9c75ab60ae31ae56fe080f9eb35aba",
+    "ear_root_ab_41mesh_visibility_json": "0b35907b67ceee6558e7fd733c8e33ca19f666f0d3ad100ba0b42a233d4fb8e0",
+    "true_stage6_source_section_detail_json": "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717",
+    "true_stage6_source_section_summary_json": "071acfced61e6bbf52584dc3a68c54bb72d838e87b7c87fe6a1e46181efe2b46"
+  },
+  "six_raw_research_files_exact_byte_identical_twice": true,
+  "complete_action_zip_byte_identical": false,
+  "source_z_cut_planes_mm": [
+    230,
+    235
+  ],
+  "source_clipped_connected_surface_components": {
+    "below_z230": 1,
+    "between_z230_and_z235": 3,
+    "above_z235": 3
+  },
+  "original_source_surface_area_mm2": 106316.13853493183,
+  "all_clipped_original_triangle_surface_area_mm2": 106316.13853493183,
+  "source_surface_area_reconstruction_abs_error_mm2": 0,
+  "root_patch_research": [
+    {
+      "side": "left",
+      "original_3d_ear_root_band": {
+        "derived_triangle_faces": 829,
+        "source_unique_vertices": 526,
+        "original_source_face_count": 718,
+        "source_surface_area_mm2": 256.0111530691296,
+        "euler_characteristic": 0,
+        "closed_source_boundary_loops": 2,
+        "source_patch_canonical_subtree_sha256": "a36a3770ddf9df94b71074278f1fd4e8e7b4751a614bdb65eb0f26e5ca786048"
+      },
+      "body_to_root_true_3d_paired_seam": {
+        "source_triangle_crossing_segments": 113,
+        "paired_3d_length_mm_each_side": 45.51675545730193,
+        "paired_edge_xyz_max_abs_error_mm": 0,
+        "opposite_face_edge_winding": true,
+        "canonical_subtree_sha256": "8036277397c761777ffbfdc61830972ade1f972a6052355312b1f22c0dd336db"
+      },
+      "root_to_upper_source_ear_true_3d_paired_seam": {
+        "source_triangle_crossing_segments": 110,
+        "paired_3d_length_mm_each_side": 40.853046750975956,
+        "paired_edge_xyz_max_abs_error_mm": 0,
+        "opposite_face_edge_winding": true,
+        "canonical_subtree_sha256": "987a7aa3b5e965e48eca8ca540e808668b5f1339e87f1bbd385eb78872c3d068"
+      },
+      "source_triangle_surface_graph_min_p05_median_p95_max_width_mm": [
+        5.333410693306456,
+        5.504182730358558,
+        6.427531331559805,
+        7.055882337534669,
+        7.1457302099606315
+      ],
+      "fraction_upper_seam_source_vertices_with_graph_path_under_12mm": 1
+    },
+    {
+      "side": "right",
+      "original_3d_ear_root_band": {
+        "derived_triangle_faces": 879,
+        "source_unique_vertices": 554,
+        "original_source_face_count": 766,
+        "source_surface_area_mm2": 255.97649207738277,
+        "euler_characteristic": 0,
+        "closed_source_boundary_loops": 2,
+        "source_patch_canonical_subtree_sha256": "ed1220007628c9ba5081ad7411c25331dd63ea1142c944c99ae77d047f5b4e41"
+      },
+      "body_to_root_true_3d_paired_seam": {
+        "source_triangle_crossing_segments": 112,
+        "paired_3d_length_mm_each_side": 45.51098616780679,
+        "paired_edge_xyz_max_abs_error_mm": 0,
+        "opposite_face_edge_winding": true,
+        "canonical_subtree_sha256": "77b296f834ab347b416d14c910a9197ba3091f030c78132e2c8a75644b32b3c9"
+      },
+      "root_to_upper_source_ear_true_3d_paired_seam": {
+        "source_triangle_crossing_segments": 117,
+        "paired_3d_length_mm_each_side": 40.86202635814084,
+        "paired_edge_xyz_max_abs_error_mm": 0,
+        "opposite_face_edge_winding": true,
+        "canonical_subtree_sha256": "a556d047d227a17198226fe7e67c8dee648aeb5b4f542c2f4a6ad26070ef6acc"
+      },
+      "source_triangle_surface_graph_min_p05_median_p95_max_width_mm": [
+        5.556761010050788,
+        5.670251731717304,
+        6.241369691369952,
+        7.107579408011249,
+        7.541702552372831
+      ],
+      "fraction_upper_seam_source_vertices_with_graph_path_under_12mm": 1
+    }
+  ],
+  "candidate_5mm_high_ear_root_band_suitable_for_two_nominal_6mm_2d_allowances": false,
+  "measured_3d_paired_seams_are_not_material_2d_rest_netlines": true,
+  "source_graph_distance_is_discrete_graph_upper_bound_not_finished_fabric_width": true,
+  "full_density_original_stage6_466k_face_direct_cut_not_done": true,
+  "material_stretch_thread_grain_and_turnout_unverified": true,
+  "final_four_view_design_registration_unverified": true,
+  "independent_ear_and_cloud_attachment_unverified": true,
+  "physical_fabric_sample_done": false,
+  "manufacturer_cutting_patterns_approved": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "next": "Reject ordinary 5mm-high two-seam root band as a production shortcut. Explore real nonhorizontal side/back original-source 3D insert with more surface width and source-ID paired boundaries. Next require valid 2D flattening with no overlap/low strain and true double-sided 2D seam allowance/turnout, original 41Mesh/design view review and physical fabric trial."
+}
