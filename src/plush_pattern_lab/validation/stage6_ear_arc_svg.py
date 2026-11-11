@@ -41,7 +41,7 @@ def render_stage6_arc_screen_svg(report, study):
     out.append(
         '<text x="24" y="750" font-family="sans-serif" font-size="12" '
         'fill="#455366">Blue: medial / ochre: posterior / red: lateral / '
-        'grey: anterior. 10 px/mm; recentered; open unpaired endpoints.</text>'
+        "grey: anterior. 10 px/mm; recentered; open unpaired endpoints.</text>"
     )
     out.append("</svg>")
     return "\n".join(out) + "\n"
@@ -57,15 +57,13 @@ def _panel(option, side, contour, column, row):
     def position(point):
         return center_x + 10 * (point[0] - cx), center_y - 10 * (point[1] - cy)
 
-    outline = " ".join(
-        f"{px:.2f},{py:.2f}" for px, py in map(position, xy)
-    )
+    outline = " ".join(f"{px:.2f},{py:.2f}" for px, py in map(position, xy))
     result = [
         f'<rect x="{left}" y="{top}" width="559" height="313" rx="10" '
         'fill="white" stroke="#d3dbe3"/>',
         f'<text x="{left + 14}" y="{top + 25}" font-family="sans-serif" '
         f'font-size="15" fill="#1e3448">{option["name"]} | '
-        f'{side["side"]} | Z={z}mm</text>',
+        f"{side['side']} | Z={z}mm</text>",
         f'<polygon points="{outline}" fill="none" stroke="#c9d3df" '
         'stroke-width="2.0"/>',
     ]
@@ -74,9 +72,7 @@ def _panel(option, side, contour, column, row):
         stop = arc["original_source_edge_ordinal_end"]
         count = (stop - start) % len(xy) + 1
         segment = [xy[(start + k) % len(xy)] for k in range(count)]
-        pts = " ".join(
-            f"{px:.2f},{py:.2f}" for px, py in map(position, segment)
-        )
+        pts = " ".join(f"{px:.2f},{py:.2f}" for px, py in map(position, segment))
         color = COLORS[arc["hypothesis"]]
         result.append(
             f'<polyline points="{pts}" fill="none" stroke="{color}" '
@@ -97,11 +93,11 @@ def _panel(option, side, contour, column, row):
         [
             f'<text x="{left + 15}" y="{top + 271}" font-family="sans-serif" '
             'font-size="12" fill="#304557">Medial source arc: '
-            f'{medial["source_original_plane_arc_length_mm"]:.2f}mm; '
-            f'near-body first-hits {exposed}/48 in 4 views</text>',
+            f"{medial['source_original_plane_arc_length_mm']:.2f}mm; "
+            f"near-body first-hits {exposed}/48 in 4 views</text>",
             f'<text x="{left + 15}" y="{top + 292}" font-family="sans-serif" '
             'font-size="11" fill="#7f3433">Raw 41Mesh only; '
-            '12 source samples; no paired sewing edge</text>',
+            "12 source samples; no paired sewing edge</text>",
         ]
     )
     return result
