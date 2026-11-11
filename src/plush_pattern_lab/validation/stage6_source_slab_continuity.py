@@ -82,6 +82,46 @@ def _source_contour_edges(xyz, section):
         yield edges
 
 
+class _FaceUnionFind:
+    """Deterministic face-component representative tracking without recursion."""
+
+    def __init__(self, count):
+        self.parent = np.arange(count, dtype=np.int64)
+        self.rank = np.zeros(count, dtype=np.int8)
+
+    def root(self, i):
+        while self.parent[i] != i:
+            self.parent[i] = self.parent[self.parent[i]]
+            i = self.parent[i]
+        return int(i)
+
+    def unite(self, i, j):
+        a, b = self.root(i), self.root(j)
+        if a == b:
+            return
+        if self.rank[a] < self.rank[b]:
+            a, b = b, a
+        self.parent[b] = a
+        if self.rank[a] == self.rank[b]:
+            self.rank[a] += 1
+
+
+def _label_components(selected, owners, union_find):
+    grouped = defaultdict(list)
+    for local_id, global_id in enumerate(selected):
+        grouped[union_find.root(local_id)].append(int(global_id))
+    ordered = sorted(grouped.values(), key=lambda row: row[0])
+    component = {}
+    for label, face_ids in enumerate(ordered):
+        for global_id in face_ids:
+            component[global_id] = label
+    edges_to_component = {
+        edge: component[int(selected[local_id])]
+        for edge, local_id in owners.items()
+    }
+    return ordered, edges_to_component, len(selected)
+
+
 def _face_connectivity(xyz, tri, lower, upper):
     heights = xyz[:, 2]
     selected = np.flatnonzero(
@@ -90,27 +130,9 @@ def _face_connectivity(xyz, tri, lower, upper):
     )
     if len(selected) == 0:
         raise ValueError("no source triangles intersect open slab")
-    parent = np.arange(len(selected), dtype=np.int64)
-    rank = np.zeros(len(selected), dtype=np.int8)
+    face_groups = _FaceUnionFind(len(selected))
     edge_first = {}
     edge_count = defaultdict(int)
-
-    def root(i):
-        while parent[i] != i:
-            parent[i] = parent[parent[i]]
-            i = parent[i]
-        return int(i)
-
-    def union(i, j):
-        a, b = root(i), root(j)
-        if a == b:
-            return
-        if rank[a] < rank[b]:
-            a, b = b, a
-        parent[b] = a
-        if rank[a] == rank[b]:
-            rank[a] += 1
-
     for local_id, global_id in enumerate(selected):
         face = tri[global_id]
         for a, b in ((face[0], face[1]), (face[1], face[2]), (face[2], face[0])):
@@ -124,23 +146,10 @@ def _face_connectivity(xyz, tri, lower, upper):
             if edge_count[edge] > 2:
                 raise ValueError("nonmanifold source slab shared edge")
             if edge in edge_first:
-                union(local_id, edge_first[edge])
+                face_groups.unite(local_id, edge_first[edge])
             else:
                 edge_first[edge] = local_id
-    roots = [root(i) for i in range(len(selected))]
-    grouped = defaultdict(list)
-    for i, root_id in enumerate(roots):
-        grouped[root_id].append(int(selected[i]))
-    ordered = sorted(grouped.values(), key=lambda row: row[0])
-    component = {}
-    for label, face_ids in enumerate(ordered):
-        for global_id in face_ids:
-            component[global_id] = label
-    edges_to_component = {
-        edge: component[int(selected[local_id])]
-        for edge, local_id in edge_first.items()
-    }
-    return ordered, edges_to_component, len(selected)
+    return _label_components(selected, edge_first, face_groups)
 
 
 def _loop_component(xyz, section, edges_to_component):
