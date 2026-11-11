@@ -35,6 +35,8 @@ on:
       - 'scripts/build_stage6_ear_root_ab.py'
       - 'scripts/audit_stage6_ear_root_ab_visibility.py'
       - 'scripts/audit_stage6_ear_root_arcs.py'
+      - 'scripts/audit_stage6_ear_dart_paths.py'
+      - 'scripts/audit_stage6_ear_dart_paths_41mesh.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -981,6 +983,80 @@ jobs:
           assert [tuple(row['near_body_first_hits'] for row in item['medial'])
                   for item in findings] == [(2,6),(7,6)]
           print('STAGE6_TRUE_41MESH_MEDIAL_ARC_REVIEW_NOT_SEWING_JOIN', json.dumps(findings))
+          PY
+      - name: Trace source-edge disjoint A medial ear-dart termination paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_stage6_ear_dart_paths.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --study "$RUNNER_TEMP/stage6-reference/ear_root_ab_source_study.json" \
+            --arc-screen "$RUNNER_TEMP/stage6-reference/ear_root_source_quadrant_arc_screen.json" \
+            --visibility "$RUNNER_TEMP/stage6-reference/ear_root_ab_41mesh_visibility.json" \
+            --output "$RUNNER_TEMP/stage6-reference/ear_dart_source_edge_routes.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/ear_dart_source_edge_routes.svg"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          d = json.loads((root/'ear_dart_source_edge_routes.json').read_text(encoding='utf8'))
+          assert d['schema'] == 'stage6-source-ear-medial-arc-dart-tip-routes-v1'
+          assert d['original_source_proxy_vertex_count'] == 59306
+          assert d['original_source_proxy_triangle_count'] == 116568
+          assert d['original_source_proxy_unique_mesh_edge_count'] == 175876
+          assert [(x['side'],x['tip_target_z_mm']) for x in d['candidates']] == [
+              ('left',225.0),('left',219.0),('right',225.0),('right',219.0)]
+          assert all(len(x['disjoint_original_source_route_ids']) == 2 and
+              x['disjoint_original_source_route_ids'][0][-1] == x['disjoint_original_source_route_ids'][1][-1] and
+              not(set(x['disjoint_original_source_route_ids'][0][:-1]) &
+                  set(x['disjoint_original_source_route_ids'][1][:-1]))
+              for x in d['candidates'])
+          assert all(x['not_a_validated_two_sided_sewing_netline'] for x in d['candidates'])
+          assert all(x['unconstrained_shortest_routes_meet_early_vertex_count'] > 0
+                     for x in d['candidates'][:2])
+          assert all(x['branch_gap_under_2mm_research_screen'] for x in d['candidates'][:2])
+          for name,key in [('ear_root_ab_source_study.json','same_run_source_study_sha256'),
+                           ('ear_root_source_quadrant_arc_screen.json','same_run_source_arc_screen_sha256'),
+                           ('ear_root_ab_41mesh_visibility.json','same_run_source_41mesh_visibility_sha256')]:
+              assert hashlib.sha256((root/name).read_bytes()).hexdigest() == d[key]
+          svg=(root/'ear_dart_source_edge_routes.svg').read_bytes()
+          assert hashlib.sha256(svg).hexdigest() == d['svg_sha256']
+          assert b'NOT 2D FABRIC PATTERNS' in svg
+          assert d['factory_cutting_patterns_approved'] == 0
+          assert d['P3_status'] == 'in_progress' and d['P4_status'] == 'not_started'
+          print('STAGE6_TRUE_SOURCE_EAR_DART_3D_ROUTE_CANDIDATES_ONLY_NO_CUTTING')
+          PY
+      - name: Check speculative A medial dart source-edge routes against 41 original Meshes
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/audit_stage6_ear_dart_paths_41mesh.py -- \
+            --input "$RUNNER_TEMP/stage6.blend" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --paths "$RUNNER_TEMP/stage6-reference/ear_dart_source_edge_routes.json" \
+            --registry design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json \
+            --output "$RUNNER_TEMP/stage6-reference/ear_dart_source_edge_routes_41mesh.json"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          d = json.loads((root/'ear_dart_source_edge_routes_41mesh.json').read_text(encoding='utf8'))
+          assert d['schema'] == 'stage6-source-dart-route-41-product-mesh-first-hit-v1'
+          assert d['original_product_meshes_raycasted'] == 41
+          assert d['original_curves_not_tested'] == 423
+          assert len(d['route_candidates']) == 4
+          assert d['same_run_original_source_dart_routes_sha256'] == hashlib.sha256(
+              (root/'ear_dart_source_edge_routes.json').read_bytes()).hexdigest()
+          assert all(len(c['source_branches']) == 2 and
+              all(2 <= x['sample_count'] <= 16 and
+                  len(x['original_vertex_id_and_xyz_samples']) == x['sample_count'] and
+                  set(x['five_view_first_hit_counts']) == {'front','back','left','right','top'}
+                  for x in c['source_branches'])
+              for c in d['route_candidates'])
+          assert d['cutting_patterns_approved'] == 0
+          assert d['P3_status'] == 'in_progress' and d['P4_status'] == 'not_started'
+          assert d['not_fur_cloth_or_material_simulation']
+          print('STAGE6_TRUE_SOURCE_DART_41MESH_SEAMS_NOT_APPROVED')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
