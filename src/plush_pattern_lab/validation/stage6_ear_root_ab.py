@@ -9,11 +9,7 @@ from __future__ import annotations
 import numpy as np
 from shapely.geometry import Polygon
 
-from plush_pattern_lab.validation.stage6_ear_root_contract import (
-    SCHEMA,
-    plan_side_source_samples,
-)
-
+from plush_pattern_lab.validation.stage6_ear_root_contract import SCHEMA
 from plush_pattern_lab.validation.stage6_source_slab_continuity import (
     trace_true_source_slab,
 )
