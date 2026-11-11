@@ -15,14 +15,14 @@ from pathlib import Path
 import bpy
 
 from plush_pattern_lab.blender.audit_hoof_interfaces import sha256_file
+from plush_pattern_lab.blender.audit_stage6_full_mesh_visibility import (
+    EXPECTED_PROXY_SHA,
+)
 from plush_pattern_lab.blender.audit_stage6_section_mesh_correspondence import (
     _checked_scene_registry,
     _five_view_hits,
     _independent_neighbor_hits,
     _object_bvh_cache,
-)
-from plush_pattern_lab.blender.audit_stage6_full_mesh_visibility import (
-    EXPECTED_PROXY_SHA,
 )
 from plush_pattern_lab.validation.component_inventory import SOURCE_SHA256
 from plush_pattern_lab.validation.full_scene_seam_visibility import VIEWS
