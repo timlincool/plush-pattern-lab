@@ -1,6 +1,9 @@
 """Reject false source, missing seam IDs, and fake ear-root manufacturing claims."""
 
+import subprocess
+import sys
 from copy import deepcopy
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -157,3 +160,21 @@ def test_side_sampling_protects_original_vertex_edge_ids(monkeypatch):
     altered["full_crossed_original_proxy_vertex_id_pairs"].pop()
     with pytest.raises(ValueError):
         root.plan_side_source_samples(altered, 230)
+
+
+def test_blender_source_contract_imports_without_shapely_or_numpy_site_packages():
+    source = Path(__file__).resolve().parents[1] / "src"
+    program = (
+        "import sys; sys.path.insert(0, "
+        + repr(str(source))
+        + "); from plush_pattern_lab.validation.stage6_ear_root_contract "
+        "import SCHEMA, plan_side_source_samples; "
+        "assert SCHEMA.endswith('ab-v1'); "
+        "assert callable(plan_side_source_samples)"
+    )
+    subprocess.run(
+        [sys.executable, "-I", "-S", "-c", program],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
