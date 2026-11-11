@@ -172,6 +172,7 @@ def compare_real_ear_root_ab(points, faces, original_detail=None):
             {
                 "name": name,
                 "source_plane_z_mm": z,
+                "height_above_split_upper_probe_mm": float(z - SPLIT_PROBES[1]),
                 "original_source_closed_loop_count_including_crown": 3,
                 "central_original_head_loop_perimeter_mm": float(center.length),
                 "source_side_loops": studies,
