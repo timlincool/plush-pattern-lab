@@ -9,6 +9,7 @@ import numpy as np
 import pytest
 
 from plush_pattern_lab.validation import stage6_ear_root_ab as root
+from plush_pattern_lab.validation.stage6_ear_root_contract import plan_side_source_samples
 from plush_pattern_lab.validation.stage6_ear_root_ab_svg import render_root_ab_svg
 
 
@@ -152,14 +153,14 @@ def test_side_sampling_protects_original_vertex_edge_ids(monkeypatch):
     _wire(monkeypatch)
     option = root.compare_real_ear_root_ab(None, None)["candidate_options"][0]
     left = option["source_side_loops"][0]
-    samples = root.plan_side_source_samples(left, 230, max_samples=8)
+    samples = plan_side_source_samples(left, 230, max_samples=8)
     assert len(samples) == 8
     assert len({s["source_edge_ordinal"] for s in samples}) == 8
     assert all(s["source_xyz_mm"][2] == 230 for s in samples)
     altered = deepcopy(left)
     altered["full_crossed_original_proxy_vertex_id_pairs"].pop()
     with pytest.raises(ValueError):
-        root.plan_side_source_samples(altered, 230)
+        plan_side_source_samples(altered, 230)
 
 
 def test_blender_source_contract_imports_without_shapely_or_numpy_site_packages():
