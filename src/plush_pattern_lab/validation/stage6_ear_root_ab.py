@@ -9,6 +9,11 @@ from __future__ import annotations
 import numpy as np
 from shapely.geometry import Polygon
 
+from plush_pattern_lab.validation.stage6_ear_root_contract import (
+    SCHEMA,
+    plan_side_source_samples,
+)
+
 from plush_pattern_lab.validation.stage6_source_slab_continuity import (
     trace_true_source_slab,
 )
@@ -16,7 +21,6 @@ from plush_pattern_lab.validation.stage6_true_source_contours import (
     real_source_section_series,
 )
 
-SCHEMA = "stage6-original-source-ear-root-two-height-ring-ab-v1"
 CHOICES = (("A_lower_root_ring", 230), ("B_higher_root_ring", 235))
 SPLIT_PROBES = (225.90, 225.91)
 RESEARCH_ALLOWANCE_MM = 6.0
@@ -81,7 +85,9 @@ def _study_side(side, source, center, z):
     return {
         "side": side,
         "source_loop_index_by_perimeter": index,
-        "source_contour_sha256": loop["original_source_edge_and_interpolated_xy_sha256"],
+        "source_contour_sha256": loop[
+            "original_source_edge_and_interpolated_xy_sha256"
+        ],
         "original_proxy_crossed_edge_count": len(
             loop["crossed_original_mesh_vertex_id_edge_pairs"]
         ),
@@ -131,7 +137,9 @@ def _verify_anchor(source_230, original):
         or original.get("factory_cutting_approved") != 0
         or expected != actual
     ):
-        raise ValueError("existing trusted source z230 original edge / XY digest changed")
+        raise ValueError(
+            "existing trusted source z230 original edge / XY digest changed"
+        )
 
 
 def compare_real_ear_root_ab(points, faces, original_detail=None):
@@ -146,13 +154,9 @@ def compare_real_ear_root_ab(points, faces, original_detail=None):
         raise ValueError("original source crown split topology has changed")
     _verify_anchor(sections[230], original_detail)
     track = trace_true_source_slab(points, faces, series, 230, 235)
-    if (
-        track["source_surface_component_count_in_open_slab"] != 3
-        or any(
-            item["source_surface_relation"]
-            != "one_to_one_surface_continuation_not_seam"
-            for item in track["surface_components"]
-        )
+    if track["source_surface_component_count_in_open_slab"] != 3 or any(
+        item["source_surface_relation"] != "one_to_one_surface_continuation_not_seam"
+        for item in track["surface_components"]
     ):
         raise ValueError("source side surfaces do not continue one-to-one")
     candidates = []
@@ -162,12 +166,8 @@ def compare_real_ear_root_ab(points, faces, original_detail=None):
         studies = [
             _study_side(side, loopmap[side], center, z) for side in ("left", "right")
         ]
-        reflected = Polygon(
-            [(-x, y) for x, y in loopmap["left"][2].exterior.coords]
-        )
-        gap = reflected.boundary.hausdorff_distance(
-            loopmap["right"][2].boundary
-        )
+        reflected = Polygon([(-x, y) for x, y in loopmap["left"][2].exterior.coords])
+        gap = reflected.boundary.hausdorff_distance(loopmap["right"][2].boundary)
         candidates.append(
             {
                 "name": name,
@@ -200,26 +200,3 @@ def compare_real_ear_root_ab(points, faces, original_detail=None):
         "P4_status": "not_started",
     }
 
-
-def plan_side_source_samples(side, z, max_samples=48):
-    """Spread original intersection points, preserving source vertex edge IDs."""
-    xy = side["full_interpolated_original_source_xy_mm"]
-    ids = side["full_crossed_original_proxy_vertex_id_pairs"]
-    if (
-        len(xy) != len(ids)
-        or len(xy) != side["original_proxy_crossed_edge_count"]
-        or len(xy) < 8
-        or not isinstance(max_samples, int)
-        or not 1 <= max_samples <= 48
-    ):
-        raise ValueError("untrusted original source ear-root ring samples")
-    count = min(len(xy), max_samples)
-    indices = ((k * len(xy)) // count for k in range(count))
-    return [
-        {
-            "source_edge_ordinal": i,
-            "source_vertex_id_pair": ids[i],
-            "source_xyz_mm": [*xy[i], z],
-        }
-        for i in indices
-    ]

@@ -26,7 +26,7 @@ from plush_pattern_lab.blender.audit_stage6_section_mesh_correspondence import (
 )
 from plush_pattern_lab.validation.component_inventory import SOURCE_SHA256
 from plush_pattern_lab.validation.full_scene_seam_visibility import VIEWS
-from plush_pattern_lab.validation.stage6_ear_root_ab import (
+from plush_pattern_lab.validation.stage6_ear_root_contract import (
     SCHEMA,
     plan_side_source_samples,
 )
@@ -76,12 +76,10 @@ def _previous_z230(previous, study):
         raise ValueError("original source z230 three-loop 41Mesh audit missing")
     by_side = {
         "left": next(
-            loop for loop in source["loops"]
-            if loop["source_centroid_xy_mm"][0] < -15
+            loop for loop in source["loops"] if loop["source_centroid_xy_mm"][0] < -15
         ),
         "right": next(
-            loop for loop in source["loops"]
-            if loop["source_centroid_xy_mm"][0] > 15
+            loop for loop in source["loops"] if loop["source_centroid_xy_mm"][0] > 15
         ),
     }
     for row in study["candidate_options"][0]["source_side_loops"]:
@@ -113,9 +111,7 @@ def _screen_ring(row, z, cache, bounds):
                 near[hit["mesh"]] += 1
         for view in views:
             views[view][first_hits[view]["classification"]] += 1
-        observed.append(
-            {**source, **neighbors, "five_view_first_hit": first_hits}
-        )
+        observed.append({**source, **neighbors, "five_view_first_hit": first_hits})
     return {
         "side": row["side"],
         "source_plane_z_mm": z,
@@ -177,9 +173,7 @@ def main():
         "P3_structure_approved": False,
         "P4_started": False,
     }
-    if len(cache) != 41 or [x["source_z_mm"] for x in report["options"]] != [
-        230, 235
-    ]:
+    if len(cache) != 41 or [x["source_z_mm"] for x in report["options"]] != [230, 235]:
         raise ValueError("original Stage6 A/B mesh survey changed")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
@@ -193,7 +187,10 @@ def main():
                 {
                     "name": option["name"],
                     "sides": [
-                        [side["side"], side["within_3mm_independent_raw_mesh_sample_counts"]]
+                        [
+                            side["side"],
+                            side["within_3mm_independent_raw_mesh_sample_counts"],
+                        ]
                         for side in option["sides"]
                     ],
                 }

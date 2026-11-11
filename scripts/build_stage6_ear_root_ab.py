@@ -76,8 +76,7 @@ def _validate_research(qa):
     for option in qa["candidate_options"]:
         if (
             option["left_right_reflected_boundary_hausdorff_mm"] >= 0.5
-            or [row["side"] for row in option["source_side_loops"]]
-            != ["left", "right"]
+            or [row["side"] for row in option["source_side_loops"]] != ["left", "right"]
             or not all(
                 row["xy_minor_bbox_under_two_research_6mm_allowances"]
                 for row in option["source_side_loops"]
@@ -127,8 +126,10 @@ def main():
                 "candidate_rings": [
                     [
                         row["name"],
-                        [round(x["source_3d_ring_perimeter_mm"], 3)
-                         for x in row["source_side_loops"]],
+                        [
+                            round(x["source_3d_ring_perimeter_mm"], 3)
+                            for x in row["source_side_loops"]
+                        ],
                     ]
                     for row in qa["candidate_options"]
                 ],
