@@ -195,4 +195,3 @@ def compare_real_ear_root_ab(points, faces, original_detail=None):
         "P3_status": "in_progress",
         "P4_status": "not_started",
     }
-
