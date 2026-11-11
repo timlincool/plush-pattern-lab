@@ -152,5 +152,25 @@
   "approved_manufacturer_cutting_patterns": 0,
   "P3_status": "in_progress",
   "P4_status": "not_started",
-  "next": "沿主壳真实边与三角面追踪Z230侧环到Z245耳顶的连续关系，标出主壳与耳/云覆盖的可隐藏拼缝候选；与设计四视图对位并验证3D/2D净缝、缝份、翻面、材料和废布实样。"
+  "next": "沿主壳真实边与三角面追踪Z230侧环到Z245耳顶的连续关系，标出主壳与耳/云覆盖的可隐藏拼缝候选；与设计四视图对位并验证3D/2D净缝、缝份、翻面、材料和废布实样。",
+  "repeat_trusted_source_main": {
+    "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42948591323",
+    "run_id": 42948591323,
+    "run_conclusion": "success",
+    "commit_sha": "34c09214556225799dbc0e8767d167a2a90bb8d7",
+    "artifact_id": 13823598731,
+    "raw_artifact_zip_sha256": "cf6b033f355504148cf2c8f05cbb58de7faf8a78496e1fb6587f758886ffc536",
+    "raw_full_41mesh_correspondence_json_sha256": "0f17b4ee8445bd1ea879aa283c5981a20eeacfe3e73523fa4512c3ce75425b1e",
+    "original_section_summary_json_sha256": "071acfced61e6bbf52584dc3a68c54bb72d838e87b7c87fe6a1e46181efe2b46",
+    "original_section_detail_json_sha256": "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717",
+    "original_section_13plane_atlas_svg_sha256": "ad5a76ad6c3dfbf510ef4f5c60d9f991250d6c48904f2f03c15903dace868534"
+  },
+  "trusted_two_run_byte_reproducibility": {
+    "exact_byte_identical_original_41mesh_correspondence_json": true,
+    "exact_byte_identical_true_source_summary_json": true,
+    "exact_byte_identical_true_source_detail_json": true,
+    "exact_byte_identical_true_source_13plane_atlas_svg": true,
+    "full_action_zip_bytes_identical": false,
+    "note": "Raw research files are exactly byte identical across two trusted Blender 4.3.2 main runs; full artifact ZIP SHA differs because it includes other generated assets and archive details."
+  }
 }
