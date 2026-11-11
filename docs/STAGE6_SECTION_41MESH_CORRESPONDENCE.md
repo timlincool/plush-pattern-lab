@@ -28,7 +28,7 @@
 
 ## 2026-11-11 UTC：真实 41 Mesh 已运行并永久归档
 
-在受信 main [Stage6 #42947136279](https://github.com/timlincool/plush-pattern-lab/actions/runs/42947136279)（commit 4ad0e64f9d6db56068c6da8ce5a150371c553e61）上，原 Blender 4.3.2 成功完成 13 层真三角面求交和此次 7 个真实闭合环与全部 41 产品 Mesh 的 BVH 对照。原始 Action Artifact ID 13822869393；整包 SHA256、逐环原源边哈希、原始完整 JSON SHA 与各环统计已固定在 [实验数据](../experiments/stage6_section_41mesh_20261111/summary.json)。
+在受信 main [Stage6 #42947136279](https://github.com/timlincool/plush-pattern-lab/actions/runs/42947136279)（commit 4ad0e64f9d6db56068c6da8ce5a150371c553e61）上，原 Blender 4.3.2 成功完成 13 层真三角面求交和此次 7 个真实闭合环与全部 41 产品 Mesh 的 BVH 对照。原始 Action Artifact ID 13822869393；后续受信 main [Stage6 #42948591323](https://github.com/timlincool/plush-pattern-lab/actions/runs/42948591323)（Artifact ID 13823598731）独立复算通过。**两次得到的 41 Mesh 关联原始 JSON、13层真实截面 summary/detail JSON 和 SVG 四份研究文件逐字节一致（SHA-256相同）；完整 ZIP 哈希不同，不能声称整包字节相同。** 整包 SHA256、逐环原源边哈希、原始完整 JSON SHA 与各环统计已固定在 [实验数据](../experiments/stage6_section_41mesh_20261111/summary.json)。
 
 | 原主壳来源截面 | 48个确定性源交边采样中、距独立 Mesh ≤3mm 的观察 | 仅证实什么 |
 | --- | --- | --- |
