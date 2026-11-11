@@ -44,11 +44,12 @@ def test_real_source_ear_dart_two_depths_force_disjoint_branches_but_not_sewing(
         ("right", 225),
         ("right", 219),
     ]
-    assert [row["source_tip_vertex_id"] for row in rows] == [
-        42096, 42214, 51470, 51615
-    ]
+    assert [row["source_tip_vertex_id"] for row in rows] == [42096, 42214, 51470, 51615]
     assert [row["unconstrained_early_shared_source_vertices"] for row in rows] == [
-        7, 14, 1, 0
+        7,
+        14,
+        1,
+        0,
     ]
     assert all(len(x["source_3d_route_sha256"]) == 64 for x in rows)
     assert rows[0]["source_mesh_vertex_gap_beyond_tip_4mm_mm"] < 2
