@@ -1,6 +1,6 @@
 # Stage6 原始三角面跨高度连通：头顶封闭与双侧耳根分叉区间（P3）
 
-**状态：2026-11-11 源SHA锁定25% PLY本地实际计算，完整主干 Stage6 CI尚待验证；不是工厂纸样。** 本实验继承原始13层闭环门禁 STAGE6_TRUE_SOURCE_CONTOUR_GATE.md 和真实41 Mesh三维邻近证据 STAGE6_SECTION_41MESH_CORRESPONDENCE.md。
+**状态：2026-11-11 源SHA锁定25% PLY已由两次受信main Stage6完整复算且原始JSON/SVG逐字节一致；仍不是工厂纸样。** 本实验继承原始13层闭环门禁 STAGE6_TRUE_SOURCE_CONTOUR_GATE.md 和真实41 Mesh三维邻近证据 STAGE6_SECTION_41MESH_CORRESPONDENCE.md。
 
 ## 为何需要真实曲面连通而不只是二维包围盒
 
@@ -13,7 +13,7 @@ Z230原主壳有中央+左右三个闭合截面，Z245仅左右两环。但“�
 3. 固定原Blend/25% PLY/同次section摘要及detail/同次41 Mesh JSON的来源哈希；输入篡改/跨实验拼装必须拒绝。
 4. 输出 true_stage6_source_slab_head_ear.json 与 true_stage6_source_slab_head_ear.svg；后者是**拓扑研究示意，不能打印当工业纸样**。
 
-## 本地真实25% Stage6源代理五段结果（待受信主干 CI 复核）
+## 受信真实25% Stage6源代理五段结果（两次原始文件SHA一致）
 
 | Z 高度带(mm) | 下层→上层闭环数 | 带内原三角面 | 连通曲面分量 | 发现 |
 | --- | --- | ---: | ---: | --- |
@@ -32,6 +32,6 @@ Z230原主壳有中央+左右三个闭合截面，Z245仅左右两环。但“�
 
 不得仅靠3D相近、数字缝长相等或任一SVG图宣称制造可行。还需原设计四视图比例注册、源3D↔2D低应变及翻面/布纹、真实材料废布样、工厂确认。原4×512蹄口、下腹13片、头身A/B失败证据均不变。
 
-实现：validation/stage6_source_slab_continuity.py 与 stage6_source_slab_timeline.py，脚本 scripts/audit_stage6_source_slab_continuity.py，负例 tests/test_stage6_source_slab_continuity.py；受信 main Stage6 Workflow 在源截面与41 Mesh审计之后执行。真实结果通过后再归档 Run、SHA、详细文件。
+实现：validation/stage6_source_slab_continuity.py 与 stage6_source_slab_timeline.py，脚本 scripts/audit_stage6_source_slab_continuity.py，负例 tests/test_stage6_source_slab_continuity.py；受信 main Stage6 Workflow 在源截面与41 Mesh审计之后执行。两次受信运行的Run ID、commit、Action Artifact ID、原始研究JSON/SVG SHA及五段真实连通统计见 [永久实验记录](../experiments/stage6_source_slab_20261111/summary.json)。[Run #42951036948](https://github.com/timlincool/plush-pattern-lab/actions/runs/42951036948) 与 [Run #42951246219](https://github.com/timlincool/plush-pattern-lab/actions/runs/42951246219) 均完成；JSON/SVG原始内容字节一致，但整包ZIP的SHA不同，不得误称两份压缩包一致。
 
 **P3 in_progress；P4 not_started；正式工厂纸样批准数0。**
