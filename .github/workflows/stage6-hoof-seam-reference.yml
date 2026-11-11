@@ -34,6 +34,7 @@ on:
       - 'scripts/audit_stage6_source_slab_continuity.py'
       - 'scripts/build_stage6_ear_root_ab.py'
       - 'scripts/audit_stage6_ear_root_ab_visibility.py'
+      - 'scripts/audit_stage6_ear_root_arcs.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -928,6 +929,58 @@ jobs:
           assert not report['manufacturing_seam_or_dart_approved']
           assert not report['P3_structure_approved'] and not report['P4_started']
           print('STAGE6_EAR_ROOT_AB_41MESH_SURFACE_SEAM_IS_NOT_HIDDEN_FABRIC_SEAM')
+          PY
+      - name: Screen all fixed source ear-root quadrants against real 41Mesh evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_stage6_ear_root_arcs.py \
+            --study "$RUNNER_TEMP/stage6-reference/ear_root_ab_source_study.json" \
+            --visibility "$RUNNER_TEMP/stage6-reference/ear_root_ab_41mesh_visibility.json" \
+            --output "$RUNNER_TEMP/stage6-reference/ear_root_source_quadrant_arc_screen.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/ear_root_source_quadrant_arc_screen.svg"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'stage6-reference'
+          data = json.loads((root/'ear_root_source_quadrant_arc_screen.json').read_text(encoding='utf8'))
+          assert data['schema'] == 'stage6-original-ear-root-quadrant-arc-41mesh-screen-v1'
+          assert data['studied_quadrants'] == ['medial','lateral','posterior','anterior']
+          assert data['source_samples_each_full_loop'] == 48
+          assert data['arc_samples_each_quadrant'] == 12
+          assert len(data['option_results']) == 2
+          assert data['same_run_ear_root_source_json_sha256'] == hashlib.sha256(
+              (root/'ear_root_ab_source_study.json').read_bytes()).hexdigest()
+          assert data['same_run_original_41mesh_visibility_json_sha256'] == hashlib.sha256(
+              (root/'ear_root_ab_41mesh_visibility.json').read_bytes()).hexdigest()
+          atlas = (root/'ear_root_source_quadrant_arc_screen.svg').read_bytes()
+          assert hashlib.sha256(atlas).hexdigest() == data['arc_review_svg_sha256']
+          assert b'NOT CUTTING PATTERNS' in atlas
+          assert all(len(option['sides']) == 2 and
+              all(len(side['quadrant_arc_hypotheses']) == 4 and
+                  all(arc['sample_count'] == 12 and
+                      arc['original_arc_endpoints_unpaired'] == 2 and
+                      not arc['approved_as_hidden_seam']
+                      for arc in side['quadrant_arc_hypotheses'])
+                  for side in option['sides'])
+              for option in data['option_results'])
+          assert data['all_four_quadrants_reported_no_visibility_driven_cherry_pick']
+          assert data['unpaired_open_arc_endpoints_are_not_sewing_joins']
+          assert data['approved_factory_cutting_patterns'] == 0
+          assert data['P3_status'] == 'in_progress'
+          assert data['P4_status'] == 'not_started'
+          findings = []
+          for option in data['option_results']:
+              exposed = [
+                  {'side': side['side'], 'near_body_first_hits': sum(
+                      view['near_original_body_first_surface']
+                      for view in side['quadrant_arc_hypotheses'][0]['per_view_12point_first_hit'].values()
+                  )}
+                  for side in option['sides']
+              ]
+              findings.append({'variant':option['name'],'medial':exposed})
+          assert [tuple(row['near_body_first_hits'] for row in item['medial'])
+                  for item in findings] == [(2,6),(7,6)]
+          print('STAGE6_TRUE_41MESH_MEDIAL_ARC_REVIEW_NOT_SEWING_JOIN', json.dumps(findings))
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
