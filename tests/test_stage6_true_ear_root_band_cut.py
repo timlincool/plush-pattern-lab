@@ -71,12 +71,8 @@ def test_synthetic_closed_box_becomes_true_source_paired_3d_annulus():
     assert root["euler"] == 0
     assert len(root["boundary_loops"]) == 2
     assert below["euler"] == above["euler"] == 1
-    first = _paired_seam(
-        zones["below"], below, zones["root"], root, 230
-    )
-    second = _paired_seam(
-        zones["root"], root, zones["above"], above, 235
-    )
+    first = _paired_seam(zones["below"], below, zones["root"], root, 230)
+    second = _paired_seam(zones["root"], root, zones["above"], above, 235)
     assert first["two_source_3d_sides_exactly_same_with_opposite_face_winding"]
     assert second["two_source_3d_sides_exactly_same_with_opposite_face_winding"]
     assert first["max_source_3d_pair_position_error_mm"] == 0
@@ -98,7 +94,9 @@ def test_source_graph_width_rejects_synthetic_5mm_high_ring():
     width = _surface_graph_width(zones["root"], root, 230, 235)
     assert width["below_two_research_6mm_allowances_somewhere"]
     assert width["fraction_upper_source_seam_under_12mm_graph_width"] == 1.0
-    assert width["source_triangle_graph_distance_is_upper_bound_on_real_surface_geodesic"]
+    assert width[
+        "source_triangle_graph_distance_is_upper_bound_on_real_surface_geodesic"
+    ]
     assert width["this_is_not_2d_fabric_usable_allowance"]
 
 
