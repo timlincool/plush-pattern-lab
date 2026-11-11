@@ -31,6 +31,7 @@ on:
       - 'scripts/build_stage6_split_volume_toile_ab.py'
       - 'scripts/audit_stage6_true_source_sections.py'
       - 'scripts/audit_stage6_section_mesh_correspondence.py'
+      - 'scripts/audit_stage6_source_slab_continuity.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -814,6 +815,50 @@ jobs:
           print('STAGE6_TRUE_SOURCE_41MESH_ASSOCIATION_ONLY_NO_EAR_SEAM_APPROVAL',
                 json.dumps([{'z':s['z_mm'], 'per_loop_proximity':[x['independent_mesh_proximity_counts'] for x in s['loops']]}
                             for s in data['sections']]))
+          PY
+      - name: Prove source triangle slab branches before drafting ear root seams
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_stage6_source_slab_continuity.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --section-summary "$RUNNER_TEMP/stage6-reference/true_stage6_source_section_summary.json" \
+            --section-detail "$RUNNER_TEMP/stage6-reference/true_stage6_source_section_detail.json" \
+            --correspondence "$RUNNER_TEMP/stage6-reference/true_stage6_section_41mesh_correspondence.json" \
+            --output "$RUNNER_TEMP/stage6-reference/true_stage6_source_slab_head_ear.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/true_stage6_source_slab_head_ear.svg"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          report = json.loads((root/'true_stage6_source_slab_head_ear.json').read_text(encoding='utf8'))
+          spans = report['actual_original_triangle_slab_reports']
+          assert report['schema'] == 'stage6-actual-source-mesh-five-slab-head-ear-continuity-v1'
+          assert report['original_public_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert report['source_face_count'] == 116568
+          assert [(s['lower_plane_z_mm'],s['upper_plane_z_mm']) for s in spans] == [
+              (125,135),(135,145),(180,205),(205,230),(230,245)]
+          assert [s['source_triangle_count_in_open_slab'] for s in spans] == [5078,3566,7127,9597,4691]
+          assert [s['source_surface_component_count_in_open_slab'] for s in spans] == [2,1,1,1,3]
+          assert spans[3]['surface_components'][0]['lower_loop_indices'] == [0]
+          assert spans[3]['surface_components'][0]['upper_loop_indices'] == [0,1,2]
+          assert sorted((tuple(s['lower_loop_indices']),tuple(s['upper_loop_indices']))
+              for s in spans[4]['surface_components']) == [
+                  ((0,),()),((1,),(0,)),((2,),(1,))
+              ]
+          assert report['same_run_section_detail_sha256'] == hashlib.sha256(
+              (root/'true_stage6_source_section_detail.json').read_bytes()).hexdigest()
+          assert report['same_run_41_mesh_correspondence_sha256'] == hashlib.sha256(
+              (root/'true_stage6_section_41mesh_correspondence.json').read_bytes()).hexdigest()
+          svg=(root/'true_stage6_source_slab_head_ear.svg').read_bytes()
+          assert hashlib.sha256(svg).hexdigest() == report['timeline_svg_sha256']
+          assert b'NOT CUT PATTERNS' in svg
+          assert report['branching_is_source_surface_geometry_not_a_sewing_seam']
+          assert report['fabric_and_designed_ear_root_not_tested']
+          assert report['factory_cutting_patterns_approved'] == 0
+          assert report['P3_status'] == 'in_progress'
+          assert report['P4_status'] == 'not_started'
+          print('STAGE6_SOURCE_205_TO_230_BRANCH_230_TO_245_SIDE_PERSISTENCE_PASS_NOT_CUTTING')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
