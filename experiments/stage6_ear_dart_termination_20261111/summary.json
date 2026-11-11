@@ -1,0 +1,202 @@
+{
+  "schema": "stage6-actual-original-source-medial-ear-dart-3d-tip-route-evidence-v1",
+  "research_date_utc": "2026-11-11",
+  "source_original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_25_percent_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "proxy_original_vertices": 59306,
+  "proxy_original_triangles": 116568,
+  "proxy_unique_original_edges": 175876,
+  "method": "Two original Z230 interpolated arc endpoints per side, exact original source edge IDs/XY/contour SHA and arc length; Dijkstra on SHA-pinned source triangle edge graph, one common proposed tip after constrained 3D path detour; compare Z225 and Z219 root tips, then actual original 41-product Mesh five-view first-hit and independent raw Mesh proximity.",
+  "trusted_python_ci": {
+    "run_id": 42971362108,
+    "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42971362108",
+    "conclusion": "success",
+    "passed": 599,
+    "ruff_complexity_build": "PASS"
+  },
+  "trusted_stage6_main_blender_4_3_2_runs": [
+    {
+      "run_id": 42971171926,
+      "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42971171926",
+      "commit_sha": "d55ef3e3f6612d239ff9beb03074df1109fa36c2",
+      "conclusion": "success",
+      "artifact_id": 13833980031,
+      "artifact_zip_sha256": "271516208cc4e8fcb656555b49312a5371003cbbb3f7916357966d3fd0330957"
+    },
+    {
+      "run_id": 42971362151,
+      "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42971362151",
+      "commit_sha": "34442e688353947811d8b96d8b972bc6a7e62f6b",
+      "conclusion": "success",
+      "artifact_id": 13833029761,
+      "artifact_zip_sha256": "620d965a7925ad3eefa95634cc6f910040c5328f75830856ab322aeb53dc2749"
+    }
+  ],
+  "original_research_five_files_sha256_identical_across_trusted_runs": {
+    "ear_dart_source_edge_routes_json": "36fa0ce10eaeeb45bdb0ced4a9bc4ffcb0b451723ab0897fed4641b3fece4293",
+    "ear_dart_source_edge_routes_svg": "089e8fd6b8936870feecb97b181311911b60e4bc403fc8dcbac3a39a2341d42a",
+    "ear_dart_source_edge_routes_41mesh_json": "9edc686716197d3f00cf3c62fefe5e58031e5df6b5e1d9c72ba56d78e4f76005",
+    "ear_root_source_quadrant_arc_screen_json": "6a3eec0ad84f02939b8c91de783dbc545f5ee5428bca1be901fe40efe4cc7826",
+    "ear_root_ab_source_study_json": "4c1af7d171891207012a783b101c8ab6fc9c75ab60ae31ae56fe080f9eb35aba"
+  },
+  "all_five_raw_research_files_exact_byte_identical_twice": true,
+  "complete_action_zip_byte_identical": false,
+  "four_verified_original_route_options": [
+    {
+      "side": "left",
+      "target_z_mm": 225,
+      "source_tip_vertex_id": 42096,
+      "unconstrained_early_shared_source_vertices": 7,
+      "disjoint_branch_source_vertices": [
+        12,
+        26
+      ],
+      "source_3d_branch_length_mm": [
+        11.226474131814397,
+        20.33386257925582
+      ],
+      "source_mesh_vertex_gap_beyond_tip_4mm_mm": 1.6391608155452415,
+      "under_2mm_research_screen": true,
+      "source_3d_route_sha256": "9ec7104aecf38f050d49e995771311257d6f2366ef6f6722b29f7689184bcfb1",
+      "four_view_near_body_first_hits_per_branch": [
+        0,
+        2
+      ],
+      "per_branch_near_body_front_back_own_side_top": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "side": "left",
+      "target_z_mm": 219,
+      "source_tip_vertex_id": 42214,
+      "unconstrained_early_shared_source_vertices": 14,
+      "disjoint_branch_source_vertices": [
+        19,
+        35
+      ],
+      "source_3d_branch_length_mm": [
+        15.044435695911604,
+        23.636324880793143
+      ],
+      "source_mesh_vertex_gap_beyond_tip_4mm_mm": 0.8446734164310804,
+      "under_2mm_research_screen": true,
+      "source_3d_route_sha256": "84e3ed6331215d2142d4faf8425040eefc4bb1e6c2df5070f3ce0aadba02070e",
+      "four_view_near_body_first_hits_per_branch": [
+        0,
+        2
+      ],
+      "per_branch_near_body_front_back_own_side_top": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "side": "right",
+      "target_z_mm": 225,
+      "source_tip_vertex_id": 51470,
+      "unconstrained_early_shared_source_vertices": 1,
+      "disjoint_branch_source_vertices": [
+        20,
+        9
+      ],
+      "source_3d_branch_length_mm": [
+        17.543826285762087,
+        7.729728389554328
+      ],
+      "source_mesh_vertex_gap_beyond_tip_4mm_mm": 3.9408411683141473,
+      "under_2mm_research_screen": false,
+      "source_3d_route_sha256": "0ab3002289009595279f2ae1643ac791f98f7d056e9dfbe8ecf5ea0bf55ba4d4",
+      "four_view_near_body_first_hits_per_branch": [
+        9,
+        1
+      ],
+      "per_branch_near_body_front_back_own_side_top": [
+        [
+          0,
+          0,
+          1,
+          8
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "side": "right",
+      "target_z_mm": 219,
+      "source_tip_vertex_id": 51615,
+      "unconstrained_early_shared_source_vertices": 0,
+      "disjoint_branch_source_vertices": [
+        26,
+        17
+      ],
+      "source_3d_branch_length_mm": [
+        22.229065712075887,
+        14.423047522168927
+      ],
+      "source_mesh_vertex_gap_beyond_tip_4mm_mm": 2.407678451454765,
+      "under_2mm_research_screen": false,
+      "source_3d_route_sha256": "c3cb60c2c4055933a072007db060322d2c6fd54d272c0dff90ce3213a907632a",
+      "four_view_near_body_first_hits_per_branch": [
+        12,
+        7
+      ],
+      "per_branch_near_body_front_back_own_side_top": [
+        [
+          0,
+          0,
+          4,
+          8
+        ],
+        [
+          0,
+          0,
+          7,
+          0
+        ]
+      ]
+    }
+  ],
+  "samples_are_mesh_vertices_and_views_not_independent_experiments": true,
+  "distance_scope": "Minimum Euclidean distance between original proxy mesh vertices belonging to different routes more than 4mm from their common tip; does NOT measure continuous segment/surface or material sewing allowance.",
+  "research_2mm_branch_gap_threshold_not_factory_clearance": true,
+  "left_both_root_tip_depths_flag_narrow_arms": true,
+  "right_deeper_tip_does_not_reduce_first_hit_risk": true,
+  "original_proxy_source_triangles_modified": false,
+  "all_original_hoof_4x512_interfaces_unchanged": true,
+  "independent_ear_cloud_mesh_attachment_not_verified": true,
+  "actual_designed_hidden_seam_confirmed": false,
+  "true_two_sided_3d_to_2d_sewing_netlines_generated": false,
+  "real_fabric_6mm_allowance_turnout_and_filling_tested": false,
+  "design_four_view_approved": false,
+  "manufacturer_cutting_patterns_approved": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "next_gate": "Reject narrow left-side source dart tip variants unless redesigned with actual 3D patch topology and sewable netline; evaluate distinct non-mirrored ear-root insert/side-cloud attachment and source-cut paired boundaries, material seam allowance and physical sample. Do not optimize visibility as sewing proof."
+}
