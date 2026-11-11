@@ -37,6 +37,7 @@ on:
       - 'scripts/audit_stage6_ear_root_arcs.py'
       - 'scripts/audit_stage6_ear_dart_paths.py'
       - 'scripts/audit_stage6_ear_dart_paths_41mesh.py'
+      - 'scripts/audit_stage6_true_ear_root_band_cut.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -1057,6 +1058,52 @@ jobs:
           assert d['P3_status'] == 'in_progress' and d['P4_status'] == 'not_started'
           assert d['not_fur_cloth_or_material_simulation']
           print('STAGE6_TRUE_SOURCE_DART_41MESH_SEAMS_NOT_APPROVED')
+          PY
+      - name: Truly cut source ear root 3D triangle annuli with paired seams
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_stage6_true_ear_root_band_cut.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --study "$RUNNER_TEMP/stage6-reference/ear_root_ab_source_study.json" \
+            --visibility "$RUNNER_TEMP/stage6-reference/ear_root_ab_41mesh_visibility.json" \
+            --output "$RUNNER_TEMP/stage6-reference/true_stage6_ear_root_band_3d_paired_seams.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/true_stage6_ear_root_band_3d_paired_seams.svg"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          data = json.loads((root/'true_stage6_ear_root_band_3d_paired_seams.json').read_text(encoding='utf8'))
+          assert data['schema'] == 'stage6-true-ear-root-3d-split-and-matched-seams-v1'
+          assert data['original_source_vertex_count'] == 59306
+          assert data['original_source_triangle_count'] == 116568
+          assert data['source_cut_zone_component_counts'] == {'below':1,'root':3,'above':3}
+          assert data['source_area_absolute_reconstruction_error_mm2'] < 0.0001
+          assert data['research_z_levels_mm'] == [230,235]
+          assert data['same_run_ear_root_source_study_sha256'] == hashlib.sha256(
+              (root/'ear_root_ab_source_study.json').read_bytes()).hexdigest()
+          assert data['same_run_original_41mesh_visibility_sha256'] == hashlib.sha256(
+              (root/'ear_root_ab_41mesh_visibility.json').read_bytes()).hexdigest()
+          patches=data['original_source_ear_root_band_patches']
+          assert [p['side'] for p in patches] == ['left','right']
+          assert [p['actual_3d_root_band']['derived_source_triangle_count'] for p in patches] == [829,879]
+          assert [p['actual_3d_root_band']['euler_characteristic'] for p in patches] == [0,0]
+          assert [p['actual_3d_root_band']['closed_boundary_loop_count'] for p in patches] == [2,2]
+          assert [p['body_to_root_3d_paired_netline']['original_crossed_source_triangle_segment_count']
+                  for p in patches] == [113,112]
+          assert [p['root_to_upper_ear_3d_paired_netline']['original_crossed_source_triangle_segment_count']
+                  for p in patches] == [110,117]
+          assert all(p['between_two_3d_seams_source_surface_graph'][
+              'fraction_upper_source_seam_under_12mm_graph_width'] == 1.0 for p in patches)
+          assert all(p['between_two_3d_seams_source_surface_graph'][
+              'surface_graph_shortest_path_min_p05_median_p95_max_mm'][0] < 6.0 for p in patches)
+          assert all(not p['real_source_2d_paper_pattern_generated'] for p in patches)
+          assert data['approved_factory_cutting_patterns'] == 0
+          assert data['P3_status'] == 'in_progress' and data['P4_status'] == 'not_started'
+          svg=(root/'true_stage6_ear_root_band_3d_paired_seams.svg').read_bytes()
+          assert hashlib.sha256(svg).hexdigest() == data['root_band_research_svg_sha256']
+          assert b'NOT 2D FABRIC REST PATTERNS' in svg
+          print('STAGE6_TRUE_SOURCE_3D_PAIRED_EAR_SEAMS_PASS_BUT_BOTH_5MM_ROOT_BANDS_TOO_NARROW')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
