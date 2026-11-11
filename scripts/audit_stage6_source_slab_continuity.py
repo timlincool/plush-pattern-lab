@@ -55,8 +55,7 @@ def _inputs(args):
         or prior.get("schema")
         != "stage6-original-section-41-product-mesh-proximity-5view-v1"
         or prior.get("source_original_blend_sha256") != SOURCE_SHA256
-        or prior.get("same_run_true_source_detail_sha256")
-        != _sha(args.section_detail)
+        or prior.get("same_run_true_source_detail_sha256") != _sha(args.section_detail)
         or prior.get("raw_product_mesh_objects_checked") != 41
         or prior.get("factory_cutting_patterns_approved") != 0
     ):
@@ -81,7 +80,8 @@ def _locked_real_anatomy(reports):
         or sorted(
             (tuple(c["lower_loop_indices"]), tuple(c["upper_loop_indices"]))
             for c in crown["surface_components"]
-        ) != [((0,), ()), ((1,), (0,)), ((2,), (1,))]
+        )
+        != [((0,), ()), ((1,), (0,)), ((2,), (1,))]
     ):
         raise ValueError("Stage6 branching / crown cap source continuity changed")
     return True
@@ -132,8 +132,11 @@ def main():
         json.dumps(
             {
                 "slabs": [
-                    [r["lower_plane_z_mm"], r["upper_plane_z_mm"],
-                     r["source_surface_component_count_in_open_slab"]]
+                    [
+                        r["lower_plane_z_mm"],
+                        r["upper_plane_z_mm"],
+                        r["source_surface_component_count_in_open_slab"],
+                    ]
                     for r in reports
                 ],
                 "factory_approved": False,
