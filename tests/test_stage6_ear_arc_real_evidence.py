@@ -24,11 +24,9 @@ def test_real_source_arcs_two_trusted_staged_runs_and_five_stable_raw_sha():
     assert b["run_id"] == 42966064172
     assert a["run_conclusion"] == b["run_conclusion"] == "success"
     assert a["artifact_zip_sha256"] != b["artifact_zip_sha256"]
-    assert len(d["original_research_file_sha256_identical_across_both_trusted_runs"]) == 5
-    assert all(
-        len(sha) == 64
-        for sha in d["original_research_file_sha256_identical_across_both_trusted_runs"].values()
-    )
+    raw_hashes = d["original_research_file_sha256_identical_across_both_trusted_runs"]
+    assert len(raw_hashes) == 5
+    assert all(len(sha) == 64 for sha in raw_hashes.values())
     assert d["original_research_five_files_exact_byte_identical_twice"]
     assert not d["full_action_artifact_zip_byte_identical"]
 
