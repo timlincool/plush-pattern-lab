@@ -37,9 +37,7 @@ def _ring(side):
     edges = [[i, i + 1] for i in range(n)]
     raw = b"".join(struct.pack("<qq", *pair) for pair in edges)
     raw += b"".join(struct.pack("<dd", *point) for point in xy)
-    length = sum(
-        math.dist(point, xy[(i + 1) % n]) for i, point in enumerate(xy)
-    )
+    length = sum(math.dist(point, xy[(i + 1) % n]) for i, point in enumerate(xy))
     return {
         "side": side,
         "source_contour_sha256": hashlib.sha256(raw).hexdigest(),
@@ -252,7 +250,9 @@ def test_same_run_cli_hash_and_no_evidence_overwrite(tmp_path):
         source.read_bytes()
     ).hexdigest()
     raw.write_text(json.dumps(visibility))
-    script = Path(__file__).resolve().parents[1] / "scripts/audit_stage6_ear_root_arcs.py"
+    script = (
+        Path(__file__).resolve().parents[1] / "scripts/audit_stage6_ear_root_arcs.py"
+    )
     output, svg = tmp_path / "result.json", tmp_path / "result.svg"
     argv = [
         sys.executable,
