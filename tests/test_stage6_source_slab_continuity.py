@@ -128,3 +128,19 @@ def test_source_does_not_mutate_original_triangle_geometry():
     b = trace_true_source_slab(xyz, tri, src, 1, 1.5)
     assert a == b
     assert np.array_equal(xyz, first) and np.array_equal(tri, second)
+
+
+def test_source_slab_timeline_svg_marks_geometry_only_and_rejects_empty():
+    from plush_pattern_lab.validation.stage6_source_slab_timeline import (
+        render_source_slab_timeline,
+    )
+
+    xyz, tri = boxes((0, 0, 2))
+    one = trace_true_source_slab(xyz, tri, detail(xyz, tri), 1, 1.5)
+    svg = render_source_slab_timeline([one] * 5)
+    assert svg.startswith("<svg")
+    assert svg.count("original triangles") == 5
+    assert "NOT CUT PATTERNS" in svg
+    assert "NOT EAR ROOT SEAM PROOF" in svg
+    with pytest.raises(ValueError, match="five source slab"):
+        render_source_slab_timeline([one])
