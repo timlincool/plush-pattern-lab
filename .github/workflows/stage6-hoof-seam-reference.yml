@@ -32,6 +32,8 @@ on:
       - 'scripts/audit_stage6_true_source_sections.py'
       - 'scripts/audit_stage6_section_mesh_correspondence.py'
       - 'scripts/audit_stage6_source_slab_continuity.py'
+      - 'scripts/build_stage6_ear_root_ab.py'
+      - 'scripts/audit_stage6_ear_root_ab_visibility.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -859,6 +861,73 @@ jobs:
           assert report['P3_status'] == 'in_progress'
           assert report['P4_status'] == 'not_started'
           print('STAGE6_SOURCE_205_TO_230_BRANCH_230_TO_245_SIDE_PERSISTENCE_PASS_NOT_CUTTING')
+          PY
+      - name: Compare genuine Stage6 ear-root A/B ring position and source IDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_stage6_ear_root_ab.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --section-summary "$RUNNER_TEMP/stage6-reference/true_stage6_source_section_summary.json" \
+            --section-detail "$RUNNER_TEMP/stage6-reference/true_stage6_source_section_detail.json" \
+            --source-slab "$RUNNER_TEMP/stage6-reference/true_stage6_source_slab_head_ear.json" \
+            --previous-41mesh "$RUNNER_TEMP/stage6-reference/true_stage6_section_41mesh_correspondence.json" \
+            --output "$RUNNER_TEMP/stage6-reference/ear_root_ab_source_study.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/ear_root_ab_source_study.svg"
+          python - <<'PY'
+          import json, pathlib, hashlib, os
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          data = json.loads((root/'ear_root_ab_source_study.json').read_text(encoding='utf8'))
+          assert data['schema'] == 'stage6-original-source-ear-root-two-height-ring-ab-v1'
+          assert [opt['source_plane_z_mm'] for opt in data['candidate_options']] == [230,235]
+          assert data['split_probe_loop_counts'] == [1,3]
+          assert data['source_230_to_235_open_slab_triangles'] == 2708
+          assert all(len(opt['source_side_loops']) == 2 for opt in data['candidate_options'])
+          assert all(side['xy_minor_bbox_under_two_research_6mm_allowances']
+                     and len(side['four_arclength_reference_marks']) == 4
+                     and side['original_proxy_crossed_edge_count'] >= 48
+                     for opt in data['candidate_options'] for side in opt['source_side_loops'])
+          assert all(opt['left_right_reflected_boundary_hausdorff_mm'] < 0.5
+                     and not opt['ear_root_seam_or_dart_approved']
+                     for opt in data['candidate_options'])
+          assert data['manufacturing_cutting_approved'] == 0
+          assert data['P3_status'] == 'in_progress' and data['P4_status'] == 'not_started'
+          svg=(root/'ear_root_ab_source_study.svg').read_bytes()
+          assert hashlib.sha256(svg).hexdigest() == data['source_ab_svg_sha256']
+          assert b'RESEARCH ONLY' in svg and b'NOT PATTERNS' in svg
+          print('STAGE6_ORIGINAL_EAR_ROOT_AB_CLOSE_RINGS_BUT_NO_FABRIC_APPROVAL')
+          PY
+      - name: Check ear-root A/B genuine independent Mesh proximity and five views
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/audit_stage6_ear_root_ab_visibility.py -- \
+            --input "$RUNNER_TEMP/stage6.blend" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --study "$RUNNER_TEMP/stage6-reference/ear_root_ab_source_study.json" \
+            --previous-41mesh "$RUNNER_TEMP/stage6-reference/true_stage6_section_41mesh_correspondence.json" \
+            --registry design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json \
+            --output "$RUNNER_TEMP/stage6-reference/ear_root_ab_41mesh_visibility.json"
+          python - <<'PY'
+          import hashlib, json, pathlib, os
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          report = json.loads((root/'ear_root_ab_41mesh_visibility.json').read_text(encoding='utf8'))
+          assert report['schema'] == 'stage6-original-source-ear-root-ab-41mesh-five-view-v1'
+          assert report['raw_product_meshes_raycasted'] == 41
+          assert report['same_run_ear_root_study_sha256'] == hashlib.sha256(
+              (root/'ear_root_ab_source_study.json').read_bytes()).hexdigest()
+          assert [opt['source_z_mm'] for opt in report['options']] == [230,235]
+          assert all(len(opt['sides']) == 2 for opt in report['options'])
+          assert all(side['source_edge_samples_observed'] == 48
+                     and len(side['original_source_edge_samples']) == 48
+                     and set(side['five_view_original_mesh_first_hit']) ==
+                         {'front','back','left','right','top'}
+                     for opt in report['options'] for side in opt['sides'])
+          assert not report['manufacturing_seam_or_dart_approved']
+          assert not report['P3_structure_approved'] and not report['P4_started']
+          print('STAGE6_EAR_ROOT_AB_41MESH_SURFACE_SEAM_IS_NOT_HIDDEN_FABRIC_SEAM')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
