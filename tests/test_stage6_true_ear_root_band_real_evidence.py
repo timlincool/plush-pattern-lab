@@ -24,7 +24,9 @@ def test_two_real_stage6_runs_exactly_repeat_source_3d_cut_and_six_files():
     assert (a["run_id"], b["run_id"]) == (42980311292, 42980617110)
     assert a["conclusion"] == b["conclusion"] == "success"
     assert a["artifact_zip_sha256"] != b["artifact_zip_sha256"]
-    six = report["six_original_raw_research_file_sha256_exactly_identical_across_two_trusted_runs"]
+    six = report[
+        "six_original_raw_research_file_sha256_exactly_identical_across_two_trusted_runs"
+    ]
     assert len(six) == 6
     assert all(len(value) == 64 for value in six.values())
     assert report["six_raw_research_files_exact_byte_identical_twice"]
@@ -75,7 +77,9 @@ def test_original_source_3d_paired_netlines_are_exact_but_root_band_too_narrow()
             == 1.0
         )
     assert report["source_surface_area_reconstruction_abs_error_mm2"] == 0
-    assert not report["candidate_5mm_high_ear_root_band_suitable_for_two_nominal_6mm_2d_allowances"]
+    assert not report[
+        "candidate_5mm_high_ear_root_band_suitable_for_two_nominal_6mm_2d_allowances"
+    ]
 
 
 def test_true_source_3d_seams_do_not_advance_factory_stage():
