@@ -38,16 +38,16 @@ def test_crown_branch_and_ear_side_continuity_do_not_authorize_cutting():
     x = _actual()
     spans = x["real_source_slabs"]
     assert len(spans) == 5
-    assert [s["open_slab_source_triangles"] for s in spans] == [
-        5078, 3566, 7127, 9597, 4691
-    ]
+    triangle_counts = [s["open_slab_source_triangles"] for s in spans]
+    assert triangle_counts == [5078, 3566, 7127, 9597, 4691]
     assert [s["connected_surface_components"] for s in spans] == [2, 1, 1, 1, 3]
     assert spans[3]["components"][0]["lower_loop_indices"] == [0]
     assert spans[3]["components"][0]["upper_loop_indices"] == [0, 1, 2]
-    assert sorted(
+    transitions = sorted(
         (tuple(c["lower_loop_indices"]), tuple(c["upper_loop_indices"]))
         for c in spans[4]["components"]
-    ) == [((0,), ()), ((1,), (0,)), ((2,), (1,))]
+    )
+    assert transitions == [((0,), ()), ((1,), (0,)), ((2,), (1,))]
     assert x["P3_status"] == "in_progress"
     assert x["P4_status"] == "not_started"
     assert x["approved_factory_cutting_patterns"] == 0
