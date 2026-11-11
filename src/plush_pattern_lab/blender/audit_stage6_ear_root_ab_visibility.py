@@ -26,7 +26,7 @@ from plush_pattern_lab.blender.audit_stage6_section_mesh_correspondence import (
 )
 from plush_pattern_lab.validation.component_inventory import SOURCE_SHA256
 from plush_pattern_lab.validation.full_scene_seam_visibility import VIEWS
-from plush_pattern_lab.validation.stage6_ear_root_ab import (
+from plush_pattern_lab.validation.stage6_ear_root_contract import (
     SCHEMA,
     plan_side_source_samples,
 )
