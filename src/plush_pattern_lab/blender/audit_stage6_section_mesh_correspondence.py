@@ -56,8 +56,7 @@ def _verify_inputs(args):
     if (
         source.get("schema") != "stage6-real-sculpt-contour-vs-split-A-B-trial-qa-v1"
         or source.get("original_public_blend_sha256") != SOURCE_SHA256
-        or source.get("source_25percent_proxy_ply_sha256")
-        != EXPECTED_PROXY_SHA
+        or source.get("source_25percent_proxy_ply_sha256") != EXPECTED_PROXY_SHA
         or source.get("factory_cutting_approved") != 0
         or source.get("full_original_source_contour_detail_sha256")
         != sha256_file(args.detail)
@@ -195,10 +194,9 @@ def main():
     detail, registry = _verify_inputs(args)
     bpy.ops.wm.open_mainfile(filepath=str(args.input.resolve()), load_ui=False)
     report = _report(detail, registry, args.summary, args.detail, args.registry)
-    if (
-        report["raw_product_mesh_objects_checked"] != 41
-        or [s["original_closed_loop_count"] for s in report["sections"]] != [2, 3, 2]
-    ):
+    if report["raw_product_mesh_objects_checked"] != 41 or [
+        s["original_closed_loop_count"] for s in report["sections"]
+    ] != [2, 3, 2]:
         raise ValueError("original Stage6 component or product Mesh count changed")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
