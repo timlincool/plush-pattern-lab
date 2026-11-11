@@ -43,9 +43,7 @@ def main():
     report = compare_source_quadrant_arcs(study, visibility)
     atlas = render_stage6_arc_screen_svg(report, study)
     report["same_run_ear_root_source_json_sha256"] = _sha(args.study)
-    report["same_run_original_41mesh_visibility_json_sha256"] = _sha(
-        args.visibility
-    )
+    report["same_run_original_41mesh_visibility_json_sha256"] = _sha(args.visibility)
     report["arc_review_svg_sha256"] = hashlib.sha256(atlas.encode("utf8")).hexdigest()
     for output in outputs:
         output.parent.mkdir(parents=True, exist_ok=True)
