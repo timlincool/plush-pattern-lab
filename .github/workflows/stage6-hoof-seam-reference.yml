@@ -30,6 +30,7 @@ on:
       - 'scripts/build_stage6_upper_mother_toile.py'
       - 'scripts/build_stage6_split_volume_toile_ab.py'
       - 'scripts/audit_stage6_true_source_sections.py'
+      - 'scripts/audit_stage6_section_mesh_correspondence.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -773,6 +774,46 @@ jobs:
               'trial_boundary_misfit_mm': {row['name']:row['max_2d_true_source_contour_boundary_hausdorff_mm'] for row in d['candidates']},
               'factory_approved': False
           }))
+          PY
+      - name: Screen real z125/z230/z245 loops against 41 product Meshes and five views
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/audit_stage6_section_mesh_correspondence.py -- \
+            --input "$RUNNER_TEMP/stage6.blend" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --summary "$RUNNER_TEMP/stage6-reference/true_stage6_source_section_summary.json" \
+            --detail "$RUNNER_TEMP/stage6-reference/true_stage6_source_section_detail.json" \
+            --registry design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json \
+            --output "$RUNNER_TEMP/stage6-reference/true_stage6_section_41mesh_correspondence.json"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          data = json.loads((root/'true_stage6_section_41mesh_correspondence.json').read_text(encoding='utf8'))
+          detail_bytes = (root/'true_stage6_source_section_detail.json').read_bytes()
+          assert data['schema'] == 'stage6-original-section-41-product-mesh-proximity-5view-v1'
+          assert data['source_original_blend_sha256'] == '38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a'
+          assert data['same_run_true_source_detail_sha256'] == hashlib.sha256(detail_bytes).hexdigest()
+          assert data['raw_product_mesh_objects_checked'] == 41
+          assert data['raw_independent_mesh_candidates'] == 40
+          assert data['studio_floor_excluded'] is True
+          assert [s['z_mm'] for s in data['sections']] == [125, 230, 245]
+          assert [len(s['loops']) for s in data['sections']] == [2, 3, 2]
+          assert all(loop['observed_edge_sample_count'] > 0 and
+                     loop['original_source_crossed_edges'] >= loop['observed_edge_sample_count'] and
+                     not loop['anatomical_protrusion_owner_confirmed'] and
+                     not loop['hidden_manufacturing_seam_confirmed'] and
+                     set(loop['five_view_first_hit_summary']) == {'front', 'back', 'left', 'right', 'top'}
+                     for section in data['sections'] for loop in section['loops'])
+          assert data['geometry_proximity_not_physical_attachment']
+          assert data['design_and_fabric_five_view_signoff_pending']
+          assert data['factory_cutting_patterns_approved'] == 0
+          assert not data['P3_sewn_and_physical_prototype_gate_passed']
+          assert not data['P4_started']
+          print('STAGE6_TRUE_SOURCE_41MESH_ASSOCIATION_ONLY_NO_EAR_SEAM_APPROVAL',
+                json.dumps([{'z':s['z_mm'], 'per_loop_proximity':[x['independent_mesh_proximity_counts'] for x in s['loops']]}
+                            for s in data['sections']]))
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
