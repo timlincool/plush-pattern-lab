@@ -13,17 +13,33 @@ from plush_pattern_lab.validation.stage6_source_slab_continuity import (
 def box(x, y, ceiling=2):
     points = np.array(
         [
-            [x, y, 0], [x + 1, y, 0], [x + 1, y + 1, 0], [x, y + 1, 0],
-            [x, y, ceiling], [x + 1, y, ceiling],
-            [x + 1, y + 1, ceiling], [x, y + 1, ceiling],
-        ], dtype=np.float64
+            [x, y, 0],
+            [x + 1, y, 0],
+            [x + 1, y + 1, 0],
+            [x, y + 1, 0],
+            [x, y, ceiling],
+            [x + 1, y, ceiling],
+            [x + 1, y + 1, ceiling],
+            [x, y + 1, ceiling],
+        ],
+        dtype=np.float64,
     )
     faces = np.array(
         [
-            [0, 2, 1], [0, 3, 2], [4, 5, 6], [4, 6, 7],
-            [0, 1, 5], [0, 5, 4], [1, 2, 6], [1, 6, 5],
-            [2, 3, 7], [2, 7, 6], [3, 0, 4], [3, 4, 7],
-        ], dtype=np.int64
+            [0, 2, 1],
+            [0, 3, 2],
+            [4, 5, 6],
+            [4, 6, 7],
+            [0, 1, 5],
+            [0, 5, 4],
+            [1, 2, 6],
+            [1, 6, 5],
+            [2, 3, 7],
+            [2, 7, 6],
+            [3, 0, 4],
+            [3, 4, 7],
+        ],
+        dtype=np.int64,
     )
     return points, faces
 
@@ -41,6 +57,7 @@ def detail(points, triangles, levels=(1, 1.5)):
     from plush_pattern_lab.validation.stage6_true_source_contours import (
         real_source_section_series,
     )
+
     return real_source_section_series(points, triangles, z_levels=levels)
 
 
@@ -52,11 +69,13 @@ def test_three_lower_original_contours_two_upper_match_by_real_triangle_edges():
     assert len(result["lower_original_source_loops"]) == 3
     assert len(result["upper_original_source_loops"]) == 2
     continued = [
-        row for row in result["surface_components"]
+        row
+        for row in result["surface_components"]
         if row["source_surface_relation"] == "one_to_one_surface_continuation_not_seam"
     ]
     ended = [
-        row for row in result["surface_components"]
+        row
+        for row in result["surface_components"]
         if row["source_surface_relation"] == "lower_loop_terminates_before_upper"
     ]
     assert len(continued) == 2 and len(ended) == 1
