@@ -1,0 +1,178 @@
+{
+  "schema": "stage6-real-original-source-slab-head-ear-branch-topology-evidence-v1",
+  "date_utc": "2026-11-11",
+  "source": {
+    "public_stage6_original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "locked_25pct_source_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+    "source_proxy_vertices": 59306,
+    "source_proxy_triangles": 116568,
+    "original_13_plane_contour_detail_sha256": "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717",
+    "original_13_plane_contour_summary_sha256": "071acfced61e6bbf52584dc3a68c54bb72d838e87b7c87fe6a1e46181efe2b46",
+    "same_run_41_product_mesh_correspondence_sha256": "0f17b4ee8445bd1ea879aa283c5981a20eeacfe3e73523fa4512c3ce75425b1e"
+  },
+  "real_blender_trusted_main_runs": [
+    {
+      "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42951036948",
+      "run_id": 42951036948,
+      "commit_sha": "efdefa5bce2f024c5ac42ba1a4c5abb32c6d31c7",
+      "conclusion": "success",
+      "artifact_id": 13825630219,
+      "artifact_zip_sha256": "48067e3765af4341f777599e36fd980d41bc3df4cae433c36cd6f352ad107e23"
+    },
+    {
+      "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42951246219",
+      "run_id": 42951246219,
+      "commit_sha": "6d6ed889e5a79f153f0181f469dafd58f058855b",
+      "conclusion": "success",
+      "artifact_id": 13824714347,
+      "artifact_zip_sha256": "c75edfda46cb8081913bdf89cba7049e2e2446d686781cf8eb4a4a85ec9394b3"
+    }
+  ],
+  "raw_research_files_sha256": {
+    "true_stage6_source_slab_head_ear_json": "b9dab80d89db6464c184c1bb601db65cd8bae2fa3c6f9d79d5873e9e5d58e68d",
+    "true_stage6_source_slab_head_ear_svg": "863fd8ab7f4c16acb4741f26313155a2bd14091570f1292d444632e01c038bae"
+  },
+  "two_independent_trusted_runs_byte_identical_each_raw_research_file": true,
+  "two_full_artifact_zip_files_byte_identical": false,
+  "method": "Only source triangles intersecting the open slab, connected by shared original triangle edges with nonzero overlap in the slab; original source edge vertex IDs/XY and SHA checked for each contour; vertex-only contacts do not connect.",
+  "real_source_slabs": [
+    {
+      "z_low_mm": 125,
+      "z_high_mm": 135,
+      "lower_loops": 2,
+      "upper_loops": 1,
+      "open_slab_source_triangles": 5078,
+      "connected_surface_components": 2,
+      "components": [
+        {
+          "faces": 4361,
+          "lower_loop_indices": [
+            0
+          ],
+          "upper_loop_indices": [
+            0
+          ],
+          "status": "continuous_original_surface"
+        },
+        {
+          "faces": 717,
+          "lower_loop_indices": [
+            1
+          ],
+          "upper_loop_indices": [],
+          "status": "lower_ring_terminates"
+        }
+      ]
+    },
+    {
+      "z_low_mm": 135,
+      "z_high_mm": 145,
+      "lower_loops": 1,
+      "upper_loops": 1,
+      "open_slab_source_triangles": 3566,
+      "connected_surface_components": 1,
+      "components": [
+        {
+          "faces": 3566,
+          "lower_loop_indices": [
+            0
+          ],
+          "upper_loop_indices": [
+            0
+          ],
+          "status": "continuous_original_surface"
+        }
+      ]
+    },
+    {
+      "z_low_mm": 180,
+      "z_high_mm": 205,
+      "lower_loops": 1,
+      "upper_loops": 1,
+      "open_slab_source_triangles": 7127,
+      "connected_surface_components": 1,
+      "components": [
+        {
+          "faces": 7127,
+          "lower_loop_indices": [
+            0
+          ],
+          "upper_loop_indices": [
+            0
+          ],
+          "status": "continuous_original_surface"
+        }
+      ]
+    },
+    {
+      "z_low_mm": 205,
+      "z_high_mm": 230,
+      "lower_loops": 1,
+      "upper_loops": 3,
+      "open_slab_source_triangles": 9597,
+      "connected_surface_components": 1,
+      "components": [
+        {
+          "faces": 9597,
+          "lower_loop_indices": [
+            0
+          ],
+          "upper_loop_indices": [
+            0,
+            1,
+            2
+          ],
+          "status": "one_original_surface_branches_into_three_contour_rings"
+        }
+      ]
+    },
+    {
+      "z_low_mm": 230,
+      "z_high_mm": 245,
+      "lower_loops": 3,
+      "upper_loops": 2,
+      "open_slab_source_triangles": 4691,
+      "connected_surface_components": 3,
+      "components": [
+        {
+          "faces": 1525,
+          "lower_loop_indices": [
+            1
+          ],
+          "upper_loop_indices": [
+            0
+          ],
+          "status": "left_original_surface_continues"
+        },
+        {
+          "faces": 1571,
+          "lower_loop_indices": [
+            0
+          ],
+          "upper_loop_indices": [],
+          "status": "central_crown_surface_terminates"
+        },
+        {
+          "faces": 1595,
+          "lower_loop_indices": [
+            2
+          ],
+          "upper_loop_indices": [
+            1
+          ],
+          "status": "right_original_surface_continues"
+        }
+      ]
+    }
+  ],
+  "geometry_interpretation": "Original source main-shell surface branches into central crown and two side protrusions from z205 to z230; center closes by z245 and left/right source side surfaces persist. Independent ear/cloud meshes are near the high-level contours, but attachment/seam location, 2D material rest shape and manufacturing ownership remain unproved.",
+  "original_source_main_shell_never_modified": true,
+  "seam_allowance_verified": false,
+  "material_and_physical_trial_done": false,
+  "original_design_four_views_signed_off": false,
+  "ear_root_manufacturing_seam_validated": false,
+  "approved_factory_cutting_patterns": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "next": "Register original design frontal/side/back/top with 3D cloud/ear meshes; design and reject/approve source-linked side/back ear-root seam variants using actual 3D/2D net seam, notch and turnover/physical fabric evidence."
+}
