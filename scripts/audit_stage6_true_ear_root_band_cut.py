@@ -60,14 +60,18 @@ def _inputs(args):
 
 
 def _original_source_ring_provenance(report, study):
-    for side, patch in zip(("left", "right"), report["original_source_ear_root_band_patches"]):
+    for side, patch in zip(
+        ("left", "right"), report["original_source_ear_root_band_patches"]
+    ):
         if patch["side"] != side:
             raise ValueError("source ear side order changed")
         for option, key in zip(
             study["candidate_options"],
             ("body_to_root_3d_paired_netline", "root_to_upper_ear_3d_paired_netline"),
         ):
-            matched = next(row for row in option["source_side_loops"] if row["side"] == side)
+            matched = next(
+                row for row in option["source_side_loops"] if row["side"] == side
+            )
             measured = patch[key]
             height = option["source_plane_z_mm"]
             expected = {
@@ -80,14 +84,18 @@ def _original_source_ring_provenance(report, study):
             }
             if (
                 expected != observed
-                or measured["original_crossed_source_triangle_segment_count"] != len(expected)
+                or measured["original_crossed_source_triangle_segment_count"]
+                != len(expected)
                 or abs(
                     measured["paired_3d_netline_length_each_side_mm"]
                     - matched["source_3d_ring_perimeter_mm"]
-                ) > 1e-6
+                )
+                > 1e-6
                 or measured["max_source_3d_pair_position_error_mm"] != 0
             ):
-                raise ValueError("true 3D seam differs from authentic source A/B contour")
+                raise ValueError(
+                    "true 3D seam differs from authentic source A/B contour"
+                )
 
 
 def _validate_real_gate(report):
@@ -121,10 +129,12 @@ def _validate_real_gate(report):
             or band["closed_boundary_loop_count"] != 2
             or row["body_to_root_3d_paired_netline"][
                 "original_crossed_source_triangle_segment_count"
-            ] != low
+            ]
+            != low
             or row["root_to_upper_ear_3d_paired_netline"][
                 "original_crossed_source_triangle_segment_count"
-            ] != high
+            ]
+            != high
             or graph["fraction_upper_source_seam_under_12mm_graph_width"] != 1.0
             or not graph["below_two_research_6mm_allowances_somewhere"]
             or row["real_source_2d_paper_pattern_generated"]
