@@ -1,0 +1,156 @@
+{
+  "schema": "stage6-real-source-z125-z230-z245-41mesh-bvh-5view-evidence-v1",
+  "measurement_date_utc": "2026-11-11",
+  "trusted_source_main": {
+    "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/42947136279",
+    "run_id": 42947136279,
+    "run_conclusion": "success",
+    "commit_sha": "4ad0e64f9d6db56068c6da8ce5a150371c553e61",
+    "artifact_id": 13822869393,
+    "raw_artifact_zip_sha256": "94cc69f9bbc55c171e3feb86159298bb919566f59ed8f634d1fe01fe84c272af",
+    "raw_full_41mesh_correspondence_json_sha256": "0f17b4ee8445bd1ea879aa283c5981a20eeacfe3e73523fa4512c3ce75425b1e",
+    "original_section_detail_json_sha256": "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717",
+    "original_section_summary_json_sha256": "071acfced61e6bbf52584dc3a68c54bb72d838e87b7c87fe6a1e46181efe2b46"
+  },
+  "source_original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_25percent_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "checked_42_mesh_registry_sha256": "9c8aacc395953ae5a689057067a992775bf0756021dd9e7fd3031852a22c7643",
+  "blender_version": "4.3.2",
+  "original_research_section_ring_count": {
+    "125": 2,
+    "230": 3,
+    "245": 2
+  },
+  "mesh_objects_including_studio_floor": 42,
+  "product_meshes_raycasted": 41,
+  "independent_meshes_proximity_screened": 40,
+  "source_edge_samples_per_loop": 48,
+  "independent_mesh_search_radius_mm": 6,
+  "near_classification_threshold_mm": 3,
+  "raw_mesh_five_view_names": [
+    "front",
+    "back",
+    "left",
+    "right",
+    "top"
+  ],
+  "not_raycasted_curve_and_hair_objects": 423,
+  "original_sculpt_was_not_cut_or_modified": true,
+  "per_loop_original_source_research": [
+    {
+      "z_mm": 125,
+      "loop_index_by_perimeter": 0,
+      "source_crossed_edges": 474,
+      "original_source_loop_sha256": "5f6323d5bdf44be831386d7d5ab3a4fcec2fb3a9d1670a755b973e794804efd0",
+      "within_3mm_named_mesh_sample_counts": {
+        "Asymmetric flowing ivory bib": 2,
+        "Grey flank cloud 1": 2,
+        "Grey flank cloud -1": 2
+      },
+      "sample_classifications": {
+        "none": 42,
+        "single": 6,
+        "multiple": 0
+      }
+    },
+    {
+      "z_mm": 125,
+      "loop_index_by_perimeter": 1,
+      "source_crossed_edges": 144,
+      "original_source_loop_sha256": "0f0af9e14364faf31259cf3f0df9ae323c0a99434c9d016f7f11892b138421a8",
+      "within_3mm_named_mesh_sample_counts": {},
+      "sample_classifications": {
+        "none": 48,
+        "single": 0,
+        "multiple": 0
+      }
+    },
+    {
+      "z_mm": 230,
+      "loop_index_by_perimeter": 0,
+      "source_crossed_edges": 189,
+      "original_source_loop_sha256": "1949fa951bc43cca843c62bc415e6d7ca6ea514b28f92e55d2b41e8d93ec0753",
+      "within_3mm_named_mesh_sample_counts": {
+        "Grey head cloud halo": 11,
+        "Varied ivory forehead cloud": 8
+      },
+      "sample_classifications": {
+        "none": 29,
+        "single": 19,
+        "multiple": 0
+      }
+    },
+    {
+      "z_mm": 230,
+      "loop_index_by_perimeter": 1,
+      "source_crossed_edges": 113,
+      "original_source_loop_sha256": "c6343146483a6b987a2e303a92adaacda54c0d54eb6e9f1a2a57f3bdf0f17392",
+      "within_3mm_named_mesh_sample_counts": {
+        "Grey head cloud halo": 26
+      },
+      "sample_classifications": {
+        "none": 22,
+        "single": 26,
+        "multiple": 0
+      }
+    },
+    {
+      "z_mm": 230,
+      "loop_index_by_perimeter": 2,
+      "source_crossed_edges": 112,
+      "original_source_loop_sha256": "5f94d03956e59d7c7ad71aa6f3c65dbb40dc3129bca907837efe985c224ef113",
+      "within_3mm_named_mesh_sample_counts": {
+        "Varied ivory forehead cloud": 16
+      },
+      "sample_classifications": {
+        "none": 32,
+        "single": 16,
+        "multiple": 0
+      }
+    },
+    {
+      "z_mm": 245,
+      "loop_index_by_perimeter": 0,
+      "source_crossed_edges": 69,
+      "original_source_loop_sha256": "b0e28f39fef60d0653c1ca0d95a37187b0a7b3cfb277ec805d0021e298fa91d4",
+      "within_3mm_named_mesh_sample_counts": {
+        "Slender upright ivory ear -1": 35,
+        "Pink inset ear -1": 26
+      },
+      "sample_classifications": {
+        "none": 12,
+        "single": 11,
+        "multiple": 25
+      }
+    },
+    {
+      "z_mm": 245,
+      "loop_index_by_perimeter": 1,
+      "source_crossed_edges": 71,
+      "original_source_loop_sha256": "eeda14512c4b9cdfe88e3a6e5b90aa4508dcfb82f9d3d20c1f32ebd32af7b2ef",
+      "within_3mm_named_mesh_sample_counts": {
+        "Slender upright ivory ear 1": 48,
+        "Pink inset ear 1": 22
+      },
+      "sample_classifications": {
+        "none": 0,
+        "single": 26,
+        "multiple": 22
+      }
+    }
+  ],
+  "source_z230_center_perimeter_mm": 153.0939971276184,
+  "source_z230_two_lateral_perimeters_mm": [
+    45.51675545730191,
+    45.510986167806784
+  ],
+  "design_interpretation": "Z230侧环在3mm内较多邻近头云/额云，Z245两侧环较多邻近内外耳Mesh；高度变化暗示耳/云/主壳过渡区，不能自动判定耳根和隐藏缝。",
+  "anatomical_mesh_ownership_proven": false,
+  "design_front_side_back_top_signed_off": false,
+  "real_fabric_sewability_verified": false,
+  "physical_trial_done": false,
+  "approved_manufacturer_cutting_patterns": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "next": "沿主壳真实边与三角面追踪Z230侧环到Z245耳顶的连续关系，标出主壳与耳/云覆盖的可隐藏拼缝候选；与设计四视图对位并验证3D/2D净缝、缝份、翻面、材料和废布实样。"
+}

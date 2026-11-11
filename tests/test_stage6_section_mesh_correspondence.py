@@ -45,7 +45,9 @@ def test_sample_plan_preserves_all_lateral_loops_and_original_source_edge_ids():
     assert [len(x["loops"]) for x in plan] == [2, 3, 2]
     assert [x["z_mm"] for x in plan] == [125, 230, 245]
     assert plan[1]["loops"][2]["sampled_source_edges"][0]["source_xyz_mm"] == [
-        0.0, 0.5, 230
+        0.0,
+        0.5,
+        230,
     ]
     assert plan[1]["loops"][2]["total_original_crossed_source_edges"] == 6
     assert AUDIT_SCHEMA.endswith("5view-v1")
@@ -56,8 +58,7 @@ def test_long_loops_have_deterministic_spaced_unique_source_ids():
     detail["sections"][1]["source_contours"][1] = _contour(103)
     plan = plan_original_contour_samples(detail)
     idx = [
-        x["source_edge_ordinal"]
-        for x in plan[1]["loops"][1]["sampled_source_edges"]
+        x["source_edge_ordinal"] for x in plan[1]["loops"][1]["sampled_source_edges"]
     ]
     assert len(idx) == len(set(idx)) == 48
     assert idx[0] == 0 and idx[-1] < 103
