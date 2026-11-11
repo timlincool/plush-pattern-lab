@@ -12,9 +12,7 @@ from plush_pattern_lab.validation.stage6_ear_root_ab_svg import render_root_ab_s
 def _ring(cx, count=16):
     theta = np.arange(count, dtype=float) * 2 * np.pi / count
     xy = np.column_stack((cx + 6 * np.cos(theta), 6 * np.sin(theta)))
-    perimeter = float(
-        np.linalg.norm(np.roll(xy, -1, axis=0) - xy, axis=1).sum()
-    )
+    perimeter = float(np.linalg.norm(np.roll(xy, -1, axis=0) - xy, axis=1).sum())
     return {
         "true_interpolated_contour_xy_mm": xy.tolist(),
         "crossed_original_mesh_vertex_id_edge_pairs": [
@@ -67,7 +65,8 @@ def test_ab_preserves_source_ids_and_no_paper_pattern_promotions(monkeypatch):
     _wire(monkeypatch)
     report = root.compare_real_ear_root_ab(None, None)
     assert [row["source_plane_z_mm"] for row in report["candidate_options"]] == [
-        230, 235
+        230,
+        235,
     ]
     assert all(
         len(row["source_side_loops"]) == 2 for row in report["candidate_options"]
@@ -85,9 +84,7 @@ def test_ab_preserves_source_ids_and_no_paper_pattern_promotions(monkeypatch):
 
 def test_3d_source_quarter_marks_are_not_sewing_notches():
     marks = root._notch_positions(_ring(-40), 230)
-    assert [m["fraction_of_closed_ring"] for m in marks] == [
-        0, 0.25, 0.5, 0.75
-    ]
+    assert [m["fraction_of_closed_ring"] for m in marks] == [0, 0.25, 0.5, 0.75]
     assert all(len(m["source_intersection_edge_before"]) == 2 for m in marks)
     assert all(m["not_a_manufacturing_notch"] for m in marks)
     assert all(m["true_source_xyz_mm"][2] == 230 for m in marks)
@@ -109,9 +106,7 @@ def test_invalid_source_root_rings_fail_closed(monkeypatch, mutation):
             [0, 0] for _ in range(16)
         ]
     elif mutation == "missing_ids":
-        section["source_contours"][1][
-            "crossed_original_mesh_vertex_id_edge_pairs"
-        ] = []
+        section["source_contours"][1]["crossed_original_mesh_vertex_id_edge_pairs"] = []
     else:
         section["source_contours"][1]["contour_perimeter_mm"] += 1
     _wire(monkeypatch, series=series)
