@@ -159,21 +159,14 @@ def test_all_four_quadrants_source_ids_and_unpaired_seam_endpoints():
     [
         "sha",
         "study_approved",
-        "visibility_approved",
-        "wrong_mesh_count",
         "wrong_z",
         "wrong_side",
-        "missing_view",
-        "wrong_classification",
         "wrong_sample_id",
         "wrong_sample_xyz",
         "interior_xy_tamper",
-        "negative_mesh_distance",
-        "too_many_samples",
-        "fake_covered_proof",
     ],
 )
-def test_tampering_and_false_fabrication_claims_fail_closed(kind):
+def test_original_source_identity_tampering_fails_closed(kind):
     study, visibility = _inputs()
     source = study["candidate_options"][0]["source_side_loops"][0]
     seen = visibility["options"][0]["sides"][0]
@@ -182,24 +175,44 @@ def test_tampering_and_false_fabrication_claims_fail_closed(kind):
         source["source_contour_sha256"] = "0" * 64
     elif kind == "study_approved":
         study["manufacturing_cutting_approved"] = 1
-    elif kind == "visibility_approved":
-        visibility["manufacturing_seam_or_dart_approved"] = True
-    elif kind == "wrong_mesh_count":
-        visibility["raw_product_meshes_raycasted"] = 40
     elif kind == "wrong_z":
         visibility["options"][0]["source_z_mm"] = 235
     elif kind == "wrong_side":
         seen["side"] = "right"
-    elif kind == "missing_view":
-        sample["five_view_first_hit"].pop("back")
-    elif kind == "wrong_classification":
-        sample["five_view_first_hit"]["back"]["classification"] = "factory_approved"
     elif kind == "wrong_sample_id":
         sample["source_vertex_id_pair"] = [123, 456]
     elif kind == "wrong_sample_xyz":
         sample["source_xyz_mm"][0] += 1
-    elif kind == "interior_xy_tamper":
+    else:
         source["full_interpolated_original_source_xy_mm"][1][0] += 1
+    with pytest.raises(ValueError):
+        compare_source_quadrant_arcs(study, visibility)
+
+
+@pytest.mark.parametrize(
+    "kind",
+    [
+        "visibility_approved",
+        "wrong_mesh_count",
+        "missing_view",
+        "wrong_classification",
+        "negative_mesh_distance",
+        "too_many_samples",
+        "fake_covered_proof",
+    ],
+)
+def test_visibility_or_fabrication_tampering_fails_closed(kind):
+    study, visibility = _inputs()
+    seen = visibility["options"][0]["sides"][0]
+    sample = seen["original_source_edge_samples"][0]
+    if kind == "visibility_approved":
+        visibility["manufacturing_seam_or_dart_approved"] = True
+    elif kind == "wrong_mesh_count":
+        visibility["raw_product_meshes_raycasted"] = 40
+    elif kind == "missing_view":
+        sample["five_view_first_hit"].pop("back")
+    elif kind == "wrong_classification":
+        sample["five_view_first_hit"]["back"]["classification"] = "factory_approved"
     elif kind == "negative_mesh_distance":
         sample["nearby_raw_meshes_within_6mm"][0]["distance_mm"] = -1
     elif kind == "too_many_samples":
