@@ -21,16 +21,16 @@ def test_three_real_original_stage6_runs_keep_identical_3d_and_source_svg():
     assert report["original_source_proxy_triangle_count"] == 116568
     assert report["trusted_python_ci"]["tests_passed"] == 644
     a, b, c = report["trusted_main_blender_4_3_2_runs"]
-    assert [x["run_id"] for x in (a, b, c)] == [
-        43208785020, 43208995243, 43209510152
-    ]
+    assert [x["run_id"] for x in (a, b, c)] == [43208785020, 43208995243, 43209510152]
     assert all(x["conclusion"] == "success" for x in (a, b, c))
-    assert a["raw_full_lscm_research_json_sha256"] == c[
-        "raw_full_lscm_research_json_sha256"
-    ]
-    assert a["raw_full_lscm_research_json_sha256"] != b[
-        "raw_full_lscm_research_json_sha256"
-    ]
+    assert (
+        a["raw_full_lscm_research_json_sha256"]
+        == c["raw_full_lscm_research_json_sha256"]
+    )
+    assert (
+        a["raw_full_lscm_research_json_sha256"]
+        != b["raw_full_lscm_research_json_sha256"]
+    )
     assert report["three_runs_all_original_3d_input_json_byte_identical"]
     assert report["first_and_third_full_lscm_raw_json_byte_identical"]
     assert not report["all_three_full_lscm_raw_json_byte_identical"]
@@ -50,20 +50,26 @@ def test_all_twelve_source_disks_record_real_2d_seam_and_strain_failures():
     assert {row[2] for row in rows} == {"medial", "posterior", "lateral"}
     assert all(row[3] > 15 and row[4] >= 1680 for row in rows)
     assert all(row[5] > 0.1 and row[6] > 0.03 for row in rows)
-    n15_left_back = next(
-        row for row in rows
-        if row[:3] == ["N15", "left", "posterior"]
-    )
+    n15_left_back = next(row for row in rows if row[:3] == ["N15", "left", "posterior"])
     assert n15_left_back[7] < 12
-    assert report["all_twelve_no_flipped_triangles_or_positive_area_face_overlap_detected"]
-    assert report["all_twelve_lscm_p95_edge_length_relative_error_over_10percent_research_screen"]
-    assert report["all_twelve_two_planar_source_cut_sides_length_mismatch_over_3percent_research_screen"]
+    assert report[
+        "all_twelve_no_flipped_triangles_or_positive_area_face_overlap_detected"
+    ]
+    assert report[
+        "all_twelve_lscm_p95_edge_length_relative_error_over_10percent_research_screen"
+    ]
+    assert report[
+        "all_twelve_two_planar_source_cut_sides_length_mismatch_over_3percent_research_screen"
+    ]
 
 
 def test_raw_lscm_replay_is_only_numerical_and_p3_p4_still_blocked():
     report = _report()
     envelope = report["sparse_LSCM_numeric_reproducibility"]
-    assert envelope["maximum_vertex_2d_displacement_between_any_two_repeated_runs_mm"] < 1e-5
+    assert (
+        envelope["maximum_vertex_2d_displacement_between_any_two_repeated_runs_mm"]
+        < 1e-5
+    )
     assert envelope["maximum_difference_in_any_2d_p95_edge_relative_error"] < 1e-7
     assert envelope["maximum_difference_in_any_2d_seam_mismatch_fraction"] < 1e-7
     assert not envelope["claimed_bitwise_identity_of_raw_2d_optimization"]
@@ -78,4 +84,6 @@ def test_raw_lscm_replay_is_only_numerical_and_p3_p4_still_blocked():
     assert not progress["overall"]["factory_sample_pack_ready"]
     assert report["manufacturer_cutting_patterns_approved"] == 0
     assert not report["physical_6mm_allowance_and_fabric_test_done"]
-    assert not report["four_view_original_design_and_independent_ear_cloud_mesh_assembly_signed_off"]
+    assert not report[
+        "four_view_original_design_and_independent_ear_cloud_mesh_assembly_signed_off"
+    ]
