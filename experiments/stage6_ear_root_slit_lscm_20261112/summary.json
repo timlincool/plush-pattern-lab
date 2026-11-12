@@ -1,0 +1,219 @@
+{
+  "schema": "stage6-true-original-ear-root-side-slit-lscm-3-run-evidence-v1",
+  "date_utc": "2026-11-12",
+  "source_original_public_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_25pct_original_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "original_source_proxy_vertex_count": 59306,
+  "original_source_proxy_triangle_count": 116568,
+  "method": "All 4 real source sloping N15/N17 ear-root annuli (left/right) 3 predefined medial/posterior/lateral source-edge slits; topological 2-boundary annulus Euler0 to one-boundary disk Euler1 by duplicate vertex identity (source original XYZ and Face ID unchanged). Sparse free-boundary LSCM, two source anchors for similarity gauge, documented uniform least-squares relative edge scale normalization. Exact original source edge IDs and oppositely oriented 3D slit copies, checked for two separate actual planar border edge lengths; Shapely STRtree positive-area overlap and face winding; 2D vertex clearance as sampling-only screen. Real cotton/plush fabrication is NOT implied.",
+  "source_original_41mesh_and_3d_sliced_reference_sha256": {
+    "true_stage6_nonhorizontal_ear_root_paired_3d_json": "99a2b264f8b7acf24e107ac7abc77dacc8c329b9c9c38f1eb9ec57870b932df1",
+    "ear_root_ab_41mesh_visibility_json": "0b35907b67ceee6558e7fd733c8e33ca19f666f0d3ad100ba0b42a233d4fb8e0",
+    "true_stage6_source_section_summary_json": "071acfced61e6bbf52584dc3a68c54bb72d838e87b7c87fe6a1e46181efe2b46",
+    "true_stage6_source_section_detail_json": "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717"
+  },
+  "trusted_main_blender_4_3_2_runs": [
+    {
+      "run_id": 43208785020,
+      "commit_sha": "329521ec7f49970a3aa21a564f0c5320c19f2517",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43208785020",
+      "artifact_id": 13940842271,
+      "artifact_zip_sha256": "baed260ddec09936260e238d1aad10380f284674bf47ecc90e70111f7ef6470e",
+      "raw_full_lscm_research_json_sha256": "292be7e50f7c3b20bbcd03c8bccc86d501fc71c2ccb45fa737299f1c39134027"
+    },
+    {
+      "run_id": 43208995243,
+      "commit_sha": "9670f981c48358f8c500b2631dab8e4d2f481df8",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43208995243",
+      "artifact_id": 13940807694,
+      "artifact_zip_sha256": "50573fa76970134a6e27c00175992b8c2a000b99717e333882a30a3e039096ba",
+      "raw_full_lscm_research_json_sha256": "2f9093a44d7f7d48e874fd4905815da5dbde44e92a71dd01ebb08c103a2d48da"
+    },
+    {
+      "run_id": 43209510152,
+      "commit_sha": "a12acad629bfd6b586db8d484c1ec08b75e882f1",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43209510152",
+      "artifact_id": 13939778707,
+      "artifact_zip_sha256": "fda2f25043caa5552c3f6505eae7157f795a714c6be4966af55c7cad4c17e8d0",
+      "raw_full_lscm_research_json_sha256": "292be7e50f7c3b20bbcd03c8bccc86d501fc71c2ccb45fa737299f1c39134027"
+    }
+  ],
+  "three_runs_all_original_3d_input_json_byte_identical": true,
+  "three_runs_source_lscm_review_svg_sha256": "e64d05f8250404e2190d56f1924c8e659e10b7d5dc72aefdeaaf182b319ce07d",
+  "first_and_third_full_lscm_raw_json_byte_identical": true,
+  "all_three_full_lscm_raw_json_byte_identical": false,
+  "all_three_action_zip_byte_identical": false,
+  "sparse_LSCM_numeric_reproducibility": {
+    "comparison": "first_vs_second_and_first_vs_third",
+    "maximum_vertex_2d_displacement_between_any_two_repeated_runs_mm": 3.3459059673744745e-7,
+    "maximum_difference_in_any_2d_p95_edge_relative_error": 8.597267120435959e-9,
+    "maximum_difference_in_any_2d_seam_mismatch_fraction": 4.113759909107895e-9,
+    "sparse_solver_iterations_vary_by_runner": true,
+    "claimed_bitwise_identity_of_raw_2d_optimization": false,
+    "verified_input_3d_mesh_and_source_face_ids_bitwise_stable": true,
+    "source_2d_quality_flags_stable_across_all_three_runs": true,
+    "quality_2d_vertex_replay_envelope_less_than_1e_minus_5_mm": true,
+    "numerical_replay_is_tolerance_based_not_evidence_of_calibrated_fabric": false
+  },
+  "trusted_python_ci": {
+    "run_id": 43209756151,
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43209756151",
+    "conclusion": "success",
+    "tests_passed": 644,
+    "ruff_architecture_complexity_wheel": "PASS"
+  },
+  "all_twelve_actual_source_3d_annuli_cut_to_one_boundary_euler_one_disk": true,
+  "all_twelve_no_flipped_triangles_or_positive_area_face_overlap_detected": true,
+  "all_twelve_lscm_p95_edge_length_relative_error_over_10percent_research_screen": true,
+  "all_twelve_two_planar_source_cut_sides_length_mismatch_over_3percent_research_screen": true,
+  "one_candidate_2d_vertex_gap_below_12mm_research_double_allowance": true,
+  "observation_columns": [
+    "study",
+    "source_side",
+    "preregistered_cut_direction",
+    "original_3d_source_slit_length_mm",
+    "source_derived_faces_preserved",
+    "uniform_scaled_2d_p95_abs_relative_edge_length_error",
+    "two_planar_source_cut_netline_total_length_mismatch_fraction_of_identical_3d_source_cut",
+    "sampled_2d_min_lower_upper_original_border_vertex_distance_mm"
+  ],
+  "all_twelve_source_cut_and_2d_study_observations": [
+    [
+      "N15",
+      "left",
+      "medial",
+      20.576008812,
+      1680,
+      0.242353522,
+      0.097498352,
+      14.618776159
+    ],
+    [
+      "N15",
+      "left",
+      "posterior",
+      18.996602782,
+      1680,
+      0.395742022,
+      0.354513657,
+      11.508596128
+    ],
+    [
+      "N15",
+      "left",
+      "lateral",
+      19.307730154,
+      1680,
+      0.234162201,
+      0.137832692,
+      13.756316232
+    ],
+    [
+      "N15",
+      "right",
+      "medial",
+      22.278223923,
+      1755,
+      0.254827304,
+      0.054537701,
+      14.568740915
+    ],
+    [
+      "N15",
+      "right",
+      "posterior",
+      19.74285241,
+      1755,
+      0.228408632,
+      0.041678932,
+      14.580078425
+    ],
+    [
+      "N15",
+      "right",
+      "lateral",
+      17.335296267,
+      1755,
+      0.249517889,
+      0.146003122,
+      13.810534308
+    ],
+    [
+      "N17",
+      "left",
+      "medial",
+      24.331866199,
+      1865,
+      0.295892842,
+      0.056917861,
+      16.561432974
+    ],
+    [
+      "N17",
+      "left",
+      "posterior",
+      21.906738794,
+      1865,
+      0.412291136,
+      0.386312249,
+      13.250307242
+    ],
+    [
+      "N17",
+      "left",
+      "lateral",
+      20.897103069,
+      1865,
+      0.359134864,
+      0.2386122,
+      14.642510254
+    ],
+    [
+      "N17",
+      "right",
+      "medial",
+      25.715230342,
+      1940,
+      0.293899596,
+      0.030302651,
+      16.757896347
+    ],
+    [
+      "N17",
+      "right",
+      "posterior",
+      22.438227719,
+      1940,
+      0.252283161,
+      0.056230248,
+      16.819990492
+    ],
+    [
+      "N17",
+      "right",
+      "lateral",
+      20.606898678,
+      1940,
+      0.270743682,
+      0.175960314,
+      15.864069767
+    ]
+  ],
+  "quality_thresholds_are_research_screens_not_supplier_material_specs": {
+    "p95_edge_abs_relative_error": 0.1,
+    "planar_source_seam_pair_length_fraction": 0.03,
+    "two_nominal_6mm_allowances_sum_mm": 12
+  },
+  "no_2d_material_rest_correction_or_fabric_strain_fitted": true,
+  "never_assume_original_three_dimensional_matched_source_cut_means_2d_sewing_netline": true,
+  "original_blend_and_proxy_mesh_unchanged": true,
+  "physical_6mm_allowance_and_fabric_test_done": false,
+  "four_view_original_design_and_independent_ear_cloud_mesh_assembly_signed_off": false,
+  "manufacturer_cutting_patterns_approved": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "next": "Reject promotion of all twelve free-LSCM as paper patterns; choose factory-applicable original inner/outer ear/cloud attachment and source topology, redesign source panel seams or introduce material-constrained paired netline 2D objective with measured fabric samples, then prove edge strain, overlap, seam allowances, stitch order, turnout, filling and four-view fit."
+}
