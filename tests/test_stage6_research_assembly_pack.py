@@ -6,7 +6,6 @@ import hashlib
 import json
 
 import pytest
-
 from build_stage6_18piece_sewing_pack import build_research_assembly_pack
 from build_stage6_lower_mother_toile import _files as lower_files
 from build_stage6_upper_mother_toile import _payloads as upper_files
