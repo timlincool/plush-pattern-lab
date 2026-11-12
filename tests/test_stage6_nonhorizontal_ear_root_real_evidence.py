@@ -79,6 +79,8 @@ def test_true_3d_source_pairing_does_not_authorize_2d_cut_patterns():
     assert not progress["overall"]["factory_sample_pack_ready"]
     assert report["factory_cutting_patterns_approved"] == 0
     assert not report["material_2d_rest_netlines_cut_allowances_verified"]
-    assert not report["independent_ear_cloud_attachment_and_design_four_view_signed_off"]
+    assert not report[
+        "independent_ear_cloud_attachment_and_design_four_view_signed_off"
+    ]
     assert not report["real_fabric_test_or_factory_approval"]
     assert report["original_high_density_466k_faces_not_directly_cut"]
