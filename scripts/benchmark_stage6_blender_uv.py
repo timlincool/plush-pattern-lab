@@ -43,7 +43,9 @@ def _inputs(path, output):
         or report.get("P4_status") != "not_started"
         or len(report.get("candidate_2d_research_disks", [])) != 12
     ):
-        raise ValueError("this benchmark requires the verified original Stage6 P3 study")
+        raise ValueError(
+            "this benchmark requires the verified original Stage6 P3 study"
+        )
     names = [
         (x["source_variant"], x["original_source_side"], x["source_slit_direction"])
         for x in report["candidate_2d_research_disks"]
@@ -183,7 +185,9 @@ def main():
     if len(output["entries"]) != 24:
         raise ValueError("Blender external benchmark must include all 12 x 2")
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(output, ensure_ascii=False) + "\n", encoding="utf8")
+    args.output.write_text(
+        json.dumps(output, ensure_ascii=False) + "\n", encoding="utf8"
+    )
     print("STAGE6_FREE_NATIVE_UV_COMPLETE_BUT_NOT_PAPER_PATTERNS", flush=True)
 
 
