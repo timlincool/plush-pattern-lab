@@ -40,6 +40,8 @@ on:
       - 'scripts/audit_stage6_true_ear_root_band_cut.py'
       - 'scripts/audit_stage6_nonhorizontal_ear_root.py'
       - 'scripts/audit_stage6_ear_slit_lscm.py'
+      - 'scripts/benchmark_stage6_blender_uv.py'
+      - 'scripts/audit_stage6_external_uv_comparison.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -1198,6 +1200,49 @@ jobs:
           assert hashlib.sha256(atlas).hexdigest() == report['research_svg_sha256']
           assert b'NO CUTTING PATTERNS' in atlas
           print('STAGE6_REAL_SOURCE_TOPOLOGICAL_DISKS_AND_LSCM_SEAM_STRAIN_REJECT_P4')
+          PY
+      - name: Try zero-fee Blender 4.3.2 native ABF and Conformal on same twelve source disks
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/benchmark_stage6_blender_uv.py -- \
+            --input "$RUNNER_TEMP/stage6-reference/true_stage6_ear_root_slit_lscm_research.json" \
+            --output "$RUNNER_TEMP/stage6-reference/stage6_free_blender_uv_raw.json"
+          python scripts/audit_stage6_external_uv_comparison.py \
+            --source "$RUNNER_TEMP/stage6-reference/true_stage6_ear_root_slit_lscm_research.json" \
+            --native "$RUNNER_TEMP/stage6-reference/stage6_free_blender_uv_raw.json" \
+            --output "$RUNNER_TEMP/stage6-reference/stage6_free_blender_uv_vs_lscm.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/stage6_free_blender_uv_vs_lscm.svg"
+          python - <<'PY'
+          import hashlib, json, os, pathlib, math
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          source = root/'true_stage6_ear_root_slit_lscm_research.json'
+          raw = root/'stage6_free_blender_uv_raw.json'
+          audit = root/'stage6_free_blender_uv_vs_lscm.json'
+          svg = root/'stage6_free_blender_uv_vs_lscm.svg'
+          results = json.loads(audit.read_text(encoding='utf8'))
+          original = json.loads(source.read_text(encoding='utf8'))
+          assert results['schema'] == 'stage6-free-external-uv-same-source-apples-to-apples-v1'
+          assert results['total_source_disks'] == 12 and results['native_solver_cases'] == 24
+          assert results['independently_tested_methods'] == ['ANGLE_BASED','CONFORMAL']
+          assert results['same_run_source_study_sha256'] == hashlib.sha256(source.read_bytes()).hexdigest()
+          assert results['same_run_free_blender_native_raw_sha256'] == hashlib.sha256(raw.read_bytes()).hexdigest()
+          assert results['research_svg_sha256'] == hashlib.sha256(svg.read_bytes()).hexdigest()
+          assert b'NO FACTORY PATTERNS' in svg.read_bytes()
+          assert results['no_commercial_closed_source_software_or_payment']
+          assert results['factory_cutting_patterns_approved'] == 0
+          assert results['P3_status'] == 'in_progress' and results['P4_status'] == 'not_started'
+          assert all(
+              set(row['existing_solver']) >= {'scaled_2d_p95_abs_edge_relative_error',
+                  '2d_two_sides_length_mismatch_fraction_of_source_3d'}
+              and len(row['external_blender_solvers']) == 2
+              and all(math.isfinite(x['scaled_2d_p95_abs_edge_relative_error'])
+                      and math.isfinite(x['2d_two_sides_length_mismatch_fraction_of_source_3d'])
+                      for x in row['external_blender_solvers'])
+              for row in results['full_same_metric_comparisons'])
+          assert len(original['candidate_2d_research_disks']) == 12
+          print('STAGE6_FREE_BLENDER_EXTERNAL_ABF_CONFORMAL_VS_OWN_LSCM_MEASURED_RESEARCH_NOT_FACTORY')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
