@@ -14,14 +14,14 @@ import pytest
 from plush_pattern_lab.patterns.stage6_lower_mother_toile import (
     build_source_hoof_lower_toile,
 )
+from plush_pattern_lab.patterns.stage6_research_assembly_svg import (
+    render_research_assembly_svg,
+)
 from plush_pattern_lab.patterns.stage6_research_panel_interface import (
     SCHEMA,
     _insert_pair,
     _one_research_component,
     build_stage6_research_assembly,
-)
-from plush_pattern_lab.patterns.stage6_research_assembly_svg import (
-    render_research_assembly_svg,
 )
 from plush_pattern_lab.patterns.stage6_upper_mother_toile import (
     build_upper_mother_from_lower,
