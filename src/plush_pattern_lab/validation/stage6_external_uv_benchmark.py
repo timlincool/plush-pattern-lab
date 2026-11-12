@@ -101,6 +101,8 @@ def _disk_geometry(row):
 
 
 def _metrics(row, uv, method):
+    if uv.ndim != 2 or uv.shape[1] != 2 or not np.isfinite(uv).all():
+        raise ValueError("external native UV is nonfinite or malformed")
     points, faces, disk = _disk_geometry(row)
     if uv.shape != (len(points), 2) or not np.isfinite(uv).all():
         raise ValueError("native Blender UV not finite or not source-index aligned")

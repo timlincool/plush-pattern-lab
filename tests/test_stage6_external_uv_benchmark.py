@@ -158,7 +158,7 @@ def test_external_score_recovers_true_planar_source_edge_lengths():
     # Real independent edge-error primitive: flat 3D→identical XY must remain zero.
     xyz = np.array([[0, 0, 0], [5, 0, 0], [0, 4, 0], [5, 4, 0]], dtype=float)
     tri = np.array([[0, 1, 2], [1, 3, 2]], dtype=np.int64)
-    uv = xyz[:, :2] / 100
+    uv = xyz[:, :2] / 10
     scaled, _, scores = bench._scale_free_gauge(xyz, tri, uv)
     assert np.allclose(scaled - scaled[0], xyz[:, :2] - xyz[0, :2])
     assert scores["scaled_2d_p95_abs_edge_relative_error"] < 1e-12
