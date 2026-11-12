@@ -16,7 +16,6 @@ from plush_pattern_lab.patterns.stage6_research_assembly_svg import (
     render_research_assembly_svg,
 )
 from plush_pattern_lab.patterns.stage6_research_panel_interface import (
-    SCHEMA,
     SOURCE_SHA,
     build_stage6_research_assembly,
 )
