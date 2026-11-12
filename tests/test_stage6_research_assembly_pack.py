@@ -57,9 +57,10 @@ def test_lower_plus_upper_original_13_and_5_a4_research_pieces_get_one_trial_pac
     assert graph["factory_cut_patterns_approved"] == 0
     assert graph["critical_original_source_neck_center_jump_mm"] > 50
     assert graph["original_3d_meridian_vs_surrogate_2d_mismatch_mm"] > 50
-    assert "NOT approved patterns" in (
-        destination / "assembly_map_RESEARCH_ONLY.svg"
-    ).read_text()
+    assert (
+        "NOT approved patterns"
+        in (destination / "assembly_map_RESEARCH_ONLY.svg").read_text()
+    )
     with pytest.raises(ValueError, match="overwrite"):
         build_research_assembly_pack(lower, upper, destination)
 
@@ -85,9 +86,7 @@ def test_modified_source_sheets_or_wrong_run_refused(tmp_path, tamper):
         path.write_text(altered)
         index = lower / "manifest.json"
         data = json.loads(index.read_text())
-        data["files_sha256"][path.name] = hashlib.sha256(
-            path.read_bytes()
-        ).hexdigest()
+        data["files_sha256"][path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
         index.write_text(json.dumps(data))
     with pytest.raises(ValueError):
         build_research_assembly_pack(lower, upper, tmp_path / "pack")
