@@ -39,9 +39,15 @@ def _physical_cut_surfaces(xyz, base_lower, base_upper, slope):
     )
     lower = base_lower + slope * y_normal
     upper = base_upper + slope * y_normal
-    if np.any(upper - lower < 12) or not np.isfinite(lower + upper).all():
-        raise ValueError("source fields intersect or proposed band is too narrow")
+    if (
+        np.any(upper - lower < 12)
+        or not np.isfinite(xyz).all()
+        or not np.isfinite(lower + upper).all()
+    ):
+        raise ValueError("nonfinite original source or proposed band is too narrow")
     scalar = (xyz[:, 2] - lower) / (upper - lower)
+    if not np.isfinite(scalar).all():
+        raise ValueError("original source implicit cut scalar is nonfinite")
     if np.min(np.abs(scalar)) <= 1e-6 or np.min(np.abs(scalar - 1)) <= 1e-6:
         raise ValueError("non-horizontal original source cut passes through source vertex")
     return scalar, lower, upper
