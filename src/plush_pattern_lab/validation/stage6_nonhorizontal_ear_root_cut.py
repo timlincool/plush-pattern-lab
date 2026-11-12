@@ -34,9 +34,7 @@ RESEARCH_ALLOWANCE_MM = 6.0
 
 def _physical_cut_surfaces(xyz, base_lower, base_upper, slope):
     """Original vertex scalar values; cuts are linear per source triangle."""
-    y_normal = np.clip(
-        (xyz[:, 1] - SLOPE_Y_CENTER_MM) / SLOPE_Y_SPAN_MM, -1.0, 1.0
-    )
+    y_normal = np.clip((xyz[:, 1] - SLOPE_Y_CENTER_MM) / SLOPE_Y_SPAN_MM, -1.0, 1.0)
     lower = base_lower + slope * y_normal
     upper = base_upper + slope * y_normal
     if (
@@ -49,7 +47,9 @@ def _physical_cut_surfaces(xyz, base_lower, base_upper, slope):
     if not np.isfinite(scalar).all():
         raise ValueError("original source implicit cut scalar is nonfinite")
     if np.min(np.abs(scalar)) <= 1e-6 or np.min(np.abs(scalar - 1)) <= 1e-6:
-        raise ValueError("non-horizontal original source cut passes through source vertex")
+        raise ValueError(
+            "non-horizontal original source cut passes through source vertex"
+        )
     return scalar, lower, upper
 
 
@@ -149,9 +149,7 @@ def _one_side(zones, parts, side):
 
 def _one_study(xyz, faces, choice):
     name, lower_base, upper_base, y_slope = choice
-    scalar, lower, upper = _physical_cut_surfaces(
-        xyz, lower_base, upper_base, y_slope
-    )
+    scalar, lower, upper = _physical_cut_surfaces(xyz, lower_base, upper_base, y_slope)
     zones = _split_original_source(xyz, faces, scalar)
     parts = {name: _components(zone) for name, zone in zones.items()}
     if [len(parts[x]) for x in ("below", "root", "above")] != [1, 3, 2]:

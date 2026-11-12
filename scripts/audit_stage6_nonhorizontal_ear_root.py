@@ -46,7 +46,8 @@ def _source_check(args):
         or visible.get("same_run_ear_root_study_sha256") != _sha(args.study)
         or visible.get("raw_product_meshes_raycasted") != 41
         or visible.get("manufacturing_seam_or_dart_approved") is not False
-        or baseline.get("schema") != "stage6-true-ear-root-3d-split-and-matched-seams-v1"
+        or baseline.get("schema")
+        != "stage6-true-ear-root-3d-split-and-matched-seams-v1"
         or baseline.get("same_run_ear_root_source_study_sha256") != _sha(args.study)
         or baseline.get("same_run_original_41mesh_visibility_sha256")
         != _sha(args.visibility)
@@ -75,8 +76,10 @@ def _gate(report, baseline):
             study["true_3d_source_zone_component_counts"]
             != {"below": 1, "root": 3, "above": 2}
             or study["source_area_reconstruction_error_mm2"] >= 1e-4
-            or [p["actual_original_source_root_band"]["derived_source_triangle_count"]
-                for p in study["original_ear_root_patches"]]
+            or [
+                p["actual_original_source_root_band"]["derived_source_triangle_count"]
+                for p in study["original_ear_root_patches"]
+            ]
             != list(correct)
         ):
             raise ValueError("sloping original face cut or area baseline changed")
@@ -98,8 +101,7 @@ def _source_paired_check(study):
             or patch["actual_original_source_root_band"]["closed_boundary_loop_count"]
             != 2
             or width["fraction_upper_source_seam_under_12mm_graph_width"] != 0
-            or width["surface_graph_shortest_path_min_p05_median_p95_max_mm"][0]
-            <= 12.0
+            or width["surface_graph_shortest_path_min_p05_median_p95_max_mm"][0] <= 12.0
             or not upper["original_world_xy_minor_extent_below_12mm_research_screen"]
             or lower["max_source_3d_pair_position_error_mm"] != 0
             or upper["max_source_3d_pair_position_error_mm"] != 0
