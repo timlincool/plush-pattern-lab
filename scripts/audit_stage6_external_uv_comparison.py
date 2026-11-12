@@ -6,8 +6,8 @@ Only research JSON/SVG, never an industrial pattern or printer cut file.
 from __future__ import annotations
 
 import argparse
-import json
 import hashlib
+import json
 from pathlib import Path
 
 from plush_pattern_lab.validation.stage6_external_uv_benchmark import (
