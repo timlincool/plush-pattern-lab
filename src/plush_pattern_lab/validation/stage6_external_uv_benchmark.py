@@ -8,7 +8,6 @@ least-squares scale used for the in-repo LSCM before comparing distortion.
 from __future__ import annotations
 
 import hashlib
-import json
 from collections import defaultdict
 
 import numpy as np
