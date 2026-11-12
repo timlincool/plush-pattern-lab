@@ -38,10 +38,11 @@ def test_original_real_source_four_sloping_patches_are_paired_but_narrow_at_rim(
         "N15_sloped_source_band",
         "N17_sloped_source_band",
     ]
-    assert [[p["source_patch_derived_triangles"] for p in v["sides"]] for v in variants] == [
-        [1680, 1755],
-        [1865, 1940],
+    derived_counts = [
+        [patch["source_patch_derived_triangles"] for patch in study["sides"]]
+        for study in variants
     ]
+    assert derived_counts == [[1680, 1755], [1865, 1940]]
     assert report["source_cut_component_counts_per_variant"] == {
         "below": 1,
         "root": 3,
