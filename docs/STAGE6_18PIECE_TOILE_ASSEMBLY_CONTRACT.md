@@ -46,6 +46,14 @@ BAND-3与YOKE约42.49mm的研究返口标记继续保留；实际布料翻面、
 
 CLI拒绝不同轮次lower/upper原source SHA、任意旧纸张被替换、被缩放的A4或覆盖旧资产。受信main Stage6 workflow在真实旧lower/upper生成后运行，新研究包统一归档。
 
+## 三次真实 Stage6 主分支独立重建的永久证据（2026-11-12）
+
+[首次运行 #43255281019](https://github.com/timlincool/plush-pattern-lab/actions/runs/43255281019)、[第二次 #43255652947](https://github.com/timlincool/plush-pattern-lab/actions/runs/43255652947) 和 [最终 #43256294219](https://github.com/timlincool/plush-pattern-lab/actions/runs/43256294219) 均完整成功。三个原始Action包中，**18片研究套件的13个成员文件逐字节SHA-256全部一致**：9张完整A4、32组净缝JSON、研究装配SVG、缝制指南以及manifest。三个完整Action ZIP的SHA不同，不能说整个压缩包也完全相同。
+
+四个原源蹄口周长分别101.6403、93.3091、119.1003、119.1003mm，4×512 Source原边身份未变；32组二维净缝每段长度最大计算差仅约1.78×10^-14mm。BAND-3研究返口42.487mm。**这些都是数字净缝精度，不是布料物理容差。** 旧UPPER头肩假设仍有约71.386mm真实源截面中心跃迁和约89.121mm的3D代理经线/2D研究缝线失配，不能将完整18片图形升级为原羊驼已经成型。
+
+[永久摘要与全部13个文件SHA](../experiments/stage6_18piece_sewing_assembly_20261112/summary.json) 保存三次可信Run、主分支提交及Artifact编号、完整ZIP与各成员独立哈希。 [可信Python CI #43256293929](https://github.com/timlincool/plush-pattern-lab/actions/runs/43256293929)通过676项测试、Ruff和打包。本轮研究性整包已经按这13个源文件整理为单独下载的9页A4试缝ZIP，保留工厂禁止说明；纸张实际试缝仍为零。
+
 ## 不得误判为整只玩偶已完成
 
 **数字18片连通，不等于还原原设计外形。** 已有验证显示原Stage6颈部Z130至155截面中心位移约71.4mm；旧UPPER的拟合3D轮廓与研究2D经线最大差约89.1mm，头肩还需重新设计。原3D四只圆鼓蹄底未完成真正布片。内外耳、7云层、尾巴、双眼、10水滴+10带子都没被接上。绒布伸长、毛向、有效6mm缝份、试缝、站立、返口、填棉、四视图及厂商签核均未验证。
