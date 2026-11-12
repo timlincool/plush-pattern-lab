@@ -29,8 +29,8 @@ def render_nonhorizontal_ear_root_svg(report):
         [
             '<text x="24" y="770" font-family="sans-serif" font-size="12" '
             'fill="#475569">Same 16 px/mm XY scale | Original source mesh '
-            'edge coordinates and Z variation | No validated fabric allowance '
-            'or sewing assembly</text>',
+            "edge coordinates and Z variation | No validated fabric allowance "
+            "or sewing assembly</text>",
             "</svg>",
         ]
     )
@@ -66,8 +66,8 @@ def _one_panel(option, patch, left, top):
         'stroke-width="3.0"/>',
         f'<text x="{left + 17}" y="{top + 258}" font-family="sans-serif" '
         'font-size="12" fill="#2e4b61">3D source graph gap '
-        f'{width:.2f}mm; upper rim XY minor {min_rim:.2f}mm</text>',
+        f"{width:.2f}mm; upper rim XY minor {min_rim:.2f}mm</text>",
         f'<text x="{left + 17}" y="{top + 282}" font-family="sans-serif" '
         'font-size="12" fill="#ad3532">Upper seam still too narrow '
-        'for assumed 2 x 6mm allowances; no 2D pattern</text>',
+        "for assumed 2 x 6mm allowances; no 2D pattern</text>",
     ]
