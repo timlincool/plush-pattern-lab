@@ -8,6 +8,8 @@ import pytest
 from plush_pattern_lab.validation.stage6_nonhorizontal_ear_root_cut import (
     SCHEMA,
     STUDIES,
+    _iso_source_paired_seam,
+    _iso_source_surface_graph_width,
     _physical_cut_surfaces,
     _restore_original_world_coordinates,
     _split_original_source,
@@ -70,8 +72,14 @@ def test_nonhorizontal_original_mesh_cuts_true_3d_paired_seams(study):
     )
     assert root["euler"] == 0 and len(root["boundary_loops"]) == 2
     assert below["euler"] == above["euler"] == 1
-    a = _paired_seam(zones["below"], below, zones["root"], root, 0.0)
-    b = _paired_seam(zones["root"], root, zones["above"], above, 1.0)
+    # The old horizontal cut helper MUST reject these restored world XYZ rings.
+    with pytest.raises(ValueError, match="too few segments"):
+        _paired_seam(zones["below"], below, zones["root"], root, 0.0)
+    a = _iso_source_paired_seam(zones["below"], below, zones["root"], root, 0.0)
+    b = _iso_source_paired_seam(zones["root"], root, zones["above"], above, 1.0)
+    width = _iso_source_surface_graph_width(zones["root"], root, 0.0, 1.0)
+    assert width["surface_graph_shortest_path_min_p05_median_p95_max_mm"][0] > 12
+    assert width["fraction_upper_source_seam_under_12mm_graph_width"] == 0
     for seam in (a, b):
         assert seam["max_source_3d_pair_position_error_mm"] == 0
         assert seam["two_source_3d_sides_exactly_same_with_opposite_face_winding"]

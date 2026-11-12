@@ -8,16 +8,19 @@ interpolating on the exact original source edge at normalized scalar t=0/1.
 from __future__ import annotations
 
 import numpy as np
+from scipy.sparse import coo_matrix
+from scipy.sparse.csgraph import dijkstra
 
 from plush_pattern_lab.validation.stage6_true_ear_root_band_cut import (
     _component_info,
     _components,
-    _paired_seam,
+    _ordered_original_seam_keys,
+    _oriented_edges,
     _side_component,
     _source_band_geometry,
     _source_mesh,
     _surface_area,
-    _surface_graph_width,
+    _unique_face_edges,
     clip_original_source_zone,
 )
 
@@ -89,6 +92,106 @@ def _split_original_source(xyz, faces, scalar):
     }
 
 
+def _iso_source_seam_edges(zone, component, iso_level):
+    """Use canonical source-edge/iso labels, NEVER constant world Z."""
+    chosen = {}
+    for a, b in component["boundary"]:
+        first, second = zone["keys"][a], zone["keys"][b]
+        if first[0] == second[0] == "e" and first[3] == second[3] == iso_level:
+            chosen[tuple(sorted((first, second)))] = (int(a), int(b))
+    return chosen
+
+
+def _iso_source_paired_seam(a, ca, b, cb, iso_level, subset=False):
+    """Physically equal source 3D seam edges with opposite face winding."""
+    first = _iso_source_seam_edges(a, ca, iso_level)
+    second = _iso_source_seam_edges(b, cb, iso_level)
+    if (not set(second).issubset(first)) if subset else (set(first) != set(second)):
+        raise ValueError("non-horizontal original source 3D seams do not match")
+    if len(second) < 3:
+        raise ValueError("source iso-interface does not form a closed seam")
+    orientation_a = _oriented_edges(a, ca, iso_level)
+    orientation_b = _oriented_edges(b, cb, iso_level)
+    if any(
+        orientation_a[k] != tuple(reversed(orientation_b[k])) for k in second
+    ):
+        raise ValueError("source paired iso-interface has wrong face winding")
+    coords_a = {
+        a["keys"][vertex]: a["xyz"][vertex]
+        for segment in first.values()
+        for vertex in segment
+    }
+    coords_b = {
+        b["keys"][vertex]: b["xyz"][vertex]
+        for segment in second.values()
+        for vertex in segment
+    }
+    error = max(
+        float(np.max(np.abs(coords_a[key] - physical)))
+        for key, physical in coords_b.items()
+    )
+    if error > 1e-9:
+        raise ValueError("source paired physical world coordinates disagree")
+    ordered = _ordered_original_seam_keys(second)
+    length = sum(
+        float(np.linalg.norm(coords_a[start] - coords_a[end]))
+        for start, end in second
+    )
+    return {
+        "source_plane_z_mm": iso_level,
+        "original_crossed_source_triangle_segment_count": len(second),
+        "paired_3d_netline_length_each_side_mm": length,
+        "max_source_3d_pair_position_error_mm": error,
+        "matching_original_source_seam_edge_keys": [
+            [list(start), list(end)] for start, end in sorted(second)
+        ],
+        "original_source_3d_ordered_ring_vertex_keys": [
+            list(key) for key in ordered
+        ],
+        "original_source_3d_ordered_ring_xyz_mm": [
+            coords_a[key].tolist() for key in ordered
+        ],
+        "two_source_3d_sides_exactly_same_with_opposite_face_winding": True,
+        "not_a_validated_two_sided_fabric_2d_netline": True,
+    }
+
+
+def _iso_source_surface_graph_width(zone, component, low, high):
+    """Source-edge graph distance between two non-horizontal cut boundaries."""
+    _, edges, _, _ = _unique_face_edges(component["faces"])
+    xyz = zone["xyz"]
+    distances = np.linalg.norm(xyz[edges[:, 0]] - xyz[edges[:, 1]], axis=1)
+    a, b = edges[:, 0], edges[:, 1]
+    first = _iso_source_seam_edges(zone, component, low)
+    second = _iso_source_seam_edges(zone, component, high)
+    lower = np.unique([v for pair in first.values() for v in pair])
+    upper = np.unique([v for pair in second.values() for v in pair])
+    origin = len(xyz)
+    rows = np.r_[a, b, np.full(len(lower), origin), lower]
+    cols = np.r_[b, a, lower, np.full(len(lower), origin)]
+    weights = np.r_[distances, distances, np.full(2 * len(lower), 1e-12)]
+    graph = coo_matrix(
+        (weights, (rows, cols)), shape=(origin + 1, origin + 1)
+    ).tocsr()
+    result = dijkstra(graph, directed=False, indices=origin)[upper]
+    if not np.isfinite(result).all():
+        raise ValueError("source non-horizontal ear root graph is disconnected")
+    return {
+        "upper_seam_source_intersection_vertex_count": len(upper),
+        "surface_graph_shortest_path_min_p05_median_p95_max_mm": np.quantile(
+            result, (0, 0.05, 0.5, 0.95, 1)
+        ).tolist(),
+        "fraction_upper_source_seam_under_12mm_graph_width": float(
+            np.mean(result < 2 * RESEARCH_ALLOWANCE_MM)
+        ),
+        "below_two_research_6mm_allowances_somewhere": bool(
+            result.min() < 2 * RESEARCH_ALLOWANCE_MM
+        ),
+        "source_triangle_graph_distance_is_upper_bound_on_real_surface_geodesic": True,
+        "this_is_not_2d_fabric_usable_allowance": True,
+    }
+
+
 def _annotated_source_netline(seam, normalized_cut_level):
     """Do not confuse iso-surface 0/1 with a world Z height in millimetres."""
     if seam.pop("source_plane_z_mm") != normalized_cut_level:
@@ -122,13 +225,17 @@ def _one_side(zones, parts, side):
     if cap["euler"] != 1 or len(cap["boundary_loops"]) != 1:
         raise ValueError("original upper ear tip is not a one-boundary disk")
     lower = _annotated_source_netline(
-        _paired_seam(zones["below"], body, zones["root"], root, 0.0, subset=True),
+        _iso_source_paired_seam(
+            zones["below"], body, zones["root"], root, 0.0, subset=True
+        ),
         0.0,
     )
     upper = _annotated_source_netline(
-        _paired_seam(zones["root"], root, zones["above"], cap, 1.0), 1.0
+        _iso_source_paired_seam(
+            zones["root"], root, zones["above"], cap, 1.0
+        ), 1.0
     )
-    graph = _surface_graph_width(zones["root"], root, 0.0, 1.0)
+    graph = _iso_source_surface_graph_width(zones["root"], root, 0.0, 1.0)
     return {
         "side": side,
         "actual_original_source_root_band": _component_info(zones["root"], root),
