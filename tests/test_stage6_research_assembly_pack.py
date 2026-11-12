@@ -10,13 +10,14 @@ import pytest
 from build_stage6_18piece_sewing_pack import build_research_assembly_pack
 from build_stage6_lower_mother_toile import _files as lower_files
 from build_stage6_upper_mother_toile import _payloads as upper_files
+from test_stage6_research_panel_interface import _trial
+
 from plush_pattern_lab.validation.stage6_lower_mother_toile_qc import (
     inspect_source_lower_toile,
 )
 from plush_pattern_lab.validation.stage6_upper_mother_toile_qc import (
     audit_source_profile_upper_mother,
 )
-from test_stage6_research_panel_interface import _trial
 
 
 def _setup_research_assets(tmp_path):
