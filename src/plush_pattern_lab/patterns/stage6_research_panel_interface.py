@@ -29,12 +29,7 @@ SOURCE_SHA = "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a"
 
 def _open_segments(points):
     xy = np.asarray(points, dtype=float)
-    if (
-        xy.ndim != 2
-        or xy.shape[1] != 2
-        or len(xy) < 2
-        or not np.isfinite(xy).all()
-    ):
+    if xy.ndim != 2 or xy.shape[1] != 2 or len(xy) < 2 or not np.isfinite(xy).all():
         raise ValueError("missing finite 2D research netline")
     values = np.linalg.norm(np.diff(xy, axis=0), axis=1)
     if np.any(values <= 0):
@@ -44,12 +39,7 @@ def _open_segments(points):
 
 def _ring_segments(points):
     xy = np.asarray(points, dtype=float)
-    if (
-        xy.ndim != 2
-        or xy.shape[1] != 2
-        or len(xy) < 3
-        or not np.isfinite(xy).all()
-    ):
+    if xy.ndim != 2 or xy.shape[1] != 2 or len(xy) < 3 or not np.isfinite(xy).all():
         raise ValueError("missing original projected hoof source ring")
     values = np.linalg.norm(xy - np.roll(xy, -1, axis=0), axis=1)
     if np.any(values <= 0):
@@ -205,11 +195,9 @@ def _outer_band_seams(lower, pairs, claimed):
         raise ValueError("original lower yoke research outer identity changed")
     bands = lower["outer_quarter_bands"]
     for index, band in enumerate(bands):
-        if (
-            band["id"] != f"BAND-{index + 1}"
-            or band["source_ring_edge_indices"]
-            != list(range(index * 16, (index + 1) * 16))
-        ):
+        if band["id"] != f"BAND-{index + 1}" or band[
+            "source_ring_edge_indices"
+        ] != list(range(index * 16, (index + 1) * 16)):
             raise ValueError("surrogate yoke 64 index station order changed")
         _insert_pair(
             pairs,
@@ -223,9 +211,7 @@ def _outer_band_seams(lower, pairs, claimed):
         )
         next_band = (index + 1) % 4 + 1
         side = [float(band["stitch_rectangle_xy_mm"][2][1])]
-        neighbor = [
-            float(bands[next_band - 1]["stitch_rectangle_xy_mm"][2][1])
-        ]
+        neighbor = [float(bands[next_band - 1]["stitch_rectangle_xy_mm"][2][1])]
         _insert_pair(
             pairs,
             claimed,

@@ -46,7 +46,7 @@ def render_research_assembly_svg(graph):
         'fill="#1f3348">Stage6: 18-piece DIGITAL research sewing graph</text>',
         '<text x="24" y="57" font-family="sans-serif" font-size="12" '
         'fill="#a23d35">NOT original Stage6 appearance, NOT approved patterns, '
-        'NOT sewn in fabric</text>',
+        "NOT sewn in fabric</text>",
     ]
     for edge in graph["paired_stitch_interfaces"]:
         left = edge["first"].split(".")[0]
@@ -81,10 +81,10 @@ def render_research_assembly_svg(graph):
         [
             '<text x="24" y="793" font-family="sans-serif" font-size="13" '
             'fill="#9d4239">Neck/head silhouette discrepancy, real rounded hoof, '
-            'ears/clouds/tail/drops and fabric are UNVERIFIED.</text>',
+            "ears/clouds/tail/drops and fabric are UNVERIFIED.</text>",
             '<text x="24" y="814" font-family="sans-serif" font-size="11" '
             'fill="#465b71">32 numeric interface matches; 9 real-size A4 '
-            'sheets; this graph is NOT evidence of physical sewing.</text>',
+            "sheets; this graph is NOT evidence of physical sewing.</text>",
             "</svg>",
         ]
     )

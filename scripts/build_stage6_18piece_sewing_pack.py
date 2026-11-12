@@ -49,7 +49,11 @@ def _inputs(path, *, required):
         if Path(filename).name != filename:
             raise ValueError("unexpected untrusted research asset path")
         asset = path / filename
-        if not asset.is_file() or asset.is_symlink() or _sha(asset.read_bytes()) != expected:
+        if (
+            not asset.is_file()
+            or asset.is_symlink()
+            or _sha(asset.read_bytes()) != expected
+        ):
             raise ValueError("original lower/upper research asset SHA256 mismatch")
     return index
 
@@ -116,8 +120,7 @@ def _guide(graph):
             "- 头身新二维纵缝与其3D拟合包络纵边最大失配约89mm；"
             "不是材料弹性可自动修复的误差。",
             "- 四个SOLE仅为平面试样，不是原模型鼓起蹄底的真2D裁片。",
-            "- 内外耳、七云覆层、尾巴、五官、十水滴及十连接带均"
-            "没有真实布片/安装缝线。",
+            "- 内外耳、七云覆层、尾巴、五官、十水滴及十连接带均没有真实布片/安装缝线。",
             "- 返口只是BAND-3上的拟议留口；真实布料翻面、"
             "填充、站立与外形对照均未验证。",
             "- 原4×512源蹄口身份未改变；其余新纸样与原雕塑"
@@ -165,9 +168,9 @@ def build_research_assembly_pack(lower_dir, upper_dir, destination):
             json.dumps(graph, ensure_ascii=False, indent=2) + "\n"
         ).encode("utf8"),
         "sewing_sequence_RESEARCH_ONLY.md": _guide(graph).encode("utf8"),
-        "assembly_map_RESEARCH_ONLY.svg": render_research_assembly_svg(
-            graph
-        ).encode("utf8"),
+        "assembly_map_RESEARCH_ONLY.svg": render_research_assembly_svg(graph).encode(
+            "utf8"
+        ),
         **_original_sheets(lower_dir, upper_dir),
     }
     manifest = {
@@ -176,8 +179,12 @@ def build_research_assembly_pack(lower_dir, upper_dir, destination):
         "source_proxy_25pct_ply_sha256": PROXY_SHA,
         "lower_original_research_source_json_sha256": _sha(lower_bytes),
         "upper_original_research_source_json_sha256": _sha(upper_bytes),
-        "source_lower_manifest_sha256": _sha((lower_dir / "manifest.json").read_bytes()),
-        "source_upper_manifest_sha256": _sha((upper_dir / "manifest.json").read_bytes()),
+        "source_lower_manifest_sha256": _sha(
+            (lower_dir / "manifest.json").read_bytes()
+        ),
+        "source_upper_manifest_sha256": _sha(
+            (upper_dir / "manifest.json").read_bytes()
+        ),
         "total_research_paper_parts": graph["total_research_pieces"],
         "stitched_2d_interface_pairs": graph["paired_interface_count"],
         "printed_A4_page_count": graph["print_sheet_count"],
@@ -205,9 +212,7 @@ def main():
     parser.add_argument("--upper-dir", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
     args = parser.parse_args()
-    result = build_research_assembly_pack(
-        args.lower_dir, args.upper_dir, args.out_dir
-    )
+    result = build_research_assembly_pack(args.lower_dir, args.upper_dir, args.out_dir)
     print(
         "STAGE6_18_PIECE_SEWING_GRAPH_AND_NINE_EXISTING_A4_PAGES_NOT_FACTORY",
         json.dumps(
