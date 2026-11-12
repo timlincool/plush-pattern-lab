@@ -28,8 +28,9 @@ ALLOWANCE_MM = 6.0
 
 def _canonical_sha(data):
     return sha256(
-        json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
-        .encode("utf8")
+        json.dumps(
+            data, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        ).encode("utf8")
     ).hexdigest()
 
 
@@ -42,7 +43,9 @@ def _paired_ring(source, keys, xyz):
     try:
         indices = np.array([mapping[tuple(key)] for key in ordered], dtype=np.int64)
     except KeyError as e:
-        raise ValueError("original 3D paired source edge missing from root patch") from e
+        raise ValueError(
+            "original 3D paired source edge missing from root patch"
+        ) from e
     if (
         len(indices) < 12
         or len(np.unique(indices)) != len(indices)
@@ -104,7 +107,17 @@ def validate_original_root_patch(study, patch, reference):
         raise ValueError("original source root is not exactly one closed annulus")
     if set(low) & set(high):
         raise ValueError("source upper and lower rings share vertices")
-    return xyz, faces.astype(np.int64), keys, source_faces, low, high, edges, inverse, counts
+    return (
+        xyz,
+        faces.astype(np.int64),
+        keys,
+        source_faces,
+        low,
+        high,
+        edges,
+        inverse,
+        counts,
+    )
 
 
 def _source_route_anchors(xyz, low, high, side, direction):
@@ -158,9 +171,12 @@ def _shortest_source_side_route(xyz, edge_ids, counts, low, high, anchors):
 def _triangle_area(xyz, faces):
     tri = xyz[faces]
     return float(
-        (0.5 * np.linalg.norm(
-            np.cross(tri[:, 1] - tri[:, 0], tri[:, 2] - tri[:, 0]), axis=1
-        )).sum()
+        (
+            0.5
+            * np.linalg.norm(
+                np.cross(tri[:, 1] - tri[:, 0], tri[:, 2] - tri[:, 0]), axis=1
+            )
+        ).sum()
     )
 
 
