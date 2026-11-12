@@ -64,9 +64,7 @@ def _synthetic_source_annulus(side="left", n=12):
             "closed_boundary_loop_count": 2,
         },
         "body_to_root_paired_3d_source_netline": boundary(np.arange(n)),
-        "root_to_upper_ear_paired_3d_source_netline": boundary(
-            np.arange(n, 2 * n)
-        ),
+        "root_to_upper_ear_paired_3d_source_netline": boundary(np.arange(n, 2 * n)),
         "source_root_band_triangles_with_original_face_ids": derived,
         "true_manufacturing_2d_pattern_generated": False,
         "fabric_and_assembly_approved": False,
@@ -84,14 +82,18 @@ def _synthetic_source_annulus(side="left", n=12):
 
 @pytest.mark.parametrize("side", ("left", "right"))
 @pytest.mark.parametrize("direction", ROUTES)
-def test_true_source_annulus_to_disk_preserves_faces_and_3d_source_pairs(side, direction):
+def test_true_source_annulus_to_disk_preserves_faces_and_3d_source_pairs(
+    side, direction
+):
     study, patch, ref = _synthetic_source_annulus(side)
     disk = create_source_slit_disk(study, patch, ref, direction)
     assert disk["source_study"] == study["name"]
     assert disk["slit_disk_euler_characteristic"] == 1
     assert disk["slit_disk_single_boundary"]
     assert disk["slit_disk_face_count"] == disk["original_source_face_count"] == 24
-    assert np.isclose(disk["original_source_patch_area_mm2"], disk["source_disk_area_mm2"])
+    assert np.isclose(
+        disk["original_source_patch_area_mm2"], disk["source_disk_area_mm2"]
+    )
     assert len(disk["original_patch_vertex_id_per_disk_vertex"]) == (
         24 + len(disk["slit_original_local_vertex_ids"])
     )
@@ -100,11 +102,16 @@ def test_true_source_annulus_to_disk_preserves_faces_and_3d_source_pairs(side, d
     assert report["schema"] == SCHEMA
     assert report["not_a_factory_cutting_or_sewing_approval"]
     assert report["factory_cutting_patterns_approved"] == 0
-    assert report["original_source_planar_face_geometry_diagnostics"][
-        "reversed_or_collapsed_triangle_count"
-    ] == 0
+    assert (
+        report["original_source_planar_face_geometry_diagnostics"][
+            "reversed_or_collapsed_triangle_count"
+        ]
+        == 0
+    )
     seam = report["true_source_seam_3d_vs_lscm_2d_pairing"]
-    assert seam["original_source_cut_edge_has_exactly_two_oppositely_oriented_disk_sides"]
+    assert seam[
+        "original_source_cut_edge_has_exactly_two_oppositely_oriented_disk_sides"
+    ]
     assert seam["original_paired_3d_seam_length_each_side_mm"] > 15
 
 
@@ -158,7 +165,9 @@ def test_disk_source_id_pairing_detects_missing_duplicate_cut_boundary():
     disk = create_source_slit_disk(study, patch, reference, "posterior")
     uv = evaluate_original_source_slit_disk(disk)["real_2d_research_coordinates_mm"]
     bad = deepcopy(disk)
-    original_len = len(patch["source_root_band_triangles_with_original_face_ids"]["source_3d_xyz_mm"])
+    original_len = len(
+        patch["source_root_band_triangles_with_original_face_ids"]["source_3d_xyz_mm"]
+    )
     bad["original_patch_vertex_id_per_disk_vertex"][original_len] = -1
     with pytest.raises(ValueError, match="two physical source seam copies"):
         _two_true_planar_seam_sides(bad, np.asarray(uv))
@@ -182,8 +191,11 @@ def test_research_preview_labels_manufacturing_block_and_requires_12_trials():
     study, patch, reference = _synthetic_source_annulus()
     disk = create_source_slit_disk(study, patch, reference, "lateral")
     output = evaluate_original_source_slit_disk(disk)
-    report = {"schema": SCHEMA, "factory_cutting_patterns_approved": 0,
-              "candidate_2d_research_disks": [output] * 12}
+    report = {
+        "schema": SCHEMA,
+        "factory_cutting_patterns_approved": 0,
+        "candidate_2d_research_disks": [output] * 12,
+    }
     svg = render_source_slit_lscm_atlas(report)
     assert "NO CUTTING PATTERNS" in svg
     assert svg.count("P95 edge distortion:") == 12

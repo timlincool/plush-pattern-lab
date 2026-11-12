@@ -65,8 +65,9 @@ def _read_sources(args):
         or report.get("same_run_original_41mesh_visibility_sha256")
         != _sha(args.visibility)
         or visibility.get("raw_product_meshes_raycasted") != 41
-        or reference.get("seven_raw_files_sha256_matching_across_both_trusted_runs", {})
-        .get("true_stage6_nonhorizontal_ear_root_paired_3d_json")
+        or reference.get(
+            "seven_raw_files_sha256_matching_across_both_trusted_runs", {}
+        ).get("true_stage6_nonhorizontal_ear_root_paired_3d_json")
         != _sha(args.source)
     ):
         raise ValueError("source 3D cut or 41Mesh research does not match pinned run")
@@ -75,8 +76,11 @@ def _read_sources(args):
 
 def _reference_for_patch(reference, name, side):
     study = next(
-        (row for row in reference["source_curved_3d_cut_research_variants"]
-         if row["study"] == name),
+        (
+            row
+            for row in reference["source_curved_3d_cut_research_variants"]
+            if row["study"] == name
+        ),
         None,
     )
     if study is None:
@@ -105,15 +109,21 @@ def _twelve_trials(source, reference):
                     or candidate["not_a_factory_cutting_or_sewing_approval"] is not True
                     or candidate["original_source_planar_face_geometry_diagnostics"][
                         "overlapping_positive_area_triangle_pair_count"
-                    ] != 0
+                    ]
+                    != 0
                     or candidate["original_source_planar_face_geometry_diagnostics"][
                         "reversed_or_collapsed_triangle_count"
-                    ] != 0
+                    ]
+                    != 0
                 ):
-                    raise ValueError("source research disk topology or planar overlap changed")
+                    raise ValueError(
+                        "source research disk topology or planar overlap changed"
+                    )
                 choices.append(candidate)
     if len(choices) != 12:
-        raise ValueError("not all preregistered source side-slit candidates were tested")
+        raise ValueError(
+            "not all preregistered source side-slit candidates were tested"
+        )
     return choices
 
 
@@ -121,7 +131,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", required=True, type=Path)
     parser.add_argument("--visibility", required=True, type=Path)
-    parser.add_argument("--reference", default=ROOT / "experiments/stage6_nonhorizontal_ear_root_20261112/summary.json", type=Path)
+    parser.add_argument(
+        "--reference",
+        default=ROOT
+        / "experiments/stage6_nonhorizontal_ear_root_20261112/summary.json",
+        type=Path,
+    )
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--svg", required=True, type=Path)
     args = parser.parse_args()
@@ -166,12 +181,14 @@ def main():
                     "p95_scaled_edge_error": round(
                         row["uniform_scale_normalized_edge_diagnostics"][
                             "scaled_2d_p95_abs_edge_relative_error"
-                        ], 5
+                        ],
+                        5,
                     ),
                     "2d_paired_source_seam_mismatch_fraction": round(
                         row["true_source_seam_3d_vs_lscm_2d_pairing"][
                             "scaled_planar_2d_two_sides_length_mismatch_fraction_of_source_3d"
-                        ], 5
+                        ],
+                        5,
                     ),
                 }
                 for row in choices

@@ -49,13 +49,9 @@ def _geometry_preview(candidate, left, top):
 
     def position(index):
         x, y = uv[index]
-        return cx + size * (x - (minx + maxx) / 2), cy - size * (
-            y - (miny + maxy) / 2
-        )
+        return cx + size * (x - (minx + maxx) / 2), cy - size * (y - (miny + maxy) / 2)
 
-    contour = " ".join(
-        f"{x:.2f},{y:.2f}" for x, y in map(position, boundary)
-    )
+    contour = " ".join(f"{x:.2f},{y:.2f}" for x, y in map(position, boundary))
     return [
         f'<polygon points="{contour}" fill="#e9f1f6" '
         'stroke="#2c5877" stroke-width="1.7"/>',
@@ -73,21 +69,21 @@ def _render_one(candidate, i):
         'fill="white" stroke="#cbd5e1"/>',
         f'<text x="{left + 13}" y="{top + 25}" '
         'font-size="15" font-family="sans-serif" fill="#1d3345">'
-        f'{candidate["source_variant"]} / {candidate["original_source_side"]} '
-        f'/ {candidate["source_slit_direction"]}</text>',
+        f"{candidate['source_variant']} / {candidate['original_source_side']} "
+        f"/ {candidate['source_slit_direction']}</text>",
         *_geometry_preview(candidate, left, top),
         f'<text x="{left + 13}" y="{top + 249}" '
         'font-size="12" font-family="sans-serif" fill="#8d3530">'
-        f'P95 edge distortion: {100 * strain["scaled_2d_p95_abs_edge_relative_error"]:.1f}%'
-        f' | matched seam 2D mismatch: '
-        f'{100 * seam["scaled_planar_2d_two_sides_length_mismatch_fraction_of_source_3d"]:.1f}%</text>',
+        f"P95 edge distortion: {100 * strain['scaled_2d_p95_abs_edge_relative_error']:.1f}%"
+        f" | matched seam 2D mismatch: "
+        f"{100 * seam['scaled_planar_2d_two_sides_length_mismatch_fraction_of_source_3d']:.1f}%</text>",
         f'<text x="{left + 13}" y="{top + 274}" '
         'font-size="11" font-family="sans-serif" fill="#415c72">'
-        f'2D min lower/upper vertex gap: '
-        f'{gap["scaled_2d_min_sampled_lower_upper_vertex_gap_mm"]:.2f}mm'
-        f' | flipped: {face["reversed_or_collapsed_triangle_count"]}'
-        f' | overlap pairs: {face["overlapping_positive_area_triangle_pair_count"]}'
-        '</text>',
+        f"2D min lower/upper vertex gap: "
+        f"{gap['scaled_2d_min_sampled_lower_upper_vertex_gap_mm']:.2f}mm"
+        f" | flipped: {face['reversed_or_collapsed_triangle_count']}"
+        f" | overlap pairs: {face['overlapping_positive_area_triangle_pair_count']}"
+        "</text>",
     ]
     return result
 
@@ -116,8 +112,8 @@ def render_source_slit_lscm_atlas(report):
         [
             '<text x="20" y="1370" font-family="sans-serif" font-size="12" '
             'fill="#354e63">6 px/mm after documented isotropic normalization. '
-            'The lower + upper original-source ring and both slit copies form '
-            'ONE original-source topological disk boundary.</text>',
+            "The lower + upper original-source ring and both slit copies form "
+            "ONE original-source topological disk boundary.</text>",
             "</svg>",
         ]
     )

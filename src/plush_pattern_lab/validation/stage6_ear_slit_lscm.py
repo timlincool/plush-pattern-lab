@@ -112,17 +112,21 @@ def _scale_free_gauge(points, faces, uv):
     scaled = uv * factor
     scaled -= scaled.min(axis=0)
     strain = np.abs(factor * ratio - 1)
-    return scaled, strain, {
-        "uniform_isotropic_scale_from_minimum_squared_edge_relative_error": factor,
-        "source_3d_unique_disk_edges": len(edges),
-        "scaled_2d_p50_abs_edge_relative_error": float(np.median(strain)),
-        "scaled_2d_p95_abs_edge_relative_error": float(np.quantile(strain, 0.95)),
-        "scaled_2d_max_abs_edge_relative_error": float(strain.max()),
-        "p95_above_10percent_research_screen": bool(
-            np.quantile(strain, 0.95) > SCREEN_EDGE_P95_RELATIVE
-        ),
-        "uniform_scale_not_known_material_grain_or_stretch": True,
-    }
+    return (
+        scaled,
+        strain,
+        {
+            "uniform_isotropic_scale_from_minimum_squared_edge_relative_error": factor,
+            "source_3d_unique_disk_edges": len(edges),
+            "scaled_2d_p50_abs_edge_relative_error": float(np.median(strain)),
+            "scaled_2d_p95_abs_edge_relative_error": float(np.quantile(strain, 0.95)),
+            "scaled_2d_max_abs_edge_relative_error": float(strain.max()),
+            "p95_above_10percent_research_screen": bool(
+                np.quantile(strain, 0.95) > SCREEN_EDGE_P95_RELATIVE
+            ),
+            "uniform_scale_not_known_material_grain_or_stretch": True,
+        },
+    )
 
 
 def _face_overlap_and_winding(points, faces, uv):
@@ -133,8 +137,8 @@ def _face_overlap_and_winding(points, faces, uv):
     flips = int(np.count_nonzero(signed * majority <= 1e-9))
     physical = points[faces]
     area3d = 0.5 * np.linalg.norm(
-        np.cross(physical[:, 1] - physical[:, 0],
-                 physical[:, 2] - physical[:, 0]), axis=1
+        np.cross(physical[:, 1] - physical[:, 0], physical[:, 2] - physical[:, 0]),
+        axis=1,
     )
     polygons = [Polygon(triangle) for triangle in xy]
     if any(not polygon.is_valid for polygon in polygons):
@@ -169,9 +173,7 @@ def _face_overlap_and_winding(points, faces, uv):
 
 
 def _oriented_disk_boundary_edges(faces):
-    raw = np.concatenate(
-        (faces[:, (0, 1)], faces[:, (1, 2)], faces[:, (2, 0)]), axis=0
-    )
+    raw = np.concatenate((faces[:, (0, 1)], faces[:, (1, 2)], faces[:, (2, 0)]), axis=0)
     sorted_edges = np.sort(raw, axis=1)
     _, index, counts = np.unique(
         sorted_edges, axis=0, return_inverse=True, return_counts=True
@@ -246,7 +248,10 @@ def evaluate_original_source_slit_disk(disk):
     points = np.asarray(disk["source_xyz_mm"], dtype=np.float64)
     faces = np.asarray(disk["disk_triangle_vertex_ids"], dtype=np.int64)
     low = disk["original_source_lower_boundary_vertex_ids"]
-    if not disk["slit_disk_single_boundary"] or disk["slit_disk_euler_characteristic"] != 1:
+    if (
+        not disk["slit_disk_single_boundary"]
+        or disk["slit_disk_euler_characteristic"] != 1
+    ):
         raise ValueError("LSCM requires verified source topological disk")
     uv, solver = _anchored_lscm(points, faces, low)
     uv, strain, distortion = _scale_free_gauge(points, faces, uv)
