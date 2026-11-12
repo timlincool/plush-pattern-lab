@@ -1,0 +1,204 @@
+{
+  "schema": "stage6-original-source-nonhorizontal-ear-root-two-real-blender-replays-v1",
+  "research_date_utc": "2026-11-12",
+  "original_public_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "original_25pct_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "original_proxy_vertex_count": 59306,
+  "original_proxy_triangle_count": 116568,
+  "method": "Two preregistered piecewise-linear normalized iso-surfaces from original vertex XYZ at t=0/1, physical source-edge 3D XYZ restored by exact original source edge interpolation; matched source Vertex-ID/iso-level keys, opposite source face winding and coordinate error=0, preserved original face IDs. Source triangle graph distance evaluated in original physical XYZ. Neither physical fabric nor a 2D paper netline.",
+  "trusted_python_ci": {
+    "run_id": 43190708553,
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43190708553",
+    "conclusion": "success",
+    "passed_tests": 624,
+    "ruff_complexity_and_wheel": "PASS"
+  },
+  "previous_rejected_world_z_pairing_run": {
+    "run_id": 43189646252,
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43189646252",
+    "reason": "Old horizontal source seam matcher incorrectly assumed actual physical world Z equals normalized iso t=0/1; failed closed before generating untrusted results. Corrected via source edge identity rather than falsifying physical XYZ."
+  },
+  "two_independent_trusted_main_blender_4_3_2_runs": [
+    {
+      "run_id": 43190504878,
+      "commit_sha": "da1a6df278bed10f53623778c97b8745a99ce221",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43190504878",
+      "artifact_id": 13931021063,
+      "full_artifact_zip_sha256": "b598dc72f8e4b3f93905717910300adae39fef904b2b04c3c235a1b8cce01f2a"
+    },
+    {
+      "run_id": 43190708654,
+      "commit_sha": "c44a6a1ec6e6037348660c2d781bd9168926da49",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43190708654",
+      "artifact_id": 13931325836,
+      "full_artifact_zip_sha256": "19265f265424304830860c72ef8b3101a8bbcc1b941a65de08ec3894a0c858e1"
+    }
+  ],
+  "seven_raw_files_sha256_matching_across_both_trusted_runs": {
+    "true_stage6_nonhorizontal_ear_root_paired_3d_json": "99a2b264f8b7acf24e107ac7abc77dacc8c329b9c9c38f1eb9ec57870b932df1",
+    "true_stage6_nonhorizontal_ear_root_paired_3d_svg": "efe75b189bf4f9929afc9f163c6b64409ae11e92e18c751ede979e40b9340909",
+    "true_stage6_ear_root_band_3d_paired_seams_json": "64eb0dbabb17d3da6eca984ce5f2147b18bac71aca62f050010490c17b0aeff4",
+    "ear_root_ab_source_study_json": "4c1af7d171891207012a783b101c8ab6fc9c75ab60ae31ae56fe080f9eb35aba",
+    "ear_root_ab_41mesh_visibility_json": "0b35907b67ceee6558e7fd733c8e33ca19f666f0d3ad100ba0b42a233d4fb8e0",
+    "true_stage6_source_section_detail_json": "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717",
+    "true_stage6_source_section_summary_json": "071acfced61e6bbf52584dc3a68c54bb72d838e87b7c87fe6a1e46181efe2b46"
+  },
+  "all_seven_original_research_files_byte_identical_twice": true,
+  "complete_action_artifact_zip_byte_identical": false,
+  "source_original_surface_area_mm2": 106316.13853493183,
+  "source_cut_component_counts_per_variant": {
+    "below": 1,
+    "root": 3,
+    "above": 2
+  },
+  "source_curved_3d_cut_research_variants": [
+    {
+      "study": "N15_sloped_source_band",
+      "z_low_at_y_center_mm": 228.5,
+      "z_high_at_y_center_mm": 243.5,
+      "z_y_slope_mm": 1.5,
+      "source_area_reconstruction_abs_error_mm2": 1.4551915228366852e-11,
+      "sides": [
+        {
+          "side": "left",
+          "source_patch_derived_triangles": 1680,
+          "source_original_faces": 1584,
+          "source_patch_area_mm2": 674.336567411348,
+          "source_patch_canonical_sha256": "8eef052b4d82002b0a8e46988b4610e26183a8e6ded1646e706b87c37bd8bade",
+          "lower_paired_seam_segments": 108,
+          "lower_3d_seam_length_mm": 48.27445942723145,
+          "lower_3d_seam_subtree_sha256": "f463b7745e41f373fff4889e79753b705c784f836e4f7a53b3e75037e9c5545d",
+          "upper_paired_seam_segments": 84,
+          "upper_3d_seam_length_mm": 25.88240578374213,
+          "upper_3d_seam_subtree_sha256": "fcf76bc2439ee6251ab91f324e6a5299c32cd822487c5660afb1dea2cf3adbe5",
+          "graph_width_min_p05_median_p95_max_mm": [
+            16.327994528687032,
+            16.47935154174785,
+            17.45396529969382,
+            18.274565291546434,
+            18.662400086106594
+          ],
+          "upper_rim_xy_minor_mm": 6.695613140669366,
+          "lower_cut_z_minmax_mm": [
+            227.74216355460874,
+            228.99221987916383
+          ],
+          "upper_cut_z_minmax_mm": [
+            243.33119564430055,
+            244.0007569583675
+          ]
+        },
+        {
+          "side": "right",
+          "source_patch_derived_triangles": 1755,
+          "source_original_faces": 1656,
+          "source_patch_area_mm2": 674.419958417413,
+          "source_patch_canonical_sha256": "c1c7da603422c575e4fa7e27582c438df673c50d06224ac5bfea8599ac558f42",
+          "lower_paired_seam_segments": 112,
+          "lower_3d_seam_length_mm": 48.281666495925016,
+          "lower_3d_seam_subtree_sha256": "27938e75187e81c1673ca89b7010b35b6765e929309297792eed418882e14e57",
+          "upper_paired_seam_segments": 83,
+          "upper_3d_seam_length_mm": 25.874049951056136,
+          "upper_3d_seam_subtree_sha256": "c0693d776fcf845dfe43d1460aefdb4e1cdeb009bc94127a2c5ad8858cecfecf",
+          "graph_width_min_p05_median_p95_max_mm": [
+            16.59699814858906,
+            16.707835803819034,
+            17.65698346900162,
+            18.29188900293396,
+            18.681225535457152
+          ],
+          "upper_rim_xy_minor_mm": 6.684861339677937,
+          "lower_cut_z_minmax_mm": [
+            227.74291455221612,
+            228.99218471786455
+          ],
+          "upper_cut_z_minmax_mm": [
+            243.33134896356046,
+            243.99983509752826
+          ]
+        }
+      ]
+    },
+    {
+      "study": "N17_sloped_source_band",
+      "z_low_at_y_center_mm": 227.5,
+      "z_high_at_y_center_mm": 244.5,
+      "z_y_slope_mm": 1.5,
+      "source_area_reconstruction_abs_error_mm2": 0,
+      "sides": [
+        {
+          "side": "left",
+          "source_patch_derived_triangles": 1865,
+          "source_original_faces": 1774,
+          "source_patch_area_mm2": 775.0356830290832,
+          "source_patch_canonical_sha256": "d752492e6dbd3cedb230068b38a3befed680e860ca83d6fc962caebb5f7e65b3",
+          "lower_paired_seam_segments": 111,
+          "lower_3d_seam_length_mm": 48.82743158394204,
+          "lower_3d_seam_subtree_sha256": "e08e43a3913c4203ae47aed5f8537980ca4fbb3ef95748305797ed8001257c1b",
+          "upper_paired_seam_segments": 72,
+          "upper_3d_seam_length_mm": 23.13016895050431,
+          "upper_3d_seam_subtree_sha256": "ebb7e212bd7b5564f8668bdef53429ff7fb93d7fd54bc36324874a9c580617e8",
+          "graph_width_min_p05_median_p95_max_mm": [
+            19.220166502305403,
+            19.361490276078428,
+            20.42061689157061,
+            21.26494959613244,
+            21.360978522352372
+          ],
+          "upper_rim_xy_minor_mm": 6.1078261036130215,
+          "lower_cut_z_minmax_mm": [
+            226.6319092832027,
+            227.89800844038783
+          ],
+          "upper_cut_z_minmax_mm": [
+            244.3689820702562,
+            244.9797646806175
+          ]
+        },
+        {
+          "side": "right",
+          "source_patch_derived_triangles": 1940,
+          "source_original_faces": 1844,
+          "source_patch_area_mm2": 775.108265735932,
+          "source_patch_canonical_sha256": "7ddf97398dd5875da0b643487dffc8e836dd335758e97fba6ec9bcb0c0b3a2e5",
+          "lower_paired_seam_segments": 113,
+          "lower_3d_seam_length_mm": 48.82862399409165,
+          "lower_3d_seam_subtree_sha256": "2f5a1817a06358cf92a105ccaee9d17a0819672afc4a7584d4fb89d27e17f0fd",
+          "upper_paired_seam_segments": 73,
+          "upper_3d_seam_length_mm": 23.13302115291951,
+          "upper_3d_seam_subtree_sha256": "5f7412df1d281d7f6622e893a5c5c1f6b8097cfeca20ce38042b4882a76f98a8",
+          "graph_width_min_p05_median_p95_max_mm": [
+            19.47708096080848,
+            19.603183436703176,
+            20.385281049541582,
+            21.06041439229878,
+            21.26253018891284
+          ],
+          "upper_rim_xy_minor_mm": 6.114737222542786,
+          "lower_cut_z_minmax_mm": [
+            226.63075313846122,
+            227.89659118334507
+          ],
+          "upper_cut_z_minmax_mm": [
+            244.36902621839238,
+            244.98049994064664
+          ]
+        }
+      ]
+    }
+  ],
+  "all_four_band_source_graph_min_distances_over_12mm": true,
+  "all_four_upper_original_ear_rims_xy_minor_under_12mm": true,
+  "physical_world_seam_xyz_match_error_mm": 0,
+  "source_original_3d_faces_modified": false,
+  "original_high_density_466k_faces_not_directly_cut": true,
+  "material_2d_rest_netlines_cut_allowances_verified": false,
+  "independent_ear_cloud_attachment_and_design_four_view_signed_off": false,
+  "real_fabric_test_or_factory_approval": false,
+  "factory_cutting_patterns_approved": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "next": "Prototype source-geometry-aware seam exit/2D disk flattening for wider sloped root annulus; audit overlap, stretch, realistic 6mm allowances, upper ear rim and independent inner/outer ear/cloud attachment against design views. Reject manufacturing promotion pending real fabric/turnout/fill and supplier signoff."
+}
