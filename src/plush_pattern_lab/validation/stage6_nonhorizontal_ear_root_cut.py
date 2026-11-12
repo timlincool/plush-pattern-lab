@@ -112,9 +112,7 @@ def _iso_source_paired_seam(a, ca, b, cb, iso_level, subset=False):
         raise ValueError("source iso-interface does not form a closed seam")
     orientation_a = _oriented_edges(a, ca, iso_level)
     orientation_b = _oriented_edges(b, cb, iso_level)
-    if any(
-        orientation_a[k] != tuple(reversed(orientation_b[k])) for k in second
-    ):
+    if any(orientation_a[k] != tuple(reversed(orientation_b[k])) for k in second):
         raise ValueError("source paired iso-interface has wrong face winding")
     coords_a = {
         a["keys"][vertex]: a["xyz"][vertex]
@@ -134,8 +132,7 @@ def _iso_source_paired_seam(a, ca, b, cb, iso_level, subset=False):
         raise ValueError("source paired physical world coordinates disagree")
     ordered = _ordered_original_seam_keys(second)
     length = sum(
-        float(np.linalg.norm(coords_a[start] - coords_a[end]))
-        for start, end in second
+        float(np.linalg.norm(coords_a[start] - coords_a[end])) for start, end in second
     )
     return {
         "source_plane_z_mm": iso_level,
@@ -145,9 +142,7 @@ def _iso_source_paired_seam(a, ca, b, cb, iso_level, subset=False):
         "matching_original_source_seam_edge_keys": [
             [list(start), list(end)] for start, end in sorted(second)
         ],
-        "original_source_3d_ordered_ring_vertex_keys": [
-            list(key) for key in ordered
-        ],
+        "original_source_3d_ordered_ring_vertex_keys": [list(key) for key in ordered],
         "original_source_3d_ordered_ring_xyz_mm": [
             coords_a[key].tolist() for key in ordered
         ],
@@ -170,9 +165,7 @@ def _iso_source_surface_graph_width(zone, component, low, high):
     rows = np.r_[a, b, np.full(len(lower), origin), lower]
     cols = np.r_[b, a, lower, np.full(len(lower), origin)]
     weights = np.r_[distances, distances, np.full(2 * len(lower), 1e-12)]
-    graph = coo_matrix(
-        (weights, (rows, cols)), shape=(origin + 1, origin + 1)
-    ).tocsr()
+    graph = coo_matrix((weights, (rows, cols)), shape=(origin + 1, origin + 1)).tocsr()
     result = dijkstra(graph, directed=False, indices=origin)[upper]
     if not np.isfinite(result).all():
         raise ValueError("source non-horizontal ear root graph is disconnected")
@@ -231,9 +224,7 @@ def _one_side(zones, parts, side):
         0.0,
     )
     upper = _annotated_source_netline(
-        _iso_source_paired_seam(
-            zones["root"], root, zones["above"], cap, 1.0
-        ), 1.0
+        _iso_source_paired_seam(zones["root"], root, zones["above"], cap, 1.0), 1.0
     )
     graph = _iso_source_surface_graph_width(zones["root"], root, 0.0, 1.0)
     return {
