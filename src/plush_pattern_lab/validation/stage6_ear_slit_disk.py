@@ -6,8 +6,8 @@ its immutable source Face ID and physical XYZ. No industrial cutting authority.
 
 from __future__ import annotations
 
-from hashlib import sha256
 import json
+from hashlib import sha256
 
 import numpy as np
 from scipy.sparse import coo_matrix
