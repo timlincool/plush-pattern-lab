@@ -303,6 +303,10 @@
         {
           "path": "experiments/stage6_ear_root_slit_lscm_20261112/summary.json",
           "kind": "three_trusted_actual_stage6_4_3_2_main_source_2d_lscm_original_faceIDs_12_topological_disks_no_overlap_but_seam_length_mismatch_and_2d_strain_numeric_envelope"
+        },
+        {
+          "path": "docs/STAGE6_FREE_EXTERNAL_UV_BENCHMARK.md",
+          "kind": "external_no_license_fee_Blender_4_3_2_ABF_Conformal_vs_existing_LSCM_same_twelve_real_source_disks_pending_trusted_main"
         }
       ],
       "blockers": [
@@ -1287,6 +1291,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发",
+      "action": "暂停自研UV数值求解器的功能膨胀，优先从同一受信Stage6 12个真实N15/N17源环面Euler1研究圆盘测试官方免费Blender 4.3.2 ANGLE_BASED/CONFORMAL，统一用原来的2D边长P95、两侧同源净缝长度差、面翻转/面积重叠和原SourceID完整性对照。成果以受信main实验JSON和SHA为准；不使用收费服务/闭源代码。只在外部原生求解器同时改善应变和净缝、无拓扑回退时考虑替换默认自研算法；否则转向成熟纸样模板/双侧缝线设计契约，而不是继续换纯UV算法。P3保持in_progress、P4不开始。",
+      "done_when": "12个同Source三角形×自研LSCM、官方Blender ABF和Conformal均完成相同数值审计、没有额外切缝或非连通的UV图岛，记录各方法的P95应变/两侧净缝误差/重叠/时耗、对应源SHA和需要的工艺下一步"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发+设计确认",
       "action": "2026-11-12三次可信Stage6 Blender 4.3.2 main #43208785020/#43208995243/#43209510152 已完成四片真N15/N17原3D耳根环带×内/后/外三条Source内部边侧开缝共12项，保留真实Source FaceID，已生成Euler1单边界2D拓扑研究面，LC/LSCM经固定锚点+全局单尺度校正、逐三角面积重叠/翻面、同源3D切口的两侧**真实2D**净线长度对账。12项虽暂无2D面正面积重叠、未见翻转，但P95原3D边长到2D长度偏差22.84–41.23%，**双侧同源2D净缝总长不匹配3.03–38.63%**，其中N15左后侧上下缝二维采样点最近距11.509mm，当前12张研究单片均不批准制造。原源JSON/SVG三Run一致，LSCM浮点存在~3.35e-7mm最小数值漂移，可信量测及每轮SHA已归档experiments/stage6_ear_root_slit_lscm_20261112/summary.json。下一开发必须结合独立内外耳/云团的真实装配及原设计正侧背顶签核，再选原3D分片和双方2D净缝匹配约束，需有厂家真实毛绒面料伸长/厚度/回弹样本、有效6mm缝份、绒向、翻面/返口与填充实缝。不得仅改善LSCM可视化就晋升P3/P4；原Blend/四蹄4×512、下腹13片和历史否证不动。",
       "done_when": "真实Z230三个原主壳源边闭合环能与完整41产品Mesh/正式设计正侧背顶对应到工艺身份，头盖和侧突出结构独立母版具真实源边/净缝位置及材料测试/返口记录，A/B与原源环形/三维外观差异改善并可重算"
@@ -1565,6 +1576,11 @@
       "date": "2026-11-12",
       "event": "三次受信main Stage6真实原Root 3D源网格12条侧开缝→Euler1单边界圆盘→稀疏LSCM 2D，644项软件CI通过，无面重叠/翻转但二维双侧同源切线差3–39%、边长P95偏差23–41%，完整原输入和研究SVG bitwise相同、LSCM数值微差公开容差；永久归档并保持工厂P4禁止",
       "evidence_path": "experiments/stage6_ear_root_slit_lscm_20261112/summary.json"
+    },
+    {
+      "date": "2026-11-12",
+      "event": "按节约成本的技术选型策略增加原生免费Blender ABF/Conformal对照，自研Source检查继续复用、无第三方收费/付费授权；同一12个Stage6真实根带源圆盘在可信main待测，P3/P4状态不升级",
+      "evidence_path": "docs/STAGE6_FREE_EXTERNAL_UV_BENCHMARK.md"
     }
   ]
 }
