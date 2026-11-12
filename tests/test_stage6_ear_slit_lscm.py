@@ -47,6 +47,7 @@ def _synthetic_source_annulus(side="left", n=12):
         "each_derived_face_original_triangle_id": list(range(2 * n)),
         "not_industrial_2d_paper_pattern": True,
     }
+
     def boundary(indices):
         return {
             "original_source_3d_ordered_ring_vertex_keys": [
