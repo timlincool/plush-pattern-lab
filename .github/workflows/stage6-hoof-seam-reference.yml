@@ -39,6 +39,7 @@ on:
       - 'scripts/audit_stage6_ear_dart_paths_41mesh.py'
       - 'scripts/audit_stage6_true_ear_root_band_cut.py'
       - 'scripts/audit_stage6_nonhorizontal_ear_root.py'
+      - 'scripts/audit_stage6_ear_slit_lscm.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -1152,6 +1153,51 @@ jobs:
           assert report['factory_cutting_patterns_approved'] == 0
           assert report['P3_status'] == 'in_progress' and report['P4_status'] == 'not_started'
           print('STAGE6_TRUE_SLOPED_SOURCE_3D_SEAMS_MATCH_BUT_EAR_RIM_NEEDS_MATERIAL_REDESIGN')
+          PY
+      - name: Open and flatten twelve original Stage6 ear-root source 3D disks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_stage6_ear_slit_lscm.py \
+            --source "$RUNNER_TEMP/stage6-reference/true_stage6_nonhorizontal_ear_root_paired_3d.json" \
+            --visibility "$RUNNER_TEMP/stage6-reference/ear_root_ab_41mesh_visibility.json" \
+            --reference experiments/stage6_nonhorizontal_ear_root_20261112/summary.json \
+            --output "$RUNNER_TEMP/stage6-reference/true_stage6_ear_root_slit_lscm_research.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/true_stage6_ear_root_slit_lscm_research.svg"
+          python - <<'PY'
+          import json, hashlib, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          report = json.loads((root/'true_stage6_ear_root_slit_lscm_research.json').read_text(encoding='utf8'))
+          rows = report['candidate_2d_research_disks']
+          assert report['schema'] == 'stage6-ear-root-genuine-source-disk-lscm-research-v1'
+          assert len(rows) == 12
+          assert {(r['source_variant'],r['original_source_side'],r['source_slit_direction'])
+                  for r in rows} == {
+              (study,side,route)
+              for study in ('N15_sloped_source_band','N17_sloped_source_band')
+              for side in ('left','right')
+              for route in ('medial','posterior','lateral')}
+          assert report['same_run_nonhorizontal_3d_source_report_sha256'] == hashlib.sha256(
+              (root/'true_stage6_nonhorizontal_ear_root_paired_3d.json').read_bytes()).hexdigest()
+          assert report['same_run_41mesh_visibility_sha256'] == hashlib.sha256(
+              (root/'ear_root_ab_41mesh_visibility.json').read_bytes()).hexdigest()
+          assert all(r['source_3d_cut_length_mm'] > 15 and
+              r['original_source_planar_face_geometry_diagnostics']['reversed_or_collapsed_triangle_count'] == 0 and
+              r['original_source_planar_face_geometry_diagnostics']['overlapping_positive_area_triangle_pair_count'] == 0 and
+              r['true_source_seam_3d_vs_lscm_2d_pairing']['original_source_cut_edge_has_exactly_two_oppositely_oriented_disk_sides'] and
+              r['uniform_scale_normalized_edge_diagnostics']['p95_above_10percent_research_screen'] and
+              r['true_source_seam_3d_vs_lscm_2d_pairing']['2d_netline_pair_exceeds_3percent_research_screen'] and
+              r['not_a_factory_cutting_or_sewing_approval'] for r in rows)
+          assert any(r['two_seams_2d_6mm_allowance_vertex_screen'][
+              'below_two_nominal_6mm_allowances_in_2d_vertex_screen'] for r in rows)
+          assert report['source_3d_netlines_matched_but_2d_sewn_netlines_not_verified']
+          assert report['factory_cutting_patterns_approved'] == 0
+          assert report['P3_status'] == 'in_progress'
+          assert report['P4_status'] == 'not_started'
+          atlas = (root/'true_stage6_ear_root_slit_lscm_research.svg').read_bytes()
+          assert hashlib.sha256(atlas).hexdigest() == report['research_svg_sha256']
+          assert b'NO CUTTING PATTERNS' in atlas
+          print('STAGE6_REAL_SOURCE_TOPOLOGICAL_DISKS_AND_LSCM_SEAM_STRAIN_REJECT_P4')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
