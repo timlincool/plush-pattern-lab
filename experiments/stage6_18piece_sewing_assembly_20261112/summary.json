@@ -1,0 +1,91 @@
+{
+  "schema": "stage6-18-piece-toile-source-sewing-graph-three-real-runs-v1",
+  "experiment_date_utc": "2026-11-12",
+  "original_public_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "original_25pct_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "method": "Existing 13 lower (YOKE, 4 LEG, 4 provisional flat SOLE, 4 BAND) plus existing 4 upper gores and 1 synthetic TOP-CAP, exact verified original nine A4 210mm x 297mm SVG sheets, each sourced from same-run SHA-checked original Stage6 fixed PLY. 32 indexed 2D digital seam Interface pairs with one-use edge identities, independent lower and upper QC, print calibration and 10-step research assembly instructions. No industrial or physical sewing claim.",
+  "trusted_python_ci": {
+    "run_id": 43256293929,
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43256293929",
+    "conclusion": "success",
+    "tests_passed": 676,
+    "ruff_complexity_and_wheel": "PASS"
+  },
+  "three_trusted_original_stage6_blender_4_3_2_runs": [
+    {
+      "run_id": 43255281019,
+      "commit_sha": "6bb0e4a263b7c0f71d28f27df2d74c52654fd27a",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43255281019",
+      "artifact_id": 13961593054,
+      "full_stage6_artifact_sha256": "e2baa813938e3210fa52fe8514532ec48ddf784e60f58b8ef6bad552e4ddf833"
+    },
+    {
+      "run_id": 43255652947,
+      "commit_sha": "c1aef3dad42383dd0a3a1c770062f3966c68f794",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43255652947",
+      "artifact_id": 13961936155,
+      "full_stage6_artifact_sha256": "86c17a97ba4309c3c16a4f773c6839b4872101d19d1826ba67f0b4e4a84837e2"
+    },
+    {
+      "run_id": 43256294219,
+      "commit_sha": "40022643f9ec44c7d1f07ea742eaa806131d3a92",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43256294219",
+      "artifact_id": 13961089404,
+      "full_stage6_artifact_sha256": "86109da699e5c8061b1091c49eef68eff6aa1ec69313a4515afb7d5c4419d82e"
+    }
+  ],
+  "all_thirteen_research_pack_file_bytes_identical_across_three_trusted_runs": true,
+  "full_stage6_artifact_zips_byte_identical": false,
+  "research_pack_member_sha256": {
+    "assembly_map_RESEARCH_ONLY.svg": "6e071af435a2ce32872598a37654e08332510e982000a0d43302e6e70a62a4a7",
+    "manifest.json": "abc601a24496248126fd4b19ca6b7dd518e11d1267b39639097e851bf0e10d5e",
+    "panel_interface_research_graph.json": "f7dad62ca41a6354e2c1b44a01c721c8acc39b6c7bed6554a343f4dae4083e48",
+    "print/sheet-01.svg": "2993d35af0eba0cf65acc8eff1fe7a1c2af19c4ca8ee6110d9bd958f2414adee",
+    "print/sheet-02.svg": "d263291403bc968abfb2386499adc2d94b02732f29ad0ba2d629720a1729dd1f",
+    "print/sheet-03.svg": "8be1b060fd68d8b5d263f67d7994d55d92fab6a065123e161df8951b90737a53",
+    "print/sheet-04.svg": "73d83d3dfa8b9d7086c6cc9f74aebace2407618e317931e33d738b3ea2897ee1",
+    "print/sheet-05.svg": "77eac3d44bcbedf9b5a8edff58ef867dccd37f986354d1f1d69381b230cdc4a0",
+    "print/sheet-06.svg": "1c54fdce60ee9d8d8c8e53d006f0996914f669ee86a253c59a1dd2958e17003b",
+    "print/sheet-07.svg": "5383bcaa85ba7869b59f060fae5ca2b4a55de98cd08a3175627f0f5c94c8b417",
+    "print/sheet-08.svg": "4bf11df774243995add2ad4b17f5c58c9b092951dcaa841d92303135b48331d5",
+    "print/sheet-09.svg": "10c1947701471ddb5b685cb21597473097bfa6386df1ccb9796b268021078fa1",
+    "sewing_sequence_RESEARCH_ONLY.md": "9c85250ac74b0f1ad364c12f13ea5b01d7a46da90ecac11ac4ca9c67264a5c2f"
+  },
+  "source_same_run_provenance": {
+    "lower_source_json_sha256": "1427c7bdfc376431378e516f90540cb56e3b9adfb4695a3d5858c584041eea59",
+    "upper_source_json_sha256": "a6e52ba73ab3590160cb307294362052ac2a19b95b304c38ed06288d4b8604f4",
+    "lower_original_manifest_sha256": "cf78c9a0118bf004a998d04b0e9606dc506a9c86651a566f9c75a988f7807a27",
+    "upper_original_manifest_sha256": "93f243339d5c7e06083f2ffafba8206557a054381fdb2153ce3f0e39a5ebc850"
+  },
+  "existing_trial_piece_count": 18,
+  "original_research_printable_A4_sheet_count": 9,
+  "stitch_interface_pair_count": 32,
+  "interface_pair_kinds_each_four": [
+    "hoof_yoke_to_sleeve",
+    "synthetic_flat_sole_to_sleeve",
+    "sleeve_self_close",
+    "yoke_outer_to_lower_band",
+    "band_vertical_side_join",
+    "lower_band_to_upper_gore",
+    "upper_gore_vertical_side_join",
+    "upper_to_research_head_cap"
+  ],
+  "source_real_hoof_open_rings_each_512_edges": 4,
+  "maximum_numerical_2d_segment_mismatch_mm": 1.7763568394002505e-14,
+  "intended_not_yet_physically_tested_return_gap_mm": 42.486800786171315,
+  "measured_original_Stage6_neck_profile_center_jump_mm": 71.38606783526528,
+  "original_3d_surrogate_meridian_vs_2d_stitch_length_mismatch_mm": 89.1207542601966,
+  "original_head_neck_sculpt_correctly_reproduced": false,
+  "four_real_3d_rounded_hoof_cap_patterns_completed": false,
+  "two_inner_outer_ears_seven_clouds_tail_eyes_ten_drops_and_ten_straps_connected": false,
+  "fabric_physical_stitching_stuffing_and_factory_validation_completed": false,
+  "this_is_existing_2d_surrogate_not_new_source_flattening": true,
+  "downloadable_minimal_nine_A4_32seam_research_pack_sha256": "4f8a14f243ca6d5c06189abb99b63f3c6c98f2b6769243529c2513c9b6800f2f",
+  "manufacturer_cutting_patterns_approved": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "next_gate": "Keep the current 13-piece lower genuine hoof stitch source, replace misfit four-gore head-and-neck UPPER surrogate using original four view designs and plausible fabric 2D sewing templates. Do not promote this 18-piece digital graph to factory approval without real material, neck, ears/clouds, 3D shape and trial sewing evidence."
+}
