@@ -97,9 +97,7 @@ def test_invalid_sloping_source_proposal_or_cut_is_rejected(bad):
         with pytest.raises(ValueError, match="too narrow"):
             _physical_cut_surfaces(xyz, 230, 235, 0)
     elif bad == "vertex_cut":
-        xyz[0, 2] = 228.5 + 1.5 * np.clip(
-            (xyz[0, 1] + 45) / 15, -1, 1
-        )
+        xyz[0, 2] = 228.5 + 1.5 * np.clip((xyz[0, 1] + 45) / 15, -1, 1)
         with pytest.raises(ValueError, match="through source vertex"):
             _physical_cut_surfaces(xyz, *STUDIES[0][1:])
     elif bad == "nonfinite":
