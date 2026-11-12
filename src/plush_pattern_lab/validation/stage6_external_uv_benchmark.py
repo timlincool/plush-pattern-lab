@@ -60,10 +60,13 @@ def _validate_native(native, source_hash, source):
     ):
         raise ValueError("external native UV result not on same trusted Stage6 source")
     items = native["entries"]
-    if len(items) != 24 or len(
-        {(_identity(item), item["method"]) for item in items}
-    ) != 24:
-        raise ValueError("must include exactly twelve source disks x two native methods")
+    if (
+        len(items) != 24
+        or len({(_identity(item), item["method"]) for item in items}) != 24
+    ):
+        raise ValueError(
+            "must include exactly twelve source disks x two native methods"
+        )
     if any(item["method"] not in METHODS for item in items):
         raise ValueError("unrecognized Blender native solver")
     return items
@@ -141,7 +144,8 @@ def _metrics(row, uv, method):
             length_stats["scaled_2d_p95_abs_edge_relative_error"] <= 0.10
             and seam_stats[
                 "scaled_planar_2d_two_sides_length_mismatch_fraction_of_source_3d"
-            ] <= 0.03
+            ]
+            <= 0.03
             and faces_stats["reversed_or_collapsed_triangle_count"] == 0
             and faces_stats["overlapping_positive_area_triangle_pair_count"] == 0
         ),
@@ -186,25 +190,31 @@ def compare_native_to_existing(source, native, source_file_sha256):
             entry.get("source_patch_sha256")
             != reference[key]["original_source_patch_sha256"]
             or entry.get("status") != "completed"
-            or entry["vertex_count"]
-            != len(reference[key]["cut_disk_source_xyz_mm"])
+            or entry["vertex_count"] != len(reference[key]["cut_disk_source_xyz_mm"])
             or entry["triangle_count"]
             != len(reference[key]["cut_disk_original_source_triangle_indices"])
         ):
             raise ValueError("native result does not preserve source triangulation")
         grouped[key][entry["method"]] = entry
     rows = []
-    improvements = {method: {"lower_p95_edge_error": 0,
-                             "lower_seam_mismatch": 0,
-                             "better_both": 0,
-                             "research_gates_passed": 0}
-                    for method in METHODS}
+    improvements = {
+        method: {
+            "lower_p95_edge_error": 0,
+            "lower_seam_mismatch": 0,
+            "better_both": 0,
+            "research_gates_passed": 0,
+        }
+        for method in METHODS
+    }
     for key, source_row in reference.items():
         baseline = _original_method(source_row)
         options = []
         for method in METHODS:
             entry = grouped[key][method]
-            if entry["max_same_topological_vertex_uv_loop_disagreement"] > MAX_UV_VERTEX_DISAGREEMENT:
+            if (
+                entry["max_same_topological_vertex_uv_loop_disagreement"]
+                > MAX_UV_VERTEX_DISAGREEMENT
+            ):
                 # A chart split invalidates the use of ONE UV per original disk vertex.
                 raise ValueError("Blender UV added an unaccounted-for internal UV seam")
             uv = np.asarray(entry["uv_per_original_source_disk_vertex"], dtype=float)
@@ -228,13 +238,15 @@ def compare_native_to_existing(source, native, source_file_sha256):
             candidate["compared_to_existing_lscm"] = improvement
             candidate["blender_runtime_seconds"] = entry["runtime_seconds"]
             options.append(candidate)
-        rows.append({
-            "source_variant": key[0],
-            "source_side": key[1],
-            "original_source_slit": key[2],
-            "existing_solver": baseline,
-            "external_blender_solvers": options,
-        })
+        rows.append(
+            {
+                "source_variant": key[0],
+                "source_side": key[1],
+                "original_source_slit": key[2],
+                "existing_solver": baseline,
+                "external_blender_solvers": options,
+            }
+        )
     return {
         "schema": SCHEMA,
         "source_original_3d_source_mesh_and_cut_ids_unchanged": True,
@@ -259,12 +271,16 @@ def fingerprint_source_bytes(path):
 
 def render_comparison_svg(report):
     """Small scoreboard chart from measured values, no generated cut pattern."""
-    if report.get("schema") != SCHEMA or len(
-        report.get("full_same_metric_comparisons", [])
-    ) != 12:
+    if (
+        report.get("schema") != SCHEMA
+        or len(report.get("full_same_metric_comparisons", [])) != 12
+    ):
         raise ValueError("expected all twelve source-disk comparisons")
-    colors = {"EXISTING_LSCM": "#56677b", "ANGLE_BASED": "#256ea6",
-              "CONFORMAL": "#bd7a28"}
+    colors = {
+        "EXISTING_LSCM": "#56677b",
+        "ANGLE_BASED": "#256ea6",
+        "CONFORMAL": "#bd7a28",
+    }
     width, height = 1390, 850
     out = [
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
@@ -276,22 +292,28 @@ def render_comparison_svg(report):
         'fill="#ae3430">SOURCE-IDENTICAL RESEARCH ONLY / NO FACTORY PATTERNS</text>',
     ]
     rows = report["full_same_metric_comparisons"]
-    headings = [("P95 source-edge length error", "scaled_2d_p95_abs_edge_relative_error"),
-                ("2D source cut side length mismatch", "2d_two_sides_length_mismatch_fraction_of_source_3d")]
+    headings = [
+        ("P95 source-edge length error", "scaled_2d_p95_abs_edge_relative_error"),
+        (
+            "2D source cut side length mismatch",
+            "2d_two_sides_length_mismatch_fraction_of_source_3d",
+        ),
+    ]
     for axis, (name, field) in enumerate(headings):
         x0 = 24 + axis * 694
         out.append(
             f'<text x="{x0}" y="103" font-family="sans-serif" font-size="15">'
-            f'{name} (lower is better)</text>'
+            f"{name} (lower is better)</text>"
         )
         allvalues = [
-            value[field] for row in rows
+            value[field]
+            for row in rows
             for value in [row["existing_solver"], *row["external_blender_solvers"]]
         ]
         scale = 465 / max(max(allvalues), 0.01)
         for i, row in enumerate(rows):
             y = 136 + i * 53
-            label = f'{row["source_variant"][-3:]} {row["source_side"][0]} {row["original_source_slit"][0:4]}'
+            label = f"{row['source_variant'][-3:]} {row['source_side'][0]} {row['original_source_slit'][0:4]}"
             out.append(
                 f'<text x="{x0}" y="{y + 23}" font-family="sans-serif" '
                 f'font-size="11" fill="#41566a">{label}</text>'
@@ -305,10 +327,12 @@ def render_comparison_svg(report):
                     f'<rect x="{x0 + 132}" y="{ybase}" width="{bar:.2f}" height="9" '
                     f'fill="{colors[value["method"]]}"/>'
                 )
-    out.extend([
-        '<text x="26" y="827" font-family="sans-serif" font-size="12" '
-        'fill="#526579">Grey: original in-repo LSCM | Blue: Blender ABF | '
-        'Ochre: Blender Conformal. Metrics use SAME physical source triangles.</text>',
-        "</svg>",
-    ])
+    out.extend(
+        [
+            '<text x="26" y="827" font-family="sans-serif" font-size="12" '
+            'fill="#526579">Grey: original in-repo LSCM | Blue: Blender ABF | '
+            "Ochre: Blender Conformal. Metrics use SAME physical source triangles.</text>",
+            "</svg>",
+        ]
+    )
     return "\n".join(out) + "\n"
