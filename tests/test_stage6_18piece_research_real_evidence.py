@@ -25,7 +25,9 @@ def test_three_trusted_source_stage6_runs_replay_same_thirteen_pack_files():
     ]
     assert all(row["conclusion"] == "success" for row in runs)
     assert len({row["full_stage6_artifact_sha256"] for row in runs}) == 3
-    assert report["all_thirteen_research_pack_file_bytes_identical_across_three_trusted_runs"]
+    assert report[
+        "all_thirteen_research_pack_file_bytes_identical_across_three_trusted_runs"
+    ]
     assert not report["full_stage6_artifact_zips_byte_identical"]
     checksums = report["research_pack_member_sha256"]
     assert len(checksums) == 13
@@ -62,4 +64,6 @@ def test_real_source_digital_sewing_graph_must_not_authorize_factory_patterns():
     assert record["manufacturer_cutting_patterns_approved"] == 0
     assert not progress["overall"]["factory_sample_pack_ready"]
     assert record["this_is_existing_2d_surrogate_not_new_source_flattening"]
-    assert not record["fabric_physical_stitching_stuffing_and_factory_validation_completed"]
+    assert not record[
+        "fabric_physical_stitching_stuffing_and_factory_validation_completed"
+    ]
