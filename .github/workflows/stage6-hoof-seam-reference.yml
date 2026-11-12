@@ -28,6 +28,7 @@ on:
       - 'scripts/audit_stage6_b2_reroute_visibility.py'
       - 'scripts/build_stage6_lower_mother_toile.py'
       - 'scripts/build_stage6_upper_mother_toile.py'
+      - 'scripts/build_stage6_18piece_sewing_pack.py'
       - 'scripts/build_stage6_split_volume_toile_ab.py'
       - 'scripts/audit_stage6_true_source_sections.py'
       - 'scripts/audit_stage6_section_mesh_correspondence.py'
@@ -700,6 +701,53 @@ jobs:
               'approved':False
           }))
           PY
+      - name: Build one source-checked 18-piece Panel Interface trial pack, no new patterns
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_stage6_18piece_sewing_pack.py \
+            --lower-dir "$RUNNER_TEMP/stage6-reference/lower_mother_toile_research" \
+            --upper-dir "$RUNNER_TEMP/stage6-reference/upper_mother_toile_research" \
+            --out-dir "$RUNNER_TEMP/stage6-reference/18piece_trial_sewing_pack"
+          python - <<'PY'
+          import hashlib, json, os, pathlib, xml.etree.ElementTree as ET
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          pack = root/'18piece_trial_sewing_pack'
+          data = json.loads((pack/'panel_interface_research_graph.json').read_text(encoding='utf8'))
+          index = json.loads((pack/'manifest.json').read_text(encoding='utf8'))
+          assert data['schema'] == 'stage6-18piece-panel-interface-research-assembly-v1'
+          assert len(data['all_pieces']) == data['total_research_pieces'] == 18
+          assert len(data['paired_stitch_interfaces']) == data['paired_interface_count'] == 32
+          assert len({p['id'] for p in data['all_pieces']}) == 18
+          assert len({x['first'] for x in data['paired_stitch_interfaces']}) == 32
+          assert all(x['max_segment_disagreement_mm'] <= 1e-4
+                     and not x['physical_stitching_proven']
+                     for x in data['paired_stitch_interfaces'])
+          assert len([x for x in data['paired_stitch_interfaces']
+                      if x['kind'] == 'hoof_yoke_to_sleeve']) == 4
+          assert all(x['segment_count'] == 512 for x in data['paired_stitch_interfaces']
+                     if x['kind'] in ('hoof_yoke_to_sleeve',
+                                     'synthetic_flat_sole_to_sleeve'))
+          assert data['critical_original_source_neck_center_jump_mm'] > 50
+          assert data['original_3d_meridian_vs_surrogate_2d_mismatch_mm'] > 50
+          assert index['stitched_2d_interface_pairs'] == 32
+          assert index['total_research_paper_parts'] == 18
+          assert index['printed_A4_page_count'] == 9
+          for name, sha in index['each_asset_SHA256'].items():
+              target = pack/name
+              assert target.is_file()
+              assert hashlib.sha256(target.read_bytes()).hexdigest() == sha
+          sheets = sorted((pack/'print').glob('sheet-*.svg'))
+          assert len(sheets) == 9
+          for item in sheets:
+              attrs = ET.parse(item).getroot().attrib
+              assert attrs['width'] == '210mm' and attrs['height'] == '297mm'
+              assert attrs['viewBox'] == '0 0 210 297'
+          assert 'NOT approved patterns' in (pack/'assembly_map_RESEARCH_ONLY.svg').read_text()
+          assert data['factory_cut_patterns_approved'] == 0
+          assert data['P3_status'] == 'in_progress' and data['P4_status'] == 'not_started'
+          print('STAGE6_18_EXISTING_RESEARCH_PANELS_32_SEAMS_9_A4_NOT_FACTORY')
+          PY
       - name: Compare separate stuffed head vs integrated shoulder-port head on real source
         shell: bash
         run: |
@@ -1279,6 +1327,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/*.png
             ${{ runner.temp }}/stage6-reference/lower_mother_toile_research/**
             ${{ runner.temp }}/stage6-reference/upper_mother_toile_research/**
+            ${{ runner.temp }}/stage6-reference/18piece_trial_sewing_pack/**
             ${{ runner.temp }}/stage6-reference/split_volume_toile_AB_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.svg
