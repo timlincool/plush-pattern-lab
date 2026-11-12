@@ -315,7 +315,10 @@ def render_comparison_svg(report):
         scale = 465 / max(max(allvalues), 0.01)
         for i, row in enumerate(rows):
             y = 136 + i * 53
-            label = f"{row['source_variant'][-3:]} {row['source_side'][0]} {row['original_source_slit'][0:4]}"
+            label = (
+                f"{row['source_variant'].split('_', 1)[0]} "
+                f"{row['source_side'][0]} {row['original_source_slit'][0:4]}"
+            )
             out.append(
                 f'<text x="{x0}" y="{y + 23}" font-family="sans-serif" '
                 f'font-size="11" fill="#41566a">{label}</text>'

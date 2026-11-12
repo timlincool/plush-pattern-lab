@@ -103,7 +103,9 @@ def test_free_native_two_solver_twelve_original_disk_matrix_complete(monkeypatch
         assert (
             measured["method_comparison_summary"][method]["research_gates_passed"] == 0
         )
-    assert "NO FACTORY PATTERNS" in bench.render_comparison_svg(measured)
+    chart = bench.render_comparison_svg(measured)
+    assert "NO FACTORY PATTERNS" in chart
+    assert "N15 l medi" in chart and "N17 r late" in chart
 
 
 @pytest.mark.parametrize(
