@@ -1,6 +1,6 @@
 # Stage6 原主壳非水平耳根过渡带：两项真实三维切面研究（P3）
 
-**状态：2026-11-12，固定SHA原25% Stage6 PLY已在本地独立实跑；受信 main 完整 Blender/CI 尚待核验。属于原3D源面研究，不是可裁布版型。**
+**状态：2026-11-12，两次受信 main Blender 4.3.2 原Stage6完整验证成功，非水平根片JSON/SVG及全部上游七份原始文件SHA逐字节一致；最新可信Python CI 624项通过。属于原3D源面研究，不是可裁布版型。**
 
 ## 第一性问题：根带增加宽度是否真的解决了制造问题？
 
@@ -37,6 +37,16 @@
 ### 新发现：缝间宽度与耳尖宽度不能混为一谈
 
 当我们把根带加高，底部“5mm宽两缝太近”问题改善，却把上缘切到了更细的耳状曲面：上缘XY最窄约6–7mm，**小于双侧各6mm的12mm合计**。这不是已展平布片的有效宽度，也不构成绝对不可缝的几何定理；它说明根片必须与实际**外耳/内耳独立Mesh、云层装配、布料厚度和折边工艺**共同设计，不能仅看源网格图距离大于12mm就宣称工厂纸样可用。
+
+
+## 两次原 Stage6 完整复算（2026-11-12 UTC）
+
+- [可信 Stage6 Run #43190504878](https://github.com/timlincool/plush-pattern-lab/actions/runs/43190504878) 与 [Run #43190708654](https://github.com/timlincool/plush-pattern-lab/actions/runs/43190708654) 均 **success**；此前误用水平Source净缝身份的 [失败Run #43189646252](https://github.com/timlincool/plush-pattern-lab/actions/runs/43189646252) 仍保留为负例。
+- 原非水平根片完整3D三角面 JSON、配缝图 SVG、之前的水平根片、原A/B切片、41产品Mesh、13层真源detail及summary：**共七份原始文件在两次可信运行中逐字节SHA-256相同**，但完整Action ZIP哈希不同。
+- 永久证据 [Stage6非水平切片两轮实测](../experiments/stage6_nonhorizontal_ear_root_20261112/summary.json) 保存两Run、commit、Artifact ID、七份源SHA、四个派生3D网格独立哈希、八道配对源边SHA、真实原World XYZ和缝长、原网格图宽度/上缘XY窄区。本轮 [可信 Python CI #43190708553](https://github.com/timlincool/plush-pattern-lab/actions/runs/43190708553) **624/624项通过**。
+- 分割后全部原源表面积仍为106316.13853493183mm²，N15/N17各自面积重建误差不超过1.46e-11mm²；源3D接缝与原邻件的source edge ID/反向面绕向/真实XYZ位置误差0。
+
+**P3决策：** 非水平N15/N17修复了“源曲面带太窄”的局部几何指标，却没有让上缘约6–7mm宽的耳状源壳自动具备双侧各6mm的有效二维缝份。应将“上缘缝份与独立内外耳装配”视为单独阻塞，不允许依据图最短路径>12mm自动批准任何工业2D纸样。
 
 ### 当前可信边界与下一门槛
 
