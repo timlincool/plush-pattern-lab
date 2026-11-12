@@ -14,9 +14,11 @@ from pathlib import Path
 from plush_pattern_lab.validation.component_inventory import SOURCE_SHA256
 from plush_pattern_lab.validation.stage6_ear_slit_disk import (
     ROUTES,
-    SCHEMA as SOURCE_SCHEMA,
     STUDIES,
     create_source_slit_disk,
+)
+from plush_pattern_lab.validation.stage6_ear_slit_disk import (
+    SCHEMA as SOURCE_SCHEMA,
 )
 from plush_pattern_lab.validation.stage6_ear_slit_lscm import (
     SCHEMA,
