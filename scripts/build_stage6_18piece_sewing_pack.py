@@ -72,11 +72,7 @@ def _original_sheets(lower_dir, upper_dir):
             raise ValueError("paper sheet must be exactly A4 at 1:1 scale")
         if b'width="10" height="10"' not in data or b"calibration" not in data.lower():
             raise ValueError("original research sheet lacks 10x10mm calibration")
-        if any(
-            b"<script" in data.lower()
-            or b"foreignobject" in data.lower()
-            for _ in (0,)
-        ):
+        if b"<script" in data.lower() or b"foreignobject" in data.lower():
             raise ValueError("untrusted active content inside original print page")
         assets[f"print/sheet-{i + 1:02d}.svg"] = data
     return assets
