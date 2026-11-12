@@ -38,19 +38,21 @@ def _fixture():
                 }
                 rows.append(original)
                 for method in bench.METHODS:
-                    results.append({
-                        "source_variant": name,
-                        "source_side": side,
-                        "slit_direction": direction,
-                        "source_patch_sha256": f"{a}{side}",
-                        "method": method,
-                        "status": "completed",
-                        "vertex_count": 24,
-                        "triangle_count": 32,
-                        "max_same_topological_vertex_uv_loop_disagreement": 0.0,
-                        "uv_per_original_source_disk_vertex": [[0.0, 0.0]] * 24,
-                        "runtime_seconds": 0.2,
-                    })
+                    results.append(
+                        {
+                            "source_variant": name,
+                            "source_side": side,
+                            "slit_direction": direction,
+                            "source_patch_sha256": f"{a}{side}",
+                            "method": method,
+                            "status": "completed",
+                            "vertex_count": 24,
+                            "triangle_count": 32,
+                            "max_same_topological_vertex_uv_loop_disagreement": 0.0,
+                            "uv_per_original_source_disk_vertex": [[0.0, 0.0]] * 24,
+                            "runtime_seconds": 0.2,
+                        }
+                    )
     source = {
         "schema": bench.ORIGINAL_SCHEMA,
         "original_public_blend_sha256": "stage6-fixed-test",
@@ -98,7 +100,9 @@ def test_free_native_two_solver_twelve_original_disk_matrix_complete(monkeypatch
     assert measured["P4_status"] == "not_started"
     for method in bench.METHODS:
         assert measured["method_comparison_summary"][method]["better_both"] == 12
-        assert measured["method_comparison_summary"][method]["research_gates_passed"] == 0
+        assert (
+            measured["method_comparison_summary"][method]["research_gates_passed"] == 0
+        )
     assert "NO FACTORY PATTERNS" in bench.render_comparison_svg(measured)
 
 
@@ -132,17 +136,13 @@ def test_mismatched_free_external_benchmark_fails_closed(monkeypatch, mutate):
     elif mutate == "different_source_patch":
         native["entries"][0]["source_patch_sha256"] = "tampered"
     elif mutate == "new_uv_vertex_split":
-        native["entries"][0][
-            "max_same_topological_vertex_uv_loop_disagreement"
-        ] = 0.01
+        native["entries"][0]["max_same_topological_vertex_uv_loop_disagreement"] = 0.01
     elif mutate == "wrong_source_triangle_count":
         native["entries"][0]["triangle_count"] -= 1
     else:
         native["blender_version"] = "4.5.0"
     with pytest.raises(ValueError):
-        bench.compare_native_to_existing(
-            source, native, "test-immutable-source-sha"
-        )
+        bench.compare_native_to_existing(source, native, "test-immutable-source-sha")
 
 
 def test_native_uv_research_not_just_zero_vertex_array(monkeypatch):
