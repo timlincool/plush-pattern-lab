@@ -57,11 +57,18 @@ def _synthetic_hoof_rings():
 
 def _synthetic_source_slices():
     rows = []
-    for z in (130, 155, 180, 205, 230):
-        theta = 2 * np.pi * np.arange(220) / 220
-        x = 35 * np.cos(theta)
-        y = (48 - z / 4) + 55 * np.sin(theta)
-        rows.extend(np.column_stack((x, y, np.full(220, z))).tolist())
+    slices = (
+        (130, 28, 36, 93),
+        (155, -43, 33, 33),
+        (180, -50, 52, 37),
+        (205, -47, 56, 36),
+        (230, -47, 64, 22),
+    )
+    for z, cy, half_x, half_y in slices:
+        theta = 2 * np.pi * np.arange(180) / 180
+        x = half_x * np.cos(theta)
+        y = cy + half_y * np.sin(theta)
+        rows.extend(np.column_stack((x, y, np.full(180, z))).tolist())
     return np.asarray(rows, dtype=float)
 
 
