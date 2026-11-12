@@ -38,6 +38,7 @@ on:
       - 'scripts/audit_stage6_ear_dart_paths.py'
       - 'scripts/audit_stage6_ear_dart_paths_41mesh.py'
       - 'scripts/audit_stage6_true_ear_root_band_cut.py'
+      - 'scripts/audit_stage6_nonhorizontal_ear_root.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -1104,6 +1105,53 @@ jobs:
           assert hashlib.sha256(svg).hexdigest() == data['root_band_research_svg_sha256']
           assert b'NOT 2D FABRIC REST PATTERNS' in svg
           print('STAGE6_TRUE_SOURCE_3D_PAIRED_EAR_SEAMS_PASS_BUT_BOTH_5MM_ROOT_BANDS_TOO_NARROW')
+          PY
+      - name: Compare original non-horizontal Stage6 ear-root paired 3D surfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/audit_stage6_nonhorizontal_ear_root.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --source-sha256 38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a \
+            --study "$RUNNER_TEMP/stage6-reference/ear_root_ab_source_study.json" \
+            --visibility "$RUNNER_TEMP/stage6-reference/ear_root_ab_41mesh_visibility.json" \
+            --baseline "$RUNNER_TEMP/stage6-reference/true_stage6_ear_root_band_3d_paired_seams.json" \
+            --output "$RUNNER_TEMP/stage6-reference/true_stage6_nonhorizontal_ear_root_paired_3d.json" \
+            --svg "$RUNNER_TEMP/stage6-reference/true_stage6_nonhorizontal_ear_root_paired_3d.svg"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference'
+          report = json.loads((root/'true_stage6_nonhorizontal_ear_root_paired_3d.json').read_text(encoding='utf8'))
+          assert report['schema'] == 'stage6-real-original-source-nonhorizontal-ear-root-paired-3d-v1'
+          assert report['source_original_vertex_count'] == 59306
+          assert report['source_original_triangle_count'] == 116568
+          assert [s['name'] for s in report['proposed_surface_designs']] == [
+              'N15_sloped_source_band','N17_sloped_source_band']
+          assert [[p['actual_original_source_root_band']['derived_source_triangle_count']
+                   for p in s['original_ear_root_patches']]
+                  for s in report['proposed_surface_designs']] == [[1680,1755],[1865,1940]]
+          assert all(s['true_3d_source_zone_component_counts'] == {'below':1,'root':3,'above':2}
+                     and s['source_area_reconstruction_error_mm2'] < 0.0001
+                     for s in report['proposed_surface_designs'])
+          assert all(p['surface_graph_between_3d_netlines'][
+              'fraction_upper_source_seam_under_12mm_graph_width'] == 0.0
+                     and p['surface_graph_between_3d_netlines'][
+              'surface_graph_shortest_path_min_p05_median_p95_max_mm'][0] > 12.0
+                     and p['upper_original_ear_rim_xy_too_narrow_for_automatic_double_6mm_allowance']
+                     and not p['true_manufacturing_2d_pattern_generated']
+                     for s in report['proposed_surface_designs']
+                     for p in s['original_ear_root_patches'])
+          for input_name, field in [
+              ('ear_root_ab_source_study.json','same_run_original_ear_root_study_sha256'),
+              ('ear_root_ab_41mesh_visibility.json','same_run_original_41mesh_visibility_sha256'),
+              ('true_stage6_ear_root_band_3d_paired_seams.json','same_run_previous_narrow_3d_source_band_sha256')]:
+              assert report[field] == hashlib.sha256((root/input_name).read_bytes()).hexdigest()
+          svg = (root/'true_stage6_nonhorizontal_ear_root_paired_3d.svg').read_bytes()
+          assert hashlib.sha256(svg).hexdigest() == report['research_svg_sha256']
+          assert b'NOT 2D FABRIC PATTERNS' in svg
+          assert report['factory_cutting_patterns_approved'] == 0
+          assert report['P3_status'] == 'in_progress' and report['P4_status'] == 'not_started'
+          print('STAGE6_TRUE_SLOPED_SOURCE_3D_SEAMS_MATCH_BUT_EAR_RIM_NEEDS_MATERIAL_REDESIGN')
           PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
