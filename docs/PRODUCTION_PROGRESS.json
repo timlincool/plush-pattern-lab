@@ -351,6 +351,10 @@
         {
           "path": "experiments/stage6_z230_true_crown_20261113/witness.json",
           "kind": "permanent_27kb_source_vertex_id_414_actual_triangle_plane_intersections_z230_3_loops_and_old_AB_cap_pinned_SHA"
+        },
+        {
+          "path": "experiments/stage6_z230_true_crown_20261113/summary.json",
+          "kind": "source_provenance_and_true_414_source_edges_replayed_in_trusted_Python_CI_726_tests_passed_not_factory"
         }
       ],
       "blockers": [
@@ -1422,11 +1426,18 @@
       "not_unwrapped_fabric": true,
       "svg_print_scale": "210x297mm 1:1 diagnostic only",
       "factory_patterns_approved": 0,
-      "status": "independent_original_source_artifact_replay_verified_locally_python_ci_pending",
+      "status": "trusted_main_python_real_414_source_witness_726_tests_all_pass",
       "doc": "docs/STAGE6_REAL_CROWN_Z230_1TO1_REVIEW.md",
       "permanent_witness_sha256": "b561770a6cfeaea33abedc11bfb3992b2fe80b4bf83d10a66459682938af6571",
       "witness_file": "experiments/stage6_z230_true_crown_20261113/witness.json",
-      "reproducible_without_expired_github_artifact": true
+      "reproducible_without_expired_github_artifact": true,
+      "ci_run_id": 43375236743,
+      "ci_commit": "8313cb7bca830651ff5cb4b0633c15ba31211fbd",
+      "ci_conclusion": "success",
+      "tests_passed": 726,
+      "negative_source_and_scale_checks_passed": true,
+      "svg_is_anatomical_source_review_only": true,
+      "permanent_summary": "experiments/stage6_z230_true_crown_20261113/summary.json"
     }
   },
   "next_actions": [
@@ -1813,6 +1824,11 @@
       "date": "2026-11-13",
       "event": "开发原Stage6源Z230头冠分片1:1审阅器：从可信#43359212094原Artifact固定两份SHA读取189/113/112条真实源三角截面交边，重验Source边ID、XY与周长；生成中央/左右三真实闭环与旧A/B单环头顶319.771mm的A4原毫米坐标叠图。旧中央真实闭环仅153.094mm、两环45.52mm，原中央与旧单环Hausdorff38.212mm。仅来源造型对照，不是纸样；生产P3进行中/P4未开始/工厂0。",
       "evidence_path": "docs/STAGE6_REAL_CROWN_Z230_1TO1_REVIEW.md"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "受信 main Python #43375236743 在固定Witness上真实重放原Stage6 414条交边及原A/B顶盖，726项Ruff/复杂度/打包均通过；原source三环(189/113/112、153.094/45.517/45.511mm)与旧单环319.771mm、同高Hausdorff38.212mm已按SHA永久归档，可不依赖7天Action Artifact离线打印审阅。此图不是布片展开或已批准缝线，P3继续/P4未开始，正式纸样0。",
+      "evidence_path": "experiments/stage6_z230_true_crown_20261113/summary.json"
     }
   ]
 }
