@@ -37,7 +37,9 @@ def main():
         or args.output.is_symlink()
         or any(not p.is_file() or p.is_symlink() for p in (args.source, args.caps))
     ):
-        raise ValueError("missing original source or prior ABF output would be overwritten")
+        raise ValueError(
+            "missing original source or prior ABF output would be overwritten"
+        )
     raw = args.source.read_bytes()
     study = json.loads(raw)
     if (
@@ -67,7 +69,10 @@ def main():
             ],
         }
         entries.append(
-            {"route": cap["route"], **_unwrap(shim, cap["id"], cap["source_boundary_edges"])}
+            {
+                "route": cap["route"],
+                **_unwrap(shim, cap["id"], cap["source_boundary_edges"]),
+            }
         )
     result = {
         "schema": OUTPUT_SCHEMA,
@@ -84,7 +89,10 @@ def main():
         json.dumps(result, separators=(",", ":"), ensure_ascii=False) + "\n",
         encoding="utf8",
     )
-    print("STAGE6_FOUR_ORIGINAL_SHORT_DARTS_REAL_BLENDER_ABF_RESEARCH_ONLY", flush=True)
+    print(
+        "STAGE6_FOUR_ORIGINAL_SHORT_DARTS_REAL_BLENDER_ABF_RESEARCH_ONLY",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

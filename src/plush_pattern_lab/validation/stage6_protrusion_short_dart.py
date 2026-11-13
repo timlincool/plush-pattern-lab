@@ -52,7 +52,9 @@ def _source_inputs(caps, full, same_run_caps_sha):
         or full.get("P4_status") != "not_started"
         or len(full.get("variants", [])) != 2
     ):
-        raise ValueError("original unchanged Stage6 source and signed full meridians required")
+        raise ValueError(
+            "original unchanged Stage6 source and signed full meridians required"
+        )
     if [c["id"] for c in caps["upper_caps"][1:]] != list(CAPS):
         raise ValueError("genuine left/right Stage6 caps changed")
     return caps["upper_caps"][1:]
@@ -79,7 +81,9 @@ def _short_original_path(full_meridian, tip_id, route, side, rim):
         or int(chosen[-1]) != tip_id
         or set(chosen[1:]).intersection(set(rim.tolist()))
     ):
-        raise ValueError("partial source slit touches second original Z230 rim point")
+        raise ValueError(
+            "partial source slit touches second original Z230 rim point"
+        )
     return chosen
 
 
@@ -91,7 +95,9 @@ def _cut_source_fans_once(xyz, faces, path, original_rim_count):
         for edge, count in zip(original_edges, counts)
     }
     if len(cut) != len(path) - 1 or any(owners.get(edge) != 2 for edge in cut):
-        raise ValueError("short slit contains noninterior or nonexistent source edge")
+        raise ValueError(
+            "short slit contains noninterior or nonexistent source edge"
+        )
     # Existing face-fan splitter duplicates the seam points. The internal tip
     # must remain shared, otherwise a short dart becomes a broken mesh.
     connected_fans = _cut_fan_connections(
@@ -101,7 +107,11 @@ def _cut_source_fans_once(xyz, faces, path, original_rim_count):
     duplicate_path = path[:-1]
     for index, vertex in enumerate(duplicate_path):
         _duplicate_face_fan(
-            faces, updated, int(vertex), connected_fans[int(vertex)], len(xyz) + index
+            faces,
+            updated,
+            int(vertex),
+            connected_fans[int(vertex)],
+            len(xyz) + index,
         )
     points = np.vstack((xyz, xyz[duplicate_path]))
     source_ids = np.r_[np.arange(len(xyz)), duplicate_path]
@@ -155,7 +165,9 @@ def _one_candidate(original, reference, route, side, faces_count, rim_count):
         "id": side + "_" + route,
         "source_cap_id": side,
         "route": route,
-        "source_original_full_meridian_3d_mm": reference["source_3d_meridian_length_mm"],
+        "source_original_full_meridian_3d_mm": reference[
+            "source_3d_meridian_length_mm"
+        ],
         "slit_path_original_cap_vertex_ids": path.tolist(),
         "slit_original_local_vertex_ids": path.tolist(),
         "source_path_vertex_and_xyz_sha256": digest,

@@ -83,7 +83,9 @@ def _verify_original_geometry(disk, cap):
         or disk.get("source_tip_vertex_not_duplicated") is not True
         or disk.get("topological_Euler") != 1
     ):
-        raise ValueError("not exactly all original source triangles with short seam copies")
+        raise ValueError(
+            "not exactly all original source triangles with short seam copies"
+        )
     physical = float(np.linalg.norm(np.diff(original[path], axis=0), axis=1).sum())
     if abs(physical - disk["real_source_3d_slit_length_mm"]) > 1e-8:
         raise ValueError("original source 3D short-seam length changed")
@@ -94,7 +96,9 @@ def _one(disk, entry, original):
     if (
         entry.get("source_cap_id") != disk["id"]
         or entry.get("source_vertex_count") != len(disk["source_xyz_mm"])
-        or entry.get("source_triangle_count") != len(disk["disk_triangle_vertex_ids"])
+        or entry.get("source_triangle_count") != len(
+            disk["disk_triangle_vertex_ids"]
+        )
         or entry.get("original_cut_rim_edges") != disk["source_boundary_edges"]
         or entry.get("maximum_split_UV_loop_disagreement", 1) > 1e-5
     ):
@@ -105,8 +109,19 @@ def _one(disk, entry, original):
         raise ValueError("invalid native Blender ABF coordinates")
     mm, _, edge = _scale_free_gauge(xyz, faces, uv)
     topology = _face_overlap_and_winding(xyz, faces, mm)
-    seam = _two_true_planar_seam_sides(disk, mm)
-    mismatch = _paired_segmentwise_absolute_mismatch(disk, mm)
+    # The shared source seam evaluator expects NumPy face/XYZ arrays, not
+    # JSON lists. This read-only adapter preserves every original source ID.
+    original_ids = np.asarray(
+        disk["original_patch_vertex_id_per_disk_vertex"], dtype=np.int64
+    )
+    sourced = {
+        **disk,
+        "source_xyz_mm": xyz,
+        "disk_triangle_vertex_ids": faces,
+        "original_patch_vertex_id_per_disk_vertex": original_ids,
+    }
+    seam = _two_true_planar_seam_sides(sourced, mm)
+    mismatch = _paired_segmentwise_absolute_mismatch(sourced, mm)
     original_len = disk["real_source_3d_slit_length_mm"]
     first = seam["scaled_planar_2d_first_source_netline_length_mm"]
     second = seam["scaled_planar_2d_second_source_netline_length_mm"]
@@ -119,7 +134,9 @@ def _one(disk, entry, original):
         "two_2d_sides_each_within_3percent_of_3d_seam": (
             physical_diff / original_len <= 0.03
         ),
-        "no_2d_triangle_flips": topology["reversed_or_collapsed_triangle_count"] == 0,
+        "no_2d_triangle_flips": (
+            topology["reversed_or_collapsed_triangle_count"] == 0
+        ),
         "no_positive_area_2d_triangle_overlaps": (
             topology["overlapping_positive_area_triangle_pair_count"] == 0
         ),
