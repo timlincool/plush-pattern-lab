@@ -7,7 +7,9 @@ from pathlib import Path
 _SRC = str(Path(__file__).resolve().parents[1] / "src")
 if _SRC not in sys.path:
     sys.path.insert(0, _SRC)
-_impl = import_module("plush_pattern_lab.blender.audit_stage6_protrusion_route_visibility")
+_impl = import_module(
+    "plush_pattern_lab.blender.audit_stage6_protrusion_route_visibility"
+)
 
 
 def __getattr__(name):
