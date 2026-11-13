@@ -7,6 +7,8 @@ from copy import deepcopy
 import numpy as np
 import pytest
 
+from audit_stage6_lower_six_cut_disks_abf import PAIRS, _crosszone_sources
+
 from plush_pattern_lab.validation.stage6_lower_six_cut_disks import (
     SCHEMA,
     _boundary,
@@ -128,3 +130,47 @@ def test_fabric_identity_cannot_be_claimed_from_valid_3d_wo_faces():
     with pytest.raises((ValueError, IndexError)):
         _boundary(flat)
     assert len(loops) == 3
+
+
+def _fake_crosszone_2d_original_edge_pairs():
+    # Four genuine region-pair groups; each physical source edge occurs once
+    # on each of its two adjacent original panels, never on unrelated panels.
+    sides = [{}, {}, {}, {}]
+    base = 0
+    for pair, count in PAIRS.items():
+        left, right = map(int, pair.split(":"))
+        for i in range(count):
+            key = (base + i, 100000 + base + i)
+            data = [{
+                "original_direction": key,
+                "source_3d_length_mm": 1.0,
+                "planar_length_mm": 1.01,
+            }]
+            sides[left][key] = data
+            sides[right][key] = [{
+                "original_direction": key[::-1],
+                "source_3d_length_mm": 1.0,
+                "planar_length_mm": 0.99,
+            }]
+        base += count
+    return sides
+
+
+def test_original_801_shared_region_3d_source_edges_check_real_two_2d_sides():
+    rows = _crosszone_sources(_fake_crosszone_2d_original_edge_pairs())
+    assert {key: value["edge_count"] for key, value in rows.items()} == PAIRS
+    assert all(value["two_2d_mismatch_fraction"] == pytest.approx(0.02)
+               for value in rows.values())
+
+
+def test_original_region_source_edge_pairing_rejects_missing_or_changed_3d():
+    rows = _fake_crosszone_2d_original_edge_pairs()
+    key = next(iter(rows[0]))
+    changed = deepcopy(rows)
+    changed[1][key][0]["source_3d_length_mm"] = 2.0
+    with pytest.raises(ValueError, match="3D"):
+        _crosszone_sources(changed)
+    removed = deepcopy(rows)
+    removed[1].pop(key)
+    with pytest.raises(ValueError, match="interzone"):
+        _crosszone_sources(removed)
