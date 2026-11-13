@@ -219,7 +219,11 @@ def test_full_24piece_trial_graph_distinguishes_manual_A_from_numeric_B():
         assert graph["P3_status"] == "in_progress"
         assert graph["P4_status"] == "not_started"
         assert graph["factory_cut_patterns_approved"] == 0
-        ends = [endpoint for seam in graph["sewing_interfaces"] for endpoint in (seam["first"], seam["second"])]
+        ends = [
+            endpoint
+            for seam in graph["sewing_interfaces"]
+            for endpoint in (seam["first"], seam["second"])
+        ]
         assert len(ends) == len(set(ends))
         assert name in [trial["name"] for trial in study["options"]]
     a, b = (graphs[name] for name in (
@@ -238,8 +242,13 @@ def test_full_24piece_trial_graph_distinguishes_manual_A_from_numeric_B():
     assert b["numerically_paired_interface_count"] == 46
     assert b["manual_unverified_surface_attachment_count"] == 0
     assert len(b["components_without_unverified_manual_join"]) == 1
-    assert any(edge["kind"] == "shoulder_port_to_collar" for edge in b["sewing_interfaces"])
-    assert sum(edge["kind"] == "collar_top_to_headneck" for edge in b["sewing_interfaces"]) == 4
+    assert any(
+        edge["kind"] == "shoulder_port_to_collar" for edge in b["sewing_interfaces"]
+    )
+    assert (
+        sum(edge["kind"] == "collar_top_to_headneck" for edge in b["sewing_interfaces"])
+        == 4
+    )
 
 
 def test_full_24piece_trial_rejects_duplicate_or_corrupted_source_seam():
