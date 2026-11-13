@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_real_13_source_contour_multiloop_A_B_38mm_head_cap_rejected",
+    "stage": "stage6_real_lower_seven_rim_four_zone_three_head_ports_3D_contract_proved_P3_not_sewable",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -390,7 +390,11 @@
         },
         {
           "path": "docs/STAGE6_LOWER_7PORT_TRUE_SOURCE_4ZONE.md",
-          "kind": "source_locked_original_lower_7_real_3D_rims_4zones_95_94_3D_head_join_pending_trusted_Stage6_main_qa"
+          "kind": "trusted_original_stage6_7_source_rims_4_zones_source_face_continuity_95_94_center_cap_six_minimal_topological_cuts_verified"
+        },
+        {
+          "path": "experiments/stage6_lower_7port_fourzone_20261113/summary.json",
+          "kind": "real_Stage6_111978_source_triangles_7_head_and_hoof_rims_3D_95_94_split_and_y20_y25_real_proofs"
         }
       ],
       "blockers": [
@@ -1588,6 +1592,49 @@
       "source_raw_QA_sha256": "e86277155ab015e08ea8828fcbb0edbef7e4925c7366cd48a1b9a39f97c16e0a",
       "experiment_path": "experiments/stage6_short_rear_inner_ABF_20261113/summary.json",
       "factory_patterns_approved": 0
+    },
+    "stage6_lower_seven_rims_original_source_four_zone": {
+      "run_id": 43424704397,
+      "commit_sha": "8d0349cb02775d538a0663bd27e955a35e7a36e3",
+      "source_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "same_run_source_caps_sha256": "9ba8fba80ef02d62b4ab40c9e6370df62e58cd5efb59533f01c8b9caaa3fa8e8",
+      "raw_3d_port_QA_sha256": "95e9112e7f2c9e1654fd1ee55779e837f36b0f2012b9c099f229b8e5dd82eb9e",
+      "original_lower_triangles": 111978,
+      "top_source_rims_edges": [
+        189,
+        113,
+        112
+      ],
+      "bottom_hoof_rims_edges": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "central_original_upper_lower_left_right_source_edges": [
+        95,
+        94
+      ],
+      "central_original_upper_lower_left_right_3d_mm": [
+        76.57078480042392,
+        76.52321232719447
+      ],
+      "zones_rim_counts": [
+        3,
+        2,
+        3,
+        2
+      ],
+      "zones_euler": [
+        -1,
+        0,
+        -1,
+        0
+      ],
+      "minimum_topological_extra_cuts_to_four_disks": 6,
+      "original_2d_sewing_patterns_generated": 0,
+      "factory_cut_patterns_approved": 0,
+      "permanent_summary": "experiments/stage6_lower_7port_fourzone_20261113/summary.json"
     }
   },
   "next_actions": [
@@ -1595,8 +1642,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发＋工艺与设计",
-      "action": "使用原Stage6 25%源代理与原三真源头冠/四区同一Runner输入，将原3头冠414边＋四蹄2048边的七开口下壳与四区真实Source face分配和3D拼缝关联。离线原SHA实测Y=20/25均得到前区3环/后区2环、前左原中央头冠95边/76.571mm和左侧帽113边、前右94边/76.523mm和右侧帽112边；保持原四蹄4×512。四区形成单边界圆盘至少需要2+1+2+1=6条额外跨环切缝，尚未设计为生产线。已有源码/测试/受信Stage6新增门禁，待真实CI复算后永久归档。下一步是按原正侧背顶与云耳位置选择真实6条跨环工艺缝及返口，先验证低应变2D与双侧缝，不再调短省道。",
-      "done_when": "源7开口、4区共6额外拓扑切缝约束及头顶中央95/94接口通过可信main实跑；此时只完成3D结构约束，不能升级P3/P4；还需原高曲率全身实际布片、材料和样布验证。"
+      "action": "可信main Stage6 #43424704397 (SHA 8d0349cb) 已完整真实重切原25% Stage6源下壳：111978面、原Z230头部189+113+112边及四蹄4×512边共七闭环2462边；Y20和Y25各四区连通/Euler证据一致，左前/右前各3边界环Euler-1，左后/右后各2环Euler0。中央头冠在下壳左前95源边76.570785mm和右前94源边76.523212mm，左右侧高位突出各整113/112源边接本侧前区。原四区在Z230真切帽后成单圆盘的最少附加跨环切口为前2+后1+前2+后1=6。机器QA、两张100%毫米顶视研究SVG和原始三个产物SHA已由受信Runner核验并归档experiments/stage6_lower_7port_fourzone_20261113/summary.json。接下来应选择符合外观/耳云/五官、实际可缝的六条源边开缝并进行双侧低应变2D/试布审查，不能把数字下限当作六条已获批线。",
+      "done_when": "本轮真实原3D七开口/四区/中央95+94和最少6拓扑开缝来源合同已完成并永久归档；但双侧二维净缝、缝份/翻面/填充/面料、完整角色附件及实体样均未完成，P3仍进行中/P4未开始。"
     },
     {
       "priority": "P0",
@@ -2054,6 +2101,11 @@
       "date": "2026-11-13",
       "event": "继续整角色P3：复用原25% Stage6真源PLY/原3头冠与全壳四区，在同SHA本地完成Y20/Y25重切下壳七原环：111978面、三头顶189+113+112源接口和四蹄4×512原边，四区前各3边界环Euler-1、后各2边界环Euler0，中央真实头冠分配左前95边/76.571mm与右前94边/76.523mm；形成四区拓扑圆盘理论最少6条额外开缝。新增纯源验证、两套A4毫米顶视投影和可信main回归入口，待Runner实跑后晋升为长期证据；此时无可裁2D/实物/工厂批准。",
       "evidence_path": "docs/STAGE6_LOWER_7PORT_TRUE_SOURCE_4ZONE.md"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "原Stage6可信main #43424704397 完整成功：以原公开Stage6/固定25%PLY和同轮原三个真源头冠、全四区真正裁切下壳，全部111978原源面/七原环2462边保留，四区Y20/25前3环后2环和Euler -1/0/-1/0复验，中央头冠左前95源边76.571mm+右前94源边76.523mm，上左右耳附近源帽113/112边独立接合；要把四区变为单边界圆盘至少需2+1+2+1=6条跨环源边开缝，非工厂6条成品缝。两张真实XY毫米A4顶视SVG与原3D接口JSON已由Runner SHA核验，永久机器摘要归档；没有低应变双侧2D/材料/填充实体样，P3继续/P4未开始/工厂0。",
+      "evidence_path": "experiments/stage6_lower_7port_fourzone_20261113/summary.json"
     }
   ]
 }
