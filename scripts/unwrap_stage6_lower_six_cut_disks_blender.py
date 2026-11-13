@@ -54,9 +54,7 @@ def main():
         source = {
             "id": part["id"],
             "vertices_xyz_mm": part["source_3d_xyz_mm"],
-            "triangles_local_vertex_indices": part[
-                "triangles_local_vertex_indices"
-            ],
+            "triangles_local_vertex_indices": part["triangles_local_vertex_indices"],
             "source_boundary_edges": len(outline),
             "original_rim_vertex_ids_in_cap_local_order": outline,
         }

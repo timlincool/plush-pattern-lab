@@ -20,8 +20,11 @@ from plush_pattern_lab.validation.stage6_lower_six_cut_disks import (
 
 def _grid_with_holes(size=25):
     vertices = np.asarray(
-        [[float(x), float(y), float(x + y) / 100] for y in range(size)
-         for x in range(size)],
+        [
+            [float(x), float(y), float(x + y) / 100]
+            for y in range(size)
+            for x in range(size)
+        ],
         dtype=np.float64,
     )
     triangles = []
@@ -61,9 +64,7 @@ def test_two_original_interrim_paths_turn_three_boundaries_into_one_disk():
         (row for row in border if row is not outer),
         key=lambda item: item["vertices"].min(),
     )
-    path, distance = _shortest(
-        mesh, holes[0]["vertices"], outer["vertices"]
-    )
+    path, distance = _shortest(mesh, holes[0]["vertices"], outer["vertices"])
     assert distance > 0
     after = _cut(mesh, path, 3)
     loops, _, _, _ = _boundary(after)
@@ -71,10 +72,11 @@ def test_two_original_interrim_paths_turn_three_boundaries_into_one_disk():
 
     used = set(map(int, mesh["source_id"][path]))
     next_hole = [
-        item for item in loops
+        item
+        for item in loops
         if any(
-            int(after["source_id"][v]) in
-            set(map(int, mesh["source_id"][holes[1]["vertices"]]))
+            int(after["source_id"][v])
+            in set(map(int, mesh["source_id"][holes[1]["vertices"]]))
             for v in item["vertices"]
         )
     ]
@@ -82,11 +84,13 @@ def test_two_original_interrim_paths_turn_three_boundaries_into_one_disk():
     other = next(item for item in loops if item is not next_hole[0])
     original_outer = set(map(int, mesh["source_id"][outer["vertices"]]))
     target = [
-        p for p in other["vertices"]
+        p
+        for p in other["vertices"]
         if int(after["source_id"][p]) in original_outer - used
     ]
     forbidden = [
-        p for p, original_id in enumerate(after["source_id"])
+        p
+        for p, original_id in enumerate(after["source_id"])
         if int(original_id) in used
     ]
     second, second_distance = _shortest(
@@ -102,10 +106,16 @@ def test_two_original_interrim_paths_turn_three_boundaries_into_one_disk():
         mesh["source_id"][mesh["faces"]],
     )
     seams = [
-        {"original_3d_clipped_lower_source_vertex_ids":
-         mesh["source_id"][path].tolist()},
-        {"original_3d_clipped_lower_source_vertex_ids":
-         after["source_id"][second].tolist()},
+        {
+            "original_3d_clipped_lower_source_vertex_ids": mesh["source_id"][
+                path
+            ].tolist()
+        },
+        {
+            "original_3d_clipped_lower_source_vertex_ids": after["source_id"][
+                second
+            ].tolist()
+        },
     ]
     assert _paired_source_edges(disk, seams, final[0])
     assert SCHEMA.endswith("disk-cuts-v1")
@@ -141,17 +151,21 @@ def _fake_crosszone_2d_original_edge_pairs():
         left, right = map(int, pair.split(":"))
         for i in range(count):
             key = (base + i, 100000 + base + i)
-            data = [{
-                "original_direction": key,
-                "source_3d_length_mm": 1.0,
-                "planar_length_mm": 1.01,
-            }]
+            data = [
+                {
+                    "original_direction": key,
+                    "source_3d_length_mm": 1.0,
+                    "planar_length_mm": 1.01,
+                }
+            ]
             sides[left][key] = data
-            sides[right][key] = [{
-                "original_direction": key[::-1],
-                "source_3d_length_mm": 1.0,
-                "planar_length_mm": 0.99,
-            }]
+            sides[right][key] = [
+                {
+                    "original_direction": key[::-1],
+                    "source_3d_length_mm": 1.0,
+                    "planar_length_mm": 0.99,
+                }
+            ]
         base += count
     return sides
 
@@ -159,8 +173,10 @@ def _fake_crosszone_2d_original_edge_pairs():
 def test_original_801_shared_region_3d_source_edges_check_real_two_2d_sides():
     rows = _crosszone_sources(_fake_crosszone_2d_original_edge_pairs())
     assert {key: value["edge_count"] for key, value in rows.items()} == PAIRS
-    assert all(value["two_2d_mismatch_fraction"] == pytest.approx(0.02)
-               for value in rows.values())
+    assert all(
+        value["two_2d_mismatch_fraction"] == pytest.approx(0.02)
+        for value in rows.values()
+    )
 
 
 def test_original_region_source_edge_pairing_rejects_missing_or_changed_3d():
@@ -175,22 +191,18 @@ def test_original_region_source_edge_pairing_rejects_missing_or_changed_3d():
     with pytest.raises(ValueError, match="interzone"):
         _crosszone_sources(removed)
 
+
 def test_native_blender_unit_square_pregauge_scaling_is_similarity_invariant():
     # A complete 500mm source region often has Blender UV normalized to 0..1.
     # The old local-patch gauge caps its coefficient at 100; converting UV
     # units before the same minimum-squared-edge gauge cannot change strain.
-    xyz = np.asarray([[0.0, 0.0, 0.0], [500.0, 0.0, 0.0],
-                      [0.0, 500.0, 0.0]])
+    xyz = np.asarray([[0.0, 0.0, 0.0], [500.0, 0.0, 0.0], [0.0, 500.0, 0.0]])
     faces = np.asarray([[0, 1, 2]])
     native_uv = np.asarray([[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]])
     with pytest.raises(ValueError, match="invalid uniform"):
         _scale_free_gauge(xyz, faces, native_uv)
-    mm_a, strain_a, quality_a = _scale_free_gauge(
-        xyz, faces, native_uv * 1000.0
-    )
-    mm_b, strain_b, quality_b = _scale_free_gauge(
-        xyz, faces, native_uv * 500.0
-    )
+    mm_a, strain_a, quality_a = _scale_free_gauge(xyz, faces, native_uv * 1000.0)
+    mm_b, strain_b, quality_b = _scale_free_gauge(xyz, faces, native_uv * 500.0)
     assert np.allclose(mm_a, mm_b, atol=1e-9)
     assert np.allclose(strain_a, strain_b, atol=1e-12)
     assert quality_a["scaled_2d_p95_abs_edge_relative_error"] == pytest.approx(0)

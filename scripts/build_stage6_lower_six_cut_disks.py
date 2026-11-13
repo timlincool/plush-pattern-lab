@@ -76,10 +76,13 @@ def main():
     print(
         "STAGE6_TRUE_LOWER_7RIM_4SOURCE_DISKS_6PAIRED_3D_PATHS_NO_CLOTH",
         [
-            (zone["id"], [
-                round(seam["original_3d_netline_mm"], 4)
-                for seam in zone["original_source_3d_disk_seam_paths"]
-            ])
+            (
+                zone["id"],
+                [
+                    round(seam["original_3d_netline_mm"], 4)
+                    for seam in zone["original_source_3d_disk_seam_paths"]
+                ],
+            )
             for zone in result["source_topological_disks"]
         ],
         flush=True,

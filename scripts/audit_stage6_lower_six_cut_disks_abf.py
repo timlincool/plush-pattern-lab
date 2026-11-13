@@ -57,8 +57,9 @@ def _validate_zone(part, uv):
         raise ValueError("ABF mismatch with real Stage6 original source disk")
     _, initial = np.unique(source_id, return_index=True)
     id_to_xyz = {int(source_id[i]): xyz[i] for i in initial}
-    if any(not np.array_equal(point, id_to_xyz[int(v)])
-           for point, v in zip(xyz, source_id)):
+    if any(
+        not np.array_equal(point, id_to_xyz[int(v)]) for point, v in zip(xyz, source_id)
+    ):
         raise ValueError("source 3D copied vertices have different XYZ")
     return xyz, faces, source_id, flat
 
@@ -71,11 +72,13 @@ def _actual_boundary_lengths(faces, xyz, mm, source_id):
         if a == b:
             raise ValueError("collapsed original Stage6 3D source rim edge")
         key = tuple(sorted((a, b)))
-        result[key].append({
-            "original_direction": (a, b),
-            "planar_length_mm": float(np.linalg.norm(mm[u] - mm[v])),
-            "source_3d_length_mm": float(np.linalg.norm(xyz[u] - xyz[v])),
-        })
+        result[key].append(
+            {
+                "original_direction": (a, b),
+                "planar_length_mm": float(np.linalg.norm(mm[u] - mm[v])),
+                "source_3d_length_mm": float(np.linalg.norm(xyz[u] - xyz[v])),
+            }
+        )
     return result
 
 
@@ -87,12 +90,8 @@ def _new_seams(part, boundary):
         total_a, total_b, mismatch, measured = 0.0, 0.0, 0.0, 0.0
         for a, b in zip(vertices, vertices[1:]):
             pair = boundary[tuple(sorted((int(a), int(b))))]
-            forward = [
-                x for x in pair if x["original_direction"] == (a, b)
-            ]
-            backward = [
-                x for x in pair if x["original_direction"] == (b, a)
-            ]
+            forward = [x for x in pair if x["original_direction"] == (a, b)]
+            backward = [x for x in pair if x["original_direction"] == (b, a)]
             if len(pair) != 2 or len(forward) != 1 or len(backward) != 1:
                 raise ValueError("one original 3D seam lacks opposite 2D copies")
             left, right = forward[0], backward[0]
@@ -104,20 +103,22 @@ def _new_seams(part, boundary):
             mismatch += abs(left["planar_length_mm"] - right["planar_length_mm"])
         if abs(measured - physical) > 1e-7:
             raise ValueError("original Stage6 3D seam length was changed")
-        results.append({
-            "seam_role": original["seam_role"],
-            "original_3d_netline_mm": physical,
-            "original_source_edge_count": len(vertices) - 1,
-            "first_2d_netline_mm": total_a,
-            "second_2d_netline_mm": total_b,
-            "two_2d_segmentwise_absolute_mismatch_fraction": mismatch / physical,
-            "two_2d_sides_each_within_3pct_of_3d": (
-                max(abs(total_a - physical), abs(total_b - physical)) / physical
-                <= 0.03
-            ),
-            "paired_2d_netline_within_3pct": mismatch / physical <= 0.03,
-            "not_a_fabric_sewing_approval": True,
-        })
+        results.append(
+            {
+                "seam_role": original["seam_role"],
+                "original_3d_netline_mm": physical,
+                "original_source_edge_count": len(vertices) - 1,
+                "first_2d_netline_mm": total_a,
+                "second_2d_netline_mm": total_b,
+                "two_2d_segmentwise_absolute_mismatch_fraction": mismatch / physical,
+                "two_2d_sides_each_within_3pct_of_3d": (
+                    max(abs(total_a - physical), abs(total_b - physical)) / physical
+                    <= 0.03
+                ),
+                "paired_2d_netline_within_3pct": mismatch / physical <= 0.03,
+                "not_a_fabric_sewing_approval": True,
+            }
+        )
     return results
 
 
@@ -181,14 +182,18 @@ def _crosszone_sources(borders):
         (a, first), (b, second) = entries
         if a == b:
             raise ValueError("same disk cannot claim a crosszone source seam")
-        pair = f"{min(a,b)}:{max(a,b)}"
+        pair = f"{min(a, b)}:{max(a, b)}"
         if pair not in PAIRS:
             raise ValueError("unexpected original lower Stage6 inter-zone contact")
         if abs(first["source_3d_length_mm"] - second["source_3d_length_mm"]) > 1e-8:
             raise ValueError("original Stage6 3D crosszone edge length mismatch")
         entry = outcome.setdefault(
-            pair, {"edge_count": 0, "source_3d_mm": 0.0,
-                   "two_2d_segmentwise_absolute_difference_mm": 0.0}
+            pair,
+            {
+                "edge_count": 0,
+                "source_3d_mm": 0.0,
+                "two_2d_segmentwise_absolute_difference_mm": 0.0,
+            },
         )
         entry["edge_count"] += 1
         entry["source_3d_mm"] += first["source_3d_length_mm"]
@@ -199,8 +204,7 @@ def _crosszone_sources(borders):
         raise ValueError("original lower Stage6 source interzone seam edges omitted")
     for entry in outcome.values():
         entry["two_2d_mismatch_fraction"] = (
-            entry["two_2d_segmentwise_absolute_difference_mm"]
-            / entry["source_3d_mm"]
+            entry["two_2d_segmentwise_absolute_difference_mm"] / entry["source_3d_mm"]
         )
         entry["original_two_2d_netlines_within_3pct"] = (
             entry["two_2d_mismatch_fraction"] <= 0.03
@@ -213,8 +217,7 @@ def audit(source, native, source_sha):
         source.get("schema") != SOURCE_SCHEMA
         or source.get("source_3d_six_interrim_paths") != 6
         or source.get("factory_cutting_patterns_approved") != 0
-        or [x["id"] for x in source.get("source_topological_disks", [])]
-        != list(ZONES)
+        or [x["id"] for x in source.get("source_topological_disks", [])] != list(ZONES)
         or native.get("schema") != ABF_SCHEMA
         or native.get("source_six_cut_original_3D_disks_sha256") != source_sha
         or native.get("solver") != "ANGLE_BASED"
@@ -245,8 +248,7 @@ def audit(source, native, source_sha):
             x["limited_individual_source_disk_ABF_gate_passed"] for x in scores
         ),
         "all_crosszone_interfaces_paired_2d_within_3pct": all(
-            x["original_two_2d_netlines_within_3pct"]
-            for x in crosszone.values()
+            x["original_two_2d_netlines_within_3pct"] for x in crosszone.values()
         ),
         "actual_three_upper_crown_cap_2d_mates_not_yet_verified": True,
         "original_four_hoof_fabric_cuff_2d_mates_not_yet_verified": True,
@@ -284,26 +286,28 @@ def main():
     )
     print(
         "STAGE6_LOWER_FOUR_TRUE_DISKS_NATIVE_ABF_RESEARCH_NOT_FACTORY",
-        json.dumps({
-            "disks": [
-                {
-                    "id": s["id"],
-                    "P95": s[
-                        "real_3d_source_edge_to_native_ABF_2d_P95_relative_error"
-                    ],
-                    "flipped": s["flipped_or_collapsed_2d_triangles"],
-                    "overlap": s["overlapping_positive_area_2d_triangle_pairs"],
-                }
-                for s in outcome["source_four_real_disk_ABF_results"]
-            ],
-            "crosszone_2d_mismatch": {
-                k: v["two_2d_mismatch_fraction"]
-                for k, v in outcome[
-                    "four_source_3d_original_zone_paired_2d_interface_results"
-                ].items()
-            },
-            "factory_cutting": 0,
-        }),
+        json.dumps(
+            {
+                "disks": [
+                    {
+                        "id": s["id"],
+                        "P95": s[
+                            "real_3d_source_edge_to_native_ABF_2d_P95_relative_error"
+                        ],
+                        "flipped": s["flipped_or_collapsed_2d_triangles"],
+                        "overlap": s["overlapping_positive_area_2d_triangle_pairs"],
+                    }
+                    for s in outcome["source_four_real_disk_ABF_results"]
+                ],
+                "crosszone_2d_mismatch": {
+                    k: v["two_2d_mismatch_fraction"]
+                    for k, v in outcome[
+                        "four_source_3d_original_zone_paired_2d_interface_results"
+                    ].items()
+                },
+                "factory_cutting": 0,
+            }
+        ),
         flush=True,
     )
 
