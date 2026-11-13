@@ -13,7 +13,7 @@ from plush_pattern_lab.validation.stage6_protrusion_short_dart import (
     _cut_source_fans_once,
     _short_original_path,
 )
-from scripts.audit_stage6_protrusion_short_dart_abf import (
+from audit_stage6_protrusion_short_dart_abf import (
     _paired_segmentwise_absolute_mismatch,
     _verify_original_geometry,
 )
