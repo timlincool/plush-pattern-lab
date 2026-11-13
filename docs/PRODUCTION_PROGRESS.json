@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-12",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -319,6 +319,10 @@
         {
           "path": "experiments/stage6_18piece_sewing_assembly_20261112/summary.json",
           "kind": "three_real_main_stage6_blender_4_3_2_runs_13_research_files_byte_identical_18_trial_parts_32_2d_seam_pairs_9_A4_no_factory"
+        },
+        {
+          "path": "docs/STAGE6_SPLIT_24PIECE_PANEL_INTERFACE.md",
+          "kind": "separate_A_B_24piece_full_panel_interface_assembly_code_pending_trusted_main_real_source_execution"
         }
       ],
       "blockers": [
@@ -1306,6 +1310,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋设计／实物试缝",
+      "action": "先确认新A/B每套24片统一接口合同在受信Stage6真原模型运行中的源SHA、44+手工1或46分段数字接口与15页研究纸张均可复现。A手工头颈连接并非真实净缝匹配，需先廉价废布试缝和正侧背顶比较；B的13.41mm狭窄肩孔、42.49mm返口亦须材料与实物验证。与原Stage6连续雕塑的头颈源形状差仍是主要阻塞，不因图连通就启动P4。",
+      "done_when": "可信主干对新24片图与下腹源数据、全部文件SHA完成真实重算；随后获得人类实际试缝记录或明确记录未执行，不擅自升级P3/P4。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "工程＋设计",
       "action": "2026-11-12三次可信Stage6 main #43255281019/#43255652947/#43256294219已经真正生成现有13片四蹄下腹＋上身4片和临时顶盖共18片的统一试布套件：32组逐段有来源的二维净缝接口、9张原尺寸A4与10步装配指南，包内13文件SHA在三个独立Run中逐字节一致，已归档experiments/stage6_18piece_sewing_assembly_20261112/summary.json，Python #43256293929已676项通过。**仍非原目标外形**：颈截面中心跳变71.386mm、上身新2D缝与其3D包络经线失配89.121mm，平面SOLE不能代替真鼓蹄且耳云尾眼十水滴/连接带无装配。下一步优先利用已确认可免费下载且较好的Blender ABF，与GarmentCode式Panel/Interface主对象，从原设计正/侧/背/顶重新构思少量**真正能与下腹BAND接口接合且贴合头/肩/躯干外观**的2D新上身模板，再试廉价布料、缝份、翻面、填棉及实体首样；不得把数字32缝配对直接晋升P4。",
       "done_when": "可信main实际生成18片/32源净缝/9张旧A4 100%试布套件，且仍记录源颈部失真、未接耳云/蹄底/水滴、真实材料工厂状态0；随后形成对原设计头肩/躯干比例更接近的可缝替代UPPER设计试验"
@@ -1618,6 +1629,11 @@
       "date": "2026-11-12",
       "event": "三次可信main Stage6 4.3.2独立复算旧13+5研究母版的18片/32有序数字净缝/9张真A4打包，13源文件SHA逐字节一致；Python #43256293929 676项通过，制造认证仍为0，头颈严重外形失配记录为下一P3结构任务",
       "evidence_path": "experiments/stage6_18piece_sewing_assembly_20261112/summary.json"
+    },
+    {
+      "date": "2026-11-12",
+      "event": "继续复用原Stage6现有13片下腹与已验证A/B各11片头身试验，不重展UV：开发每方案24片Panel/Interface完整研究装配图。A分44个数字配边＋1个明确未验证的手工肩部连接（去除手工连接时头身为2个数字组件）；B按四个独立头颈片分段为46组数字配边。新增合成与篡改负例、源SHA打包与受信Stage6工作流门禁；实际原Blender/本轮CI结果待运行，头肩严重失配与材料工厂状态均不变。",
+      "evidence_path": "docs/STAGE6_SPLIT_24PIECE_PANEL_INTERFACE.md"
     }
   ]
 }
