@@ -355,6 +355,14 @@
         {
           "path": "experiments/stage6_z230_true_crown_20261113/summary.json",
           "kind": "source_provenance_and_true_414_source_edges_replayed_in_trusted_Python_CI_726_tests_passed_not_factory"
+        },
+        {
+          "path": "experiments/stage6_real_3d_crown_caps_abf_20261113/summary.json",
+          "kind": "trusted_main_real_25pct_source_three_3D_crown_cap_topology_and_ABF_failed_joint_3D2D_research_gate"
+        },
+        {
+          "path": "docs/STAGE6_REAL_CROWN_3D_CAPS_ABF.md",
+          "kind": "true_source_three_cap_3d_cut_and_independent_Blender_ABF_per_panel_rejection"
         }
       ],
       "blockers": [
@@ -1438,9 +1446,64 @@
       "negative_source_and_scale_checks_passed": true,
       "svg_is_anatomical_source_review_only": true,
       "permanent_summary": "experiments/stage6_z230_true_crown_20261113/summary.json"
+    },
+    "stage6_true_original_crown_three_3d_caps_blender_abf_20261113": {
+      "real_blender_trusted_run": 43383104161,
+      "run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43383104161",
+      "source_commit": "98068719ccb8ad07eb4225de958b0120936c695b",
+      "result": "success",
+      "native_ABF": "Blender 4.3.2 ANGLE_BASED",
+      "open_source_geometric_clipper": "trimesh 4.11.1 MIT, repair=False",
+      "source_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+      "original_3d_upper_rim_source_edges": [
+        189,
+        113,
+        112
+      ],
+      "original_upper_source_triangles": [
+        1663,
+        1849,
+        1906
+      ],
+      "lower_real_source_seam_loops": [
+        112,
+        113,
+        189,
+        512,
+        512,
+        512,
+        512
+      ],
+      "lower_2D_stitch_pieces_proven": false,
+      "ABF_source_edge_P95_relative": [
+        0.04053320714344557,
+        0.9350017206812369,
+        0.939074206458219
+      ],
+      "ABF_single_side_2D_to_3D_rim_relative_deviation": [
+        0.03242007263409037,
+        0.5052248559940303,
+        0.4975499870786979
+      ],
+      "all_three_positive_area_overlap_pairs": [
+        0,
+        0,
+        0
+      ],
+      "all_joint_research_gates_passed": false,
+      "actual_fabric_sample_exists": false,
+      "factory_cutting_patterns_approved": 0,
+      "evidence": "experiments/stage6_real_3d_crown_caps_abf_20261113/summary.json"
     }
   },
   "next_actions": [
+    {
+      "priority": "P0",
+      "phase_id": "P3",
+      "owner": "工程＋设计与实体试布",
+      "action": "根据可信原Stage6 #43383104161 的真实三维三帽切割及原生ABF结果：中央189边源头冠1663面Euler1、P95边差4.053%但单侧净缝3.242%超过3%研究阈值；左右高位突出各113/112原源边、1849/1906面，ABF P95高达93.50%/93.91%、单侧缝长相对3D差50.52%/49.75%，均不得裁布。下一步以原正/侧/背/顶设计和41 Mesh耳云邻近证据确定左右突出应拆片还是做隐藏省道／插片，并保留中间头冠源曲面。对新侧片使用既有Blender ABF和源SourceID双侧配缝审核、毛向、返口和真实废布试样，不发明新UV算法。下部仍是7边界连续主体未做可缝二维结构。",
+      "done_when": "新的左右侧突出分片/省道位置获得原图和三维来源对应，真实Source3D上下原边匹配并有两侧2D净线低应变/无翻面重叠；实际布料翻面/填充和实样反馈成立。当前P3未通过/P4不开启。"
+    },
     {
       "priority": "P0",
       "phase_id": "P3",
@@ -1829,6 +1892,11 @@
       "date": "2026-11-13",
       "event": "受信 main Python #43375236743 在固定Witness上真实重放原Stage6 414条交边及原A/B顶盖，726项Ruff/复杂度/打包均通过；原source三环(189/113/112、153.094/45.517/45.511mm)与旧单环319.771mm、同高Hausdorff38.212mm已按SHA永久归档，可不依赖7天Action Artifact离线打印审阅。此图不是布片展开或已批准缝线，P3继续/P4未开始，正式纸样0。",
       "evidence_path": "experiments/stage6_z230_true_crown_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "可信原Stage6 #43383104161 完整实跑成功：MAT source SHA固定25%原主体以Trimesh4.11.1禁修补切成中央/左/右3个真实三维上半头冠，源边189/113/112与下部原3D逐边对接，下部四蹄4×512仍在。Blender 4.3.2 原生ABF真实展平：中央P95=4.053%、单侧3D源缝相对2D差3.242%、0翻面重叠；左右P95=93.500%/93.907%、单侧净缝差50.522%/49.755%，0翻面重叠；3片均未满足10%/3%联合研究门槛。已有开源成熟工具无需继续自研UV。下部连续七环缺二维可缝分片，实物材料/设计签核无，正式纸样0/P3继续/P4未开始。",
+      "evidence_path": "experiments/stage6_real_3d_crown_caps_abf_20261113/summary.json"
     }
   ]
 }

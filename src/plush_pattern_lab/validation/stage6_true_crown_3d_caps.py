@@ -108,7 +108,9 @@ def _match_rim_to_original(vertices, rim, original):
     original_order[correspondence] = candidates
     actual_edges = {tuple(sorted((int(a), int(b)))) for a, b in rim}
     expected_edges = {
-        tuple(sorted((int(original_order[i]), int(original_order[(i + 1) % len(source)]))))
+        tuple(
+            sorted((int(original_order[i]), int(original_order[(i + 1) % len(source)])))
+        )
         for i in range(len(source))
     }
     if actual_edges != expected_edges:
@@ -239,10 +241,13 @@ def build_three_real_source_caps(
         )
     bottom = _audit_lower_half(lower, original, trimesh_module)
     for cap, paired in zip(caps, bottom["lower_head_cut_rims"]):
-        if abs(
-            cap["source_3d_rim_perimeter_mm"]
-            - paired["real_3d_stitch_perimeter_mm"]
-        ) > 1e-6:
+        if (
+            abs(
+                cap["source_3d_rim_perimeter_mm"]
+                - paired["real_3d_stitch_perimeter_mm"]
+            )
+            > 1e-6
+        ):
             raise ValueError("source 3D upper/lower netline length mismatch")
     return {
         "schema": SCHEMA,

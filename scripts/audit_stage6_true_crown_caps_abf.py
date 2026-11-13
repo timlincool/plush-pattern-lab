@@ -47,9 +47,7 @@ def _score_one(cap, measured, name, expected_rim):
         raise ValueError("untrusted native UV arrays or source seam identities")
     mm, _, edge = _scale_free_gauge(xyz, faces, coords)
     surface = _face_overlap_and_winding(xyz, faces, mm)
-    seam = float(
-        np.linalg.norm(mm[rim] - np.roll(mm[rim], -1, axis=0), axis=1).sum()
-    )
+    seam = float(np.linalg.norm(mm[rim] - np.roll(mm[rim], -1, axis=0), axis=1).sum())
     original = float(cap["source_3d_rim_perimeter_mm"])
     mismatch = abs(seam - original) / original
     p95 = edge["scaled_2d_p95_abs_edge_relative_error"]

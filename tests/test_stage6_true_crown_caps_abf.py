@@ -19,8 +19,10 @@ def _flat_square():
         "id": "synthetic_fixture_only",
         "source_boundary_edges": 4,
         "vertices_xyz_mm": [
-            [0.0, 0.0, 0.0], [3.0, 0.0, 0.0],
-            [3.0, 2.0, 0.0], [0.0, 2.0, 0.0],
+            [0.0, 0.0, 0.0],
+            [3.0, 0.0, 0.0],
+            [3.0, 2.0, 0.0],
+            [0.0, 2.0, 0.0],
         ],
         "triangles_local_vertex_indices": [[0, 1, 2], [0, 2, 3]],
         "original_rim_vertex_ids_in_cap_local_order": [0, 1, 2, 3],
@@ -32,7 +34,10 @@ def _flat_square():
         "source_triangle_count": 2,
         "original_cut_rim_edges": 4,
         "uv_per_3d_cap_source_vertex": [
-            [0, 0], [0.3, 0], [0.3, 0.2], [0, 0.2],
+            [0, 0],
+            [0.3, 0],
+            [0.3, 0.2],
+            [0, 0.2],
         ],
         "maximum_split_UV_loop_disagreement": 0.0,
     }
@@ -71,9 +76,10 @@ def test_abf_source_rim_cannot_be_silently_changed(fault):
 
 def _mock_study():
     cap, native = _flat_square()
-    caps = [{**deepcopy(cap), "id": name} for name in (
-        "central_crown", "left_high_protrusion", "right_high_protrusion"
-    )]
+    caps = [
+        {**deepcopy(cap), "id": name}
+        for name in ("central_crown", "left_high_protrusion", "right_high_protrusion")
+    ]
     uvs = [{**deepcopy(native), "source_cap_id": c["id"]} for c in caps]
     for c, uv, rim in zip(caps, uvs, (189, 113, 112)):
         c["source_boundary_edges"] = rim

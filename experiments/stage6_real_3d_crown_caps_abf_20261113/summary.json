@@ -1,0 +1,108 @@
+{
+  "schema": "stage6-real-z230-three-source-caps-open-source-trimesh-blender-ABF-rejection-v1",
+  "date_utc": "2026-11-13",
+  "original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_proxy_25pct_PLY_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "original_z230_414_source_crossed_edge_witness_sha256": "b561770a6cfeaea33abedc11bfb3992b2fe80b4bf83d10a66459682938af6571",
+  "geometry_method": "Open source trimesh==4.11.1 MIT slice_mesh_plane (+Z and -Z) with duplicate-source-cut-vertex welding, SciPy face components and submesh(repair=False); no automatic hole repair",
+  "native_solver": "Blender 4.3.2 ANGLE_BASED ABF; original 3D proxy surface, not designed cloth rest shape",
+  "source_cap_3d_surface_topology": [
+    {
+      "id": "central_crown",
+      "source_triangles": 1663,
+      "cut_rim_source_edges": 189,
+      "topological_Euler": 1,
+      "source_3d_rim_perimeter_mm": 153.0939971276184
+    },
+    {
+      "id": "left_high_protrusion",
+      "source_triangles": 1849,
+      "cut_rim_source_edges": 113,
+      "topological_Euler": 1,
+      "source_3d_rim_perimeter_mm": 45.516755457301926
+    },
+    {
+      "id": "right_high_protrusion",
+      "source_triangles": 1906,
+      "cut_rim_source_edges": 112,
+      "topological_Euler": 1,
+      "source_3d_rim_perimeter_mm": 45.51098616780679
+    }
+  ],
+  "lower_surface": {
+    "clipped_original_proxy_source_triangles": 111978,
+    "connected_components": 1,
+    "topological_Euler": -5,
+    "boundary_loops_7_sorted_edges": [
+      112,
+      113,
+      189,
+      512,
+      512,
+      512,
+      512
+    ],
+    "original_hoof_boundaries_4_x_512_retained": true,
+    "upper_to_lower_source_3D_seam_ID_and_mm_error_max_le_1e_6": true,
+    "lower_2D_sewing_rest_shape_available": false
+  },
+  "original_real_ABF_2D_results": [
+    {
+      "id": "central_crown",
+      "edge_p95_relative": 0.04053320714344557,
+      "single_side_2D_netline_perimeter_mm": 158.057315634339,
+      "relative_single_side_2D_vs_3D_rim_length_difference": 0.03242007263409037,
+      "flipped_or_collapsed_triangles": 0,
+      "positive_area_triangle_overlapping_pairs": 0,
+      "all_joint_research_gates_passed": false
+    },
+    {
+      "id": "left_high_protrusion",
+      "edge_p95_relative": 0.9350017206812369,
+      "single_side_2D_netline_perimeter_mm": 68.51295167853279,
+      "relative_single_side_2D_vs_3D_rim_length_difference": 0.5052248559940303,
+      "flipped_or_collapsed_triangles": 0,
+      "positive_area_triangle_overlapping_pairs": 0,
+      "all_joint_research_gates_passed": false
+    },
+    {
+      "id": "right_high_protrusion",
+      "edge_p95_relative": 0.939074206458219,
+      "single_side_2D_netline_perimeter_mm": 68.15497674753786,
+      "relative_single_side_2D_vs_3D_rim_length_difference": 0.4975499870786979,
+      "flipped_or_collapsed_triangles": 0,
+      "positive_area_triangle_overlapping_pairs": 0,
+      "all_joint_research_gates_passed": false
+    }
+  ],
+  "research_edge_p95_max": 0.1,
+  "research_single_side_source_rim_length_difference_max": 0.03,
+  "research_flipped_and_overlapping_triangle_pairs_allowed": 0,
+  "approved_factory_cut_patterns": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "real_trusted_main_source_run": {
+    "id": 43383104161,
+    "commit": "98068719ccb8ad07eb4225de958b0120936c695b",
+    "conclusion": "success",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43383104161",
+    "artifact_id": 14016664664,
+    "artifact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "artifact_expires_utc": "2026-11-20T07:08:19Z"
+  },
+  "raw_original_outputs_sha256": {
+    "source_three_caps_json": "9ba8fba80ef02d62b4ab40c9e6370df62e58cd5efb59533f01c8b9caaa3fa8e8",
+    "source_three_caps_topology_qa_json": "f7d3ea0fc5d0b91c0b2e94e010eef645615b005e567db8be3fa931fd96c3b8ba",
+    "native_blender_ABF_three_caps_json": "295ce8d7b6f53b8c5f99d5faa0730693b30f007b0ac91035bf1dee609196ded1",
+    "three_caps_real_3d_to_ABF_2d_rejection_json": "0e9eb9bfc438a53a3634e22d5727915786eda260b4f6098465401a7c69ca1982"
+  },
+  "known_failures_and_boundaries": [
+    "Topological disks and 3D source matched interfaces do not imply flat fabric shapes.",
+    "Central crown source-edge ABF P95 4.05% passes the edge criterion, but one-sided planar netline distortion 3.24% exceeds 3%.",
+    "Left/right high protrusions P95 edge 93.50% and 93.91%, one-side relative seam deviations 50.52% and 49.75%; neither can be treated as one piece of unstretched textile.",
+    "Lower continuous source shell has seven open rims, has no matching 2D rest stitch seam. Physical sewing return/cloth grain/allowance/production and original design image alignment unverified.",
+    "All measurements based on 25% source proxy, not the full 466278-triangle original Blender product scene."
+  ],
+  "decision": "Keep genuine source 3D central crown as a P3 candidate for further seam/allowance/cloth studies but not a cut paper pattern; split the real side protrusions into anatomically appropriate panels/darts near cloud/ear, do not build new UV algorithm or loosen threshold. Confirm hidden seam location visually and with physical toile.",
+  "factory_release_approved": false
+}
