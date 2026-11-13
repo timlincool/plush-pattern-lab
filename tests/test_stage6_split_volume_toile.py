@@ -226,9 +226,9 @@ def test_full_24piece_trial_graph_distinguishes_manual_A_from_numeric_B():
         ]
         assert len(ends) == len(set(ends))
         assert name in [trial["name"] for trial in study["options"]]
-    a, b = (graphs[name] for name in (
-        "A_separate_stuffed_head", "B_integrated_neck_port"
-    ))
+    a, b = (
+        graphs[name] for name in ("A_separate_stuffed_head", "B_integrated_neck_port")
+    )
     assert len(a["sewing_interfaces"]) == 45
     assert a["numerically_paired_interface_count"] == 44
     assert a["manual_unverified_surface_attachment_count"] == 1
