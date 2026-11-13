@@ -46,9 +46,7 @@ def source_disks(raw):
 
 def _geometry(item):
     xyz = np.asarray(item["cut_disk_source_xyz_mm"], dtype=np.float64)
-    tri = np.asarray(
-        item["cut_disk_original_source_triangle_indices"], dtype=np.int64
-    )
+    tri = np.asarray(item["cut_disk_original_source_triangle_indices"], dtype=np.int64)
     if (
         xyz.ndim != 2
         or xyz.shape[1] != 3
