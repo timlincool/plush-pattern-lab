@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-12",
+  "updated_at": "2026-11-13",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -327,6 +327,10 @@
         {
           "path": "experiments/stage6_split_24piece_assembly_20261112/summary.json",
           "kind": "two_real_main_A_B_24_piece_45_relation_46_relation_sha_verified_run_and_factory_rejection"
+        },
+        {
+          "path": "docs/STAGE6_EXTERNAL_S2S_ABF_EXPORT.md",
+          "kind": "pinned_third_party_GPL_source_locked_ABF_to_SVG_adapter_pending_trusted_main_real_run"
         }
       ],
       "blockers": [
@@ -1340,6 +1344,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发",
+      "action": "在可信main的固定Stage6 Blender4.3.2原N15左lateral真实面片上，接入按Git SHA与blob固定的开源Seams to Sewing Pattern SVG导出器，仅做已有ABF解的净线输出（不运行会改源网格的一键缝合操作）；独立核对原source patch ID、2D边段、毫米、SVG及输入SHA。真实CI未成功前不得报告已验证。FreeCAD flatmesh因需FreeCAD/Nix/Blender4.5另行隔离试验，不进入生产依赖。",
+      "done_when": "受信main原Blender成功生成外部SVG、独立原源边毫米门禁和Python CI均通过；不自动制造批准或开P4。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋设计／实物试缝",
       "action": "2026-11-13已由受信真实Stage6 main #43349657766/#43350338730确认A/B各24片15页的完整Panel/Interface图：A44组数字配边加1组明确未验的手工肩面连接（2个独立数字组件）；B46组数值配边（1个数字组件）。最终main #f3c54fd Python CI #43350338822为682项通过/静态/打包成功；原4×512蹄源、各JSON及纸样manifest SHA守恒。本轮没有任何实体材料或成品外观验证。下一步只针对A做廉价实际试布、正侧背顶与原设计比较、头部手工连接强度；B的13.41mm颈孔桥宽与42.49mm返口需另行实际测试。不因两组数字配缝成功而升P3/P4。",
       "done_when": "数字合同和真Stage6+682项Python已验证；下一真实阻塞是布样试缝、完整四视图对齐和附件结构纸样。实体试样未完成，不得标为已完成。"
@@ -1669,6 +1680,11 @@
       "date": "2026-11-12",
       "event": "两次受信原Stage6 main #43349657766/#43350338730重新成功生成原13片下腹与A/B各11片头身研究套件，新增两套完整24片Panel/Interface图与全部成员哈希：A44组数值缝＋1未实测手缝、B46组数值缝。最终同提交Python #43350338822全682项/Ruff/复杂度/打包成功。前次CI仅排版问题修复，偶发Blender 403下载失误已在最终主干重跑成功；P3/P4仍不晋升，工厂0片、实体试缝0。",
       "evidence_path": "experiments/stage6_split_24piece_assembly_20261112/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "基于现有真实12组Stage6 ABF源实验开始接入开源Seams to Sewing Pattern (artyredd固定Git SHA)，只调用独立GPL SVG导出器；保持原Source网格、原切缝、ABF真实UV，并新增逐Source边、毫米尺度、SHA和安全节点否决。FreeCAD flatmesh仍处独立环境兼容性研究，未实跑；本轮可信main/第三方SVG是否成功待验证，不修改P3/P4工业进度。",
+      "evidence_path": "docs/STAGE6_EXTERNAL_S2S_ABF_EXPORT.md"
     }
   ]
 }

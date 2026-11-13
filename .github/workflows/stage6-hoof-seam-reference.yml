@@ -43,6 +43,8 @@ on:
       - 'scripts/audit_stage6_ear_slit_lscm.py'
       - 'scripts/benchmark_stage6_blender_uv.py'
       - 'scripts/audit_stage6_external_uv_comparison.py'
+      - 'scripts/export_stage6_s2s_abf_svg.py'
+      - 'scripts/audit_stage6_s2s_svg.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
   workflow_dispatch:
 permissions:
@@ -1309,6 +1311,55 @@ jobs:
           assert len(original['candidate_2d_research_disks']) == 12
           print('STAGE6_FREE_BLENDER_EXTERNAL_ABF_CONFORMAL_VS_OWN_LSCM_MEASURED_RESEARCH_NOT_FACTORY')
           PY
+      - name: Fetch exactly reviewed external GPL sewing SVG exporter without vendoring
+        shell: bash
+        run: |
+          set -euo pipefail
+          target="$RUNNER_TEMP/stage6-external-s2s-addon"
+          mkdir -p "$target"
+          git -C "$target" init -q
+          git -C "$target" remote add origin https://github.com/artyredd/blender-seams-to-sewing-pattern.git
+          git -C "$target" -c protocol.version=2 fetch -q --depth 1 origin \
+            919d031628264bb466840827a81f657133931de7
+          git -C "$target" checkout -q --detach FETCH_HEAD
+          test "$(git -C "$target" rev-parse HEAD)" = 919d031628264bb466840827a81f657133931de7
+          test "$(git -C "$target" hash-object op_export_sewingpattern.py)" = 9bf263002593d6e9b09c7868da703a213948148c
+          test -f "$target/GPL-license.txt"
+      - name: Export source-locked ABF boundary with external GPL sewing SVG add-on
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference"
+          out="$root/stage6_external_s2s_abf_research"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/export_stage6_s2s_abf_svg.py -- \
+            --source "$root/true_stage6_ear_root_slit_lscm_research.json" \
+            --native "$root/stage6_free_blender_uv_raw.json" \
+            --audit "$root/stage6_free_blender_uv_vs_lscm.json" \
+            --addon-dir "$RUNNER_TEMP/stage6-external-s2s-addon" \
+            --addon-commit 919d031628264bb466840827a81f657133931de7 \
+            --out-dir "$out"
+          python scripts/audit_stage6_s2s_svg.py \
+            --source "$root/true_stage6_ear_root_slit_lscm_research.json" \
+            --native "$root/stage6_free_blender_uv_raw.json" \
+            --audit "$root/stage6_free_blender_uv_vs_lscm.json" \
+            --svg "$out/N15_left_lateral_ABF_RESEARCH_ONLY_no_allowance.svg" \
+            --output "$out/audited_original_source_netline_RESEARCH_ONLY.json"
+          python - <<'PY'
+          import json, os, pathlib, hashlib
+          folder = pathlib.Path(os.environ["RUNNER_TEMP"])/"stage6-reference/stage6_external_s2s_abf_research"
+          svg = folder/"N15_left_lateral_ABF_RESEARCH_ONLY_no_allowance.svg"
+          report = json.loads((folder/"audited_original_source_netline_RESEARCH_ONLY.json").read_text(encoding="utf8"))
+          assert report["schema"] == "stage6-pinned-external-s2s-abf-svg-audit-v1"
+          assert report["external_svg_sha256"] == hashlib.sha256(svg.read_bytes()).hexdigest()
+          assert report["all_svg_edges_match_original_ABF_source_cut"]
+          assert report["source_boundary_edge_count"] > 4
+          assert report["method"] == "ANGLE_BASED"
+          assert not report["svg_contains_seam_allowance"]
+          assert report["factory_cutting_patterns_approved"] == 0
+          assert report["P3_status"] == "in_progress" and report["P4_status"] == "not_started"
+          print("STAGE6_REAL_PINNED_EXTERNAL_GPL_S2S_EXPORT_WITH_SOURCE_NETLINE_QA_ONLY")
+          PY
       - name: Optimize eight slit triangle bands; reject manufacturing claims
         shell: bash
         run: |
@@ -1346,6 +1397,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/upper_mother_toile_research/**
             ${{ runner.temp }}/stage6-reference/18piece_trial_sewing_pack/**
             ${{ runner.temp }}/stage6-reference/split_volume_toile_AB_research/**
+            ${{ runner.temp }}/stage6-reference/stage6_external_s2s_abf_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.svg
           if-no-files-found: warn
