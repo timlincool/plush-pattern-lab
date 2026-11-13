@@ -206,7 +206,9 @@ def audit_stage6_external_svg(source, native, audit, svg_bytes, source_sha, nati
         "all_svg_edges_match_original_ABF_source_cut": True,
         "physical_svg_millimetres_from_independent_ABF_gauge": scale,
         "svg_netline_perimeter_mm": length,
-        "source_edge_P95_relative_error": metrics["scaled_2d_p95_abs_edge_relative_error"],
+        "source_edge_P95_relative_error": metrics[
+            "scaled_2d_p95_abs_edge_relative_error"
+        ],
         "source_cut_two_side_length_mismatch_fraction": metrics[
             "2d_two_sides_length_mismatch_fraction_of_source_3d"
         ],
