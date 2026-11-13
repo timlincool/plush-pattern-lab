@@ -1355,7 +1355,12 @@
       "experiment": "experiments/stage6_pinned_s2s_abf_export_20261113/summary.json",
       "factory_cut_patterns_approved": 0,
       "physical_plush_sample_exists": false,
-      "note": "research-only P3 3D cut disk SVG output, strain and real fabric not passed"
+      "note": "research-only P3 3D cut disk SVG output, strain and real fabric not passed",
+      "final_same_code_blender_run_id": 43359212094,
+      "final_same_code_commit": "40ed13885bd2a27f938b416330c69ad738e993c1",
+      "external_svg_sha256": "16ef4ba444965022610d77b6cccc6318ebe1ae402b57cede163aaa1e86704aad",
+      "actual_source_edge_P95_relative_error": 0.16403135011025952,
+      "actual_source_two_side_2d_seam_mismatch_fraction": 0.011312086939129027
     }
   },
   "next_actions": [
@@ -1707,6 +1712,11 @@
     {
       "date": "2026-11-13",
       "event": "在可信Stage6原4.3.2 Blender main #43358362870真实完成原耳根N15左外侧3D源圆盘→免费ABF→按SHA固定的GPL-3.0+第三方Seams to Sewing Pattern SVG→独立逐条Source边/毫米验证，230条源边全匹配、净缝周长113.923334mm；Python #43359212091 702项/Ruff/复杂度/wheel全过。旧ABF P95边误差16.4%仍制造不合格，工厂可裁0/实体样0，P3不晋升、P4未启动。",
+      "evidence_path": "experiments/stage6_pinned_s2s_abf_export_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "最终同提交可信 main Stage6 #43359212094与Python #43359212091全部success，SVG真实Artifact提取校验SHA256=16ef4ba444965022610d77b6cccc6318ebe1ae402b57cede163aaa1e86704aad；原N15左外侧230边二维净缝113.923334mm、P95边误差16.4031%仍超过10%预筛，二维双侧缝长差1.1312%，因此仅开源工具导出闭环完成，工厂裁布0片/实体样0、P3继续/P4不开启。",
       "evidence_path": "experiments/stage6_pinned_s2s_abf_export_20261113/summary.json"
     }
   ]
