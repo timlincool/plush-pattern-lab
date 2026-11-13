@@ -12,6 +12,7 @@ from collections import Counter
 import numpy as np
 
 from plush_pattern_lab.validation.full_scene_seam_visibility import VIEWS
+
 # Copy only frozen source schema constants: Blender's bundled Python lacks SciPy.
 # The pure-Python regression suite checks these against the original bisector.
 ROUTES = ("Y_FRONT_BACK", "X_INNER_OUTER")
