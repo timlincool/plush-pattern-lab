@@ -395,6 +395,10 @@
         {
           "path": "experiments/stage6_lower_7port_fourzone_20261113/summary.json",
           "kind": "real_Stage6_111978_source_triangles_7_head_and_hoof_rims_3D_95_94_split_and_y20_y25_real_proofs"
+        },
+        {
+          "path": "docs/STAGE6_LOWER_SEVEN_PORT_SIX_SOURCE_DISKS_ABF.md",
+          "kind": "original_7port_4zones_6_source_interrim_3D_cut_verified_local_native_Blender_ABF_2D_pending_trusted_main"
         }
       ],
       "blockers": [
@@ -1641,6 +1645,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋玩偶制版与实物试缝",
+      "action": "从受信原Stage6固定25%代理和2026-11-13真七开口原QA出发，仅在Y20原四区做六条跨原界面源边最短连接：左前/右前各两条（高位侧接口→上身外缘、前蹄口→外缘），左右后各一条（后蹄口→上身外缘），真实3D长度23.405878/40.892110/42.367436/25.475354/42.429405/42.173672mm。原111978三角面一次且仅一次分入4区，4片变单边界Euler1，三源头冠和4×512蹄原接口不变；离线源码复算已核验，受信main 4盘原生Blender4.3.2 ABF及六条新缝/原四区域801边两侧二维逐段比对待实跑。已有前区超大应变反例，若真实ABF失败保留原数字拒绝，不能宣称有可裁纸样。",
+      "done_when": "可信main重算六条真实Source双边切缝，四片真盘ABF所有原边P95/翻面/重叠/六新缝与801旧缝两侧毫米误差；固定原始JSON SHA及反例回归。合格仍需头冠95/94和左右113/112、四蹄2D接法，设计外观与实体废布。P3未完成、P4未开始。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋工艺与设计",
       "action": "可信main Stage6 #43424704397 (SHA 8d0349cb) 已完整真实重切原25% Stage6源下壳：111978面、原Z230头部189+113+112边及四蹄4×512边共七闭环2462边；Y20和Y25各四区连通/Euler证据一致，左前/右前各3边界环Euler-1，左后/右后各2环Euler0。中央头冠在下壳左前95源边76.570785mm和右前94源边76.523212mm，左右侧高位突出各整113/112源边接本侧前区。原四区在Z230真切帽后成单圆盘的最少附加跨环切口为前2+后1+前2+后1=6。机器QA、两张100%毫米顶视研究SVG和原始三个产物SHA已由受信Runner核验并归档experiments/stage6_lower_7port_fourzone_20261113/summary.json。接下来应选择符合外观/耳云/五官、实际可缝的六条源边开缝并进行双侧低应变2D/试布审查，不能把数字下限当作六条已获批线。",
       "done_when": "本轮真实原3D七开口/四区/中央95+94和最少6拓扑开缝来源合同已完成并永久归档；但双侧二维净缝、缝份/翻面/填充/面料、完整角色附件及实体样均未完成，P3仍进行中/P4未开始。"
@@ -2106,6 +2117,11 @@
       "date": "2026-11-13",
       "event": "原Stage6可信main #43424704397 完整成功：以原公开Stage6/固定25%PLY和同轮原三个真源头冠、全四区真正裁切下壳，全部111978原源面/七原环2462边保留，四区Y20/25前3环后2环和Euler -1/0/-1/0复验，中央头冠左前95源边76.571mm+右前94源边76.523mm，上左右耳附近源帽113/112边独立接合；要把四区变为单边界圆盘至少需2+1+2+1=6条跨环源边开缝，非工厂6条成品缝。两张真实XY毫米A4顶视SVG与原3D接口JSON已由Runner SHA核验，永久机器摘要归档；没有低应变双侧2D/材料/填充实体样，P3继续/P4未开始/工厂0。",
       "evidence_path": "experiments/stage6_lower_7port_fourzone_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "基于受信七原环Y20固定Source代理验证四区六条跨孔真实3D源边路径：左前23.405878＋40.892110、左后42.367436、右前25.475354＋42.429405、右后42.173672mm。两前区各3环→2环→1环，两后区各2→1环，最终4个Euler1有边界圆盘；Source三角面和原四蹄/三个头冠开口不换。提交复用原real_panel_slit扇区分割、原Blender4.3.2 ABF与原尺度/重叠/双边2D缝长严格审核；这些只是研究3D开缝，可信main真实ABF未跑之前不得声称低应变或工厂认可。P3仍进行、P4未启。",
+      "evidence_path": "docs/STAGE6_LOWER_SEVEN_PORT_SIX_SOURCE_DISKS_ABF.md"
     }
   ]
 }
