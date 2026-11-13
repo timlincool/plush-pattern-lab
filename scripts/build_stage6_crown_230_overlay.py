@@ -16,6 +16,7 @@ from shapely.ops import unary_union
 
 SOURCE_SHA = "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717"
 TRIAL_SHA = "eebda049ac34ee201a3251b363a915fa05ad6417394bc565bb4cc7942b4545ae"
+WITNESS_SHA = "b561770a6cfeaea33abedc11bfb3992b2fe80b4bf83d10a66459682938af6571"
 BLEND_SHA = "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a"
 SCHEMA = "stage6-real-z230-three-loop-vs-24piece-A-B-cap-1to1-v1"
 Z = 230
@@ -32,6 +33,52 @@ def _locked_json(path, expected):
     if hashlib.sha256(payload).hexdigest() != expected:
         raise ValueError("original Stage6 source artifact SHA256 changed")
     return json.loads(payload)
+
+
+
+def load_compact_witness(path):
+    """Reopen source-locked original evidence after the Action Artifact expires."""
+    saved = _locked_json(path, WITNESS_SHA)
+    if (
+        saved.get("schema")
+        != "stage6-original-source-z230-crown-three-contour-review-witness-v1"
+        or saved.get("original_public_blend_sha256") != BLEND_SHA
+        or saved.get("original_contour_full_detail_sha256") != SOURCE_SHA
+        or saved.get("original_A_B_trial_full_sha256") != TRIAL_SHA
+        or saved.get("source_section_z_mm") != Z
+        or saved.get("source_component_count") != 3
+        or saved.get("factory_patterns_approved") != 0
+        or saved.get("P3_status") != "in_progress"
+        or saved.get("P4_status") != "not_started"
+    ):
+        raise ValueError("original trusted Source ID witness provenance changed")
+    source = {
+        "schema": "stage6-true-triangle-plane-component-loops-v1",
+        "factory_cutting_approved": 0,
+        "sections": [
+            {
+                "plane_z_mm": Z,
+                "true_source_plane_intersection_component_count": 3,
+                "source_contours": saved["source_contours"],
+            }
+        ],
+    }
+    entries = [
+        {
+            "name": name,
+            "head_rings_z_mm": [145, 155, 180, 205, Z],
+            "head_top_cap": {
+                "outer_stitch_xy_mm": saved["old_A_B_head_top_cap_xy_mm"]
+            },
+        }
+        for name in ("A_separate_stuffed_head", "B_integrated_neck_port")
+    ]
+    trial = {
+        "schema": "stage6-separated-torso-headneck-mother-trial-ab-v1",
+        "factory_cutting_patterns_approved": 0,
+        "options": entries,
+    }
+    return source, trial
 
 
 def _original_loop(row):
@@ -218,8 +265,16 @@ def render(loops, cap_xy, metrics):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source-detail", type=Path, required=True)
-    parser.add_argument("--trial", type=Path, required=True)
+    parser.add_argument("--source-detail", type=Path)
+    parser.add_argument("--trial", type=Path)
+    parser.add_argument(
+        "--witness",
+        type=Path,
+        default=(
+            Path(__file__).resolve().parents[1]
+            / "experiments/stage6_z230_true_crown_20261113/witness.json"
+        ),
+    )
     parser.add_argument("--svg", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
     args = parser.parse_args()
@@ -229,8 +284,13 @@ def main():
         p.exists() or p.is_symlink() for p in (args.svg, args.report)
     ):
         raise ValueError("do not overwrite existing source review evidence")
-    source = _locked_json(args.source_detail, SOURCE_SHA)
-    trial = _locked_json(args.trial, TRIAL_SHA)
+    if args.source_detail is None and args.trial is None:
+        source, trial = load_compact_witness(args.witness)
+    elif args.source_detail is not None and args.trial is not None:
+        source = _locked_json(args.source_detail, SOURCE_SHA)
+        trial = _locked_json(args.trial, TRIAL_SHA)
+    else:
+        raise ValueError("provide both original full source and trial, or neither")
     metrics, loops, cap_xy = measure(source, trial)
     svg = render(loops, cap_xy, metrics)
     metrics["svg_sha256"] = hashlib.sha256(svg.encode("utf8")).hexdigest()
