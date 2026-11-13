@@ -1,12 +1,7 @@
 name: Stage6 isolated FreeCAD flatmesh vs ABF research
 # Deliberately does not run untrusted PR code and does not alter Stage6 production.
+# One-off research: use manual rerun only to avoid repeatedly installing FreeCAD.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/stage6-freecad-flatmesh.yml'
-      - 'scripts/run_stage6_freecad_flatmesh.py'
-      - 'scripts/compare_stage6_freecad_flatmesh.py'
   workflow_dispatch:
 permissions:
   contents: read

@@ -338,7 +338,11 @@
         },
         {
           "path": "docs/STAGE6_FREECAD_FLATMESH_AB.md",
-          "kind": "isolated_pinned_FreeCAD_flatmesh_LSCM_relax_vs_ABF_same_real_12_disks_pending_trusted_run"
+          "kind": "two_trusted_main_FreeCAD_1_0_0_compiled_LSCM_relax_vs_ABF_same12_original_disks_rejected_joint_research_gate"
+        },
+        {
+          "path": "experiments/stage6_freecad_flatmesh_vs_abf_20261113/summary.json",
+          "kind": "real_12_source_FreeCAD_native_flatmesh_v_ABF_P95_seam_flip_overlap_results_no_factory"
         }
       ],
       "blockers": [
@@ -1365,6 +1369,29 @@
       "external_svg_sha256": "16ef4ba444965022610d77b6cccc6318ebe1ae402b57cede163aaa1e86704aad",
       "actual_source_edge_P95_relative_error": 0.16403135011025952,
       "actual_source_two_side_2d_seam_mismatch_fraction": 0.011312086939129027
+    },
+    "stage6_freecad_native_flatmesh_real_12_source_ABF_comparison": {
+      "source_main_commit": "5081385c44dfb4303d53c4d4827505df961e69ef",
+      "verified_stage6_freecad_runs": [
+        43362970238,
+        43363281140
+      ],
+      "original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "original_source_candidate_count": 12,
+      "native_freecad_version": "1.0.0",
+      "module": "flatmesh.FaceUnwrapper (C++ pybind11)",
+      "mode": "LSCM+10*relax(0.95)",
+      "freecad_median_p95": 0.1129085992589237,
+      "blender_abf_median_p95": 0.2430997850182549,
+      "freecad_median_seam_diff": 0.09585644849490131,
+      "blender_abf_median_seam_diff": 0.052534944074056886,
+      "freecad_better_p95_cases": 12,
+      "freecad_better_seam_cases": 2,
+      "freecad_all_research_gates_passed": 0,
+      "blender_all_research_gates_passed": 0,
+      "source_geometry_rewritten": false,
+      "factory_patterns_approved": 0,
+      "experiment": "experiments/stage6_freecad_flatmesh_vs_abf_20261113/summary.json"
     }
   },
   "next_actions": [
@@ -1372,8 +1399,8 @@
       "priority": "P1",
       "phase_id": "P3",
       "owner": "研发",
-      "action": "在不修改现有Stage6 ABF默认主线的前提下，复用原Stage6可信Run #43359212094的12组源圆盘/ABF已审计原始JSON，使用独立Nix环境调用FreeCAD原生C++ flatmesh FaceUnwrapper（LSCM＋10轮relax 0.95），以原共用_metrics核验P95、双侧净缝、翻面和重叠；仅跑一次独立受信main CI并硬限制18分钟。全部成功前不宣称FreeCAD优于ABF，也不进入量产纸样。",
-      "done_when": "独立FreeCAD原生模块真实导入、12组逐源求解、相同质量门禁均有完整成功或可信失败证据；是否替代ABF依结果判定。"
+      "action": "可信主干隔离FreeCAD native flatmesh真实run #43362970238/#43363281140均已成功，复用原Stage6十二源圆盘、全部输入 SHA、同一质量门禁：FreeCAD LSCM+10轮relax的P95边差中位11.29%，Blender ABF24.31%；但同源双侧缝长差FreeCAD9.59%、ABF5.25%，仅2/12比ABF更好；双方0/12满足10%边差+3%缝差+0翻转重叠。实验归档 experiments/stage6_freecad_flatmesh_vs_abf_20261113/summary.json。保留ABF默认，不继续增加UV求解器；下一P3优先真实结构分片、源边接缝与廉价布样/四视图验收。",
+      "done_when": "本轮真实求解/同源质量对照已完成并记录失败，不晋升P3；实际下一步为有工艺意义的完整裁片与实体样布验证。"
     },
     {
       "priority": "P0",
@@ -1734,6 +1761,11 @@
       "date": "2026-11-13",
       "event": "针对用户同意继续，启动FreeCAD原生flatmesh与Blender ABF同12组Stage6真实源圆盘隔离对照：查原C++证实FreeCAD flatmesh为LSCM＋relax而非完全新求解器，写仅调用原编译模块的适配脚本/沿用现有质量计算/单独有限时Nix workflow，待可信main运行后按真实结果记分；P3继续、P4未开始，不添加付费插件。",
       "evidence_path": "docs/STAGE6_FREECAD_FLATMESH_AB.md"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "独立受信main #43362970238/#43363281140成功从cache.nixos.org的FreeCAD1.0.0真正导入编译flatmesh.FaceUnwrapper，对固定真实12块N15/N17源圆盘运行LSCM+10次relax(0.95)。与已有原生ABF同源同评分：P95边差中位11.29% vs24.31%改善12/12，但2D双侧缝长差9.59% vs5.25%，仅2/12改善；双方0/12满足联合研究门槛，皆无翻转/重叠，维持ABF默认且工业裁布0、P3进行中/P4未开始；为节省重复FreeCAD依赖安装，该隔离工作流改为仅手动重跑。",
+      "evidence_path": "experiments/stage6_freecad_flatmesh_vs_abf_20261113/summary.json"
     }
   ]
 }

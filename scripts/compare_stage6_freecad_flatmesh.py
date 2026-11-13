@@ -62,8 +62,11 @@ def _validate(source, flat, native, audit, source_digest, native_digest):
     ]
     abf = _index(abf_rows)
     baseline_rows = [
-        {**row, "source_side": row["source_side"],
-         "slit_direction": row["original_source_slit"]}
+        {
+            **row,
+            "source_side": row["source_side"],
+            "slit_direction": row["original_source_slit"],
+        }
         for row in audit["full_same_metric_comparisons"]
     ]
     measured = _index(baseline_rows)
@@ -84,16 +87,16 @@ def compare(source, flat, native, audit, source_digest, native_digest):
         if (
             fc.get("status") != "completed"
             or bl.get("status") != "completed"
-            or fc.get("source_patch_sha256")
-            != original["original_source_patch_sha256"]
-            or bl.get("source_patch_sha256")
-            != original["original_source_patch_sha256"]
+            or fc.get("source_patch_sha256") != original["original_source_patch_sha256"]
+            or bl.get("source_patch_sha256") != original["original_source_patch_sha256"]
             or fc.get("source_vertex_count") != expected_vertices
             or fc.get("source_triangle_count") != expected_faces
             or bl.get("vertex_count") != expected_vertices
             or bl.get("triangle_count") != expected_faces
         ):
-            raise ValueError("candidate changed original Stage6 triangle/vertex identity")
+            raise ValueError(
+                "candidate changed original Stage6 triangle/vertex identity"
+            )
         geom = np.asarray(fc["uv_per_original_source_disk_vertex"], dtype=float)
         trial = _metrics(original, geom, SOLVER)
         a = [x for x in old["external_blender_solvers"] if x["method"] == "ANGLE_BASED"]
@@ -102,18 +105,24 @@ def compare(source, flat, native, audit, source_digest, native_digest):
         blender = a[0]
         edge = "scaled_2d_p95_abs_edge_relative_error"
         seam = "2d_two_sides_length_mismatch_fraction_of_source_3d"
-        rows.append({
-            "source_variant": key[0],
-            "side": key[1],
-            "slit_direction": key[2],
-            "original_source_patch_sha256": original["original_source_patch_sha256"],
-            "freecad_native_seconds": fc["solver_seconds"],
-            "freecad": trial,
-            "blender_ABF": blender,
-            "freecad_better_P95": trial[edge] < blender[edge],
-            "freecad_better_two_sided_seam": trial[seam] < blender[seam],
-            "freecad_meets_research_gate": trial["passes_unverified_research_thresholds"],
-        })
+        rows.append(
+            {
+                "source_variant": key[0],
+                "side": key[1],
+                "slit_direction": key[2],
+                "original_source_patch_sha256": original[
+                    "original_source_patch_sha256"
+                ],
+                "freecad_native_seconds": fc["solver_seconds"],
+                "freecad": trial,
+                "blender_ABF": blender,
+                "freecad_better_P95": trial[edge] < blender[edge],
+                "freecad_better_two_sided_seam": trial[seam] < blender[seam],
+                "freecad_meets_research_gate": trial[
+                    "passes_unverified_research_thresholds"
+                ],
+            }
+        )
     edge = "scaled_2d_p95_abs_edge_relative_error"
     seam = "2d_two_sides_length_mismatch_fraction_of_source_3d"
     return {
@@ -174,12 +183,18 @@ def main():
     args.output.write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
     )
-    print("STAGE6_FREECAD_VS_ABF_REAL_SAME_SOURCE_RESEARCH", json.dumps({
-        "count": result["count"],
-        "freecad_better_P95_cases": result["freecad_better_P95_cases"],
-        "freecad_better_seam_cases": result["freecad_better_seam_cases"],
-        "factory_approved": False,
-    }), flush=True)
+    print(
+        "STAGE6_FREECAD_VS_ABF_REAL_SAME_SOURCE_RESEARCH",
+        json.dumps(
+            {
+                "count": result["count"],
+                "freecad_better_P95_cases": result["freecad_better_P95_cases"],
+                "freecad_better_seam_cases": result["freecad_better_seam_cases"],
+                "factory_approved": False,
+            }
+        ),
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # Stage6 原源 FreeCAD flatmesh vs Blender ABF：隔离实测
 
-状态：**隔离实验进行中，实际 FreeCAD 数值尚未验证**。不修改原 Stage6 主工作流，不替代已通过的 Blender ABF→GPL SVG 导出器；不增加采购和付费依赖。P3 进行中、P4 未开始、正式工厂纸样 0 片。
+状态：**独立受信 main 真实运行 #43362970238 和 #43363281140 均成功**；12组实测及否决见[完整真实结果](STAGE6_FREECAD_FLATMESH_REAL_AB.md)与[永久摘要](../experiments/stage6_freecad_flatmesh_vs_abf_20261113/summary.json)。不修改原 Stage6 ABF→GPL SVG 主流程。P3进行中，P4未开始，工厂正式纸样0片。
 
 ## 关键源码事实：flatmesh 仍使用 LSCM
 
@@ -23,7 +23,7 @@ FreeCAD 的 [MeshFlattening.cpp](https://github.com/FreeCAD/FreeCAD/blob/main/sr
 - 现有 `scripts/run_stage6_freecad_flatmesh.py` 只通过 `flatmesh.FaceUnwrapper` 读取原 `XYZ` / `FaceID` 局部三角索引，保留所有源顶点顺序和身份；调用 `findFlatNodes(10,0.95)`，每块保存原源匹配的 `ze_nodes` 二维值或独立失败状态，**绝不自动将失败样本丢掉**。
 - `scripts/compare_stage6_freecad_flatmesh.py` 直接复用已存在的 `stage6_external_uv_benchmark._metrics`，与 ABF 使用**相同**源三角边、全局等比校准、P95长度误差、同一源切缝双侧二维长度差、翻转/正面积重叠门禁。
 - 比较所有12组而不是挑一张漂亮图片；联合研究预筛仍为 P95≤10%、净缝两侧差≤3%、0翻转/0重叠。此阈值不是材料生产容差，均不批准工厂裁布。
-- `.github/workflows/stage6-freecad-flatmesh.yml` 仅由受信 `main` 对对应实验文件的 push 或人工 workflow_dispatch 触发，GitHub读权限、18分钟硬超时、独立失败Artifact保留7天。第一次真实跑完并得到可追溯数据后才将结果写入 `experiments`，绝不根据预期或编译成功编造改善数字。
+- `.github/workflows/stage6-freecad-flatmesh.yml` 完成初次受信主分支实跑后仅允许手工 workflow_dispatch 再测，GitHub读权限、18分钟硬超时、独立失败Artifact保留7天。两次成功实跑后的结果已经归档到 `experiments`，绝不根据预期或编译成功编造改善数字。
 
 ## 决策
 
