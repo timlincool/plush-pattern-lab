@@ -10,7 +10,7 @@ import pytest
 
 from plush_pattern_lab.validation import stage6_protrusion_route_visibility as audit
 
-XYZ = [[0., 0., 230.], [1., 0., 235.], [2., 0., 240.], [3., 0., 230.]]
+XYZ = [[0.0, 0.0, 230.0], [1.0, 0.0, 235.0], [2.0, 0.0, 240.0], [3.0, 0.0, 230.0]]
 ORIGINAL_SHA = "same-run-original-three-caps-hash"
 
 
@@ -24,7 +24,10 @@ def _case(name, nfaces, rim, route):
         "seam_panel_vertex_ids_in_order": [0, 1, 2, 3],
         "topological_Euler": 1,
     }
-    first = {**deepcopy(shared), "source_original_cap_face_ids": list(range(nfaces // 2))}
+    first = {
+        **deepcopy(shared),
+        "source_original_cap_face_ids": list(range(nfaces // 2)),
+    }
     second = {
         **deepcopy(shared),
         "source_original_cap_face_ids": list(range(nfaces // 2, nfaces)),
@@ -58,11 +61,13 @@ def _fixture():
             case, original = _case(name, nfaces, rim, route)
             originals[name] = original
             side_rows.append(case)
-        variants.append({
-            "route": route,
-            "side_protrusions": side_rows,
-            "single_central_real_source_crown_retained": True,
-        })
+        variants.append(
+            {
+                "route": route,
+                "side_protrusions": side_rows,
+                "single_central_real_source_crown_retained": True,
+            }
+        )
     study = {
         "schema": audit.BISECT_SCHEMA,
         "source_original_three_caps_schema": audit.CAPS_SCHEMA,
@@ -94,11 +99,13 @@ def _observation(sample):
             for name in audit.VIEW_NAMES
         },
         "independent_mesh_proximity": {
-            "nearby_raw_meshes_within_6mm": [{
-                "mesh": "Grey head cloud halo",
-                "group": "decorative_cloud_layers",
-                "distance_mm": 1.25,
-            }]
+            "nearby_raw_meshes_within_6mm": [
+                {
+                    "mesh": "Grey head cloud halo",
+                    "group": "decorative_cloud_layers",
+                    "distance_mm": 1.25,
+                }
+            ]
         },
     }
 
@@ -116,7 +123,9 @@ def test_all_original_X_Y_meridians_are_sampled_without_invented_vertices():
     ).hexdigest()
     assert all(row["cap_local_source_path_sha256"] == expected for row in plans)
     for row in plans:
-        observations = [_observation(s) for s in row["sampled_cap_local_source_vertices"]]
+        observations = [
+            _observation(s) for s in row["sampled_cap_local_source_vertices"]
+        ]
         scored = audit.summarize_observations(row, observations)
         assert scored["sampled_original_cap_vertices_not_all_source_edges"] == 4
         assert scored["five_view_first_surface_classification_counts"]["top"] == {
@@ -149,7 +158,9 @@ def test_original_source_identity_tampering_cannot_pass(fault):
         audit.plan_original_meridian_samples(study, original, ORIGINAL_SHA)
 
 
-@pytest.mark.parametrize("fault", ("wrong_point", "lost_face", "changed_path", "wrong_copy"))
+@pytest.mark.parametrize(
+    "fault", ("wrong_point", "lost_face", "changed_path", "wrong_copy")
+)
 def test_cannot_lose_original_source_seam_or_double_claim_one_triangle(fault):
     study, original = _fixture()
     part = study["variants"][0]["side_protrusions"][0]
@@ -165,7 +176,9 @@ def test_cannot_lose_original_source_seam_or_double_claim_one_triangle(fault):
         audit.plan_original_meridian_samples(study, original, ORIGINAL_SHA)
 
 
-@pytest.mark.parametrize("fault", ("removed", "wrong_vertex", "missing_view", "unknown_class"))
+@pytest.mark.parametrize(
+    "fault", ("removed", "wrong_vertex", "missing_view", "unknown_class")
+)
 def test_missing_or_relabelled_real_bvh_observations_fail_closed(fault):
     study, original = _fixture()
     plan = audit.plan_original_meridian_samples(study, original, ORIGINAL_SHA)[0]
