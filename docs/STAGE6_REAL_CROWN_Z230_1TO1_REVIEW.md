@@ -31,17 +31,19 @@
 
 研究渲染仅作**刚性平移与Y轴翻转**（1原毫米 = 1纸上毫米），一张 `210×297mm` SVG 对照真实中央蓝、左绿、右紫、旧单片橙色虚线；附 100mm 标尺和 10×10mm 打印校验框。所有原环按真实XYZ原截面投影，**不是三维曲面的布片静止展开**，也没有任何缝份、净缝工艺、毛向、制版镜像、填棉或实际材料认证。
 
-## 复现（来自同一真实受信Stage6数据）
+## 永久源证据与复现
+
+由于 GitHub Action Artifact 默认只保留7天，本仓库将真实同一原 Stage6 源数据中 Z230 的 **414条原三角形交叉边 Vertex ID+真实插值XY** 与旧A/B头顶64点单环一并保存在[27KB精简Witness](../experiments/stage6_z230_true_crown_20261113/witness.json)，原始完整13层文件SHA和旧A/B完整试样SHA仍原样记录。每环独立存储原交边ID/XY哈希与完整长度，**不声称这是一张可以缝的布片**。程序固定校验Witness SHA-256 `b561770a6cfeaea33abedc11bfb3992b2fe80b4bf83d10a66459682938af6571`，拒绝原始来源、三环或旧A/B轮廓遭替换。
+
+正常情况下不需要下载原始90MB Blend，也不依赖已过期的 Actions ZIP：
 
 ```bash
 python scripts/build_stage6_crown_230_overlay.py \
-  --source-detail true_stage6_source_section_detail.json \
-  --trial two_volume_source_envelope_ab.json \
   --svg crown_source_vs_old_AB_A4_REVIEW_ONLY.svg \
   --report crown_source_vs_old_AB_source_audit.json
 ```
 
-每次重算先拒绝错误文件SHA；未有实际受信数据时单测只证明拒绝逻辑，不得编造已运行实源。原输出必须不会覆盖已存在的研究/生产文件。
+如要审计最初同一受信 Runner 的完整文件，也支持 `--source-detail <original.json> --trial <trial.json>` 显式传入二者；仍严格校验两个原始成员SHA，而不是信任新文件名。每次输出拒绝覆盖已有文件。单元测试除故意篡改、缩放、少环、错源ID外，直接从本仓固定Witness重放全部414条真Source交边和真实319.77mm A/B旧盖片，**不依赖网络或重复运行Blender**。
 
 ## 接下来只解决一个实际设计决定
 
