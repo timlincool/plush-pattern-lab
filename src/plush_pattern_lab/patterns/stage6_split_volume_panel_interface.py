@@ -36,8 +36,7 @@ def _inventory(name):
     lower = [
         dict(part)
         for part in _part_inventory()
-        if part["id"] == "YOKE-01"
-        or part["id"].startswith(("LEG-", "SOLE-", "BAND-"))
+        if part["id"] == "YOKE-01" or part["id"].startswith(("LEG-", "SOLE-", "BAND-"))
     ]
     if len(lower) != 13:
         raise ValueError("source-hoof lower panel inventory changed")
