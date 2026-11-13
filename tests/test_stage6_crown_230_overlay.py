@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 from copy import deepcopy
+from pathlib import Path
 
 import numpy as np
 import pytest
@@ -12,6 +13,7 @@ from build_stage6_crown_230_overlay import (
     SCHEMA,
     _locked_json,
     _page_points,
+    load_compact_witness,
     measure,
     render,
 )
@@ -148,3 +150,32 @@ def test_original_input_sha_check_rejects_unauthorized_json(tmp_path):
     fake.write_text("{}", encoding="utf8")
     with pytest.raises(ValueError, match="SHA256 changed"):
         _locked_json(fake, "0" * 64)
+
+def test_real_trusted_stage6_414_crossing_edges_replay_after_artifact_expiry():
+    root = Path(__file__).resolve().parents[1]
+    witness = root / "experiments/stage6_z230_true_crown_20261113/witness.json"
+    source, trial = load_compact_witness(witness)
+    measured, loops, cap = measure(source, trial)
+    assert measured["source_original_boundary_edges_per_component"] == [
+        189, 113, 112
+    ]
+    assert measured["source_true_loop_perimeters_mm"] == pytest.approx(
+        [153.0939971276184, 45.51675545730191, 45.510986167806784]
+    )
+    assert measured["old_A_B_single_surrogate_cap_perimeter_mm"] == pytest.approx(
+        319.77053282271424
+    )
+    assert measured["central_vs_surrogate_planar_boundary_hausdorff_mm"] == (
+        pytest.approx(38.212240865383805)
+    )
+    assert "NOT A CUT/SEW PATTERN" in render(loops, cap, measured)
+    assert measured["factory_cutting_patterns_approved"] == 0
+
+
+def test_repacked_source_witness_sha_tamper_is_not_silently_accepted(tmp_path):
+    root = Path(__file__).resolve().parents[1]
+    original = root / "experiments/stage6_z230_true_crown_20261113/witness.json"
+    forged = tmp_path / "witness.json"
+    forged.write_bytes(original.read_bytes().replace(b"230", b"231", 1))
+    with pytest.raises(ValueError, match="SHA256 changed"):
+        load_compact_witness(forged)
