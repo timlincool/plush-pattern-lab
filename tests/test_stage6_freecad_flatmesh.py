@@ -6,7 +6,6 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
-
 from run_stage6_freecad_flatmesh import SOURCE_SHA, run_study, source_disks
 
 
