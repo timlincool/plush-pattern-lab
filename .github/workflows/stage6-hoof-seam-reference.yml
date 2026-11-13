@@ -46,6 +46,9 @@ on:
       - 'scripts/build_stage6_crown_true_3d_cut.py'
       - 'scripts/unwrap_stage6_true_crown_caps_blender.py'
       - 'scripts/audit_stage6_true_crown_caps_abf.py'
+      - 'scripts/build_stage6_protrusion_bisect_ab.py'
+      - 'scripts/unwrap_stage6_protrusion_bisect_blender.py'
+      - 'scripts/audit_stage6_protrusion_bisect_abf.py'
       - 'scripts/export_stage6_s2s_abf_svg.py'
       - 'scripts/audit_stage6_s2s_svg.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
@@ -1440,6 +1443,43 @@ jobs:
               assert math.isfinite(cap["source_3d_edge_to_ABF_2d_p95_relative_error"])
               assert math.isfinite(cap["ABF_2d_vs_source_3d_rim_relative_length_difference"])
           print("STAGE6_REAL_SOURCE_THREE_CROWN_CAPS_ABF_SCORED_NOT_FACTORY")
+          PY
+      - name: Test two actual original high-ear-edge meridians using native ABF
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference/z230_three_real_caps_research"
+          python scripts/build_stage6_protrusion_bisect_ab.py \
+            --source-caps "$root/source_three_caps.json" \
+            --source-summary "$root/source_three_caps_topology_qa.json" \
+            --output "$root/side_original_3d_meridian_bisect_AB.json"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/unwrap_stage6_protrusion_bisect_blender.py -- \
+            --source-bisect "$root/side_original_3d_meridian_bisect_AB.json" \
+            --source-caps "$root/source_three_caps.json" \
+            --output "$root/side_original_3d_meridian_native_ABF.json"
+          python scripts/audit_stage6_protrusion_bisect_abf.py \
+            --source-bisect "$root/side_original_3d_meridian_bisect_AB.json" \
+            --native "$root/side_original_3d_meridian_native_ABF.json" \
+            --output "$root/side_original_3d_meridian_ABF_QA.json"
+          python - <<'PY'
+          import json, os, pathlib
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'stage6-reference/z230_three_real_caps_research'
+          geometry=json.loads((root/'side_original_3d_meridian_bisect_AB.json').read_text())
+          qa=json.loads((root/'side_original_3d_meridian_ABF_QA.json').read_text())
+          assert geometry['schema']=='stage6-genuine-high-protrusion-source-edge-bisect-AB-v1'
+          assert [r['route'] for r in geometry['variants']]==['Y_FRONT_BACK','X_INNER_OUTER']
+          for variant in geometry['variants']:
+              assert [s['original_z230_rim_edge_count'] for s in variant['side_protrusions']]==[113,112]
+              assert [sum(len(p['source_original_cap_face_ids']) for p in s['panels'])
+                      for s in variant['side_protrusions']]==[1849,1906]
+              assert variant['side_panel_count_total']==4
+          assert qa['schema']=='stage6-real-source-side-meridian-ABF-two-sided-netline-audit-v1'
+          assert len(qa['options'])==2
+          assert all(len(r['side_source_panels'])==2 for r in qa['options'])
+          assert qa['factory_cutting_patterns_approved']==0
+          assert qa['P3_status']=='in_progress' and qa['P4_status']=='not_started'
+          print('STAGE6_TWO_REAL_3D_SIDE_EDGE_MERIDIANS_ABF_2D_SEAMS_MEASURED_NOT_FACTORY')
           PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()

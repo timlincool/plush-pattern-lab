@@ -363,6 +363,10 @@
         {
           "path": "docs/STAGE6_REAL_CROWN_3D_CAPS_ABF.md",
           "kind": "true_source_three_cap_3d_cut_and_independent_Blender_ABF_per_panel_rejection"
+        },
+        {
+          "path": "docs/STAGE6_REAL_PROTRUSION_BISECT_ABF.md",
+          "kind": "original_Stage6_source_geodesic_Y_X_side_protrusion_bisect_2x4_panels_pending_native_ABF_real_run"
         }
       ],
       "blockers": [
@@ -1500,6 +1504,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋原设计审阅",
+      "action": "在原Stage6真实Z230两个113/112边高位突出各1849/1906源三角面上，以SciPy原Source内部边Dijkstra定义Y前后与X内外两条试缝，逐方案分成2+2真实源面片，保留原Z230源环和全部旧4×512蹄口；本地3D预检通过但真实Blender4.3.2 ABF结果待受信main执行。须原8片P95/翻转重叠、切缝两侧逐Source边2D净缝累计误差和41Mesh耳云遮挡证据后才考虑下一设计方向，不擅自建立新UV算法或工厂纸样。",
+      "done_when": "受信 Stage6 main 同批原3D源+ABF实验生成完整8片质量结果；严格保留原10%边差、3%切口双侧差、零翻面/重叠联合门槛，未完成四视图/实物则不批准P4。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "工程＋设计与实体试布",
       "action": "根据可信原Stage6 #43383104161 的真实三维三帽切割及原生ABF结果：中央189边源头冠1663面Euler1、P95边差4.053%但单侧净缝3.242%超过3%研究阈值；左右高位突出各113/112原源边、1849/1906面，ABF P95高达93.50%/93.91%、单侧缝长相对3D差50.52%/49.75%，均不得裁布。下一步以原正/侧/背/顶设计和41 Mesh耳云邻近证据确定左右突出应拆片还是做隐藏省道／插片，并保留中间头冠源曲面。对新侧片使用既有Blender ABF和源SourceID双侧配缝审核、毛向、返口和真实废布试样，不发明新UV算法。下部仍是7边界连续主体未做可缝二维结构。",
       "done_when": "新的左右侧突出分片/省道位置获得原图和三维来源对应，真实Source3D上下原边匹配并有两侧2D净线低应变/无翻面重叠；实际布料翻面/填充和实样反馈成立。当前P3未通过/P4不开启。"
@@ -1897,6 +1908,11 @@
       "date": "2026-11-13",
       "event": "可信原Stage6 #43383104161 完整实跑成功：MAT source SHA固定25%原主体以Trimesh4.11.1禁修补切成中央/左/右3个真实三维上半头冠，源边189/113/112与下部原3D逐边对接，下部四蹄4×512仍在。Blender 4.3.2 原生ABF真实展平：中央P95=4.053%、单侧3D源缝相对2D差3.242%、0翻面重叠；左右P95=93.500%/93.907%、单侧净缝差50.522%/49.755%，0翻面重叠；3片均未满足10%/3%联合研究门槛。已有开源成熟工具无需继续自研UV。下部连续七环缺二维可缝分片，实物材料/设计签核无，正式纸样0/P3继续/P4未开始。",
       "evidence_path": "experiments/stage6_real_3d_crown_caps_abf_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "继真3D三头冠ABF证明左右高位突出单片P95≈93.5%后，开始原Stage6 Source真实内部边Dijkstra几何分片：Y前后与X内外双方案，左右113/112条Z230原界面、1849/1906源FaceID不改；各每侧两面片Euler1且新增3D缝双侧同源，后续受信main运行Blender ABF 8片、逐段2D双侧缝差否决。原脚本与旧中部头冠不替换，未声称已生成正式可裁纸样。",
+      "evidence_path": "docs/STAGE6_REAL_PROTRUSION_BISECT_ABF.md"
     }
   ]
 }
