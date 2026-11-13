@@ -277,7 +277,11 @@ def build_split_24piece_assembly_graphs(lower, study):
             _neck_A(trial, pairs, claimed)
         else:
             _neck_B(trial, pairs, claimed)
-        numeric = [edge for edge in pairs if edge["kind"] != "UNPROVEN_MANUAL_SURFACE_ATTACHMENT"]
+        numeric = [
+            edge
+            for edge in pairs
+            if edge["kind"] != "UNPROVEN_MANUAL_SURFACE_ATTACHMENT"
+        ]
         numeric_components = _components(pieces, numeric)
         connected_components = _components(pieces, pairs)
         expected = (45, 44, 2) if name == OPTIONS[0] else (46, 46, 1)
@@ -289,7 +293,9 @@ def build_split_24piece_assembly_graphs(lower, study):
             or len(connected_components) != 1
             or len(claimed) != len(pairs) * 2
         ):
-            raise ValueError("24-piece trial assembly topology or interface count changed")
+            raise ValueError(
+                "24-piece trial assembly topology or interface count changed"
+            )
         result[name] = {
             "schema": SCHEMA,
             "variant": name,
