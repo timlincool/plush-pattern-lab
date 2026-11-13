@@ -10,7 +10,6 @@ from __future__ import annotations
 
 from collections import deque
 
-import numpy as np
 
 from plush_pattern_lab.patterns.stage6_research_panel_interface import (
     SOURCE_SHA,
