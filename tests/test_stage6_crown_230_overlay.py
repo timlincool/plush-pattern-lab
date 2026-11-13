@@ -137,9 +137,9 @@ def test_source_or_old_cap_tampering_rejected(mutation):
 
 
 def test_one_to_one_page_transform_does_not_rescale_measurements():
-    xy = np.array([[0, -47], [100, -47]], dtype=float)
+    xy = np.array([[0, -47], [60, -47]], dtype=float)
     x, y = _page_points(xy)
-    assert x[1] - x[0] == pytest.approx(100)
+    assert x[1] - x[0] == pytest.approx(60)
     assert y[0] == y[1] == pytest.approx(99)
 
 
