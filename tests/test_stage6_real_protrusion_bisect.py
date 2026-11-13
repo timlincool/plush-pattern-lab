@@ -39,11 +39,16 @@ def test_two_source_edge_routes_partition_all_faces_once():
         assert len(result["panels"]) == 2
         assert result["original_z230_rim_edge_count"] == 400
         assert result["original_three_dimensional_source_seam_shared_twice"]
-        assert sum(len(p["source_original_cap_face_ids"]) for p in result["panels"]) == 400
-        assert sum(
-            p["source_original_z230_boundary_edges_on_panel"]
-            for p in result["panels"]
-        ) == 400
+        assert (
+            sum(len(p["source_original_cap_face_ids"]) for p in result["panels"]) == 400
+        )
+        assert (
+            sum(
+                p["source_original_z230_boundary_edges_on_panel"]
+                for p in result["panels"]
+            )
+            == 400
+        )
         for panel in result["panels"]:
             assert panel["topological_Euler"] == 1
             assert not panel["physical_fabric_allowance_or_hidden_seam_verified"]
