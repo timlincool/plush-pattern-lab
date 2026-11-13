@@ -25,9 +25,13 @@ def main():
     args = parser.parse_args(argv)
     if bpy.app.version[:3] != (4, 3, 2):
         raise ValueError("only trusted Blender 4.3.2 ANGLE_BASED UV")
-    if args.output.exists() or args.output.is_symlink() or any(
-        not p.is_file() or p.is_symlink()
-        for p in (args.source_bisect, args.source_caps)
+    if (
+        args.output.exists()
+        or args.output.is_symlink()
+        or any(
+            not p.is_file() or p.is_symlink()
+            for p in (args.source_bisect, args.source_caps)
+        )
     ):
         raise ValueError("original source missing or would overwrite previous output")
     raw = args.source_bisect.read_bytes()
