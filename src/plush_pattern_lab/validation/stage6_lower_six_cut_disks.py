@@ -66,16 +66,25 @@ def _find_rims(mesh, expected_count, front, side):
     if len(loops) != expected_count:
         raise ValueError("original lower four-zone open rim count drift")
     z = mesh["xyz"][:, 2]
-    hoof = [row for row in loops if len(row["edges"]) == 512]
-    ear = [row for row in loops if len(row["edges"]) == SOURCE_RIM_COUNT[side]]
-    if len(hoof) != 1 or (front and len(ear) != 1):
+    hoof_ids = [
+        i for i, row in enumerate(loops) if len(row["edges"]) == 512
+    ]
+    ear_ids = [
+        i for i, row in enumerate(loops)
+        if front and len(row["edges"]) == SOURCE_RIM_COUNT[side]
+    ]
+    if len(hoof_ids) != 1 or (front and len(ear_ids) != 1):
         raise ValueError("original one-hoof and side-head boundary missing")
-    if np.max(np.abs(z[hoof[0]["vertices"]] - 20)) > 0.001:
+    hoof = loops[hoof_ids[0]]
+    if np.max(np.abs(z[hoof["vertices"]] - 20)) > 0.001:
         raise ValueError("original Stage6 hoof source Z changed")
-    outer = [row for row in loops if row not in hoof + ear]
+    outer = [
+        row for i, row in enumerate(loops)
+        if i not in set(hoof_ids + ear_ids)
+    ]
     if len(outer) != 1:
         raise ValueError("main upper seam rim changed")
-    return hoof[0], outer[0], ear[0] if front else None
+    return hoof, outer[0], loops[ear_ids[0]] if front else None
 
 
 def _shortest(mesh, source, target, forbidden=()):
