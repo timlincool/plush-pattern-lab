@@ -49,9 +49,7 @@ def main():
     source, faces = load_pinned_proxy(args.proxy)
     import trimesh  # noqa: PLC0415 - only this separate MIT research dependency
 
-    study = build_three_real_source_caps(
-        source, faces, json.loads(raw), raw, trimesh
-    )
+    study = build_three_real_source_caps(source, faces, json.loads(raw), raw, trimesh)
     details = json.dumps(study, ensure_ascii=False, separators=(",", ":")) + "\n"
     if study["schema"] != SCHEMA:
         raise ValueError("unexpected source-linked 3D cap study schema")
