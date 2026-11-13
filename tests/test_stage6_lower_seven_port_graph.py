@@ -33,10 +33,7 @@ def _toy_cap():
         "original_rim_vertex_ids_in_cap_local_order": list(range(6)),
         "source_3d_rim_perimeter_mm": length,
     }
-    border = {
-        tuple(sorted((i, (i + 1) % 6))): 0 if i < 3 else 2
-        for i in range(6)
-    }
+    border = {tuple(sorted((i, (i + 1) % 6))): 0 if i < 3 else 2 for i in range(6)}
     return xyz, cap, border
 
 
@@ -64,8 +61,7 @@ def _locked_meta():
         "proxy_ply_sha256": PROXY_SHA,
         "shorter_3d_seam_graph_study_y_mm": 20.0,
         "scenarios": [
-            {"split_y_mm": z, "source_triangles": 116568}
-            for z in (20.0, 25.0)
+            {"split_y_mm": z, "source_triangles": 116568} for z in (20.0, 25.0)
         ],
     }
     return caps, full
@@ -102,8 +98,16 @@ def test_original_crown_rim_corruption_cannot_claim_source_3d_seam(fault):
 
 @pytest.mark.parametrize(
     "fault",
-    ("wrong_blend", "wrong_proxy", "fake_approved", "missing_head",
-     "changed_rim", "changed_source_four_zone", "changed_split", "missing_hoof"),
+    (
+        "wrong_blend",
+        "wrong_proxy",
+        "fake_approved",
+        "missing_head",
+        "changed_rim",
+        "changed_source_four_zone",
+        "changed_split",
+        "missing_hoof",
+    ),
 )
 def test_refuse_forged_seven_opening_source_or_older_surrogate(fault):
     caps, full = _locked_meta()
