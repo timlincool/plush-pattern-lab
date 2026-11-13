@@ -12,12 +12,12 @@ from collections import Counter
 import numpy as np
 
 from plush_pattern_lab.validation.full_scene_seam_visibility import VIEWS
-from plush_pattern_lab.validation.stage6_real_protrusion_bisect import (
-    CAPS,
-    EXPECTED_SOURCE_FACES,
-    EXPECTED_SOURCE_RIMS,
-    ROUTES,
-)
+# Copy only frozen source schema constants: Blender's bundled Python lacks SciPy.
+# The pure-Python regression suite checks these against the original bisector.
+ROUTES = ("Y_FRONT_BACK", "X_INNER_OUTER")
+CAPS = ("left_high_protrusion", "right_high_protrusion")
+EXPECTED_SOURCE_FACES = (1849, 1906)
+EXPECTED_SOURCE_RIMS = (113, 112)
 
 SCHEMA = "stage6-original-X-Y-protrusion-meridian-41mesh-5view-v1"
 BISECT_SCHEMA = "stage6-genuine-high-protrusion-source-edge-bisect-AB-v1"
@@ -177,7 +177,9 @@ def summarize_observations(plan, observations):
                 "near_original_body_first_surface",
                 "coincident_with_another_product_mesh_unresolved",
             }:
-                raise ValueError("unrecognized original first-surface BVH classification")
+                raise ValueError(
+                    "unrecognized original first-surface BVH classification"
+                )
             counts[name][label] += 1
         contact = observation.get("independent_mesh_proximity", {})
         for hit in contact.get("nearby_raw_meshes_within_6mm", []):
@@ -195,7 +197,9 @@ def summarize_observations(plan, observations):
             name: dict(sorted(values.items())) for name, values in counts.items()
         },
         "independent_mesh_groups_within_3mm_sample_hits": dict(sorted(groups.items())),
-        "independent_mesh_names_within_3mm_sample_hits": dict(sorted(neighbors.items())),
+        "independent_mesh_names_within_3mm_sample_hits": dict(
+            sorted(neighbors.items())
+        ),
         "source_original_vertex_observations": observations,
         "no_approved_ear_cloud_seam_design_or_fabric_hiddenness": True,
         "factory_cutting_patterns_approved": 0,
