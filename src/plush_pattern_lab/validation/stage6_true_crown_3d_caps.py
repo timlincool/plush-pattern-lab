@@ -122,14 +122,23 @@ def _match_rim_to_original(vertices, rim, original):
     return original_order.tolist(), float(length)
 
 
-def _audit_lower_half(lower, originals):
+def _true_face_components(mesh, trimesh_module):
+    """Use the third-party SciPy graph backend; do NOT repair/fill cut holes."""
+    return trimesh_module.graph.connected_components(
+        mesh.face_adjacency,
+        nodes=np.arange(len(mesh.faces)),
+        engine="scipy",
+    )
+
+
+def _audit_lower_half(lower, originals, trimesh_module):
     rim, unique_edges = boundary_edges(lower)
     on_plane = np.all(np.abs(lower.vertices[rim, 2] - CUT_Z_MM) < 1e-7, axis=1)
     if (
         len(rim) != 2462
         or int(on_plane.sum()) != sum(EXPECTED_BORDERS)
         or len(lower.faces) != EXPECTED_LOWER_FACES
-        or len(lower.split(only_watertight=False)) != 1
+        or len(_true_face_components(lower, trimesh_module)) != 1
         or len(lower.vertices) - len(unique_edges) + len(lower.faces) != -5
         or _closed_ring_sizes(rim[~on_plane]) != [512] * 4
         or _closed_ring_sizes(rim[on_plane]) != sorted(EXPECTED_BORDERS)
@@ -182,7 +191,12 @@ def build_three_real_source_caps(
     # Weld identical interpolated coordinates; do not remesh original source.
     upper.merge_vertices(digits_vertex=12)
     lower.merge_vertices(digits_vertex=12)
-    regions = upper.split(only_watertight=False)
+    # split() may auto-fill source openings and invoke an extra networkx backend.
+    # Keep the exact intersection triangulation, without topological repair.
+    regions = upper.submesh(
+        faces_sequence=_true_face_components(upper, trimesh_module),
+        repair=False,
+    )
     if len(regions) != 3 or sum(len(r.faces) for r in regions) != len(upper.faces):
         raise ValueError("source Stage6 above 230 is not exactly three caps")
     caps = []
@@ -223,7 +237,7 @@ def build_three_real_source_caps(
                 "upper_real_source_3d_mesh_not_original_flat_fabric": True,
             }
         )
-    bottom = _audit_lower_half(lower, original)
+    bottom = _audit_lower_half(lower, original, trimesh_module)
     for cap, paired in zip(caps, bottom["lower_head_cut_rims"]):
         if abs(
             cap["source_3d_rim_perimeter_mm"]
