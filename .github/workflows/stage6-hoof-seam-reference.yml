@@ -43,6 +43,9 @@ on:
       - 'scripts/audit_stage6_ear_slit_lscm.py'
       - 'scripts/benchmark_stage6_blender_uv.py'
       - 'scripts/audit_stage6_external_uv_comparison.py'
+      - 'scripts/build_stage6_crown_true_3d_cut.py'
+      - 'scripts/unwrap_stage6_true_crown_caps_blender.py'
+      - 'scripts/audit_stage6_true_crown_caps_abf.py'
       - 'scripts/export_stage6_s2s_abf_svg.py'
       - 'scripts/audit_stage6_s2s_svg.py'
       - '.github/workflows/stage6-hoof-seam-reference.yml'
@@ -1384,6 +1387,60 @@ jobs:
           assert all(not row['outer_worst_edge_variant']['promoted_to_default'] for row in data['bands'])
           print('STAGE6_SLIT_UNROLL_EIGHT_BANDS_DIAGNOSTIC_ONLY')
           PY
+      - name: Source-witness-locked original 3D crown three-cap cut with MIT trimesh
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --only-binary=:all: --no-deps trimesh==4.11.1
+          root="$RUNNER_TEMP/stage6-reference/z230_three_real_caps_research"
+          mkdir -p "$root"
+          python scripts/build_stage6_crown_true_3d_cut.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --witness experiments/stage6_z230_true_crown_20261113/witness.json \
+            --output "$root/source_three_caps.json" \
+            --summary "$root/source_three_caps_topology_qa.json"
+          python - <<'PY'
+          import json, os, pathlib
+          root = pathlib.Path(os.environ["RUNNER_TEMP"])/"stage6-reference/z230_three_real_caps_research"
+          d = json.loads((root/"source_three_caps_topology_qa.json").read_text())
+          assert d["schema"] == "stage6-real-source-z230-three-cap-3d-topology-audit-v1"
+          assert [c["original_rim_source_edge_count"] for c in d["caps"]] == [189,113,112]
+          assert [c["three_dimensional_cap_triangles"] for c in d["caps"]] == [1663,1849,1906]
+          assert d["lower_surface"]["boundary_ring_lengths_edges_sorted"] == [112,113,189,512,512,512,512]
+          assert d["all_upper_lower_rims_3d_matched"]
+          assert d["factory_cutting_patterns_approved"] == 0
+          print("STAGE6_REAL_SOURCE_CROWN_3D_CUT_THREE_DISKS_AND_FOUR_HOOF_RIMS")
+          PY
+      - name: Blender native ABF real 3D crown caps and independent rejection gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference/z230_three_real_caps_research"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/unwrap_stage6_true_crown_caps_blender.py -- \
+            --source-caps "$root/source_three_caps.json" \
+            --source-summary "$root/source_three_caps_topology_qa.json" \
+            --output "$root/native_blender_ABF_three_caps.json"
+          python scripts/audit_stage6_true_crown_caps_abf.py \
+            --source-caps "$root/source_three_caps.json" \
+            --source-summary "$root/source_three_caps_topology_qa.json" \
+            --abf-uv "$root/native_blender_ABF_three_caps.json" \
+            --output "$root/three_caps_real_3d_to_ABF_2d_rejection.json"
+          python - <<'PY'
+          import json, os, pathlib, math
+          root = pathlib.Path(os.environ["RUNNER_TEMP"])/"stage6-reference/z230_three_real_caps_research"
+          report = json.loads((root/"three_caps_real_3d_to_ABF_2d_rejection.json").read_text())
+          assert report["schema"] == "stage6-real-source-z230-three-cap-ABF-independent-rejection-audit-v1"
+          assert report["three_real_stage6_original_triangle_mesh_caps_scored"] == 3
+          assert report["same_3d_upper_and_lower_original_source_seams_verified"]
+          assert report["research_only_missing_lower_2d_match_and_material"]
+          assert report["factory_cutting_patterns_approved"] == 0
+          assert report["P3_status"] == "in_progress" and report["P4_status"] == "not_started"
+          for cap in report["caps"]:
+              assert math.isfinite(cap["source_3d_edge_to_ABF_2d_p95_relative_error"])
+              assert math.isfinite(cap["ABF_2d_vs_source_3d_rim_relative_length_difference"])
+          print("STAGE6_REAL_SOURCE_THREE_CROWN_CAPS_ABF_SCORED_NOT_FACTORY")
+          PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -1397,6 +1454,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/upper_mother_toile_research/**
             ${{ runner.temp }}/stage6-reference/18piece_trial_sewing_pack/**
             ${{ runner.temp }}/stage6-reference/split_volume_toile_AB_research/**
+            ${{ runner.temp }}/stage6-reference/z230_three_real_caps_research/**
             ${{ runner.temp }}/stage6-reference/stage6_external_s2s_abf_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.svg
