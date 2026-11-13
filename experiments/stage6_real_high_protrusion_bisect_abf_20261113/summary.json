@@ -1,0 +1,161 @@
+{
+  "schema": "stage6-original-source-two-ear-protrusion-source-edge-geodesic-Y-X-ABF-two-sided-seam-evidence-v1",
+  "research_utc_date": "2026-11-13",
+  "source_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_25pct_proxy_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "original_three_3d_caps_source_json_sha256": "8a0fa7f40dd852fd63cb173a06347b48f718f65bd0c300abb2cca0c9b469f0c1",
+  "original_source_caps_vertices_triangulation_provenance": "Actual Z230 original Stage6 source-cap triangles as verified by same-run #43388239422, 1849 left / 1906 right; central 1663 untouched, original Z230 113/112 rim and lower 4x512 hoof rims unchanged",
+  "toolchain": "SciPy sparse dijkstra and connected_components over original mesh edges + native Blender 4.3.2 ANGLE_BASED ABF + existing _scale_free_gauge/_face_overlap_and_winding",
+  "exact_source_faces_reused": true,
+  "source_mesh_retopologized_or_smoothed": false,
+  "routes_predeclared": [
+    "Y_FRONT_BACK",
+    "X_INNER_OUTER"
+  ],
+  "trusted_main_real_blender": {
+    "run_id": 43388239422,
+    "sha": "96d1bbbec56d4e81fa380817b0bedff66b85c6ea",
+    "result": "success",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43388239422",
+    "artifact_id": 14019557520,
+    "artifact_expiry_utc": "2026-11-20T07:50:56Z"
+  },
+  "same_main_python_ci": {
+    "run_id": 43388239491,
+    "sha": "96d1bbbec56d4e81fa380817b0bedff66b85c6ea",
+    "result": "success",
+    "passed_tests": 749,
+    "ruff_complexity_and_wheel": "passed",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43388239491"
+  },
+  "raw_same_run_artifact_member_sha256": {
+    "side_original_3d_meridian_bisect_AB.json": "29f3c15456e941c22ecb154035a02b8b63a59eefc99e6ee5c930c74baaf48670",
+    "side_original_3d_meridian_native_ABF.json": "581b2b466b34780fe3d77b8ebc2d78e7ff74db8f71ea5170c3b8652efbaee876",
+    "side_original_3d_meridian_ABF_QA.json": "0a164f7d5031c57eb19d7e3f3e2493c4588f84f89cc1da6fce6bde1706635a91"
+  },
+  "previous_true_source_unsplit_caps": {
+    "left_p95_source_edge_error_fraction": 0.9350017206812369,
+    "right_p95_source_edge_error_fraction": 0.939074206458219
+  },
+  "original_3d_source_and_candidate_counts": {
+    "left": {
+      "Z230_rim_edges": 113,
+      "original_source_faces": 1849
+    },
+    "right": {
+      "Z230_rim_edges": 112,
+      "original_source_faces": 1906
+    },
+    "new_panels_per_route": 4,
+    "central_crown_untouched": true,
+    "lower_four_hoof_rims_4x512_untouched": true
+  },
+  "real_cases": [
+    {
+      "route": "Y_FRONT_BACK",
+      "side": "left",
+      "face_counts": [
+        1095,
+        754
+      ],
+      "true_3d_meridian_length_mm": 47.48358399570779,
+      "source_edge_p95_fraction": [
+        0.29121733839548347,
+        0.08197933459969095
+      ],
+      "two_2d_new_cut_seam_lengths_mm": [
+        58.539204822627376,
+        46.97402194369303
+      ],
+      "two_2d_total_relative_length_mismatch_fraction": 0.24356170924207748,
+      "segmentwise_absolute_relative_mismatch_fraction": 0.24356170924207732,
+      "flip_triangle_count": 0,
+      "positive_area_overlap_pairs": 0,
+      "joint_research_screen_passed": false
+    },
+    {
+      "route": "Y_FRONT_BACK",
+      "side": "right",
+      "face_counts": [
+        1007,
+        899
+      ],
+      "true_3d_meridian_length_mm": 46.39211919979678,
+      "source_edge_p95_fraction": [
+        0.2824387083595777,
+        0.08077807868389075
+      ],
+      "two_2d_new_cut_seam_lengths_mm": [
+        54.92162611596617,
+        46.22388425499694
+      ],
+      "two_2d_total_relative_length_mismatch_fraction": 0.18748317625911193,
+      "segmentwise_absolute_relative_mismatch_fraction": 0.18748317625911198,
+      "flip_triangle_count": 0,
+      "positive_area_overlap_pairs": 0,
+      "joint_research_screen_passed": false
+    },
+    {
+      "route": "X_INNER_OUTER",
+      "side": "left",
+      "face_counts": [
+        1020,
+        829
+      ],
+      "true_3d_meridian_length_mm": 47.70374820935454,
+      "source_edge_p95_fraction": [
+        0.1851897249841747,
+        0.08857534832652293
+      ],
+      "two_2d_new_cut_seam_lengths_mm": [
+        54.08419058632496,
+        47.87850265900361
+      ],
+      "two_2d_total_relative_length_mismatch_fraction": 0.13008805723371722,
+      "segmentwise_absolute_relative_mismatch_fraction": 0.13008805723371739,
+      "flip_triangle_count": 0,
+      "positive_area_overlap_pairs": 0,
+      "joint_research_screen_passed": false
+    },
+    {
+      "route": "X_INNER_OUTER",
+      "side": "right",
+      "face_counts": [
+        958,
+        948
+      ],
+      "true_3d_meridian_length_mm": 48.40652972848876,
+      "source_edge_p95_fraction": [
+        0.1365590887589357,
+        0.15155493288560665
+      ],
+      "two_2d_new_cut_seam_lengths_mm": [
+        52.29673778297205,
+        49.00002629900167
+      ],
+      "two_2d_total_relative_length_mismatch_fraction": 0.06810468551374312,
+      "segmentwise_absolute_relative_mismatch_fraction": 0.06903351681373994,
+      "flip_triangle_count": 0,
+      "positive_area_overlap_pairs": 0,
+      "joint_research_screen_passed": false
+    }
+  ],
+  "research_edge_p95_relative_error_threshold": 0.1,
+  "research_new_3d_source_cut_two_2d_sides_segment_cumulative_relative_mismatch_threshold": 0.03,
+  "flip_and_positive_area_overlap_allowed": 0,
+  "count_panels_edge_p95_below_10pct": 3,
+  "count_routes_both_sides_joint_research_gates_passed": 0,
+  "best_direction_for_further_design_review_only": "X_INNER_OUTER, not approved hidden seam or manufacturable sewing pattern",
+  "unmeasured": [
+    "New seam visibility against 41 product Mesh, ear and grey cloud",
+    "Actual fur pile material grain, seam allowance and turning",
+    "Matching lower seven-holed source 3D shell 2D stitches for original Z230 cut",
+    "Physical waste-fabric try-on, stuffing, fitting and design approval",
+    "Real fabric seam pull resistance, original head/face appearance"
+  ],
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "factory_patterns_approved": 0,
+  "physical_sample_exists": false,
+  "decision": "Real source-edge bisection reduces gross 93-94% P95 single-cap distortion, but all two-route native ABF options fail the 10% per-panel edge and <=3% paired original source-cut 2D netline research gate. Do not select a route for manufacturing. Next validate aesthetically hidden seam position and cloth material and design true lower shell 2D interfaces; avoid another UV solver."
+}
