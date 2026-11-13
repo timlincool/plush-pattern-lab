@@ -371,6 +371,10 @@
         {
           "path": "experiments/stage6_real_high_protrusion_bisect_abf_20261113/summary.json",
           "kind": "real_Stage6_native_ABF_two_original_geodesic_routes_8_panels_all_triangulation_and_3D_pairs_passed_2D_joint_rejected"
+        },
+        {
+          "path": "docs/STAGE6_PROTRUSION_XY_41MESH_VISIBILITY.md",
+          "kind": "actual_XY_source_meridian_41productmesh_BVH_fiveview_pending_trusted_run"
         }
       ],
       "blockers": [
@@ -1552,6 +1556,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋设计",
+      "action": "沿受信原Stage6 X/Y左右四条Source cap-local真实源边切缝，复用现有Blender 4.3.2整41产品Mesh BVH与五视角，按每条最多20个源顶点（含端点）测原三维独立耳/云层邻近与可见性；保留全路径源SHA、逐源Vertex和两个panel的配缝身份及已有X/Y ABF质量失败证据。新增代码已提交，待受信main运行后填真实各视角分类/邻近对象，绝不以近邻当成实际隐藏缝或工厂批准。",
+      "done_when": "四条路径真Blender原41Mesh检测完整执行、来源/审计JSON永久归档，确定哪段设计需改线、哪段可进入真实材料与四视图验证；仍需双侧ABF配缝<3%、下部主壳二维接缝和实物样布，P3未完成/P4未开始。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋原设计审阅",
       "action": "可信主干 Stage6 #43388239422 已实际完成原Source左右高位突出各两条Y前后/X内外切缝及8片Blender4.3.2 ABF：单完整帽旧P95 93.50/93.91%降到X左18.52/8.86%、X右13.66/15.16%、Y左29.12/8.20%、Y右28.24/8.08%；全部0翻面重叠，但X左右新增原Source切缝两侧ABF逐段绝对净缝差13.01%/6.90%、Y左右24.36%/18.75%，两方向均未通过10%边差和3%双侧配缝研究联合门槛。原3D源面/113+112条底缘、中央头冠和4×512蹄口守恒；配套同提交Python #43388239491 749项/Ruff/打包通过。下一步优先和原四视图/41产品Mesh耳云外观注册审核X/Y哪个切缝位置能实际隐藏，依据真材料废布试缝反馈做工艺分片，不继续换UV算法。",
       "done_when": "两方向真实原Source ABF对照与双侧净缝差审核已完成并永久否决，不晋升P4；后续仍缺耳云遮挡设计确认、低应变合格双侧净缝、下部七开口主壳二维缝、实体布料试样。"
@@ -1966,6 +1977,11 @@
       "date": "2026-11-13",
       "event": "真实原Stage6 main #43388239422 完成左/右高位突出Y前后/X内外Source切分，8个原三角片均调用Blender4.3.2 ABF；现有共同QA：X左P95 18.52/8.86%、右13.66/15.16%，双侧新缝分段绝对差13.01/6.90%；Y左29.12/8.20%、右28.24/8.08%，双侧差24.36/18.75%。三维Source身份/底缘边守恒、8片无2D翻转/重叠，但0/2方案通过研究10%/3%联合门槛。Python同提交#43388239491 749项/静态/构建成功。保留X作外观审查候选，不发工厂纸样，P3继续P4未开始。",
       "evidence_path": "experiments/stage6_real_high_protrusion_bisect_abf_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "开发原Stage6 X/Y左右四条真实Source切缝与41产品Mesh真实BVH五视角近邻/首表面预审；复用既有41Mesh/BVH及上一轮X/Y原源ABF，逐路径验证cap-local源顶点、原FaceID、3D净缝和两个panel身份，每条仅最多20个确定性样点；新审计待真实可信main runner执行，任何几何遮挡都不等于实际绒布工艺隐藏，旧数值否决和工厂裁布0保留。",
+      "evidence_path": "docs/STAGE6_PROTRUSION_XY_41MESH_VISIBILITY.md"
     }
   ]
 }
