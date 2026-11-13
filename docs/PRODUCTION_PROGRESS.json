@@ -322,7 +322,11 @@
         },
         {
           "path": "docs/STAGE6_SPLIT_24PIECE_PANEL_INTERFACE.md",
-          "kind": "separate_A_B_24piece_full_panel_interface_assembly_code_pending_trusted_main_real_source_execution"
+          "kind": "two_trusted_actual_stage6_main_A_B_full_24piece_interface_graphs_and_682_Python_tests_verified_not_physical"
+        },
+        {
+          "path": "experiments/stage6_split_24piece_assembly_20261112/summary.json",
+          "kind": "two_real_main_A_B_24_piece_45_relation_46_relation_sha_verified_run_and_factory_rejection"
         }
       ],
       "blockers": [
@@ -1304,6 +1308,32 @@
       "source_contours_are_not_approved_2d_fabric_rest_shapes": true,
       "lateral_lobe_ear_or_cloud_identity_not_confirmed": true,
       "factory_patterns_approved": 0
+    },
+    "stage6_split_24piece_A_B_full_interface_real_main": {
+      "source_commit": "f3c54fd65412194d78a2ef29b2f609a50e383d64",
+      "stage6_true_runs": [
+        43349657766,
+        43350338730
+      ],
+      "python_ci_run": 43350338822,
+      "python_tests_passed": 682,
+      "variants": [
+        {
+          "name": "A_separate_stuffed_head",
+          "pieces": 24,
+          "numeric_seams": 44,
+          "unproven_hand_join": 1
+        },
+        {
+          "name": "B_integrated_neck_port",
+          "pieces": 24,
+          "numeric_seams": 46,
+          "unproven_hand_join": 0
+        }
+      ],
+      "permanent_evidence": "experiments/stage6_split_24piece_assembly_20261112/summary.json",
+      "factory_patterns_approved": 0,
+      "physical_sample_count": 0
     }
   },
   "next_actions": [
@@ -1311,8 +1341,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发＋设计／实物试缝",
-      "action": "先确认新A/B每套24片统一接口合同在受信Stage6真原模型运行中的源SHA、44+手工1或46分段数字接口与15页研究纸张均可复现。A手工头颈连接并非真实净缝匹配，需先廉价废布试缝和正侧背顶比较；B的13.41mm狭窄肩孔、42.49mm返口亦须材料与实物验证。与原Stage6连续雕塑的头颈源形状差仍是主要阻塞，不因图连通就启动P4。",
-      "done_when": "可信主干对新24片图与下腹源数据、全部文件SHA完成真实重算；随后获得人类实际试缝记录或明确记录未执行，不擅自升级P3/P4。"
+      "action": "2026-11-13已由受信真实Stage6 main #43349657766/#43350338730确认A/B各24片15页的完整Panel/Interface图：A44组数字配边加1组明确未验的手工肩面连接（2个独立数字组件）；B46组数值配边（1个数字组件）。最终main #f3c54fd Python CI #43350338822为682项通过/静态/打包成功；原4×512蹄源、各JSON及纸样manifest SHA守恒。本轮没有任何实体材料或成品外观验证。下一步只针对A做廉价实际试布、正侧背顶与原设计比较、头部手工连接强度；B的13.41mm颈孔桥宽与42.49mm返口需另行实际测试。不因两组数字配缝成功而升P3/P4。",
+      "done_when": "数字合同和真Stage6+682项Python已验证；下一真实阻塞是布样试缝、完整四视图对齐和附件结构纸样。实体试样未完成，不得标为已完成。"
     },
     {
       "priority": "P0",
@@ -1634,6 +1664,11 @@
       "date": "2026-11-12",
       "event": "继续复用原Stage6现有13片下腹与已验证A/B各11片头身试验，不重展UV：开发每方案24片Panel/Interface完整研究装配图。A分44个数字配边＋1个明确未验证的手工肩部连接（去除手工连接时头身为2个数字组件）；B按四个独立头颈片分段为46组数字配边。新增合成与篡改负例、源SHA打包与受信Stage6工作流门禁；实际原Blender/本轮CI结果待运行，头肩严重失配与材料工厂状态均不变。",
       "evidence_path": "docs/STAGE6_SPLIT_24PIECE_PANEL_INTERFACE.md"
+    },
+    {
+      "date": "2026-11-12",
+      "event": "两次受信原Stage6 main #43349657766/#43350338730重新成功生成原13片下腹与A/B各11片头身研究套件，新增两套完整24片Panel/Interface图与全部成员哈希：A44组数值缝＋1未实测手缝、B46组数值缝。最终同提交Python #43350338822全682项/Ruff/复杂度/打包成功。前次CI仅排版问题修复，偶发Blender 403下载失误已在最终主干重跑成功；P3/P4仍不晋升，工厂0片、实体试缝0。",
+      "evidence_path": "experiments/stage6_split_24piece_assembly_20261112/summary.json"
     }
   ]
 }
