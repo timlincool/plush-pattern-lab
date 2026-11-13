@@ -343,6 +343,10 @@
         {
           "path": "experiments/stage6_freecad_flatmesh_vs_abf_20261113/summary.json",
           "kind": "real_12_source_FreeCAD_native_flatmesh_v_ABF_P95_seam_flip_overlap_results_no_factory"
+        },
+        {
+          "path": "docs/STAGE6_REAL_CROWN_Z230_1TO1_REVIEW.md",
+          "kind": "original_source_z230_three_real_rings_vs_single_24piece_surrogate_fullscale_A4_measurement_not_sewable_p3"
         }
       ],
       "blockers": [
@@ -1392,9 +1396,40 @@
       "source_geometry_rewritten": false,
       "factory_patterns_approved": 0,
       "experiment": "experiments/stage6_freecad_flatmesh_vs_abf_20261113/summary.json"
+    },
+    "stage6_true_z230_source_vs_trial_1to1_review": {
+      "source_original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+      "locked_true_source_section_detail_sha256": "f99ddcb834b4e68bec2487b41730e805c14928953b768d41fc249efe44920717",
+      "locked_A_B_research_trial_sha256": "eebda049ac34ee201a3251b363a915fa05ad6417394bc565bb4cc7942b4545ae",
+      "source_z230_true_loops": 3,
+      "original_source_crossing_edges": [
+        189,
+        113,
+        112
+      ],
+      "perimeters_mm": [
+        153.0939971276184,
+        45.51675545730191,
+        45.510986167806784
+      ],
+      "old_AB_surrogate_single_head_cap_perimeter_mm": 319.77053282271424,
+      "source_vs_old_central_hausdorff_xy_mm": 38.212240865383805,
+      "original_source_surface_unchanged": true,
+      "not_unwrapped_fabric": true,
+      "svg_print_scale": "210x297mm 1:1 diagnostic only",
+      "factory_patterns_approved": 0,
+      "status": "independent_original_source_artifact_replay_verified_locally_python_ci_pending",
+      "doc": "docs/STAGE6_REAL_CROWN_Z230_1TO1_REVIEW.md"
     }
   },
   "next_actions": [
+    {
+      "priority": "P0",
+      "phase_id": "P3",
+      "owner": "研发",
+      "action": "基于真实原Stage6 Z230三闭环、Z245两侧耳附近的原源连续性与41 Mesh邻近证据，复用固定源SHA的1:1对照图，对旧A/B头顶单环319.77mm与真中央153.094mm/两侧45.52mm作同位置审阅；人工决定中央头盖、两侧突出、耳/云层的拟隐藏接缝及省道，再对确定的真实源3D切缝用已有Blender ABF/FreeCAD和Panel/Interface/实布试验验收。不得直接把水平截面XY打印当织物展开。",
+      "done_when": "设计确认真实头冠与两侧突出结构的制造归属，3D源边相接/低应变2D配边/翻面/填棉和实体废布样本逐项确认。现仅1:1真实截面审查，不放行P4。"
+    },
     {
       "priority": "P1",
       "phase_id": "P3",
@@ -1766,6 +1801,11 @@
       "date": "2026-11-13",
       "event": "独立受信main #43362970238/#43363281140成功从cache.nixos.org的FreeCAD1.0.0真正导入编译flatmesh.FaceUnwrapper，对固定真实12块N15/N17源圆盘运行LSCM+10次relax(0.95)。与已有原生ABF同源同评分：P95边差中位11.29% vs24.31%改善12/12，但2D双侧缝长差9.59% vs5.25%，仅2/12改善；双方0/12满足联合研究门槛，皆无翻转/重叠，维持ABF默认且工业裁布0、P3进行中/P4未开始；为节省重复FreeCAD依赖安装，该隔离工作流改为仅手动重跑。",
       "evidence_path": "experiments/stage6_freecad_flatmesh_vs_abf_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "开发原Stage6源Z230头冠分片1:1审阅器：从可信#43359212094原Artifact固定两份SHA读取189/113/112条真实源三角截面交边，重验Source边ID、XY与周长；生成中央/左右三真实闭环与旧A/B单环头顶319.771mm的A4原毫米坐标叠图。旧中央真实闭环仅153.094mm、两环45.52mm，原中央与旧单环Hausdorff38.212mm。仅来源造型对照，不是纸样；生产P3进行中/P4未开始/工厂0。",
+      "evidence_path": "docs/STAGE6_REAL_CROWN_Z230_1TO1_REVIEW.md"
     }
   ]
 }
