@@ -1,0 +1,138 @@
+{
+  "schema": "stage6-real-original-X-Y-source-meridian-41productmesh-5view-evidence-v1",
+  "date_utc": "2026-11-13",
+  "trusted_stage6_run": {
+    "id": 43413685859,
+    "commit": "2ac04475144895f02849b5738df19308d61a3c9f",
+    "conclusion": "success",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43413685859",
+    "artifact_id": 14030199735,
+    "artifact_expiry_utc": "2026-11-20T11:05:33Z"
+  },
+  "original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "original_25pct_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "same_run_caps_sha256": "9ba8fba80ef02d62b4ab40c9e6370df62e58cd5efb59533f01c8b9caaa3fa8e8",
+  "same_run_XY_source_bisect_sha256": "142857ae9f27380595947fd08c189afb78127d56f04f0290eb6324d3009a50e5",
+  "same_run_ABF_two_side_QA_sha256": "43c55c3dec4429ccad1730c4bb5d491923ed2673f5e04c03a6f12b66e4da6e5d",
+  "registry_41mesh_sha256": "9c8aacc395953ae5a689057067a992775bf0756021dd9e7fd3031852a22c7643",
+  "real_blender_version": "4.3.2",
+  "real_raw_five_view_json_sha256": "ad2efdb66a1220fe0cefd6b389989de152e9f993d1716ffe3f769136a894e8d6",
+  "raw_artifact_member": "z230_three_real_caps_research/side_XY_meridian_41mesh_fiveviews_RESEARCH_ONLY.json",
+  "real_original_product_meshes_checked": 41,
+  "original_curve_hair_objects_not_evaluated": 423,
+  "original_modifiers_not_evaluated": true,
+  "four_source_paths_checked": true,
+  "source_path_count": 4,
+  "sampled_original_cap_vertices_per_route": 20,
+  "sampled_source_vertices_total": 80,
+  "orthographic_view_count_per_sample": 5,
+  "all_sampled_source_point_view_pairs": 400,
+  "source_cap_local_vertex_ids_are_not_original_full_Blend_vertex_ids": true,
+  "independent_mesh_3mm_nearby_counts_can_count_multiple_meshes_per_point": true,
+  "counts_definition": "Number of the 20 sampled source route vertices whose first raw product mesh hit lies near original core-body mesh, per camera view; NOT real-fabric visible seam pixels",
+  "rows": [
+    {
+      "route": "Y_FRONT_BACK",
+      "side": "left",
+      "actual_path_vertices": 49,
+      "source_3d_length_mm": 47.48358399570779,
+      "near_body_first_view_counts": {
+        "front": 12,
+        "back": 1,
+        "left": 0,
+        "right": 0,
+        "top": 9
+      },
+      "ear_mesh_near_3mm_hits": 17,
+      "cloud_mesh_near_3mm_hits": 4,
+      "ear_name_hits": {
+        "Pink inset ear -1": 7,
+        "Slender upright ivory ear -1": 10
+      },
+      "cloud_name_hits": {
+        "Grey head cloud halo": 4
+      }
+    },
+    {
+      "route": "Y_FRONT_BACK",
+      "side": "right",
+      "actual_path_vertices": 50,
+      "source_3d_length_mm": 46.39211919979678,
+      "near_body_first_view_counts": {
+        "front": 1,
+        "back": 4,
+        "left": 0,
+        "right": 3,
+        "top": 0
+      },
+      "ear_mesh_near_3mm_hits": 14,
+      "cloud_mesh_near_3mm_hits": 3,
+      "ear_name_hits": {
+        "Pink inset ear 1": 3,
+        "Slender upright ivory ear 1": 11
+      },
+      "cloud_name_hits": {
+        "Varied ivory forehead cloud": 3
+      }
+    },
+    {
+      "route": "X_INNER_OUTER",
+      "side": "left",
+      "actual_path_vertices": 52,
+      "source_3d_length_mm": 47.70374820935454,
+      "near_body_first_view_counts": {
+        "front": 10,
+        "back": 2,
+        "left": 10,
+        "right": 0,
+        "top": 7
+      },
+      "ear_mesh_near_3mm_hits": 15,
+      "cloud_mesh_near_3mm_hits": 3,
+      "ear_name_hits": {
+        "Pink inset ear -1": 6,
+        "Slender upright ivory ear -1": 9
+      },
+      "cloud_name_hits": {
+        "Grey head cloud halo": 3
+      }
+    },
+    {
+      "route": "X_INNER_OUTER",
+      "side": "right",
+      "actual_path_vertices": 46,
+      "source_3d_length_mm": 48.40652972848876,
+      "near_body_first_view_counts": {
+        "front": 4,
+        "back": 5,
+        "left": 0,
+        "right": 7,
+        "top": 2
+      },
+      "ear_mesh_near_3mm_hits": 14,
+      "cloud_mesh_near_3mm_hits": 1,
+      "ear_name_hits": {
+        "Pink inset ear 1": 4,
+        "Slender upright ivory ear 1": 10
+      },
+      "cloud_name_hits": {
+        "Varied ivory forehead cloud": 1
+      }
+    }
+  ],
+  "previous_source_bisect_ABF_evidence": "experiments/stage6_real_high_protrusion_bisect_abf_20261113/summary.json",
+  "previous_X_left_ABF_paired_2D_seam_mismatch": 0.13008805723371739,
+  "previous_X_right_ABF_paired_2D_seam_mismatch": 0.06903351681373994,
+  "previous_Y_left_ABF_paired_2D_seam_mismatch": 0.24356170924207732,
+  "previous_Y_right_ABF_paired_2D_seam_mismatch": 0.18748317625911198,
+  "judgment": "Although X yields lower ABF edge distortion than Y, X has more near-body first-hit samples along the outward side views (left X10/20 versus Y0/20; right X7/20 versus Y3/20). Neither is a verified visually hidden seam, and neither passes the paired 2D netline screen.",
+  "source_3d_near_decorative_mesh_does_not_prove_attachment": true,
+  "actual_hidden_fur_stitch_verified": false,
+  "real_fabric_and_physical_toile_tested": false,
+  "lower_7_rim_original_shell_2d_rest_shape_available": false,
+  "approved_original_design_four_views": false,
+  "factory_cutting_patterns_approved": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "next": "Reconcile actual design multi-views, trim seam/insert structure around ear/cloud without changing original source witness; recheck true 3D source edges, low-strain paired 2D stitches and waste-fabric physical sample."
+}
