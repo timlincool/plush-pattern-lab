@@ -767,6 +767,23 @@ jobs:
           assert m['original_proxy_25pct_sha256'] == '5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd'
           assert m['pieces_in_each_complete_lower_plus_option'] == 24
           assert m['new_variant_A_B_svg_total'] == 22
+          graph_expectations = {
+              'A_separate_stuffed_head': (45, 44, 1, 2),
+              'B_integrated_neck_port': (46, 46, 0, 1),
+          }
+          for option, (total, numeric, manual, components) in graph_expectations.items():
+              graph_path = root/option/'panel_interface_research_graph.json'
+              graph = json.loads(graph_path.read_text(encoding='utf8'))
+              assert graph['variant'] == option
+              assert graph['source_public_stage6_blend_sha256'] == m['original_public_blend_sha256']
+              assert len(graph['all_pieces']) == 24
+              assert len(graph['sewing_interfaces']) == total
+              assert graph['numerically_paired_interface_count'] == numeric
+              assert graph['manual_unverified_surface_attachment_count'] == manual
+              assert len(graph['components_without_unverified_manual_join']) == components
+              assert graph['original_source_hoof_edge_count'] == 2048
+              assert not graph['physical_toile_produced']
+              assert graph['factory_cut_patterns_approved'] == 0
           assert [row['name'] for row in study['options']] == ['A_separate_stuffed_head', 'B_integrated_neck_port']
           assert len(qa['two_distinct_manufacturing_trial_variants']) == 2
           assert all(row['all_new_mathematical_seam_lengths_paired']
