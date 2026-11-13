@@ -9,6 +9,7 @@ import numpy as np
 import pytest
 
 from plush_pattern_lab.validation import stage6_protrusion_route_visibility as audit
+from plush_pattern_lab.validation import stage6_real_protrusion_bisect as original_split
 
 XYZ = [[0.0, 0.0, 230.0], [1.0, 0.0, 235.0], [2.0, 0.0, 240.0], [3.0, 0.0, 230.0]]
 ORIGINAL_SHA = "same-run-original-three-caps-hash"
@@ -108,6 +109,13 @@ def _observation(sample):
             ]
         },
     }
+
+
+def test_frozen_blender_route_constants_match_reviewed_original_scipy_source():
+    assert audit.ROUTES == original_split.ROUTES
+    assert audit.CAPS == original_split.CAPS
+    assert audit.EXPECTED_SOURCE_FACES == original_split.EXPECTED_SOURCE_FACES
+    assert audit.EXPECTED_SOURCE_RIMS == original_split.EXPECTED_SOURCE_RIMS
 
 
 def test_all_original_X_Y_meridians_are_sampled_without_invented_vertices():
