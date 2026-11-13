@@ -79,11 +79,12 @@ def _unwrap(cap, name, ring):
                 largest_loop_mismatch,
                 *(math.hypot(s[0] - mid[0], s[1] - mid[1]) for s in samples),
             )
-        if (
-            largest_loop_mismatch > 1e-5
-            or any(not math.isfinite(v) for p in coordinates for v in p)
+        if largest_loop_mismatch > 1e-5 or any(
+            not math.isfinite(v) for p in coordinates for v in p
         ):
-            raise ValueError("Blender split one real source cut cap into untracked UV islands")
+            raise ValueError(
+                "Blender split one real source cut cap into untracked UV islands"
+            )
         return {
             "source_cap_id": name,
             "source_vertex_count": len(points),
@@ -134,8 +135,7 @@ def main():
     if len(caps) != 3:
         raise ValueError("expected exactly three authentic original upper caps")
     results = [
-        _unwrap(cap, label, size)
-        for cap, label, size in zip(caps, COMPONENTS, RINGS)
+        _unwrap(cap, label, size) for cap, label, size in zip(caps, COMPONENTS, RINGS)
     ]
     output = {
         "schema": OUTPUT_SCHEMA,
