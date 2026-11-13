@@ -45,7 +45,15 @@ python scripts/audit_stage6_s2s_svg.py \
   --output <new-research-directory>/audited_original_source_netline_RESEARCH_ONLY.json
 ```
 
-输出到可信临时 Artifact：一份 `N15_left_lateral_ABF_RESEARCH_ONLY_no_allowance.svg` 和一份单独的逐边、单位、SHA验收 JSON。没有付费API，无第三方服务账号。**提交/写好脚本并不代表真实Blender或本轮CI通过，只有受信main真实运行成功才更新永久证据。**
+输出到可信临时 Artifact：一份 `N15_left_lateral_ABF_RESEARCH_ONLY_no_allowance.svg` 和一份单独的逐边、单位、SHA验收 JSON。没有付费API，无第三方服务账号。**原始代码是否可靠以真实Stage6、Python CI及永久证据为准；目前已完成一次受信main真实运行，见下方实验记录。**
+
+## 已完成的可信main真实验证（2026-11-13）
+
+[原Stage6真实跑通 #43358362870](https://github.com/timlincool/plush-pattern-lab/actions/runs/43358362870)，主干 `1340157d3de5a6aef139fc68cdf4f30fd924affa`：原12圆盘免费Blender ABF/Conformal已有同源数值审查随后，Git固定GPL导出器独立运行成功。**真实N15左lateral源圆盘230条二维边界全部与原源ABF UV逐边配对**，第三方SVG净线周长 **113.923334222mm**，原Blender4.3.2、原三角面、patch来源、UV方法、毫米和SVG SHA经独立审计，厂商许可状态0。
+
+- [**最终同提交原Stage6 #43359212094**](https://github.com/timlincool/plush-pattern-lab/actions/runs/43359212094) 完整成功，提交与下述Python同为 `40ed13885bd2a27f938b416330c69ad738e993c1`；独立Artifact实际解压验证的外部SVG SHA-256为 `16ef4ba444965022610d77b6cccc6318ebe1ae402b57cede163aaa1e86704aad`，P95源边误差 **16.4031%**、二维同源缝长差 **1.1312%**。230原边全匹配但未达到10%边长研究门槛，仍禁止裁布。\n- [本轮Python #43359212091](https://github.com/timlincool/plush-pattern-lab/actions/runs/43359212091)：`40ed13885bd2a27f938b416330c69ad738e993c1`，**702/702项测试、Ruff/复杂度及wheel打包全部通过**。原提交早期C901及格式门禁问题仅改变测试拆分/排版，不改原实验算法。
+- [永久实验记录](../experiments/stage6_pinned_s2s_abf_export_20261113/summary.json)和[Stage6研究Artifact](https://github.com/timlincool/plush-pattern-lab/actions/runs/43358362870)保留原本的研究SVG、JSON和SHA；Artifact有7天留存。
+- 旧真实ABF研究的N15左lateral边长P95约16.4%仍高于10%研究预筛值，**虽然导出边界准确，但没有消除源3D→2D应变/材料/外观制造阻塞**，绝不把这张SVG视作可裁工厂图。此处净缝周长不包含裁切缝份。
 
 ## FreeCAD flatmesh 与 GarmentCode 的位置
 

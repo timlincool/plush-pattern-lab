@@ -1,0 +1,94 @@
+{
+  "schema": "stage6-real-source-abf-external-gpl-s2s-svg-verified-v1",
+  "archived_utc_date": "2026-11-13",
+  "original_public_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "selection": {
+    "source_variant": "N15_sloped_source_band",
+    "side": "left",
+    "slit_direction": "lateral",
+    "source_topology": "one original Stage6 ear-root source triangle disk",
+    "uv_method": "ANGLE_BASED",
+    "blender_version": "4.3.2",
+    "selection_predeclared": true
+  },
+  "third_party_tool": {
+    "repo": "https://github.com/artyredd/blender-seams-to-sewing-pattern",
+    "git_commit": "919d031628264bb466840827a81f657133931de7",
+    "exporter_blob_sha": "9bf263002593d6e9b09c7868da703a213948148c",
+    "license": "GPL-3.0-or-later",
+    "invocation": "object.export_sewingpattern",
+    "mesh_mutating_conversion_invoked": false,
+    "source_vendored": false,
+    "external_dependency_installation": "temporary checkout in trusted no-secret Stage6 GitHub Actions job"
+  },
+  "source_provenance": {
+    "input": "same-run original Stage6 genuine N15 left lateral 3D source disk",
+    "ABF_uv": "Blender ANGLE_BASED 4.3.2 native UV output",
+    "millimetre_scale": "same-run independently fitted global single scalar 3D-to-UV metric",
+    "source_geometry_rewritten": false,
+    "source_seams_rewritten": false
+  },
+  "trusted_real_run": {
+    "run_id": 43358362870,
+    "commit": "1340157d3de5a6aef139fc68cdf4f30fd924affa",
+    "conclusion": "success",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43358362870",
+    "artifact_id": 14006664500,
+    "artifact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "artifact_expiration_utc": "2026-11-20T03:25:03Z"
+  },
+  "measurements_from_real_job_log": {
+    "original_source_boundary_edges_recovered_in_external_svg": 230,
+    "all_source_boundary_edges_and_millimetres_independently_verified": true,
+    "svg_netline_perimeter_mm": 113.92333422219431,
+    "source_svg_and_native_input_sha256_stored_in_original_run_artifact": true,
+    "no_seam_allowance_or_cutline_or_real_material_tolerances": true,
+    "not_approved_industrial_cutting_pattern": true,
+    "external_svg_sha256": "16ef4ba444965022610d77b6cccc6318ebe1ae402b57cede163aaa1e86704aad",
+    "source_edge_P95_relative_error": 0.16403135011025952,
+    "source_cut_two_side_length_mismatch_fraction": 0.011312086939129027,
+    "exact_source_and_uv_SHA256_are_in_temporary_artifact_audit_JSON": true
+  },
+  "last_python_ci": {
+    "run_id": 43359212091,
+    "commit": "40ed13885bd2a27f938b416330c69ad738e993c1",
+    "conclusion": "success",
+    "passed_tests": 702,
+    "ruff": "passed",
+    "complexity": "passed",
+    "wheel_build": "passed",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43359212091"
+  },
+  "prior_real_source_abf_quality_limits": {
+    "origin": "existing 12-disk free native UV benchmark 2026-11-12",
+    "best_N15_left_lateral_p95_relative_edge_error_approx": 0.16403,
+    "best_N15_left_lateral_two_side_seam_length_difference_fraction_approx": 0.01131,
+    "both_combined_research_gates_passed": false,
+    "thresholds_research_only": true
+  },
+  "limitations": [
+    "This is one real source cut boundary from an ear-root research disk, not a whole 25cm toy pattern.",
+    "Numerically correct SVG scale and source-edge closure do not overcome P95 strain above 10%.",
+    "The add-on has no validated 6mm seam allowance, notch matching, fur grain or factory A4 calibration in this run.",
+    "No physical fabric, turning, stuffing, rounded hooves, head-neck design, ears/clouds/tail/drops or manufacturing signoff is proven.",
+    "FreeCAD flatmesh is not yet an executed comparator because its upstream depends on a separate Blender4.5/FreeCAD/Nix environment."
+  ],
+  "product_gate": {
+    "P3": "in_progress",
+    "P4": "not_started",
+    "factory_patterns_approved": 0,
+    "physical_plush_samples_created": 0,
+    "golden_sample_approved": false
+  },
+  "next_action": "On the same source and scoring, isolate FreeCAD flatmesh as an optional external comparator; keep ABF as working open-source SVG pipeline and direct future pattern changes to correct anatomy and physical test feedback.",
+  "trusted_final_same_code_main_run": {
+    "run_id": 43359212094,
+    "commit": "40ed13885bd2a27f938b416330c69ad738e993c1",
+    "conclusion": "success",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43359212094",
+    "artifact_id": 14006739286,
+    "artifact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "artifact_expiration_utc": "2026-11-20T03:32:20Z"
+  },
+  "extraction_verified_from_final_artifact": true
+}
