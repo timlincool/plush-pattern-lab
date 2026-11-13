@@ -44,8 +44,7 @@ def _source_inputs(caps, full, same_run_caps_sha):
         or not caps.get("upper_to_lower_source_netline_matched_at_1e_6_mm")
         or len(caps.get("upper_caps", [])) != 3
         or full.get("schema") != FULL_BISECT_SCHEMA
-        or full.get("same_run_real_3d_original_three_caps_sha256")
-        != same_run_caps_sha
+        or full.get("same_run_real_3d_original_three_caps_sha256") != same_run_caps_sha
         or full.get("routes") != ["Y_FRONT_BACK", "X_INNER_OUTER"]
         or full.get("factory_cutting_patterns_approved") != 0
         or full.get("P3_status") != "in_progress"
@@ -81,9 +80,7 @@ def _short_original_path(full_meridian, tip_id, route, side, rim):
         or int(chosen[-1]) != tip_id
         or set(chosen[1:]).intersection(set(rim.tolist()))
     ):
-        raise ValueError(
-            "partial source slit touches second original Z230 rim point"
-        )
+        raise ValueError("partial source slit touches second original Z230 rim point")
     return chosen
 
 
@@ -91,13 +88,10 @@ def _cut_source_fans_once(xyz, faces, path, original_rim_count):
     original_edges, inverse, counts, _, _ = _edges(faces, len(xyz))
     cut = {tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])}
     owners = {
-        tuple(map(int, edge)): int(count)
-        for edge, count in zip(original_edges, counts)
+        tuple(map(int, edge)): int(count) for edge, count in zip(original_edges, counts)
     }
     if len(cut) != len(path) - 1 or any(owners.get(edge) != 2 for edge in cut):
-        raise ValueError(
-            "short slit contains noninterior or nonexistent source edge"
-        )
+        raise ValueError("short slit contains noninterior or nonexistent source edge")
     # Existing face-fan splitter duplicates the seam points. The internal tip
     # must remain shared, otherwise a short dart becomes a broken mesh.
     connected_fans = _cut_fan_connections(
