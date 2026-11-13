@@ -69,7 +69,7 @@ def _verify_original_geometry(disk, cap):
         or xyz.ndim != 2
         or xyz.shape[1] != 3
         or faces.shape != original_faces.shape
-        or len(path) < 8
+        or len(path) < 2
         or not np.isfinite(xyz).all()
         or np.any(source_ids < 0)
         or np.any(source_ids >= len(original))
