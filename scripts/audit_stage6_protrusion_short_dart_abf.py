@@ -105,8 +105,19 @@ def _one(disk, entry, original):
         raise ValueError("invalid native Blender ABF coordinates")
     mm, _, edge = _scale_free_gauge(xyz, faces, uv)
     topology = _face_overlap_and_winding(xyz, faces, mm)
-    seam = _two_true_planar_seam_sides(disk, mm)
-    mismatch = _paired_segmentwise_absolute_mismatch(disk, mm)
+    # The shared source seam evaluator expects NumPy face/XYZ arrays, not
+    # JSON lists. This read-only adapter preserves every original source ID.
+    original_ids = np.asarray(
+        disk["original_patch_vertex_id_per_disk_vertex"], dtype=np.int64
+    )
+    sourced = {
+        **disk,
+        "source_xyz_mm": xyz,
+        "disk_triangle_vertex_ids": faces,
+        "original_patch_vertex_id_per_disk_vertex": original_ids,
+    }
+    seam = _two_true_planar_seam_sides(sourced, mm)
+    mismatch = _paired_segmentwise_absolute_mismatch(sourced, mm)
     original_len = disk["real_source_3d_slit_length_mm"]
     first = seam["scaled_planar_2d_first_source_netline_length_mm"]
     second = seam["scaled_planar_2d_second_source_netline_length_mm"]
