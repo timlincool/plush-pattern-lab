@@ -6,16 +6,16 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
+from audit_stage6_protrusion_short_dart_abf import (
+    _paired_segmentwise_absolute_mismatch,
+    _verify_original_geometry,
+)
 
 from plush_pattern_lab.validation.stage6_protrusion_short_dart import (
     CAPS,
     ROUTES,
     _cut_source_fans_once,
     _short_original_path,
-)
-from audit_stage6_protrusion_short_dart_abf import (
-    _paired_segmentwise_absolute_mismatch,
-    _verify_original_geometry,
 )
 
 
