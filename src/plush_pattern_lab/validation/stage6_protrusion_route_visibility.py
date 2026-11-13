@@ -177,7 +177,9 @@ def summarize_observations(plan, observations):
                 "near_original_body_first_surface",
                 "coincident_with_another_product_mesh_unresolved",
             }:
-                raise ValueError("unrecognized original first-surface BVH classification")
+                raise ValueError(
+                    "unrecognized original first-surface BVH classification"
+                )
             counts[name][label] += 1
         contact = observation.get("independent_mesh_proximity", {})
         for hit in contact.get("nearby_raw_meshes_within_6mm", []):
@@ -195,7 +197,9 @@ def summarize_observations(plan, observations):
             name: dict(sorted(values.items())) for name, values in counts.items()
         },
         "independent_mesh_groups_within_3mm_sample_hits": dict(sorted(groups.items())),
-        "independent_mesh_names_within_3mm_sample_hits": dict(sorted(neighbors.items())),
+        "independent_mesh_names_within_3mm_sample_hits": dict(
+            sorted(neighbors.items())
+        ),
         "source_original_vertex_observations": observations,
         "no_approved_ear_cloud_seam_design_or_fabric_hiddenness": True,
         "factory_cutting_patterns_approved": 0,
