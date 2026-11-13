@@ -77,9 +77,7 @@ def _one_path(plan, cache, bounds):
 
 def _report(geometry, caps, registry, scores, files):
     _source, bisect, caps_path, registry_path, abf_path = files
-    plans = plan_original_meridian_samples(
-        geometry, caps, sha256_file(caps_path)
-    )
+    plans = plan_original_meridian_samples(geometry, caps, sha256_file(caps_path))
     roles = _checked_scene_registry(registry)
     cache, bounds = _object_bvh_cache(roles)
     if len(cache) != 41:
