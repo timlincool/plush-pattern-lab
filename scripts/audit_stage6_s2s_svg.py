@@ -30,7 +30,9 @@ def main():
     if args.output.exists() or args.output.is_symlink():
         raise ValueError("never replace an existing external SVG audit")
     source_bytes, native_bytes, svg_bytes = (
-        _read(args.source), _read(args.native), _read(args.svg)
+        _read(args.source),
+        _read(args.native),
+        _read(args.svg),
     )
     result = audit_stage6_external_svg(
         json.loads(source_bytes),
