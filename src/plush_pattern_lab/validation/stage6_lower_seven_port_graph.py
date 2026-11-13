@@ -45,11 +45,11 @@ def _check_locked_source(source, faces, caps, full):
         or caps.get("P4_status") != "not_started"
         or not caps.get("upper_to_lower_source_netline_matched_at_1e_6_mm")
         or [c["id"] for c in caps.get("upper_caps", [])] != list(CAP_IDS)
-        or [c["source_boundary_edges"] for c in caps["upper_caps"]]
-        != list(RIM_COUNTS)
+        or [c["source_boundary_edges"] for c in caps["upper_caps"]] != list(RIM_COUNTS)
         or caps.get("lower_single_original_surface", {}).get(
             "source_Euler_characteristic"
-        ) != -5
+        )
+        != -5
         or not caps["lower_single_original_surface"].get(
             "original_four_hoof_rings_exactly_512_edges_each"
         )
@@ -89,10 +89,10 @@ def _seven_source_rims(xyz, topology):
     ):
         raise ValueError("lower source no longer contains exactly seven closed rims")
     hoof = boundary[~upper]
-    if (
-        len(hoof) != 2048
-        or _boundary_stats(hoof, len(xyz)) != {"loops": 4, "degree_failures": 0}
-    ):
+    if len(hoof) != 2048 or _boundary_stats(hoof, len(xyz)) != {
+        "loops": 4,
+        "degree_failures": 0,
+    }:
         raise ValueError("original four hoof rims lost")
     _, components = _components(len(xyz), hoof)
     sizes = sorted(
@@ -119,8 +119,7 @@ def _cap_source_port(xyz, original, owner):
     ):
         raise ValueError("original upper 3D cap rim no longer matches lower source")
     edges = [
-        tuple(sorted((int(a), int(b))))
-        for a, b in zip(mapped, np.roll(mapped, -1))
+        tuple(sorted((int(a), int(b)))) for a, b in zip(mapped, np.roll(mapped, -1))
     ]
     if len(set(edges)) != len(edges) or any(e not in owner for e in edges):
         raise ValueError("same-source 3D lower rim edge missing")
@@ -131,12 +130,10 @@ def _cap_source_port(xyz, original, owner):
     if np.any(zone_ids < 0) or np.any(zone_ids >= len(NAMES)):
         raise ValueError("unknown source lower 3D attachment zone")
     mapping = {
-        NAMES[int(k)]: int(np.count_nonzero(zone_ids == k))
-        for k in np.unique(zone_ids)
+        NAMES[int(k)]: int(np.count_nonzero(zone_ids == k)) for k in np.unique(zone_ids)
     }
     span = {
-        NAMES[int(k)]: float(lengths[zone_ids == k].sum())
-        for k in np.unique(zone_ids)
+        NAMES[int(k)]: float(lengths[zone_ids == k].sum()) for k in np.unique(zone_ids)
     }
     transitions = np.flatnonzero(zone_ids != np.roll(zone_ids, 1))
     return {
@@ -162,12 +159,10 @@ def _region(zone, labels, xyz, faces, topology):
     links = np.column_stack((first[internal], second[internal]))
     components = _face_components(selected, links, len(faces))
     euler = int(len(np.unique(faces[selected])) - len(used) + len(selected))
-    if (
-        components != 1
-        or stats["degree_failures"] != 0
-        or euler != 2 - stats["loops"]
-    ):
-        raise ValueError("four-zone original 3D source patch topology not disk-with-holes")
+    if components != 1 or stats["degree_failures"] != 0 or euler != 2 - stats["loops"]:
+        raise ValueError(
+            "four-zone original 3D source patch topology not disk-with-holes"
+        )
     return {
         "zone": NAMES[zone],
         "source_3D_triangles": int(len(selected)),
@@ -203,10 +198,9 @@ def _partition(xyz, faces, caps, scenario):
     if len(owners) != sum(RIM_COUNTS):
         raise ValueError("source head rim original lower triangles incomplete")
     ports = [_cap_source_port(xyz, cap, owners) for cap in caps["upper_caps"]]
-    if (
-        [p["lower_zone_edges"] for p in ports] != list(EXPECTED_PORTS)
-        or [p["cross_zone_transition_count"] for p in ports] != [2, 0, 0]
-    ):
+    if [p["lower_zone_edges"] for p in ports] != list(EXPECTED_PORTS) or [
+        p["cross_zone_transition_count"] for p in ports
+    ] != [2, 0, 0]:
         raise ValueError("real central 95/94 plus side 113/112 source join changed")
     regions = [_region(i, labels, xyz, faces, topology) for i in range(4)]
     interfaces, _, complete, _ = _interfaces(labels, xyz, topology)
@@ -219,7 +213,10 @@ def _partition(xyz, faces, caps, scenario):
         ]
         if measured != list(EXPECTED_Y20):
             raise ValueError("old original source region topology changed")
-    cuts = sum(p["minimum_additional_topological_rim_to_rim_cuts_to_make_disk"] for p in regions)
+    cuts = sum(
+        p["minimum_additional_topological_rim_to_rim_cuts_to_make_disk"]
+        for p in regions
+    )
     return {
         "split_y_mm": height,
         "seven_original_3D_open_rim_edge_count": len(boundary),
@@ -238,10 +235,12 @@ def audit_original_seven_port_shell(source, faces, caps, original_four, trimesh_
     _check_locked_source(source, faces, caps, original_four)
     xyz, triangles = _clip_original_lower(source, faces, trimesh_module)
     measured = [
-        _partition(xyz, triangles, caps, row)
-        for row in original_four["scenarios"]
+        _partition(xyz, triangles, caps, row) for row in original_four["scenarios"]
     ]
-    if [row["minimum_additional_topological_opening_cuts_to_four_disks"] for row in measured] != [6, 6]:
+    if [
+        row["minimum_additional_topological_opening_cuts_to_four_disks"]
+        for row in measured
+    ] != [6, 6]:
         raise ValueError("source 7-port/4-zone minimum opening topology changed")
     return {
         "schema": SCHEMA,
