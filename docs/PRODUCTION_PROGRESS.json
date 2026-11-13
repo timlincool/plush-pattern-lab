@@ -366,7 +366,11 @@
         },
         {
           "path": "docs/STAGE6_REAL_PROTRUSION_BISECT_ABF.md",
-          "kind": "original_Stage6_source_geodesic_Y_X_side_protrusion_bisect_2x4_panels_pending_native_ABF_real_run"
+          "kind": "real_trusted_Stage6_8_original_triangle_ABF_2D_and_two_side_source_seam_mismatches_joint_gate_all_failed"
+        },
+        {
+          "path": "experiments/stage6_real_high_protrusion_bisect_abf_20261113/summary.json",
+          "kind": "real_Stage6_native_ABF_two_original_geodesic_routes_8_panels_all_triangulation_and_3D_pairs_passed_2D_joint_rejected"
         }
       ],
       "blockers": [
@@ -1498,6 +1502,50 @@
       "actual_fabric_sample_exists": false,
       "factory_cutting_patterns_approved": 0,
       "evidence": "experiments/stage6_real_3d_crown_caps_abf_20261113/summary.json"
+    },
+    "stage6_real_side_protrusion_X_Y_source_meridian_native_ABF": {
+      "source_main_commit": "96d1bbbec56d4e81fa380817b0bedff66b85c6ea",
+      "real_stage6_run_id": 43388239422,
+      "python_ci_run_id": 43388239491,
+      "python_tests_passed": 749,
+      "original_z230_rims": [
+        113,
+        112
+      ],
+      "original_source_faces": [
+        1849,
+        1906
+      ],
+      "native_abf_source_panels": 8,
+      "X_left_p95": [
+        0.1851897249841747,
+        0.08857534832652293
+      ],
+      "X_right_p95": [
+        0.1365590887589357,
+        0.15155493288560665
+      ],
+      "Y_left_p95": [
+        0.29121733839548347,
+        0.08197933459969095
+      ],
+      "Y_right_p95": [
+        0.2824387083595777,
+        0.08077807868389075
+      ],
+      "X_source_two_2D_seam_segment_abs_mismatch": [
+        0.13008805723371739,
+        0.06903351681373994
+      ],
+      "Y_source_two_2D_seam_segment_abs_mismatch": [
+        0.24356170924207732,
+        0.18748317625911198
+      ],
+      "flips_or_overlaps_detected": 0,
+      "all_joint_research_gates_passed": false,
+      "source_3d_central_cap_and_four_hoofs_modified": false,
+      "factory_cut_patterns_approved": 0,
+      "evidence": "experiments/stage6_real_high_protrusion_bisect_abf_20261113/summary.json"
     }
   },
   "next_actions": [
@@ -1505,8 +1553,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发＋原设计审阅",
-      "action": "在原Stage6真实Z230两个113/112边高位突出各1849/1906源三角面上，以SciPy原Source内部边Dijkstra定义Y前后与X内外两条试缝，逐方案分成2+2真实源面片，保留原Z230源环和全部旧4×512蹄口；本地3D预检通过但真实Blender4.3.2 ABF结果待受信main执行。须原8片P95/翻转重叠、切缝两侧逐Source边2D净缝累计误差和41Mesh耳云遮挡证据后才考虑下一设计方向，不擅自建立新UV算法或工厂纸样。",
-      "done_when": "受信 Stage6 main 同批原3D源+ABF实验生成完整8片质量结果；严格保留原10%边差、3%切口双侧差、零翻面/重叠联合门槛，未完成四视图/实物则不批准P4。"
+      "action": "可信主干 Stage6 #43388239422 已实际完成原Source左右高位突出各两条Y前后/X内外切缝及8片Blender4.3.2 ABF：单完整帽旧P95 93.50/93.91%降到X左18.52/8.86%、X右13.66/15.16%、Y左29.12/8.20%、Y右28.24/8.08%；全部0翻面重叠，但X左右新增原Source切缝两侧ABF逐段绝对净缝差13.01%/6.90%、Y左右24.36%/18.75%，两方向均未通过10%边差和3%双侧配缝研究联合门槛。原3D源面/113+112条底缘、中央头冠和4×512蹄口守恒；配套同提交Python #43388239491 749项/Ruff/打包通过。下一步优先和原四视图/41产品Mesh耳云外观注册审核X/Y哪个切缝位置能实际隐藏，依据真材料废布试缝反馈做工艺分片，不继续换UV算法。",
+      "done_when": "两方向真实原Source ABF对照与双侧净缝差审核已完成并永久否决，不晋升P4；后续仍缺耳云遮挡设计确认、低应变合格双侧净缝、下部七开口主壳二维缝、实体布料试样。"
     },
     {
       "priority": "P0",
@@ -1913,6 +1961,11 @@
       "date": "2026-11-13",
       "event": "继真3D三头冠ABF证明左右高位突出单片P95≈93.5%后，开始原Stage6 Source真实内部边Dijkstra几何分片：Y前后与X内外双方案，左右113/112条Z230原界面、1849/1906源FaceID不改；各每侧两面片Euler1且新增3D缝双侧同源，后续受信main运行Blender ABF 8片、逐段2D双侧缝差否决。原脚本与旧中部头冠不替换，未声称已生成正式可裁纸样。",
       "evidence_path": "docs/STAGE6_REAL_PROTRUSION_BISECT_ABF.md"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "真实原Stage6 main #43388239422 完成左/右高位突出Y前后/X内外Source切分，8个原三角片均调用Blender4.3.2 ABF；现有共同QA：X左P95 18.52/8.86%、右13.66/15.16%，双侧新缝分段绝对差13.01/6.90%；Y左29.12/8.20%、右28.24/8.08%，双侧差24.36/18.75%。三维Source身份/底缘边守恒、8片无2D翻转/重叠，但0/2方案通过研究10%/3%联合门槛。Python同提交#43388239491 749项/静态/构建成功。保留X作外观审查候选，不发工厂纸样，P3继续P4未开始。",
+      "evidence_path": "experiments/stage6_real_high_protrusion_bisect_abf_20261113/summary.json"
     }
   ]
 }
