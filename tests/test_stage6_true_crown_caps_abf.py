@@ -5,7 +5,6 @@ from __future__ import annotations
 from copy import deepcopy
 
 import pytest
-
 from audit_stage6_true_crown_caps_abf import (
     INPUT_SCHEMA,
     RESULT_SCHEMA,
