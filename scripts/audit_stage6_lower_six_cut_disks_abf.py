@@ -158,7 +158,7 @@ def _score_one(part, uv):
     }, boundary
 
 
-def _crosszone_sources(borders):
+def _collect_original_zone_edges(borders):
     groups = defaultdict(list)
     for zone, border in enumerate(borders):
         for key, occurrences in border.items():
@@ -166,6 +166,11 @@ def _crosszone_sources(borders):
                 groups[key].append((zone, occurrences[0]))
             elif len(occurrences) != 2:
                 raise ValueError("original lower source edge has too many copies")
+    return groups
+
+
+def _crosszone_sources(borders):
+    groups = _collect_original_zone_edges(borders)
     outcome = {}
     for key, entries in groups.items():
         if len(entries) != 2:
