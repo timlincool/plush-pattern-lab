@@ -43,7 +43,11 @@
     "svg_netline_perimeter_mm": 113.92333422219431,
     "source_svg_and_native_input_sha256_stored_in_original_run_artifact": true,
     "no_seam_allowance_or_cutline_or_real_material_tolerances": true,
-    "not_approved_industrial_cutting_pattern": true
+    "not_approved_industrial_cutting_pattern": true,
+    "external_svg_sha256": "16ef4ba444965022610d77b6cccc6318ebe1ae402b57cede163aaa1e86704aad",
+    "source_edge_P95_relative_error": 0.16403135011025952,
+    "source_cut_two_side_length_mismatch_fraction": 0.011312086939129027,
+    "exact_source_and_uv_SHA256_are_in_temporary_artifact_audit_JSON": true
   },
   "last_python_ci": {
     "run_id": 43359212091,
@@ -76,5 +80,15 @@
     "physical_plush_samples_created": 0,
     "golden_sample_approved": false
   },
-  "next_action": "On the same source and scoring, isolate FreeCAD flatmesh as an optional external comparator; keep ABF as working open-source SVG pipeline and direct future pattern changes to correct anatomy and physical test feedback."
+  "next_action": "On the same source and scoring, isolate FreeCAD flatmesh as an optional external comparator; keep ABF as working open-source SVG pipeline and direct future pattern changes to correct anatomy and physical test feedback.",
+  "trusted_final_same_code_main_run": {
+    "run_id": 43359212094,
+    "commit": "40ed13885bd2a27f938b416330c69ad738e993c1",
+    "conclusion": "success",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43359212094",
+    "artifact_id": 14006739286,
+    "artifact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "artifact_expiration_utc": "2026-11-20T03:32:20Z"
+  },
+  "extraction_verified_from_final_artifact": true
 }
