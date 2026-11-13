@@ -17,6 +17,9 @@ from propose_stage6_shell_panels import PROXY_SHA256, load_pinned_proxy
 from plush_pattern_lab.patterns.stage6_split_volume_mother import (
     build_split_volume_mother_ab,
 )
+from plush_pattern_lab.patterns.stage6_split_volume_panel_interface import (
+    build_split_24piece_assembly_graphs,
+)
 from plush_pattern_lab.patterns.stage6_split_volume_toile_svg import (
     render_split_volume_A4,
 )
@@ -93,7 +96,7 @@ def _assembly_guide(study, qa):
     return "\n".join(results)
 
 
-def _outputs(study, qc, lower_sha):
+def _outputs(study, qc, lower_sha, lower):
     source_json = json.dumps(study, ensure_ascii=False, indent=2)
     audit_json = json.dumps(qc, ensure_ascii=False, indent=2)
     assets = {
@@ -101,6 +104,11 @@ def _outputs(study, qc, lower_sha):
         "two_volume_seam_and_port_qc.json": audit_json + "\n",
         "assembly_A_B.md": _assembly_guide(study, qc),
     }
+    graphs = build_split_24piece_assembly_graphs(lower, study)
+    for name, graph in graphs.items():
+        assets[f"{name}/panel_interface_research_graph.json"] = (
+            json.dumps(graph, ensure_ascii=False, indent=2) + "\n"
+        )
     pages = render_split_volume_A4(study)
     for variant, sheets in pages.items():
         for name, data in sheets.items():
@@ -120,6 +128,16 @@ def _outputs(study, qc, lower_sha):
         "new_A4_pages_per_variant": 11,
         "total_A4_pages_per_independent_variant": 15,
         "new_variant_A_B_svg_total": 22,
+        "full_24piece_interface_graphs": {
+            name: {
+                "pieces": graph["total_research_pieces"],
+                "numeric_interface_pairs": graph["numerically_paired_interface_count"],
+                "unproven_manual_joins": graph[
+                    "manual_unverified_surface_attachment_count"
+                ],
+            }
+            for name, graph in graphs.items()
+        },
         "documented_material_and_original_shape_failures": True,
         "approved_industrial_patterns": 0,
         "files_sha256": hashes,
@@ -151,7 +169,7 @@ def main():
     _verified_real_lower_spec(xyz, faces, lower)
     split = build_split_volume_mother_ab(lower, xyz)
     audit = audit_separated_stage6_toile(lower, split)
-    assets = _outputs(split, audit, hashlib.sha256(lower_bytes).hexdigest())
+    assets = _outputs(split, audit, hashlib.sha256(lower_bytes).hexdigest(), lower)
     args.out_dir.mkdir(parents=True, exist_ok=False)
     for name, data in assets.items():
         target = args.out_dir / name

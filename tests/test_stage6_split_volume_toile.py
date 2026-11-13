@@ -15,6 +15,9 @@ from plush_pattern_lab.patterns.stage6_split_volume_mother import (
     OPTIONS,
     build_split_volume_mother_ab,
 )
+from plush_pattern_lab.patterns.stage6_split_volume_panel_interface import (
+    build_split_24piece_assembly_graphs,
+)
 from plush_pattern_lab.patterns.stage6_split_volume_toile_svg import (
     render_split_volume_A4,
 )
@@ -200,3 +203,65 @@ def test_synthetic_shoulder_that_cannot_hold_two_allowances_is_refused():
     corrupted[slab, 0] *= 0.6
     with pytest.raises(ValueError, match="shoulder seam clearance"):
         build_split_volume_mother_ab(lower, corrupted)
+
+
+def test_full_24piece_trial_graph_distinguishes_manual_A_from_numeric_B():
+    lower, study = _trial()
+    graphs = build_split_24piece_assembly_graphs(lower, study)
+    assert set(graphs) == set(("A_separate_stuffed_head", "B_integrated_neck_port"))
+    for name, graph in graphs.items():
+        assert graph["total_research_pieces"] == 24
+        assert graph["lower_original_research_pieces_unchanged"] == 13
+        assert graph["original_source_hoof_edge_count"] == 2048
+        assert graph["print_sheet_count"] == 15
+        assert len(graph["all_pieces"]) == 24
+        assert len({part["id"] for part in graph["all_pieces"]}) == 24
+        assert graph["P3_status"] == "in_progress"
+        assert graph["P4_status"] == "not_started"
+        assert graph["factory_cut_patterns_approved"] == 0
+        ends = [
+            endpoint
+            for seam in graph["sewing_interfaces"]
+            for endpoint in (seam["first"], seam["second"])
+        ]
+        assert len(ends) == len(set(ends))
+        assert name in [trial["name"] for trial in study["options"]]
+    a, b = (graphs[name] for name in (
+        "A_separate_stuffed_head", "B_integrated_neck_port"
+    ))
+    assert len(a["sewing_interfaces"]) == 45
+    assert a["numerically_paired_interface_count"] == 44
+    assert a["manual_unverified_surface_attachment_count"] == 1
+    assert len(a["components_without_unverified_manual_join"]) == 2
+    assert any(
+        edge["kind"] == "UNPROVEN_MANUAL_SURFACE_ATTACHMENT"
+        and edge["first_2d_netline_mm"] is None
+        for edge in a["sewing_interfaces"]
+    )
+    assert len(b["sewing_interfaces"]) == 46
+    assert b["numerically_paired_interface_count"] == 46
+    assert b["manual_unverified_surface_attachment_count"] == 0
+    assert len(b["components_without_unverified_manual_join"]) == 1
+    assert any(
+        edge["kind"] == "shoulder_port_to_collar" for edge in b["sewing_interfaces"]
+    )
+    assert (
+        sum(edge["kind"] == "collar_top_to_headneck" for edge in b["sewing_interfaces"])
+        == 4
+    )
+
+
+def test_full_24piece_trial_rejects_duplicate_or_corrupted_source_seam():
+    lower, study = _trial()
+    study = copy.deepcopy(study)
+    study["options"][1]["headneck_gore_pieces"][0]["lower_stitch_xy_mm"][8][0] += 0.5
+    with pytest.raises(ValueError, match="neck|root|source|seam"):
+        build_split_24piece_assembly_graphs(lower, study)
+
+
+def test_full_24piece_trial_rejects_missing_real_hoof_index():
+    lower, study = _trial()
+    lower = copy.deepcopy(lower)
+    lower["original_source_hoofs"]["FL"]["source_vertex_ids"][1] += 7
+    with pytest.raises(ValueError):
+        build_split_24piece_assembly_graphs(lower, study)
