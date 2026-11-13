@@ -18,6 +18,7 @@ EXPECTED = {
     "capped-sewing.yml",
     "selfcollision-ab.yml",
     "stage6-hoof-seam-reference.yml",
+    "stage6-freecad-flatmesh.yml",
 }
 ALLOWED_IF = {
     "ci.yml": "github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')",
@@ -57,9 +58,58 @@ def _require_safe_stage6_blender(filename, step):
             )
 
 
+FREECAD_WORKFLOW = "stage6-freecad-flatmesh.yml"
+NIX_ACTION = (
+    "cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b"
+)
+
+
+def _check_isolated_freecad(content: str) -> None:
+    """Explicitly reviewed, manually triggered and read-only compiled solver job."""
+    cfg = yaml.load(content, Loader=yaml.BaseLoader)
+    assert isinstance(cfg, dict), "FreeCAD workflow parse"
+    assert set(cfg["on"]) == {"workflow_dispatch"}, "FreeCAD must be manual-only"
+    assert cfg["permissions"] == {"contents": "read", "actions": "read"}
+    assert set(cfg.get("jobs", {})) == {"isolated-freecad"}
+    job = cfg["jobs"]["isolated-freecad"]
+    assert job["runs-on"] == "ubuntu-24.04"
+    assert job["if"] == "github.ref == 'refs/heads/main'"
+    assert job["timeout-minutes"] == "18"
+    assert "environment" not in job and "container" not in job
+    assert "secrets." not in content and "pull_request" not in content
+    for pinned in (
+        "gh run download 43359212094",
+        "292be7e50f7c3b20bbcd03c8bccc86d501fc71c2ccb45fa737299f1c39134027",
+        "c841bff599c5eabeb8ba5928d4ae414ff61c76f59909e3c36d7902e481a2cf6b",
+        "6ced983f402d32a1aa63b509d4f01ec477ea37ae36728a936faf336805cbb6f8",
+        "0ea2585105a13e03cf017cca53da684b31eb97df",
+        "sha256sum -c -",
+        "nix develop",
+        "--disable-autoexec",
+        "retention-days: 7",
+    ):
+        assert pinned in content, ("missing locked FreeCAD research safeguard", pinned)
+    steps = job.get("steps")
+    assert isinstance(steps, list) and steps
+    actions = [x["uses"] for x in steps if "uses" in x]
+    assert actions.count(NIX_ACTION) == 1
+    assert len([a for a in actions if a.startswith("actions/checkout@")]) == 1
+    assert all(PIN.fullmatch(a) or a == NIX_ACTION for a in actions)
+    checkout = next(x for x in steps if x.get("uses", "").startswith("actions/checkout@"))
+    assert checkout.get("with", {}).get("persist-credentials") == "false"
+    assert "repository" not in checkout.get("with", {})
+    assert "ref" not in checkout.get("with", {})
+
+
 def check_workflows(files: dict[str, str]) -> None:
-    # Both extensions count; new workflow files must be reviewed explicitly.
+    # A new workflow must be explicitly reviewed, not covered by broad exceptions.
     assert set(files) == EXPECTED, "Added/renamed workflow requires security review"
+    _check_isolated_freecad(files[FREECAD_WORKFLOW])
+    remaining = {name: body for name, body in files.items() if name != FREECAD_WORKFLOW}
+    _check_existing_workflows(remaining)
+
+
+def _check_existing_workflows(files: dict[str, str]) -> None:
     for filename, content in files.items():
         cfg = yaml.load(content, Loader=yaml.BaseLoader)
         assert isinstance(cfg, dict), filename
@@ -216,6 +266,22 @@ def test_reject_checkout_credentials():
 
 def test_reject_missing_blender_hash_check():
     _reject("sewing-poc.yml", BLENDER_SHA256, "0" * 64)
+
+
+def test_reject_freecad_run_on_pull_requests():
+    _reject(FREECAD_WORKFLOW, "workflow_dispatch:", "pull_request:")
+
+
+def test_reject_freecad_workflow_write_capabilities():
+    _reject(FREECAD_WORKFLOW, "actions: read", "actions: write")
+
+
+def test_reject_freecad_missing_original_stage6_checksum():
+    _reject(
+        FREECAD_WORKFLOW,
+        "292be7e50f7c3b20bbcd03c8bccc86d501fc71c2ccb45fa737299f1c39134027",
+        "0" * 64,
+    )
 
 
 def test_reject_new_yaml_workflow():
