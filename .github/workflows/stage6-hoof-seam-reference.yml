@@ -45,6 +45,9 @@ on:
       - 'scripts/audit_stage6_external_uv_comparison.py'
       - 'scripts/build_stage6_crown_true_3d_cut.py'
       - 'scripts/audit_stage6_lower_seven_port_graph.py'
+      - 'scripts/build_stage6_lower_six_cut_disks.py'
+      - 'scripts/unwrap_stage6_lower_six_cut_disks_blender.py'
+      - 'scripts/audit_stage6_lower_six_cut_disks_abf.py'
       - 'scripts/unwrap_stage6_true_crown_caps_blender.py'
       - 'scripts/audit_stage6_true_crown_caps_abf.py'
       - 'scripts/build_stage6_protrusion_bisect_ab.py'
@@ -1595,6 +1598,47 @@ jobs:
               actual=hashlib.sha256((root/name).read_bytes()).hexdigest()
               assert actual==sha and b"NOT FABRIC REST SHAPE" in (root/name).read_bytes()
           print("STAGE6_TRUE_SEVEN_RIMS_HEAD_ARCS_AND_SIX_MINIMUM_TOPOLOGICAL_CUTS_NOT_FABRIC")
+          PY
+      - name: Real lower seven source ports cut along six original edges to four disks, Blender ABF and matched 2D seams
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference/z230_three_real_caps_research"
+          python scripts/build_stage6_lower_six_cut_disks.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --caps "$root/source_three_caps.json" \
+            --four-zone "$RUNNER_TEMP/stage6-reference/four_region_seam_graph.json" \
+            --seven-ports "$root/lower_7port_4zone_source_QA.json" \
+            --output "$root/lower_six_original_source_rim_to_rim_disks.json"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/unwrap_stage6_lower_six_cut_disks_blender.py -- \
+            --source "$root/lower_six_original_source_rim_to_rim_disks.json" \
+            --output "$root/lower_six_disks_native_ABF.json"
+          python scripts/audit_stage6_lower_six_cut_disks_abf.py \
+            --source "$root/lower_six_original_source_rim_to_rim_disks.json" \
+            --native "$root/lower_six_disks_native_ABF.json" \
+            --output "$root/lower_six_disks_two_sided_ABF_QA.json"
+          python - <<'PY'
+          import hashlib, json, os, pathlib, math
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"stage6-reference/z230_three_real_caps_research"
+          src=root/"lower_six_original_source_rim_to_rim_disks.json"
+          truth=json.loads(src.read_text())
+          qa=json.loads((root/"lower_six_disks_two_sided_ABF_QA.json").read_text())
+          assert truth["schema"]=="stage6-seven-original-ports-six-source-interrim-disk-cuts-v1"
+          assert truth["source_3d_six_interrim_paths"]==6
+          assert truth["source_3d_total_original_lower_face_count"]==111978
+          assert [r["topological_Euler"] for r in truth["source_topological_disks"]]==[1,1,1,1]
+          assert [len(r["original_source_3d_disk_seam_paths"]) for r in truth["source_topological_disks"]]==[2,1,2,1]
+          assert qa["schema"]=="stage6-true-lower-seven-ports-four-source-disks-ABF-seam-QA-v1"
+          assert qa["source_original_lower_seven_port_six_disk_sha256"]==hashlib.sha256(src.read_bytes()).hexdigest()
+          assert len(qa["source_four_real_disk_ABF_results"])==4
+          assert sum(len(r["new_original_3d_source_cut_two_2d_sides"]) for r in qa["source_four_real_disk_ABF_results"])==6
+          assert {k:v["edge_count"] for k,v in qa["four_source_3d_original_zone_paired_2d_interface_results"].items()}=={
+              "0:1":126,"0:2":321,"1:3":233,"2:3":121}
+          assert all(math.isfinite(r["real_3d_source_edge_to_native_ABF_2d_P95_relative_error"]) for r in qa["source_four_real_disk_ABF_results"])
+          assert qa["factory_cutting_patterns_approved"]==0
+          assert qa["P3_status"]=="in_progress" and qa["P4_status"]=="not_started"
+          print("STAGE6_REAL_7RIM_6SOURCE_EDGES_4TRUE_ABF_DISKS_PAIRED_2D_SEAMS_MEASURED_NO_FACTORY")
           PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
