@@ -66,11 +66,10 @@ def _find_rims(mesh, expected_count, front, side):
     if len(loops) != expected_count:
         raise ValueError("original lower four-zone open rim count drift")
     z = mesh["xyz"][:, 2]
-    hoof_ids = [
-        i for i, row in enumerate(loops) if len(row["edges"]) == 512
-    ]
+    hoof_ids = [i for i, row in enumerate(loops) if len(row["edges"]) == 512]
     ear_ids = [
-        i for i, row in enumerate(loops)
+        i
+        for i, row in enumerate(loops)
         if front and len(row["edges"]) == SOURCE_RIM_COUNT[side]
     ]
     if len(hoof_ids) != 1 or (front and len(ear_ids) != 1):
@@ -78,10 +77,7 @@ def _find_rims(mesh, expected_count, front, side):
     hoof = loops[hoof_ids[0]]
     if np.max(np.abs(z[hoof["vertices"]] - 20)) > 0.001:
         raise ValueError("original Stage6 hoof source Z changed")
-    outer = [
-        row for i, row in enumerate(loops)
-        if i not in set(hoof_ids + ear_ids)
-    ]
+    outer = [row for i, row in enumerate(loops) if i not in set(hoof_ids + ear_ids)]
     if len(outer) != 1:
         raise ValueError("main upper seam rim changed")
     return hoof, outer[0], loops[ear_ids[0]] if front else None
@@ -90,9 +86,7 @@ def _find_rims(mesh, expected_count, front, side):
 def _shortest(mesh, source, target, forbidden=()):
     loops, edges, _, counts = _boundary(mesh)
     xyz = mesh["xyz"]
-    border_vertices = set(
-        np.concatenate([loop["vertices"] for loop in loops]).tolist()
-    )
+    border_vertices = set(np.concatenate([loop["vertices"] for loop in loops]).tolist())
     src, dest = set(map(int, source)), set(map(int, target))
     if not src or not dest or src & dest:
         raise ValueError("shortest inter-rim source/target must be disjoint")
@@ -204,9 +198,7 @@ def _one_zone(xyz, faces, zone):
     original, face_ids = _zone_mesh(xyz, faces, zone)
     front = zone in (0, 2)
     side = zone // 2
-    hoof, outer, ear = _find_rims(
-        original, EXPECTED_BORDERS[zone], front, side
-    )
+    hoof, outer, ear = _find_rims(original, EXPECTED_BORDERS[zone], front, side)
     seams = []
     if front:
         first, proof = _make_cut(
@@ -225,16 +217,15 @@ def _one_zone(xyz, faces, zone):
         original_outer = set(map(int, original["source_id"][outer["vertices"]]))
         used = set(map(int, original["source_id"][first]))
         source = [
-            k for k in foot["vertices"]
-            if int(middle["source_id"][k]) in source_hoof
+            k for k in foot["vertices"] if int(middle["source_id"][k]) in source_hoof
         ]
         target = [
-            k for k in other["vertices"]
+            k
+            for k in other["vertices"]
             if int(middle["source_id"][k]) in original_outer - used
         ]
         forbidden = [
-            k for k, value in enumerate(middle["source_id"])
-            if int(value) in used
+            k for k, value in enumerate(middle["source_id"]) if int(value) in used
         ]
         second, proof = _make_cut(
             middle, source, target, forbidden, "hoof_to_main_upper_boundary"
@@ -255,9 +246,7 @@ def _one_zone(xyz, faces, zone):
     if (
         len(final) != 1
         or len(disk["xyz"]) - len(edges) + len(disk["faces"]) != 1
-        or not np.array_equal(
-            disk["source_id"][disk["faces"]], faces[face_ids]
-        )
+        or not np.array_equal(disk["source_id"][disk["faces"]], faces[face_ids])
         or len(seams) != EXPECTED_BORDERS[zone] - 1
     ):
         raise ValueError("real Stage6 original faces or disk identity changed")
@@ -281,8 +270,7 @@ def _paired_source_edges(disk, seams, border):
     )
     perimeter = oriented[counts[inverse] == 1]
     copies = Counter(
-        tuple(sorted((int(identity[u]), int(identity[v]))))
-        for u, v in perimeter
+        tuple(sorted((int(identity[u]), int(identity[v])))) for u, v in perimeter
     )
     for seam in seams:
         source = seam["original_3d_clipped_lower_source_vertex_ids"]
@@ -306,12 +294,11 @@ def build_lower_six_cut_disks(source, faces, caps, full, seven, trimesh_module):
         or seven["source_four_zone_comparisons"][0]["split_y_mm"] != 20
         or seven["source_four_zone_comparisons"][0][
             "minimum_additional_topological_opening_cuts_to_four_disks"
-        ] != 6
+        ]
+        != 6
     ):
         raise ValueError("requires verified seven-real-port lower Stage6 contract")
-    xyz, lower_faces = _clip_original_lower(
-        source, faces, trimesh_module
-    )
+    xyz, lower_faces = _clip_original_lower(source, faces, trimesh_module)
     zones = []
     all_source_face_ids = []
     for zone in range(4):
@@ -340,8 +327,7 @@ def build_lower_six_cut_disks(source, faces, caps, full, seven, trimesh_module):
     if (
         len(all_source_face_ids) != len(lower_faces)
         or set(all_source_face_ids) != set(range(len(lower_faces)))
-        or [len(x["original_source_3d_disk_seam_paths"]) for x in zones]
-        != [2, 1, 2, 1]
+        or [len(x["original_source_3d_disk_seam_paths"]) for x in zones] != [2, 1, 2, 1]
     ):
         raise ValueError("some original lower Stage6 source triangles are missing")
     return {
