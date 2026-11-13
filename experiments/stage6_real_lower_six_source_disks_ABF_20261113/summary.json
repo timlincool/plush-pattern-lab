@@ -183,5 +183,31 @@
   "real_laboratory_fabric_stretch_or_filled_plush_sample_available": false,
   "industrial_cut_pattern_approved": 0,
   "P3_status": "in_progress",
-  "P4_status": "not_started"
+  "P4_status": "not_started",
+  "trusted_completed_original_Stage6_full_blender_and_independent_QA": {
+    "run_id": 43454129243,
+    "commit_sha": "221e3c11e4d7058b7ff83c2578197ab40ea5527a",
+    "status": "success",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43454129243",
+    "artifact_id": 14051729724,
+    "artifact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "artifact_expiration_utc": "2026-11-20T15:39:44Z",
+    "full_source_six_cut_disks_json_sha256": "b25b14db7932203c183d9771da4a2c474398bafa2cd169333870070f0b90cee1",
+    "native_Blender_4_3_2_ABF_UV_json_sha256": "8253768408f3792dc07db21a174e29cb15f72205142901ced9b2850e7c101f80",
+    "true_original_source_2D_seam_independent_QA_json_sha256": "8b37f669cbcf7353190d5fca8b41c65b89843ae65fa844737159449276fd18b9",
+    "four_original_source_disks_native_ABF_P95": [
+      0.32498994848530793,
+      0.2761202814515417,
+      0.3257065620431261,
+      0.26135875718100254
+    ],
+    "right_front_flipped_or_collapsed_triangle_count": 3,
+    "right_front_positive_area_overlapping_triangle_pairs": 21,
+    "four_real_source_disk_ABF_joint_gate_passed": false,
+    "all_four_original_zone_seams_2D_pairing_within_3percent": false,
+    "original_7rims_6new_3D_paths_and_old_801shared_source_edges_preserved": true,
+    "original_25_percent_PLY_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+    "industrial_cutting_patterns_approved": 0
+  },
+  "provenance_note": "First native Stage6 run #43451904139 completed original source disks/Blender UV but failed old factor<100 input guard; successful full independent QA #43454129243 used mathematically identical UV*1000 pre-gauge; its raw Source JSON identical and raw ABF JSON ordering differed, original geometry+metrics unchanged. All historic run SHA preserved."
 }
