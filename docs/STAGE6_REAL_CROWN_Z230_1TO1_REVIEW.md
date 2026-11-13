@@ -50,3 +50,10 @@ python scripts/build_stage6_crown_230_overlay.py \
 旧A/B上头盖**不应继续被当作忠实原Stage6顶盖**。下一设计审阅要确定中央头顶与两侧突出是否需要独立盖片、省道或另设真实源面分片；参考[已有真实41Mesh邻近证据](STAGE6_SECTION_41MESH_CORRESPONDENCE.md)和原选定设计正/侧/背/顶外观，先确认耳根/云层承接是否能藏缝。经工艺分片选择后，再让Blender ABF/FreeCAD的已实现求解器按同原Source净缝重算与比较，而不再调12组旧耳根算法。
 
 **这一张纸只说明原模型哪里与旧母版不一致；不能直接打印剪布、也不能凭A4标尺证明实体缝合可行。**
+
+
+## 2026-11-13 真实数据离线回归完成
+
+[可信主分支Python #43375236743](https://github.com/timlincool/plush-pattern-lab/actions/runs/43375236743)，源码commit `8313cb7bca830651ff5cb4b0633c15ba31211fbd`：**726/726测试、Ruff/复杂度和wheel构建全部通过**。包括直接打开仓库[永久414源交边Witness](../experiments/stage6_z230_true_crown_20261113/witness.json)，逐环重算原Source EdgeID/XY SHA、真实3个Polygon、旧319.771mm单盖、原中央153.094mm及38.212mm距离；也测试了丢环、改变SourceID、改变源点、左右互换、假P4批准和打印比例等负例。独立实验的结构化SHA与制造否决状态见[永久摘要](../experiments/stage6_z230_true_crown_20261113/summary.json)。
+
+这次测试证明真实**原几何投影审阅器**可重放，不验证新裁片缝制或成品外观；不把P3自动升级到P4。
