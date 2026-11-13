@@ -53,7 +53,7 @@ def render_seven_real_rims_a4(source, faces, caps, report, y_split, trimesh_modu
         or report.get("factory_cutting_patterns_approved") != 0
         or y_split not in (20.0, 25.0)
         or y_split not in [
-            row["split_y_mm"] for row in report["source_four_zone_comparisons"]
+            row["split_y_mm"] for row in report.get("source_four_zone_comparisons", [])
         ]
     ):
         raise ValueError("original seven-rim study required before source drawing")
