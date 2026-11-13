@@ -30,6 +30,13 @@
 
 `tests/test_stage6_split_volume_toile.py` 添加正例和篡改负例；受信main Stage6 workflow需要真正重算锁定的原Blender 4.3.2/PLY，检验旧四蹄、24片/15页、A两个数字组件、B一个数字组件以及全部成员SHA。**合并或Python单测成功不等于原Blender运行或实体试缝已经通过。**
 
+## 两次可信main原Stage6运行 + Python质量门禁
+
+- [真实原模型 #43349657766](https://github.com/timlincool/plush-pattern-lab/actions/runs/43349657766) 成功（合并PR #179初版）。A/B各24片对应图、Source、原下腹、文件SHA与组件数量均在受信工作流中检验。
+- [最终main真实原模型 #43350338730](https://github.com/timlincool/plush-pattern-lab/actions/runs/43350338730) 成功（提交 `f3c54fd65412194d78a2ef29b2f609a50e383d64`），原Source 4×512不变，两套图/旧4页和新11页、手工与数值接口身份通过。
+- [同一提交Python #43350338822](https://github.com/timlincool/plush-pattern-lab/actions/runs/43350338822)：**682/682测试、Ruff/复杂度和wheel打包均通过**。本轮另两次早期Python失败仅为I001导入空行及Ruff format的两处分行，已由PR #180/#181修复；另一次真实Stage6 #43350167038 因上游Blender下载HTTP 403失败，后来最终可信main运行成功。
+- [永久实验摘要](../experiments/stage6_split_24piece_assembly_20261112/summary.json) 固定成功Run、原Source哈希、两个24片图接口计数、Artifact ID与工厂否决门禁；原始详细纸样与逐文件SHA仍以受信Run里的manifest为准。本轮没有实体缝合证据。
+
 ## 当前明确不能越过的门槛
 
 A额外手缝位置、强度、填棉稳定性未测。B肩孔最小余量仅约13.41mm，双份6mm缝份加研究余量只剩约0.41mm，返口42.49mm的真实翻出能力未知。两版的头颈根相对原Z145源截面最大XY偏移25.55/29.14mm；后身源代理经线与2D研究净缝仍相差约54.36mm。原鼓蹄底、内外耳、七云、尾巴、五官和十水滴带均缺正式纸样。
