@@ -11,10 +11,7 @@ from run_stage6_freecad_flatmesh import SOURCE_SHA, run_study, source_disks
 
 def _source():
     xyz = [[float(i), float(i * i % 17), 0.0] for i in range(24)]
-    faces = [
-        [0, (i % 22) + 1, ((i + 1) % 22) + 1]
-        for i in range(32)
-    ]
+    faces = [[0, (i % 22) + 1, ((i + 1) % 22) + 1] for i in range(32)]
     disks = []
     for variant in ("N15", "N17"):
         for side in ("left", "right"):
