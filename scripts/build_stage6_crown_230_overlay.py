@@ -35,7 +35,6 @@ def _locked_json(path, expected):
     return json.loads(payload)
 
 
-
 def load_compact_witness(path):
     """Reopen source-locked original evidence after the Action Artifact expires."""
     saved = _locked_json(path, WITNESS_SHA)
@@ -67,9 +66,7 @@ def load_compact_witness(path):
         {
             "name": name,
             "head_rings_z_mm": [145, 155, 180, 205, Z],
-            "head_top_cap": {
-                "outer_stitch_xy_mm": saved["old_A_B_head_top_cap_xy_mm"]
-            },
+            "head_top_cap": {"outer_stitch_xy_mm": saved["old_A_B_head_top_cap_xy_mm"]},
         }
         for name in ("A_separate_stuffed_head", "B_integrated_neck_port")
     ]
@@ -83,9 +80,7 @@ def load_compact_witness(path):
 
 def _original_loop(row):
     xy = np.asarray(row["true_interpolated_contour_xy_mm"], dtype=np.float64)
-    ids = np.asarray(
-        row["crossed_original_mesh_vertex_id_edge_pairs"], dtype=np.int64
-    )
+    ids = np.asarray(row["crossed_original_mesh_vertex_id_edge_pairs"], dtype=np.int64)
     if (
         xy.ndim != 2
         or xy.shape[1] != 2
@@ -162,9 +157,7 @@ def measure(source, study):
     loops = [_original_loop(x) for x in matching[0]["source_contours"]]
     polygons = [poly for _, poly in loops]
     if any(
-        not p.disjoint(q)
-        for i, p in enumerate(polygons)
-        for q in polygons[i + 1 :]
+        not p.disjoint(q) for i, p in enumerate(polygons) for q in polygons[i + 1 :]
     ):
         raise ValueError("real source Z230 components overlap or intersect")
     if not polygons[1].centroid.x < polygons[0].centroid.x < polygons[2].centroid.x:
@@ -172,38 +165,42 @@ def measure(source, study):
     cap_xy, cap = _old_cap(study)
     for xy in [*(row[0] for row in loops), cap_xy]:
         _page_points(xy)
-    return {
-        "schema": SCHEMA,
-        "original_blend_sha256": BLEND_SHA,
-        "source_detail_sha256": SOURCE_SHA,
-        "source_trial_sha256": TRIAL_SHA,
-        "plane_z_mm": Z,
-        "real_original_source_components": 3,
-        "source_original_boundary_edges_per_component": [
-            len(xy) for xy, _ in loops
-        ],
-        "source_true_loop_perimeters_mm": [p.length for p in polygons],
-        "old_A_B_single_surrogate_cap_perimeter_mm": cap.length,
-        "old_A_B_single_surrogate_cap_to_actual_central_ratio": (
-            cap.length / polygons[0].length
-        ),
-        "central_vs_surrogate_planar_boundary_hausdorff_mm": (
-            polygons[0].boundary.hausdorff_distance(cap.boundary)
-        ),
-        "true_source_three_component_total_perimeter_mm": sum(
-            poly.length for poly in polygons
-        ),
-        "true_source_three_component_area_mm2": unary_union(polygons).area,
-        "old_surrogate_cap_area_mm2": cap.area,
-        "original_section_3d_intersection_is_not_a_sewing_seam": True,
-        "old_24piece_head_cap_rejected_as_anatomical_source_approximation": True,
-        "geometry_unmodified": True,
-        "projected_source_xy_is_not_a_flat_fabric_pattern": True,
-        "notch_seam_allowance_grain_or_physical_trial_validated": False,
-        "factory_cutting_patterns_approved": 0,
-        "P3_status": "in_progress",
-        "P4_status": "not_started",
-    }, loops, cap_xy
+    return (
+        {
+            "schema": SCHEMA,
+            "original_blend_sha256": BLEND_SHA,
+            "source_detail_sha256": SOURCE_SHA,
+            "source_trial_sha256": TRIAL_SHA,
+            "plane_z_mm": Z,
+            "real_original_source_components": 3,
+            "source_original_boundary_edges_per_component": [
+                len(xy) for xy, _ in loops
+            ],
+            "source_true_loop_perimeters_mm": [p.length for p in polygons],
+            "old_A_B_single_surrogate_cap_perimeter_mm": cap.length,
+            "old_A_B_single_surrogate_cap_to_actual_central_ratio": (
+                cap.length / polygons[0].length
+            ),
+            "central_vs_surrogate_planar_boundary_hausdorff_mm": (
+                polygons[0].boundary.hausdorff_distance(cap.boundary)
+            ),
+            "true_source_three_component_total_perimeter_mm": sum(
+                poly.length for poly in polygons
+            ),
+            "true_source_three_component_area_mm2": unary_union(polygons).area,
+            "old_surrogate_cap_area_mm2": cap.area,
+            "original_section_3d_intersection_is_not_a_sewing_seam": True,
+            "old_24piece_head_cap_rejected_as_anatomical_source_approximation": True,
+            "geometry_unmodified": True,
+            "projected_source_xy_is_not_a_flat_fabric_pattern": True,
+            "notch_seam_allowance_grain_or_physical_trial_validated": False,
+            "factory_cutting_patterns_approved": 0,
+            "P3_status": "in_progress",
+            "P4_status": "not_started",
+        },
+        loops,
+        cap_xy,
+    )
 
 
 def _path(xy):
@@ -219,7 +216,7 @@ def render(loops, cap_xy, metrics):
         '<text x="13" y="12" font-size="6">STAGE6 REAL SOURCE CROWN | Z=230mm</text>',
         '<text x="13" y="19" font-size="3.4">1:1 ORIGINAL XY vs old A/B surrogate | STUDY ONLY</text>',
         '<text x="13" y="26" font-size="3.4" fill="#ae2626">'
-        'NOT A CUT/SEW PATTERN - no allowance, stitch line or fabric model</text>',
+        "NOT A CUT/SEW PATTERN - no allowance, stitch line or fabric model</text>",
         '<rect x="12" y="43" width="186" height="116" fill="#fbfbfb" '
         'stroke="#ccc" stroke-width=".3"/>',
         f'<path id="old-surrogate" d="{_path(cap_xy)}" stroke="#b75024" '
@@ -240,13 +237,13 @@ def render(loops, cap_xy, metrics):
             '<text x="13" y="180" font-size="3.9" fill="#328a55">GREEN actual left 45.52mm</text>',
             '<text x="13" y="187" font-size="3.9" fill="#8c58a0">PURPLE actual right 45.51mm</text>',
             '<text x="13" y="194" font-size="3.9" fill="#b75024">'
-            'ORANGE dashed old A/B 319.77mm (one surrogate ring)</text>',
+            "ORANGE dashed old A/B 319.77mm (one surrogate ring)</text>",
             '<text x="13" y="207" font-size="3.5">'
-            'Original crown: 3 disconnected loops; trial: 1 cap.</text>',
+            "Original crown: 3 disconnected loops; trial: 1 cap.</text>",
             f'<text x="13" y="214" font-size="3.5">'
-            f'2D XY boundary Hausdorff (central vs trial): {gap:.2f}mm</text>',
+            f"2D XY boundary Hausdorff (central vs trial): {gap:.2f}mm</text>",
             '<text x="13" y="221" font-size="3.5">'
-            'True 3D surface cross-sections are NOT unwrapped fabric shapes.</text>',
+            "True 3D surface cross-sections are NOT unwrapped fabric shapes.</text>",
             '<path d="M 50,249 L 150,249 M 50,246 L 50,252 '
             'M 150,246 L 150,252" stroke="black" stroke-width=".45"/>',
             '<text x="80" y="245" font-size="4">100mm / print actual size</text>',
@@ -254,9 +251,9 @@ def render(loops, cap_xy, metrics):
             'stroke="black" stroke-width=".4"/>',
             '<text x="17" y="257" font-size="3.1">10 x 10mm</text>',
             '<text x="13" y="273" font-size="3.5">'
-            'SOURCE ORIGINAL | no cutting, stitching, filling or approval</text>',
+            "SOURCE ORIGINAL | no cutting, stitching, filling or approval</text>",
             '<text x="13" y="282" font-size="3.5">'
-            'P3 IN PROGRESS | P4 NOT STARTED | FACTORY APPROVED = 0</text>',
+            "P3 IN PROGRESS | P4 NOT STARTED | FACTORY APPROVED = 0</text>",
             "</svg>",
         ]
     )
@@ -305,7 +302,9 @@ def main():
         json.dumps(
             {
                 "true_source_components": 3,
-                "old_cap_mm": round(metrics["old_A_B_single_surrogate_cap_perimeter_mm"], 3),
+                "old_cap_mm": round(
+                    metrics["old_A_B_single_surrogate_cap_perimeter_mm"], 3
+                ),
                 "factory_approved": False,
             }
         ),
