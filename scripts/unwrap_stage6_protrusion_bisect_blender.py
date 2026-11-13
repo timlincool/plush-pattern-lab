@@ -7,10 +7,15 @@ import argparse
 import hashlib
 import json
 import sys
+from importlib import import_module
 from pathlib import Path
 
 import bpy
-from unwrap_stage6_true_crown_caps_blender import _unwrap
+
+_SCRIPTS = str(Path(__file__).resolve().parent)
+if _SCRIPTS not in sys.path:
+    sys.path.insert(0, _SCRIPTS)
+_unwrap = import_module("unwrap_stage6_true_crown_caps_blender")._unwrap
 
 INPUT_SCHEMA = "stage6-genuine-high-protrusion-source-edge-bisect-AB-v1"
 OUTPUT_SCHEMA = "stage6-real-high-protrusion-source-meridian-native-ABF-v1"
