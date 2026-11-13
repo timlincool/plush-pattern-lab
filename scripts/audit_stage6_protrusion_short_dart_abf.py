@@ -48,8 +48,7 @@ def _paired_segmentwise_absolute_mismatch(disk, mm):
         if len(paired) != 2 or len(forward) != 1 or len(reverse) != 1:
             raise ValueError("cut source seam does not have opposite 2D copies")
         length = [
-            float(np.linalg.norm(mm[u] - mm[v]))
-            for u, v in (forward[0], reverse[0])
+            float(np.linalg.norm(mm[u] - mm[v])) for u, v in (forward[0], reverse[0])
         ]
         mismatches.append(abs(length[0] - length[1]))
     return float(sum(mismatches) / disk["real_source_3d_slit_length_mm"])
@@ -60,9 +59,7 @@ def _verify_original_geometry(disk, cap):
     original_faces = np.asarray(cap["triangles_local_vertex_indices"], dtype=int)
     xyz = np.asarray(disk["source_xyz_mm"], dtype=float)
     faces = np.asarray(disk["disk_triangle_vertex_ids"], dtype=int)
-    source_ids = np.asarray(
-        disk["original_patch_vertex_id_per_disk_vertex"], dtype=int
-    )
+    source_ids = np.asarray(disk["original_patch_vertex_id_per_disk_vertex"], dtype=int)
     path = np.asarray(disk["slit_original_local_vertex_ids"], dtype=int)
     if (
         original.ndim != 2
@@ -96,9 +93,7 @@ def _one(disk, entry, original):
     if (
         entry.get("source_cap_id") != disk["id"]
         or entry.get("source_vertex_count") != len(disk["source_xyz_mm"])
-        or entry.get("source_triangle_count") != len(
-            disk["disk_triangle_vertex_ids"]
-        )
+        or entry.get("source_triangle_count") != len(disk["disk_triangle_vertex_ids"])
         or entry.get("original_cut_rim_edges") != disk["source_boundary_edges"]
         or entry.get("maximum_split_UV_loop_disagreement", 1) > 1e-5
     ):
@@ -134,9 +129,7 @@ def _one(disk, entry, original):
         "two_2d_sides_each_within_3percent_of_3d_seam": (
             physical_diff / original_len <= 0.03
         ),
-        "no_2d_triangle_flips": (
-            topology["reversed_or_collapsed_triangle_count"] == 0
-        ),
+        "no_2d_triangle_flips": (topology["reversed_or_collapsed_triangle_count"] == 0),
         "no_positive_area_2d_triangle_overlaps": (
             topology["overlapping_positive_area_triangle_pair_count"] == 0
         ),
