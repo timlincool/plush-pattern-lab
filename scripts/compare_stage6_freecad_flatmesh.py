@@ -13,9 +13,9 @@ import statistics
 from pathlib import Path
 
 import numpy as np
+from run_stage6_freecad_flatmesh import SCHEMA, SOLVER, SOURCE_SHA, source_disks
 
 from plush_pattern_lab.validation.stage6_external_uv_benchmark import _metrics
-from run_stage6_freecad_flatmesh import SCHEMA, SOLVER, SOURCE_SHA, source_disks
 
 REPORT_SCHEMA = "stage6-freecad-flatmesh-vs-native-blender-abf-research-v1"
 ABF_SCHEMA = "stage6-free-blender-native-uv-abf-conformal-raw-v1"
