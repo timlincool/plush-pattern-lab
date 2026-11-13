@@ -105,11 +105,9 @@ def test_external_s2s_proves_every_original_source_boundary_edge_in_mm():
     (
         "bad_source_sha", "bad_raw_sha", "changed_original_source",
         "fake_factory", "changed_cut_triangle", "wrong_source_patch",
-        "uv_seam_split", "conformal_only", "wrong_method_identity",
-        "clipped_uv", "bad_scale", "duplicated_source_entry",
     ),
 )
-def test_external_s2s_rejects_source_metrics_or_method_forgery(fault):
+def test_external_s2s_rejects_source_signature_forgery(fault):
     source, native, audit = _fixture()
     if fault == "bad_source_sha":
         native["source_study_sha256"] = "wrong"
@@ -121,9 +119,24 @@ def test_external_s2s_rejects_source_metrics_or_method_forgery(fault):
         audit["factory_cutting_patterns_approved"] = 1
     elif fault == "changed_cut_triangle":
         native["entries"][0]["triangle_count"] = 3
-    elif fault == "wrong_source_patch":
+    else:
         native["entries"][0]["source_patch_sha256"] = "wrong"
-    elif fault == "uv_seam_split":
+    with pytest.raises(ValueError):
+        s2s.audit_stage6_external_svg(
+            source, native, audit, SVG, SOURCE_HASH, NATIVE_HASH
+        )
+
+
+@pytest.mark.parametrize(
+    "fault",
+    (
+        "uv_seam_split", "conformal_only", "wrong_method_identity",
+        "clipped_uv", "bad_scale", "duplicated_source_entry",
+    ),
+)
+def test_external_s2s_rejects_unreviewed_solver_or_uv_geometry(fault):
+    source, native, audit = _fixture()
+    if fault == "uv_seam_split":
         native["entries"][0][
             "max_same_topological_vertex_uv_loop_disagreement"
         ] = 0.2
