@@ -123,7 +123,10 @@ def _new_seams(part, boundary):
 
 def _score_one(part, uv):
     xyz, faces, source_id, raw = _validate_zone(part, uv)
-    mm, _, edge = _scale_free_gauge(xyz, faces, raw)
+    # Blender packs a ~250mm complete panel into UV 0..1. The reused gauge
+    # expects a scale coefficient <100; a fixed input unit prescale cancels
+    # algebraically and changes neither the final mm coordinates nor QA gates.
+    mm, _, edge = _scale_free_gauge(xyz, faces, raw * 1000.0)
     surface = _face_overlap_and_winding(xyz, faces, mm)
     boundary = _actual_boundary_lengths(faces, xyz, mm, source_id)
     seams = _new_seams(part, boundary)
@@ -158,7 +161,7 @@ def _score_one(part, uv):
     }, boundary
 
 
-def _crosszone_sources(borders):
+def _collect_original_zone_edges(borders):
     groups = defaultdict(list)
     for zone, border in enumerate(borders):
         for key, occurrences in border.items():
@@ -166,6 +169,11 @@ def _crosszone_sources(borders):
                 groups[key].append((zone, occurrences[0]))
             elif len(occurrences) != 2:
                 raise ValueError("original lower source edge has too many copies")
+    return groups
+
+
+def _crosszone_sources(borders):
+    groups = _collect_original_zone_edges(borders)
     outcome = {}
     for key, entries in groups.items():
         if len(entries) != 2:
@@ -226,6 +234,8 @@ def audit(source, native, source_sha):
     return {
         "schema": SCHEMA,
         "source_original_lower_seven_port_six_disk_sha256": source_sha,
+        "native_ABF_UV_input_uniform_pregauge_scale": 1000.0,
+        "pregauge_scale_cancels_in_minimum_squared_edge_similarity": True,
         "original_true_lower_source_triangles": source[
             "source_3d_total_original_lower_face_count"
         ],

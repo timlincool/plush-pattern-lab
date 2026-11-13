@@ -6,9 +6,9 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
-
 from audit_stage6_lower_six_cut_disks_abf import PAIRS, _crosszone_sources
 
+from plush_pattern_lab.validation.stage6_ear_slit_lscm import _scale_free_gauge
 from plush_pattern_lab.validation.stage6_lower_six_cut_disks import (
     SCHEMA,
     _boundary,
@@ -174,3 +174,24 @@ def test_original_region_source_edge_pairing_rejects_missing_or_changed_3d():
     removed[1].pop(key)
     with pytest.raises(ValueError, match="interzone"):
         _crosszone_sources(removed)
+
+def test_native_blender_unit_square_pregauge_scaling_is_similarity_invariant():
+    # A complete 500mm source region often has Blender UV normalized to 0..1.
+    # The old local-patch gauge caps its coefficient at 100; converting UV
+    # units before the same minimum-squared-edge gauge cannot change strain.
+    xyz = np.asarray([[0.0, 0.0, 0.0], [500.0, 0.0, 0.0],
+                      [0.0, 500.0, 0.0]])
+    faces = np.asarray([[0, 1, 2]])
+    native_uv = np.asarray([[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]])
+    with pytest.raises(ValueError, match="invalid uniform"):
+        _scale_free_gauge(xyz, faces, native_uv)
+    mm_a, strain_a, quality_a = _scale_free_gauge(
+        xyz, faces, native_uv * 1000.0
+    )
+    mm_b, strain_b, quality_b = _scale_free_gauge(
+        xyz, faces, native_uv * 500.0
+    )
+    assert np.allclose(mm_a, mm_b, atol=1e-9)
+    assert np.allclose(strain_a, strain_b, atol=1e-12)
+    assert quality_a["scaled_2d_p95_abs_edge_relative_error"] == pytest.approx(0)
+    assert quality_b["scaled_2d_p95_abs_edge_relative_error"] == pytest.approx(0)

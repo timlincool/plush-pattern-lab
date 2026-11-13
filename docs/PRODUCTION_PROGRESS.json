@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_real_lower_seven_rim_four_zone_three_head_ports_3D_contract_proved_P3_not_sewable",
+    "stage": "stage6_true_lower_7port_six_3D_interrim_disks_nativeABF_rejected_4panels_source_p3",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -398,7 +398,11 @@
         },
         {
           "path": "docs/STAGE6_LOWER_SEVEN_PORT_SIX_SOURCE_DISKS_ABF.md",
-          "kind": "original_7port_4zones_6_source_interrim_3D_cut_verified_local_native_Blender_ABF_2D_pending_trusted_main"
+          "kind": "true_original_7port_6cuts_4native_Blender_ABF_disks_source3D_success_2D_P95_and_pairing_rejected"
+        },
+        {
+          "path": "experiments/stage6_real_lower_six_source_disks_ABF_20261113/summary.json",
+          "kind": "real_native_Blender4_3_2_ABF_4_lower_disks_original_source_6_and_801_2D_seam_QA_rejected"
         }
       ],
       "blockers": [
@@ -1646,8 +1650,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发＋玩偶制版与实物试缝",
-      "action": "从受信原Stage6固定25%代理和2026-11-13真七开口原QA出发，仅在Y20原四区做六条跨原界面源边最短连接：左前/右前各两条（高位侧接口→上身外缘、前蹄口→外缘），左右后各一条（后蹄口→上身外缘），真实3D长度23.405878/40.892110/42.367436/25.475354/42.429405/42.173672mm。原111978三角面一次且仅一次分入4区，4片变单边界Euler1，三源头冠和4×512蹄原接口不变；离线源码复算已核验，受信main 4盘原生Blender4.3.2 ABF及六条新缝/原四区域801边两侧二维逐段比对待实跑。已有前区超大应变反例，若真实ABF失败保留原数字拒绝，不能宣称有可裁纸样。",
-      "done_when": "可信main重算六条真实Source双边切缝，四片真盘ABF所有原边P95/翻面/重叠/六新缝与801旧缝两侧毫米误差；固定原始JSON SHA及反例回归。合格仍需头冠95/94和左右113/112、四蹄2D接法，设计外观与实体废布。P3未完成、P4未开始。"
+      "action": "可信main Stage6 #43451904139 以固定Stage6原Source 25%原七开口主壳已经实际生成4片Euler1单边界真实3D盘、6条原源跨环路径两侧同ID及四份原生Blender4.3.2 ABF；第一次完整QA仅因原小片uniform gauge系数<100未适配大主壳raw UV 0..1而停止，原数据已保存并在助手隔离环境等价单位预乘1000后独立全量重测：4盘P95 32.499/27.612/32.571/26.136%，全部>10%，右前3翻向/塌缩与21对2D正面积重叠；6条新Source两侧逐段绝对缝长差左前高位31.70%、右前高位38.43%、其余1.87/3.27/2.17/6.87%；原四区801条真实3D原边间二维配缝偏差13.38/3.90/2.22/10.24%，多处>3%。已归档原Artifact完整UV/源SHA和全部失败数值。预乘1000仅是进入原同一公式前的单位等价，不放宽10%/3%/0重叠门槛；待修复后最终可信main质量脚本复验，禁止四片直接裁布。下一步改整角色真实分片工艺结构而不是继续机械缩短切缝/换UV。",
+      "done_when": "四片源三维拓扑已由真实Runner/源同ID两侧证明成功；真实ABF四盘二维应变、六源与801原缝逐段匹配研究预筛失败。修复后的原质量脚本完整CI仍待完成。真实原头冠/四蹄二维配缝、外观设计、面料和实体样仍缺，P3 in_progress/P4 not_started/工厂0。"
     },
     {
       "priority": "P0",
@@ -2122,6 +2126,11 @@
       "date": "2026-11-13",
       "event": "基于受信七原环Y20固定Source代理验证四区六条跨孔真实3D源边路径：左前23.405878＋40.892110、左后42.367436、右前25.475354＋42.429405、右后42.173672mm。两前区各3环→2环→1环，两后区各2→1环，最终4个Euler1有边界圆盘；Source三角面和原四蹄/三个头冠开口不换。提交复用原real_panel_slit扇区分割、原Blender4.3.2 ABF与原尺度/重叠/双边2D缝长严格审核；这些只是研究3D开缝，可信main真实ABF未跑之前不得声称低应变或工厂认可。P3仍进行、P4未启。",
       "evidence_path": "docs/STAGE6_LOWER_SEVEN_PORT_SIX_SOURCE_DISKS_ABF.md"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "可信Stage6 main #43451904139成功执行原七开口111978面→六条真源边跨孔切缝→四片Euler1圆盘并真实Blender4.3.2 native ABF全部UV；最终审计因旧100倍UV输入相似尺度上限而失败。依据同一原生Runner JSON在助手环境作等价UV单位预缩放与独立Shapely三角面/Source边校验，四片P95=32.50/27.61/32.57/26.14%，右前3翻转塌缩和21对正面积重叠；6条新缝双侧差最高38.43%，原801原区缝差最高13.38%，研究10%/3%门槛拒绝全部四片。提交修复原审计输入及来源SHA永久实验记录；此非工厂图、物料未校准、P3继续/P4未开始。",
+      "evidence_path": "experiments/stage6_real_lower_six_source_disks_ABF_20261113/summary.json"
     }
   ]
 }
