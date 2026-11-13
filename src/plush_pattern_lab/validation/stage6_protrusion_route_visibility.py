@@ -12,12 +12,12 @@ from collections import Counter
 import numpy as np
 
 from plush_pattern_lab.validation.full_scene_seam_visibility import VIEWS
-from plush_pattern_lab.validation.stage6_real_protrusion_bisect import (
-    CAPS,
-    EXPECTED_SOURCE_FACES,
-    EXPECTED_SOURCE_RIMS,
-    ROUTES,
-)
+# Copy only frozen source schema constants: Blender's bundled Python lacks SciPy.
+# The pure-Python regression suite checks these against the original bisector.
+ROUTES = ("Y_FRONT_BACK", "X_INNER_OUTER")
+CAPS = ("left_high_protrusion", "right_high_protrusion")
+EXPECTED_SOURCE_FACES = (1849, 1906)
+EXPECTED_SOURCE_RIMS = (113, 112)
 
 SCHEMA = "stage6-original-X-Y-protrusion-meridian-41mesh-5view-v1"
 BISECT_SCHEMA = "stage6-genuine-high-protrusion-source-edge-bisect-AB-v1"
