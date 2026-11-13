@@ -86,10 +86,11 @@ def _short_original_path(full_meridian, tip_id, route, side, rim):
 def _cut_source_fans_once(xyz, faces, path, original_rim_count):
     original_edges, inverse, counts, _, _ = _edges(faces, len(xyz))
     cut = {tuple(sorted((int(a), int(b)))) for a, b in zip(path[:-1], path[1:])}
-    if len(cut) != len(path) - 1 or any(
-        len(faces) < 1 or counts[np.where((original_edges == e).all(axis=1))[0][0]] != 2
-        for e in cut
-    ):
+    owners = {
+        tuple(map(int, edge)): int(count)
+        for edge, count in zip(original_edges, counts)
+    }
+    if len(cut) != len(path) - 1 or any(owners.get(edge) != 2 for edge in cut):
         raise ValueError("short slit contains noninterior or nonexistent source edge")
     # Existing face-fan splitter duplicates the seam points. The internal tip
     # must remain shared, otherwise a short dart becomes a broken mesh.
@@ -119,6 +120,8 @@ def _one_candidate(original, reference, route, side, faces_count, rim_count):
         or reference.get("source_face_count") != faces_count
         or reference.get("original_z230_rim_edge_count") != rim_count
         or not reference.get("original_three_dimensional_source_seam_shared_twice")
+        or reference.get("original_z230_source_witness_sha256")
+        != original.get("source_original_rim_edge_ids_sha256")
     ):
         raise ValueError("full meridian source identity changed")
     tip = int(reference["original_cap_tip_vertex_id"])
@@ -133,11 +136,13 @@ def _one_candidate(original, reference, route, side, faces_count, rim_count):
     original3d = float(np.linalg.norm(np.diff(xyz[path], axis=0), axis=1).sum())
     if not 0 < original3d < reference["source_3d_meridian_length_mm"]:
         raise ValueError("not a shorter original source edge slit")
+    old_rim_edges = {
+        tuple(sorted((int(rim[i]), int(rim[(i + 1) % len(rim)]))))
+        for i in range(len(rim))
+    }
     original_edge_count = sum(
-        1
+        tuple(sorted((int(identity[a]), int(identity[b])))) in old_rim_edges
         for a, b in border
-        if tuple(sorted((int(identity[a]), int(identity[b]))))
-        in {tuple(sorted((int(rim[i]), int(rim[(i + 1) % len(rim)])))) for i in range(len(rim))}
     )
     if original_edge_count != rim_count:
         raise ValueError("original source Z230 outline is not preserved")
