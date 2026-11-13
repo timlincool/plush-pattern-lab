@@ -8,7 +8,6 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-
 from build_stage6_crown_230_overlay import (
     SCHEMA,
     _locked_json,
