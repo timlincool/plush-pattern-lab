@@ -347,6 +347,10 @@
         {
           "path": "docs/STAGE6_REAL_CROWN_Z230_1TO1_REVIEW.md",
           "kind": "original_source_z230_three_real_rings_vs_single_24piece_surrogate_fullscale_A4_measurement_not_sewable_p3"
+        },
+        {
+          "path": "experiments/stage6_z230_true_crown_20261113/witness.json",
+          "kind": "permanent_27kb_source_vertex_id_414_actual_triangle_plane_intersections_z230_3_loops_and_old_AB_cap_pinned_SHA"
         }
       ],
       "blockers": [
@@ -1419,7 +1423,10 @@
       "svg_print_scale": "210x297mm 1:1 diagnostic only",
       "factory_patterns_approved": 0,
       "status": "independent_original_source_artifact_replay_verified_locally_python_ci_pending",
-      "doc": "docs/STAGE6_REAL_CROWN_Z230_1TO1_REVIEW.md"
+      "doc": "docs/STAGE6_REAL_CROWN_Z230_1TO1_REVIEW.md",
+      "permanent_witness_sha256": "b561770a6cfeaea33abedc11bfb3992b2fe80b4bf83d10a66459682938af6571",
+      "witness_file": "experiments/stage6_z230_true_crown_20261113/witness.json",
+      "reproducible_without_expired_github_artifact": true
     }
   },
   "next_actions": [
