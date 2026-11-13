@@ -132,7 +132,9 @@ def _outputs(study, qc, lower_sha, lower):
             name: {
                 "pieces": graph["total_research_pieces"],
                 "numeric_interface_pairs": graph["numerically_paired_interface_count"],
-                "unproven_manual_joins": graph["manual_unverified_surface_attachment_count"],
+                "unproven_manual_joins": graph[
+                    "manual_unverified_surface_attachment_count"
+                ],
             }
             for name, graph in graphs.items()
         },
