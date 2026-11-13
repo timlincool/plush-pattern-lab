@@ -1,0 +1,176 @@
+{
+  "schema": "stage6-freecad-1-0-0-native-flatmesh-lscm-relax-vs-blender-abf-12-original-source-disks-evidence-v1",
+  "date_utc": "2026-11-13",
+  "source_repo": "timlincool/plush-pattern-lab",
+  "original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "original_source_study_sha256": "292be7e50f7c3b20bbcd03c8bccc86d501fc71c2ccb45fa737299f1c39134027",
+  "original_native_uv_sha256": "c841bff599c5eabeb8ba5928d4ae414ff61c76f59909e3c36d7902e481a2cf6b",
+  "original_native_audit_sha256": "6ced983f402d32a1aa63b509d4f01ec477ea37ae36728a936faf336805cbb6f8",
+  "freecad": "1.0.0",
+  "freecad_solver": "compiled flatmesh.FaceUnwrapper LSCM plus ten relax(0.95) rounds",
+  "external_environment_repo": "goatchurchprime/blender-seams-to-sewing-pattern",
+  "external_environment_commit": "0ea2585105a13e03cf017cca53da684b31eb97df",
+  "blender_compared": "Blender 4.3.2 ANGLE_BASED",
+  "solver_code_copied_to_repo": false,
+  "trusted_main_runs": [
+    {
+      "run_id": 43362970238,
+      "commit": "5081385c44dfb4303d53c4d4827505df961e69ef",
+      "result": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43362970238",
+      "artifact_id": 14008568392
+    },
+    {
+      "run_id": 43363281140,
+      "commit": "aa7615fcc2879d01ae2f6a3aca888358de86154d",
+      "result": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43363281140"
+    }
+  ],
+  "raw_flatmesh_12_source_aligned_uv_json_sha256": "437876ee19819c09d97b591dd35d9170d10cafe03a0b20deb1e0cc8d60810cb2",
+  "comparison_same_source_json_sha256": "b5ad5c8b181188b4ff12176a376309de26cf96a330ecf50b54a31a477f4f2991",
+  "real_source_case_count": 12,
+  "freecad_median_p95_relative_source_edge_error": 0.1129085992589237,
+  "abf_median_p95_relative_source_edge_error": 0.2430997850182549,
+  "freecad_median_2d_two_side_cut_seam_mismatch_fraction": 0.09585644849490131,
+  "abf_median_2d_two_side_cut_seam_mismatch_fraction": 0.052534944074056886,
+  "freecad_better_p95_than_abf_count": 12,
+  "freecad_better_seam_than_abf_count": 2,
+  "freecad_both_metrics_better_count": 2,
+  "freecad_p95_at_most_10_percent_count": 3,
+  "abf_p95_at_most_10_percent_count": 0,
+  "freecad_seam_diff_at_most_3_percent_count": 0,
+  "abf_seam_diff_at_most_3_percent_count": 5,
+  "freecad_flipped_or_collapsed_face_count": 0,
+  "freecad_positive_area_triangle_overlap_pair_count": 0,
+  "abf_flipped_or_collapsed_face_count": 0,
+  "abf_positive_area_triangle_overlap_pair_count": 0,
+  "freecad_all_research_gates_passed_count": 0,
+  "abf_all_research_gates_passed_count": 0,
+  "all_quality_scores_used_existing_source_indexed_stage6_metric_function": true,
+  "physical_material_or_sewing_test_passed": false,
+  "factory_patterns_approved": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "decision": "Retain ABF as default for now. Native FreeCAD LSCM+relax lowers source edge P95 but worsens two-side seam mismatch in 10 of 12 cases. Neither solver meets joint research gates, so improve actual panel segmentation and seam location rather than adding new UV solver.",
+  "original_raw_artifact_retention_days": 7,
+  "case_table_rounded_percentages": [
+    [
+      "N15",
+      "L",
+      "medial",
+      12.07,
+      25.85,
+      7.27,
+      2.53
+    ],
+    [
+      "N15",
+      "L",
+      "posterior",
+      10.43,
+      24.23,
+      9.76,
+      1.16
+    ],
+    [
+      "N15",
+      "L",
+      "lateral",
+      7.57,
+      16.4,
+      7.85,
+      1.13
+    ],
+    [
+      "N15",
+      "R",
+      "medial",
+      12.63,
+      24.39,
+      7.95,
+      9.24
+    ],
+    [
+      "N15",
+      "R",
+      "posterior",
+      10.08,
+      21.25,
+      9.41,
+      5.8
+    ],
+    [
+      "N15",
+      "R",
+      "lateral",
+      7.79,
+      21.12,
+      12.99,
+      8.71
+    ],
+    [
+      "N17",
+      "L",
+      "medial",
+      13.96,
+      29.24,
+      8.9,
+      4.71
+    ],
+    [
+      "N17",
+      "L",
+      "posterior",
+      11.13,
+      26.1,
+      13.32,
+      2.55
+    ],
+    [
+      "N17",
+      "L",
+      "lateral",
+      11.45,
+      26.07,
+      18.77,
+      2.31
+    ],
+    [
+      "N17",
+      "R",
+      "medial",
+      18.37,
+      27.71,
+      9.08,
+      12.9
+    ],
+    [
+      "N17",
+      "R",
+      "posterior",
+      14.43,
+      22.58,
+      11.99,
+      7.83
+    ],
+    [
+      "N17",
+      "R",
+      "lateral",
+      8.24,
+      22.48,
+      14.57,
+      9.91
+    ]
+  ],
+  "case_table_columns": [
+    "N",
+    "side",
+    "slit",
+    "FreeCAD_P95_percent",
+    "ABF_P95_percent",
+    "FreeCAD_two_side_diff_percent",
+    "ABF_two_side_diff_percent"
+  ]
+}
