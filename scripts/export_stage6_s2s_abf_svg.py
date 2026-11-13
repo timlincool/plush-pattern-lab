@@ -89,7 +89,7 @@ def _load_verified_exporter(directory):
         or not (directory / "GPL-license.txt").is_file()
     ):
         raise ValueError("external GPL add-on must be installed separately")
-    blob = hashlib.sha1(b"blob " + str(path.stat().st_size).encode() + b"\\0" + path.read_bytes()).hexdigest()
+    blob = hashlib.sha1(b"blob " + str(path.stat().st_size).encode() + bytes([0]) + path.read_bytes()).hexdigest()
     if blob != ADDON_BLOB:
         raise ValueError("external addon exporter blob changed from reviewed upstream")
     spec = importlib.util.spec_from_file_location("pinned_external_s2s_export", path)
