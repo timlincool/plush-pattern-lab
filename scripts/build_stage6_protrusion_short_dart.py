@@ -29,7 +29,9 @@ def main():
             for p in (args.source_caps, args.source_full_bisect)
         )
     ):
-        raise ValueError("source data missing or prior trial output would be changed")
+        raise ValueError(
+            "source data missing or prior trial output would be changed"
+        )
     raw_caps = args.source_caps.read_bytes()
     raw_full = args.source_full_bisect.read_bytes()
     report = build_short_darts(
