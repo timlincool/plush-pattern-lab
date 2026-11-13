@@ -28,12 +28,8 @@ def _ring(x, y, size, index):
         ],
         dtype=float,
     )
-    ids = np.array(
-        [[index + j, index + j + 1] for j in range(4)], dtype="<i8"
-    )
-    digest = hashlib.sha256(
-        ids.tobytes() + xy.astype("<f8").tobytes()
-    ).hexdigest()
+    ids = np.array([[index + j, index + j + 1] for j in range(4)], dtype="<i8")
+    digest = hashlib.sha256(ids.tobytes() + xy.astype("<f8").tobytes()).hexdigest()
     return {
         "true_interpolated_contour_xy_mm": xy.tolist(),
         "crossed_original_mesh_vertex_id_edge_pairs": ids.tolist(),
@@ -150,14 +146,13 @@ def test_original_input_sha_check_rejects_unauthorized_json(tmp_path):
     with pytest.raises(ValueError, match="SHA256 changed"):
         _locked_json(fake, "0" * 64)
 
+
 def test_real_trusted_stage6_414_crossing_edges_replay_after_artifact_expiry():
     root = Path(__file__).resolve().parents[1]
     witness = root / "experiments/stage6_z230_true_crown_20261113/witness.json"
     source, trial = load_compact_witness(witness)
     measured, loops, cap = measure(source, trial)
-    assert measured["source_original_boundary_edges_per_component"] == [
-        189, 113, 112
-    ]
+    assert measured["source_original_boundary_edges_per_component"] == [189, 113, 112]
     assert measured["source_true_loop_perimeters_mm"] == pytest.approx(
         [153.0939971276184, 45.51675545730191, 45.510986167806784]
     )
