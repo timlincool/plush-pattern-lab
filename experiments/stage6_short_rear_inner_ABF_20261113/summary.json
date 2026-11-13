@@ -1,0 +1,129 @@
+{
+  "schema": "stage6-genuine-short-rear-inner-original-source-Blender-ABF-4case-rejected-v1",
+  "record_date_utc": "2026-11-13",
+  "original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "original_proxy_25pct_source_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "geometry_origin": "Two original side high caps at Z230, original triangle Face order unchanged, short Y rear and short X inner original source meridian halves, original Z230 113/112 rim edges still included, internal tip never duplicated",
+  "original_source_geometry_3d_topology_precheck": {
+    "all_four_single_connected_Euler_one": true,
+    "all_faces_preserved": true,
+    "apex_vertex_shared_not_cloned": true,
+    "source_original_left_faces": 1849,
+    "source_original_right_faces": 1906,
+    "source_original_left_Z230_rim_edges": 113,
+    "source_original_right_Z230_rim_edges": 112,
+    "source_lower_seven_rim_mesh_untouched": true
+  },
+  "algorithm_toolchain": "existing real_panel_slit face fan and disk gate + original Blender 4.3.2 ANGLE_BASED + _scale_free_gauge / _face_overlap_and_winding / _two_true_planar_seam_sides (no added UV algorithm)",
+  "trusted_real_blender_execution": {
+    "run_id": 43419470617,
+    "main_commit": "241400127b0d697df15cfb5f62f8b71f96d19cff",
+    "conclusion": "success",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43419470617",
+    "artifact_id": 14032703537,
+    "artifact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "artifact_expiration_utc": "2026-11-20T11:47:49Z"
+  },
+  "earlier_raw_Blender_run_without_successful_legacy_numpy_adapter": {
+    "run_id": 43418411038,
+    "main_commit": "3660f7f5027f4700cf891945343da1f38ce75e00",
+    "result": "failure_due_to_JSON_list_not_NumPy_array_in_last_audit_only",
+    "original_source_geometry_and_ABF_finished": true,
+    "source_input_blender_uv_numerical_results_identical_to_successful_run": true
+  },
+  "raw_successful_workflow_member_sha256": {
+    "short_rear_inner_source_slits.json": "a1f0d21fad051bcc891220eccaff73c9d44333c3a9ade10fd914300c0507b4e6",
+    "short_rear_inner_native_ABF.json": "5a0ae5896364c7c63019bb9db736977bbaab220ec5253dd57b9ca7c2f019e4d4",
+    "short_rear_inner_ABF_seam_QA.json": "e86277155ab015e08ea8828fcbb0edbef7e4925c7366cd48a1b9a39f97c16e0a"
+  },
+  "gates": {
+    "triangle_edge_P95_max_fraction": 0.1,
+    "segmentwise_two_side_2d_netline_abs_diff_max_fraction": 0.03,
+    "each_2d_seam_side_vs_original_3d_max_fraction": 0.03,
+    "flips_allowed": 0,
+    "overlap_pairs_allowed": 0
+  },
+  "four_predeclared_true_source_cases": [
+    {
+      "route": "Y_REAR_RIM_TO_TIP",
+      "side": "left_high_protrusion",
+      "source_triangle_faces_preserved": 1849,
+      "source_3d_short_slit_vertices": 19,
+      "original_3d_source_short_seam_mm": 22.842159780739685,
+      "original_source_edge_P95_relative_error": 0.3963322149059503,
+      "two_2d_sides_segmentwise_abs_mismatch_fraction": 0.10267065301405891,
+      "max_one_2d_seam_side_deviation_from_3d_source_fraction": 0.19533285780873896,
+      "first_2d_side_mm": 27.303984129235406,
+      "second_2d_side_mm": 24.958764668295395,
+      "triangle_flips": 0,
+      "positive_area_2d_triangle_overlap_pairs": 0,
+      "all_limited_research_quality_gates_passed": false
+    },
+    {
+      "route": "Y_REAR_RIM_TO_TIP",
+      "side": "right_high_protrusion",
+      "source_triangle_faces_preserved": 1906,
+      "source_3d_short_slit_vertices": 25,
+      "original_3d_source_short_seam_mm": 23.444792060766765,
+      "original_source_edge_P95_relative_error": 0.387230590698235,
+      "two_2d_sides_segmentwise_abs_mismatch_fraction": 0.20199910786443068,
+      "max_one_2d_seam_side_deviation_from_3d_source_fraction": 0.2075450581993529,
+      "first_2d_side_mm": 23.574815713148354,
+      "second_2d_side_mm": 28.31064279349033,
+      "triangle_flips": 0,
+      "positive_area_2d_triangle_overlap_pairs": 0,
+      "all_limited_research_quality_gates_passed": false
+    },
+    {
+      "route": "X_INNER_RIM_TO_TIP",
+      "side": "left_high_protrusion",
+      "source_triangle_faces_preserved": 1849,
+      "source_3d_short_slit_vertices": 27,
+      "original_3d_source_short_seam_mm": 25.380976255153215,
+      "original_source_edge_P95_relative_error": 0.39976618259495234,
+      "two_2d_sides_segmentwise_abs_mismatch_fraction": 0.2219807282163812,
+      "max_one_2d_seam_side_deviation_from_3d_source_fraction": 0.2962795054159934,
+      "first_2d_side_mm": 32.90083934700508,
+      "second_2d_side_mm": 27.266751755043487,
+      "triangle_flips": 0,
+      "positive_area_2d_triangle_overlap_pairs": 0,
+      "all_limited_research_quality_gates_passed": false
+    },
+    {
+      "route": "X_INNER_RIM_TO_TIP",
+      "side": "right_high_protrusion",
+      "source_triangle_faces_preserved": 1906,
+      "source_3d_short_slit_vertices": 25,
+      "original_3d_source_short_seam_mm": 26.283580469634032,
+      "original_source_edge_P95_relative_error": 0.41610932520221283,
+      "two_2d_sides_segmentwise_abs_mismatch_fraction": 0.1124269586152581,
+      "max_one_2d_seam_side_deviation_from_3d_source_fraction": 0.22872083455788525,
+      "first_2d_side_mm": 29.686004720969294,
+      "second_2d_side_mm": 32.29518292981806,
+      "triangle_flips": 0,
+      "positive_area_2d_triangle_overlap_pairs": 0,
+      "all_limited_research_quality_gates_passed": false
+    }
+  ],
+  "all_four_joint_research_quality_passed": false,
+  "provenance_complete_original_src_mesh_with_two_2D_copies": true,
+  "prior_unsplit_source_single_cap_P95_left_right": [
+    0.9350017206812369,
+    0.939074206458219
+  ],
+  "prior_full_X_bisected_panels_P95_left": [
+    0.1851897249841747,
+    0.08857534832652293
+  ],
+  "prior_full_X_bisected_panels_P95_right": [
+    0.1365590887589357,
+    0.15155493288560665
+  ],
+  "decision": "Abandon rear and inner partial open seam as a production route: 38.7-41.6% edge strain P95 and 10.3-22.2% 2D paired seam mismatch; shorter cut reduces sew length but insufficiently releases source surface curvature. Do not tune another UV algorithm or fake stitch by scaling. Reassess actual whole-character shell pattern topology, original design and physical toile.",
+  "actual_fabric_and_stuffing_tested": false,
+  "original_41mesh_raw_BVH_visibility_is_not_hidden_fur_seam_proof": true,
+  "actual_lower_original_7_open_rim_shell_2D_mating_seams_available": false,
+  "factory_cutting_patterns_approved": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started"
+}
