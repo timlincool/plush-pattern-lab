@@ -1,0 +1,187 @@
+{
+  "schema": "stage6-lower-real-seven-ports-six-source-cut-four-native-ABF-independent-rejection-evidence-v1",
+  "recorded_date_utc": "2026-11-13",
+  "original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "original_25pct_source_PLY_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "original_lower_z230_source_triangles": 111978,
+  "original_four_zone_split_y_mm": 20,
+  "original_three_head_and_four_hoof_open_ports": true,
+  "source_face_identity_preserved_across_4_real_disks": true,
+  "all_four_lower_disks_single_boundary_euler_one": true,
+  "real_3d_new_six_source_seams_two_copies_each_verified": true,
+  "source_3d_six_new_interrim_seam_total_mm": 216.743855,
+  "original_source_old_interzone_paired_edges": 801,
+  "actual_first_main_stage6_execution": {
+    "run_id": 43451904139,
+    "commit_sha": "eac002fe4031ddde1ff821d7778af9ba7fad5fae",
+    "status": "failed_at_old_gauge_factor_threshold_only",
+    "original_3d_source_six_cut_creation_succeeded": true,
+    "four_native_Blender_4_3_2_ANGLE_BASED_UV_outputs_created": true,
+    "source_artifact_id": 14052131685,
+    "artifact_full_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "raw_source_six_cut_disks_sha256": "b25b14db7932203c183d9771da4a2c474398bafa2cd169333870070f0b90cee1",
+    "raw_native_4ABF_uv_sha256": "2e6a84ffe2e3801e3b5ce833b749a42ea7942520cf6e3a3818dfc9d895fb83fc"
+  },
+  "independent_same_original_raw_3d_and_uv_replay": {
+    "method": "original _scale_free_gauge: raw 0..1 native ABF UV prescale by 1000 before minimum-squared-edge similarity; algebraic scale cancels, final mm and strain unchanged; original _face_overlap_and_winding Shapely 2.1.2 overlap >1e-6 mm2; SourceID boundary matches for six new and four old interfaces",
+    "uv_1000_pregauge_does_not_change_10pct_or_3pct_research_gates": true,
+    "original_edge_3d_p95_max_fraction": 0.1,
+    "original_paired_2d_seam_abs_error_max_fraction": 0.03,
+    "flipped_or_collapsed_triangles_allowed": 0,
+    "positive_area_overlap_pairs_allowed": 0,
+    "source_four_real_disks": [
+      {
+        "id": "left_front",
+        "source_triangles": 34579,
+        "source_uv_vertices": 17917,
+        "edge_p95": 0.3249899484853083,
+        "edge_p50": 0.13287315005298583,
+        "native_uv_raw_uniform_gauge_factor": 272.70769152430023,
+        "flipped_or_collapsed_triangle_count": 0,
+        "positive_area_triangle_overlap_pairs": 0,
+        "source_seam_3d": [
+          {
+            "role": "high_protrusion_to_main_upper_boundary",
+            "length_mm": 23.40587790354915,
+            "original_source_path_vertex_count": 12,
+            "two_planar_2d_lengths_mm": [
+              27.065984110092227,
+              27.646374069981764
+            ],
+            "segmentwise_two_side_2d_abs_mismatch_fraction": 0.3170293043897774,
+            "max_one_side_2d_to_3d_length_difference_fraction": 0.18117227578076045
+          },
+          {
+            "role": "hoof_to_main_upper_boundary",
+            "length_mm": 40.89211016973698,
+            "original_source_path_vertex_count": 33,
+            "two_planar_2d_lengths_mm": [
+              33.91199408110986,
+              33.44487814356102
+            ],
+            "segmentwise_two_side_2d_abs_mismatch_fraction": 0.018660407910402695,
+            "max_one_side_2d_to_3d_length_difference_fraction": 0.18211904436488174
+          }
+        ]
+      },
+      {
+        "id": "left_rear",
+        "source_triangles": 21703,
+        "source_uv_vertices": 11327,
+        "edge_p95": 0.27612028145154194,
+        "edge_p50": 0.07522404849916042,
+        "native_uv_raw_uniform_gauge_factor": 170.57617844657537,
+        "flipped_or_collapsed_triangle_count": 0,
+        "positive_area_triangle_overlap_pairs": 0,
+        "source_seam_3d": [
+          {
+            "role": "hoof_to_main_upper_boundary",
+            "length_mm": 42.36743641896336,
+            "original_source_path_vertex_count": 40,
+            "two_planar_2d_lengths_mm": [
+              38.05717414250212,
+              39.441653093430354
+            ],
+            "segmentwise_two_side_2d_abs_mismatch_fraction": 0.03267790236910665,
+            "max_one_side_2d_to_3d_length_difference_fraction": 0.10173526275788533
+          }
+        ]
+      },
+      {
+        "id": "right_front",
+        "source_triangles": 34260,
+        "source_uv_vertices": 17767,
+        "edge_p95": 0.32570656204312587,
+        "edge_p50": 0.1258557368610892,
+        "native_uv_raw_uniform_gauge_factor": 272.65120297141306,
+        "flipped_or_collapsed_triangle_count": 3,
+        "positive_area_triangle_overlap_pairs": 21,
+        "source_seam_3d": [
+          {
+            "role": "high_protrusion_to_main_upper_boundary",
+            "length_mm": 25.475354480030237,
+            "original_source_path_vertex_count": 23,
+            "two_planar_2d_lengths_mm": [
+              31.746240874924084,
+              22.061102910220754
+            ],
+            "segmentwise_two_side_2d_abs_mismatch_fraction": 0.3842818295413974,
+            "max_one_side_2d_to_3d_length_difference_fraction": 0.24615502013169252
+          },
+          {
+            "role": "hoof_to_main_upper_boundary",
+            "length_mm": 42.42940488082745,
+            "original_source_path_vertex_count": 35,
+            "two_planar_2d_lengths_mm": [
+              35.7808876831449,
+              35.056196062048635
+            ],
+            "segmentwise_two_side_2d_abs_mismatch_fraction": 0.02168729855274647,
+            "max_one_side_2d_to_3d_length_difference_fraction": 0.17377591883478294
+          }
+        ]
+      },
+      {
+        "id": "right_rear",
+        "source_triangles": 21436,
+        "source_uv_vertices": 11188,
+        "edge_p95": 0.26135875718100204,
+        "edge_p50": 0.07991696733691056,
+        "native_uv_raw_uniform_gauge_factor": 173.1386254309685,
+        "flipped_or_collapsed_triangle_count": 0,
+        "positive_area_triangle_overlap_pairs": 0,
+        "source_seam_3d": [
+          {
+            "role": "hoof_to_main_upper_boundary",
+            "length_mm": 42.17367227672471,
+            "original_source_path_vertex_count": 37,
+            "two_planar_2d_lengths_mm": [
+              39.04757688115354,
+              36.15095604331624
+            ],
+            "segmentwise_two_side_2d_abs_mismatch_fraction": 0.06868315423971078,
+            "max_one_side_2d_to_3d_length_difference_fraction": 0.14280748884968106
+          }
+        ]
+      }
+    ],
+    "original_cross_zone_two_2d_segmentwise_length_comparisons": [
+      {
+        "region_pair": "0:1",
+        "real_source_edges": 126,
+        "original_3d_mm": 270.9312174173341,
+        "absolute_two_2d_segment_differences_mm": 36.24667393792275,
+        "relative_to_source_3d": 0.13378552048540604
+      },
+      {
+        "region_pair": "0:2",
+        "real_source_edges": 321,
+        "original_3d_mm": 642.5910428835232,
+        "absolute_two_2d_segment_differences_mm": 25.083579119585135,
+        "relative_to_source_3d": 0.03903505876307681
+      },
+      {
+        "region_pair": "1:3",
+        "real_source_edges": 233,
+        "original_3d_mm": 541.2636782503108,
+        "absolute_two_2d_segment_differences_mm": 11.99532539056202,
+        "relative_to_source_3d": 0.022161703939451678
+      },
+      {
+        "region_pair": "2:3",
+        "real_source_edges": 121,
+        "original_3d_mm": 279.5728131045939,
+        "absolute_two_2d_segment_differences_mm": 28.64217884210354,
+        "relative_to_source_3d": 0.10244980019351137
+      }
+    ],
+    "raw_independent_p95_and_interfaces_file_sha256": "0bd9dd9f73502a48e29d5a43fa604e4252f63b1ba18fad3002508ee554502189",
+    "raw_independent_flip_overlap_file_sha256": "907386450633be4c1053fd560c3c278a169c0e80e5b9f7cda75fcfb2044ab75f"
+  },
+  "decision": "Reject mathematically minimal six shortest real source-edge seams as a factory pattern. All four actual 3D source disks are topological disks but P95 edge errors 26.14%-32.57% exceed 10%; right front has three flipped/collapsed triangles and 21 positive-area overlap pairs; six new 2D paired edge chains and 801 original shared 2D seam edges fail in several places. No UV retuning, stretching, or threshold relaxation. Rework the whole-body anatomy/panel segmentation with material and design evidence.",
+  "old_3D_seam_id_and_head_cap_2D_netlines_not_factory_proven": true,
+  "real_laboratory_fabric_stretch_or_filled_plush_sample_available": false,
+  "industrial_cut_pattern_approved": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started"
+}
