@@ -330,7 +330,11 @@
         },
         {
           "path": "docs/STAGE6_EXTERNAL_S2S_ABF_EXPORT.md",
-          "kind": "pinned_third_party_GPL_source_locked_ABF_to_SVG_adapter_pending_trusted_main_real_run"
+          "kind": "trusted_main_real_stage6_original_N15_ABF_external_GPL_svg_230_original_source_edges_exact_independent_QA"
+        },
+        {
+          "path": "experiments/stage6_pinned_s2s_abf_export_20261113/summary.json",
+          "kind": "real_stage6_main_ABF_to_pinned_thirdparty_S2S_svg_source_boundary_verified_702_Python_CI_no_factory"
         }
       ],
       "blockers": [
@@ -1338,6 +1342,20 @@
       "permanent_evidence": "experiments/stage6_split_24piece_assembly_20261112/summary.json",
       "factory_patterns_approved": 0,
       "physical_sample_count": 0
+    },
+    "stage6_original_source_ABF_pinned_open_source_S2S_real_export": {
+      "source_code_commit": "1340157d3de5a6aef139fc68cdf4f30fd924affa",
+      "real_blender_run_id": 43358362870,
+      "independent_python_ci_commit": "40ed13885bd2a27f938b416330c69ad738e993c1",
+      "python_ci_run_id": 43359212091,
+      "python_tests_passed": 702,
+      "external_addon_git_commit": "919d031628264bb466840827a81f657133931de7",
+      "source_boundary_edges_verified": 230,
+      "svg_2d_netline_perimeter_mm": 113.92333422219431,
+      "experiment": "experiments/stage6_pinned_s2s_abf_export_20261113/summary.json",
+      "factory_cut_patterns_approved": 0,
+      "physical_plush_sample_exists": false,
+      "note": "research-only P3 3D cut disk SVG output, strain and real fabric not passed"
     }
   },
   "next_actions": [
@@ -1345,8 +1363,8 @@
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发",
-      "action": "在可信main的固定Stage6 Blender4.3.2原N15左lateral真实面片上，接入按Git SHA与blob固定的开源Seams to Sewing Pattern SVG导出器，仅做已有ABF解的净线输出（不运行会改源网格的一键缝合操作）；独立核对原source patch ID、2D边段、毫米、SVG及输入SHA。真实CI未成功前不得报告已验证。FreeCAD flatmesh因需FreeCAD/Nix/Blender4.5另行隔离试验，不进入生产依赖。",
-      "done_when": "受信main原Blender成功生成外部SVG、独立原源边毫米门禁和Python CI均通过；不自动制造批准或开P4。"
+      "action": "已由受信Stage6 #43358362870成功完成原N15左lateral源圆盘ABF→固定GPL Seams to Sewing Pattern SVG 导出→230条原Source边界逐段数值/毫米同源审查，二维净缝113.923334mm；Python #43359212091全702项和Ruff/复杂度/wheel通过。新增导出器不改原Stage6面片/源ID/缝线，不引入付费授权。该Source P95仍约16.4%而非<=10%研究阈值，故仅能作为SVG导出来源证明，不能作为实体纸样。下一步优先原头身与真实面料结构和独立FreeCAD flatmesh实验，而非重写UV或承诺工厂。",
+      "done_when": "本轮真实开源SVG导出与Python CI已通过；P3尚缺原角色完整分片/外观/材料实物试缝，P4继续未开始。"
     },
     {
       "priority": "P0",
@@ -1685,6 +1703,11 @@
       "date": "2026-11-13",
       "event": "基于现有真实12组Stage6 ABF源实验开始接入开源Seams to Sewing Pattern (artyredd固定Git SHA)，只调用独立GPL SVG导出器；保持原Source网格、原切缝、ABF真实UV，并新增逐Source边、毫米尺度、SHA和安全节点否决。FreeCAD flatmesh仍处独立环境兼容性研究，未实跑；本轮可信main/第三方SVG是否成功待验证，不修改P3/P4工业进度。",
       "evidence_path": "docs/STAGE6_EXTERNAL_S2S_ABF_EXPORT.md"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "在可信Stage6原4.3.2 Blender main #43358362870真实完成原耳根N15左外侧3D源圆盘→免费ABF→按SHA固定的GPL-3.0+第三方Seams to Sewing Pattern SVG→独立逐条Source边/毫米验证，230条源边全匹配、净缝周长113.923334mm；Python #43359212091 702项/Ruff/复杂度/wheel全过。旧ABF P95边误差16.4%仍制造不合格，工厂可裁0/实体样0，P3不晋升、P4未启动。",
+      "evidence_path": "experiments/stage6_pinned_s2s_abf_export_20261113/summary.json"
     }
   ]
 }
