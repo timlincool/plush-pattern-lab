@@ -59,9 +59,7 @@ def _require_safe_stage6_blender(filename, step):
 
 
 FREECAD_WORKFLOW = "stage6-freecad-flatmesh.yml"
-NIX_ACTION = (
-    "cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b"
-)
+NIX_ACTION = "cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b"
 
 
 def _check_isolated_freecad(content: str) -> None:
@@ -95,7 +93,9 @@ def _check_isolated_freecad(content: str) -> None:
     assert actions.count(NIX_ACTION) == 1
     assert len([a for a in actions if a.startswith("actions/checkout@")]) == 1
     assert all(PIN.fullmatch(a) or a == NIX_ACTION for a in actions)
-    checkout = next(x for x in steps if x.get("uses", "").startswith("actions/checkout@"))
+    checkout = next(
+        x for x in steps if x.get("uses", "").startswith("actions/checkout@")
+    )
     assert checkout.get("with", {}).get("persist-credentials") == "false"
     assert "repository" not in checkout.get("with", {})
     assert "ref" not in checkout.get("with", {})
