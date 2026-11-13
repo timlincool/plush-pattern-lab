@@ -49,6 +49,9 @@ on:
       - 'scripts/build_stage6_protrusion_bisect_ab.py'
       - 'scripts/unwrap_stage6_protrusion_bisect_blender.py'
       - 'scripts/audit_stage6_protrusion_bisect_abf.py'
+      - 'scripts/build_stage6_protrusion_short_dart.py'
+      - 'scripts/unwrap_stage6_protrusion_short_dart_blender.py'
+      - 'scripts/audit_stage6_protrusion_short_dart_abf.py'
       - 'scripts/audit_stage6_protrusion_route_visibility.py'
       - 'scripts/export_stage6_s2s_abf_svg.py'
       - 'scripts/audit_stage6_s2s_svg.py'
@@ -1516,6 +1519,46 @@ jobs:
           assert result["factory_cutting_patterns_approved"]==0
           assert result["P3_status"]=="in_progress" and result["P4_status"]=="not_started"
           print("STAGE6_TRUE_XY_41_PRODUCT_MESH_FIVE_VIEW_EVIDENCE_NO_MANUFACTURING_APPROVAL")
+          PY
+      - name: Actual 3D short rear inner open slits with native Blender ABF and two-sided source seam QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference/z230_three_real_caps_research"
+          python scripts/build_stage6_protrusion_short_dart.py \
+            --source-caps "$root/source_three_caps.json" \
+            --source-full-bisect "$root/side_original_3d_meridian_bisect_AB.json" \
+            --output "$root/short_rear_inner_source_slits.json"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python scripts/unwrap_stage6_protrusion_short_dart_blender.py -- \
+            --source "$root/short_rear_inner_source_slits.json" \
+            --caps "$root/source_three_caps.json" \
+            --output "$root/short_rear_inner_native_ABF.json"
+          python scripts/audit_stage6_protrusion_short_dart_abf.py \
+            --source "$root/short_rear_inner_source_slits.json" \
+            --caps "$root/source_three_caps.json" \
+            --native "$root/short_rear_inner_native_ABF.json" \
+            --output "$root/short_rear_inner_ABF_seam_QA.json"
+          python - <<'PY'
+          import hashlib, json, os, pathlib, math
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"stage6-reference/z230_three_real_caps_research"
+          study=json.loads((root/"short_rear_inner_source_slits.json").read_text())
+          data=json.loads((root/"short_rear_inner_ABF_seam_QA.json").read_text())
+          assert study["schema"]=="stage6-original-ear-high-protrusion-short-open-slit-v1"
+          assert study["same_run_caps_sha256"]==hashlib.sha256((root/"source_three_caps.json").read_bytes()).hexdigest()
+          assert study["routes"]==["Y_REAR_RIM_TO_TIP","X_INNER_RIM_TO_TIP"]
+          assert len(study["four_real_original_cap_short_slit_disks"])==4
+          assert [p["original_source_Z230_rim_edges"] for p in study["four_real_original_cap_short_slit_disks"]]==[113,112,113,112]
+          assert [p["source_original_face_count"] for p in study["four_real_original_cap_short_slit_disks"]]==[1849,1906,1849,1906]
+          assert all(p["source_tip_vertex_not_duplicated"] for p in study["four_real_original_cap_short_slit_disks"])
+          assert data["schema"]=="stage6-original-high-protrusion-short-slit-ABF-source-seam-QA-v1"
+          assert data["four_predeclared_short_slits_tested"]==4
+          assert all(math.isfinite(p["scaled_2d_source_edge_P95_relative_error"])
+                     and math.isfinite(p["scaled_2d_paired_segment_cumulative_abs_mismatch_fraction"])
+                     for p in data["quality_3d_source_face_and_2d_seam_checks"])
+          assert data["factory_cutting_patterns_approved"]==0
+          assert data["P3_status"]=="in_progress" and data["P4_status"]=="not_started"
+          print("STAGE6_REAL_SHORT_REAR_INNER_3D_SOURCE_AND_NATIVE_ABF_TWO_2D_SEAM_EVIDENCE_RESEARCH_ONLY")
           PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
