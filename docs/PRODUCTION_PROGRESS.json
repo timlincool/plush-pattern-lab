@@ -379,6 +379,10 @@
         {
           "path": "experiments/stage6_real_protrusion_41mesh_visibility_20261113/summary.json",
           "kind": "trusted_main_original_XY_41mesh_5view_80_actual_cap_local_vertex_samples_geometry_proximity_not_fabric"
+        },
+        {
+          "path": "docs/STAGE6_HIGH_PROTRUSION_SHORT_DART_ABF.md",
+          "kind": "real_3D_source_open_short_rear_inner_slit_trial_pending_native_ABF_3percent_10percent_qa"
         }
       ],
       "blockers": [
@@ -1560,6 +1564,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋工艺",
+      "action": "在已实跑真实X/Y长切缝数值/41Mesh外观否决基础上，不自研新的UV，改为复用原始X/Y源边路径的后侧/内侧半段各左右4个rim-to-apex短开缝：原Stage6三角面、Z230原113/112边、顶点共享与新双侧原SourceID逐一保护。本地原三维短切口22.8422/23.4448/25.3810/26.2836mm单连通Euler1预检成功。已接入原Blender4.3.2 ABF与独立全边P95≤10%、2D双侧逐段绝对缝差≤3%、每侧vs源3D≤3%、0翻转/重叠门禁；实际运行前不得宣称真实2D改善，也不得晋升工厂P4。",
+      "done_when": "可信main原Stage6上4个真源短缝源XYZ/FaceID/两侧原SourceID经过真实Blender ABF和独立QA，四项完整成功或失败保留；必须进一步确认耳云与正式外观/材料试布、下部七边界真实2D母版。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋设计",
       "action": "原Stage6可信Blender #43413685859 已实际对X/Y左右4条原Source cap-local路径，每条20个真实顶点，运行41个原产品Mesh的5视角首命中和独立耳/云近邻：X左原主体首面邻近正/左视10/20、10/20，X右正/右视4/20、7/20；Y左正/左12/20、0/20，Y右正/右1/20、3/20。X虽然原ABF变形小，但X外侧视角并非自然隐藏。近耳/云几何不等于布料缝线遮挡。之前X双侧ABF净缝差13.01%/6.90%，Y24.36%/18.75%，无一路线能工厂裁布。来源SHA及完整五视角报表已核验并归档。",
       "done_when": "本轮真实41Mesh五视角原源切缝预审已完成；下一步与正式设计正侧背顶对齐，试侧/背局部插片/省道并做真实X/Y来源全缝ABF配边、实际废布翻面试样；保留P3进行中/P4未启动、正式工厂纸样0。"
@@ -1991,6 +2002,11 @@
       "date": "2026-11-13",
       "event": "可信原Blender4.3.2 Stage6 #43413685859 真正完成X/Y左右4条原源切缝共80个源顶点×5方向、41产品Mesh BVH与3mm耳云实际三角面近邻。X左侧视10/20、X右外侧视7/20源点仍在原主壳首表面附近，比Y相应0/20、3/20更显露，不能把X ABF数值较好误称隐藏或可缝；原X双侧缝长差13.01/6.90%仍超3%预筛，下部7开口仍无双侧二维工艺，源哈希/原Artifact及PDF无关，P3不晋升/P4不开始。",
       "evidence_path": "experiments/stage6_real_protrusion_41mesh_visibility_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "继续P3：从原Stage6真实高位突出左右两条旧X/Y原源边路径提取后侧/内侧短半切口，保存原三维真实面、顶点与面索引，仅在开缝路径复制除共用顶点外的拓扑Source身份。四个本地真网格预检均成单边界Euler1、原Z230源边/全部原Face保留，短缝22.84~26.28mm；原可信Blender native ABF与严格P95/逐段双侧/翻转重叠审计等待main Runner，任何数值与实际绒布工艺尚未证明，P3维持进行中、P4未开始。",
+      "evidence_path": "docs/STAGE6_HIGH_PROTRUSION_SHORT_DART_ABF.md"
     }
   ]
 }
