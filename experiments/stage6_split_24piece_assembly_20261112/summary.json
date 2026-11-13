@@ -1,0 +1,92 @@
+{
+  "schema": "stage6_split_24piece_panel_interface_real_main_verified_v1",
+  "local_research_date": "2026-11-12",
+  "verified_at_utc": "2026-11-13",
+  "repository": "timlincool/plush-pattern-lab",
+  "revision": "f3c54fd65412194d78a2ef29b2f609a50e383d64",
+  "source_original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_proxy_25pct_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "trusted_stage6_runs": [
+    {
+      "run_id": 43349657766,
+      "commit": "93f0853d112138aa6576c88b22c29a79455bd7ed",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43349657766"
+    },
+    {
+      "run_id": 43350338730,
+      "commit": "f3c54fd65412194d78a2ef29b2f609a50e383d64",
+      "conclusion": "success",
+      "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43350338730",
+      "artifact_id": 14003781967,
+      "artifact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+      "artifact_retention_days": 7
+    }
+  ],
+  "trusted_python_ci": {
+    "run_id": 43350338822,
+    "commit": "f3c54fd65412194d78a2ef29b2f609a50e383d64",
+    "conclusion": "success",
+    "tests_passed": 682,
+    "ruff_and_complexity": "passed",
+    "wheel_build": "passed",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43350338822"
+  },
+  "variant_count": 2,
+  "variants": [
+    {
+      "name": "A_separate_stuffed_head",
+      "lower_source_anchored_pieces": 13,
+      "new_research_head_torso_pieces": 11,
+      "complete_research_pieces": 24,
+      "total_A4_pages_with_old_lower": 15,
+      "numeric_indexed_2d_interface_pairs": 44,
+      "unverified_manual_surface_joins": 1,
+      "components_without_manual_join": 2,
+      "physical_sample_tested": false
+    },
+    {
+      "name": "B_integrated_neck_port",
+      "lower_source_anchored_pieces": 13,
+      "new_research_head_torso_pieces": 11,
+      "complete_research_pieces": 24,
+      "total_A4_pages_with_old_lower": 15,
+      "numeric_indexed_2d_interface_pairs": 46,
+      "unverified_manual_surface_joins": 0,
+      "components_without_manual_join": 1,
+      "physical_sample_tested": false
+    }
+  ],
+  "common_trusted_checks": [
+    "Original 4 x 512 source hoof-ring edge identities retained by same-run lower-toile checks",
+    "All 24 panel identifiers and indexed seam endpoints are unique",
+    "A manual surface attachment is explicitly not claimed to be a numerically paired cut-edge seam",
+    "B has one real research shoulder port and four indexed collar-top quarter interfaces",
+    "Both generated graph JSONs and new SVG assets included in the artifact manifest SHA256 checks",
+    "No source 3D mesh has been flattened into an accepted industrial cut pattern"
+  ],
+  "original_sculpt_geometry_risks": {
+    "observed_original_shoulder_to_neck_center_shift_xy_mm": 35.462478486593355,
+    "option_A_source_root_max_2d_port_shift_mm": 25.5544505099073,
+    "option_B_source_root_max_2d_port_shift_mm": 29.136222384402018,
+    "option_B_research_shoulder_port_clearance_mm": 13.410220786763853,
+    "previous_study_original_upper_surrogate_meridian_mismatch_mm_approx": 89.121
+  },
+  "factory_claims": {
+    "P3": "in_progress",
+    "P4": "not_started",
+    "approved_cut_patterns": 0,
+    "physical_toile_samples": 0,
+    "material_stretch_measured": false,
+    "real_rounded_hooves_and_ears_clouds_tail_drops_completed": false
+  },
+  "limitations": [
+    "Digital 2D seam pairing only; neither variant establishes fabric strain, sewing tolerance, ease, seam allowance feasibility, turning gap, stuffing or sewn silhouette.",
+    "A external hand attachment joins independently stuffed volumes; no strength or visual seam concealment data.",
+    "B narrow neck-hole allowance and 42.49 mm proposed turning gap need real cloth trials.",
+    "Actual 3D anatomy and reference four views remain mismatched; seven cloud overlays, inside/outside ears, tail, facial details and ten raindrop straps remain unfinished.",
+    "No new licensed commercial flattening dependency or paid Plushify service was used.",
+    "Source geometry and raw paper-specific SHA values belong to the generated signed manifests, not reproduced or invented in this summary."
+  ],
+  "next_gate": "Use the existing 15-page A research toile on cheap cloth with 100% print ruler verification, record head/body front-side-back-top views and manual head stitch; only after real-sample/design checks consider an A/B geometry redesign or manufacturer package."
+}
