@@ -52,10 +52,7 @@ def _source(cap, name, expected_faces, expected_rim):
         raise ValueError("original source cap faces or 230mm rim changed")
     owners = _edges_by_faces(faces)
     boundary = {edge for edge, fs in owners.items() if len(fs) == 1}
-    expected = {
-        tuple(sorted((int(a), int(b))))
-        for a, b in zip(rim, np.roll(rim, -1))
-    }
+    expected = {tuple(sorted((int(a), int(b)))) for a, b in zip(rim, np.roll(rim, -1))}
     if boundary != expected:
         raise ValueError("source Z230 3D rim cannot be changed")
     return points, faces, rim, owners, expected

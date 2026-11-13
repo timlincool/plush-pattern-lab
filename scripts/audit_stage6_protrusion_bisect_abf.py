@@ -91,11 +91,11 @@ def _one_pair(part, native):
     first, second = pieces
     lengths = np.asarray([p["ABF_2d_cut_path_segment_mm"] for p in pieces])
     actual_3d = np.asarray(first["original_3d_cut_path_segment_mm"])
-    if (
-        lengths.shape != (2, len(part["original_cap_meridian_vertex_ids"]) - 1)
-        or not np.allclose(
-            actual_3d, second["original_3d_cut_path_segment_mm"], atol=1e-8
-        )
+    if lengths.shape != (
+        2,
+        len(part["original_cap_meridian_vertex_ids"]) - 1,
+    ) or not np.allclose(
+        actual_3d, second["original_3d_cut_path_segment_mm"], atol=1e-8
     ):
         raise ValueError("source path segment and seam direction not paired")
     original_len = float(actual_3d.sum())

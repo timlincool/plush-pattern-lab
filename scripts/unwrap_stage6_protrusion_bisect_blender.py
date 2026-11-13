@@ -7,10 +7,15 @@ import argparse
 import hashlib
 import json
 import sys
+from importlib import import_module
 from pathlib import Path
 
 import bpy
-from unwrap_stage6_true_crown_caps_blender import _unwrap
+
+_SCRIPTS = str(Path(__file__).resolve().parent)
+if _SCRIPTS not in sys.path:
+    sys.path.insert(0, _SCRIPTS)
+_unwrap = import_module("unwrap_stage6_true_crown_caps_blender")._unwrap
 
 INPUT_SCHEMA = "stage6-genuine-high-protrusion-source-edge-bisect-AB-v1"
 OUTPUT_SCHEMA = "stage6-real-high-protrusion-source-meridian-native-ABF-v1"
@@ -25,9 +30,13 @@ def main():
     args = parser.parse_args(argv)
     if bpy.app.version[:3] != (4, 3, 2):
         raise ValueError("only trusted Blender 4.3.2 ANGLE_BASED UV")
-    if args.output.exists() or args.output.is_symlink() or any(
-        not p.is_file() or p.is_symlink()
-        for p in (args.source_bisect, args.source_caps)
+    if (
+        args.output.exists()
+        or args.output.is_symlink()
+        or any(
+            not p.is_file() or p.is_symlink()
+            for p in (args.source_bisect, args.source_caps)
+        )
     ):
         raise ValueError("original source missing or would overwrite previous output")
     raw = args.source_bisect.read_bytes()
