@@ -6,7 +6,6 @@ from copy import deepcopy
 
 import numpy as np
 import pytest
-
 from audit_stage6_lower_six_cut_disks_abf import PAIRS, _crosszone_sources
 
 from plush_pattern_lab.validation.stage6_lower_six_cut_disks import (
