@@ -23,15 +23,11 @@ def _source_cone(count=80):
     theta = 2 * np.pi * np.arange(count) / count
     xyz = np.vstack(
         (
-            np.column_stack(
-                (np.cos(theta), np.sin(theta), np.zeros(count))
-            ),
+            np.column_stack((np.cos(theta), np.sin(theta), np.zeros(count))),
             [[0, 0, 2]],
         )
     )
-    face = np.asarray(
-        [[i, (i + 1) % count, count] for i in range(count)], dtype=int
-    )
+    face = np.asarray([[i, (i + 1) % count, count] for i in range(count)], dtype=int)
     return xyz, face
 
 
@@ -114,9 +110,7 @@ def test_rear_and_inner_half_routes_are_deterministic_not_search_after_ABF():
 )
 def test_refuse_false_source_seam_path(path, tip, rim):
     with pytest.raises(ValueError):
-        _short_original_path(
-            path, tip, ROUTES[0], CAPS[0], np.asarray(rim)
-        )
+        _short_original_path(path, tip, ROUTES[0], CAPS[0], np.asarray(rim))
 
 
 @pytest.mark.parametrize(
