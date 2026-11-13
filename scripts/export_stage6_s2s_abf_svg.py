@@ -38,17 +38,20 @@ def _pick(source, native, scored, source_sha, native_sha):
     ):
         raise ValueError("external exporter requires one original locked Stage6 run")
     originals = [
-        x for x in source["candidate_2d_research_disks"]
+        x
+        for x in source["candidate_2d_research_disks"]
         if (x["source_variant"], x["original_source_side"], x["source_slit_direction"])
         == IDENTITY
     ]
     uv_rows = [
-        x for x in native["entries"]
-        if (x["source_variant"], x["source_side"], x["slit_direction"])
-        == IDENTITY and x["method"] == "ANGLE_BASED"
+        x
+        for x in native["entries"]
+        if (x["source_variant"], x["source_side"], x["slit_direction"]) == IDENTITY
+        and x["method"] == "ANGLE_BASED"
     ]
     rows = [
-        x for x in scored["full_same_metric_comparisons"]
+        x
+        for x in scored["full_same_metric_comparisons"]
         if (x["source_variant"], x["source_side"], x["original_source_slit"])
         == IDENTITY
     ]
@@ -56,8 +59,7 @@ def _pick(source, native, scored, source_sha, native_sha):
         raise ValueError("pinned original 3D disk and matching Blender ABF missing")
     src, row = originals[0], uv_rows[0]
     abf = [
-        x for x in rows[0]["external_blender_solvers"]
-        if x["method"] == "ANGLE_BASED"
+        x for x in rows[0]["external_blender_solvers"] if x["method"] == "ANGLE_BASED"
     ]
     if (
         len(abf) != 1
@@ -166,7 +168,9 @@ def main():
     native = json.loads(native_data)
     scored = json.loads(args.audit.read_bytes())
     original, uv, factor = _pick(
-        source, native, scored,
+        source,
+        native,
+        scored,
         hashlib.sha256(source_data).hexdigest(),
         hashlib.sha256(native_data).hexdigest(),
     )

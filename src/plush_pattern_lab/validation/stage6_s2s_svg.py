@@ -73,7 +73,8 @@ def select_source_abf(source, native, audit, source_sha, native_sha):
         raise ValueError("predeclared N15 left lateral source/ABF identity missing")
     src, uv, scored = source_rows[0], native_rows[0], audit_rows[0]
     choices = [
-        row for row in scored["external_blender_solvers"]
+        row
+        for row in scored["external_blender_solvers"]
         if row["method"] == "ANGLE_BASED"
     ]
     if (
@@ -88,16 +89,22 @@ def select_source_abf(source, native, audit, source_sha, native_sha):
     xy = np.asarray(uv["uv_per_original_source_disk_vertex"], dtype=float)
     scale = float(choices[0]["uniform_scale_from_native_uv_to_research_mm"])
     if (
-        xyz.ndim != 2 or xyz.shape[1] != 3
-        or tri.ndim != 2 or tri.shape[1] != 3
+        xyz.ndim != 2
+        or xyz.shape[1] != 3
+        or tri.ndim != 2
+        or tri.shape[1] != 3
         or xy.shape != (len(xyz), 2)
         or uv["vertex_count"] != len(xyz)
         or uv["triangle_count"] != len(tri)
         or not np.isfinite(xyz).all()
         or not np.isfinite(xy).all()
-        or not math.isfinite(scale) or scale <= 0 or scale > 10000
-        or np.any(tri < 0) or np.any(tri >= len(xyz))
-        or np.any(xy < -1e-6) or np.any(xy > 1 + 1e-6)
+        or not math.isfinite(scale)
+        or scale <= 0
+        or scale > 10000
+        or np.any(tri < 0)
+        or np.any(tri >= len(xyz))
+        or np.any(xy < -1e-6)
+        or np.any(xy > 1 + 1e-6)
     ):
         raise ValueError("invalid or clipped Blender UV / geometry / millimetre scale")
     return src, uv, choices[0]
@@ -120,7 +127,8 @@ def _boundary_edges(faces):
 
 def _netline_path(svg_bytes, scale):
     if (
-        not svg_bytes or len(svg_bytes) > 2_000_000
+        not svg_bytes
+        or len(svg_bytes) > 2_000_000
         or b"<!DOCTYPE" in svg_bytes.upper()
         or b"<!ENTITY" in svg_bytes.upper()
     ):
@@ -172,19 +180,15 @@ def audit_stage6_external_svg(source, native, audit, svg_bytes, source_sha, nati
     coords = _netline_path(svg_bytes, scale)
     if len(coords) != len(boundary) + 1:
         raise ValueError("addon SVG omitted or duplicated source boundary edges")
-    distances = np.linalg.norm(
-        coords[:-1, None, :] - expected[None, :, :], axis=2
-    )
+    distances = np.linalg.norm(coords[:-1, None, :] - expected[None, :, :], axis=2)
     nearest = np.argmin(distances, axis=1)
-    if (
-        np.max(distances[np.arange(len(nearest)), nearest]) > 1e-3
-        or len(set(nearest.tolist())) != len(vertex_ids)
-    ):
+    if np.max(distances[np.arange(len(nearest)), nearest]) > 1e-3 or len(
+        set(nearest.tolist())
+    ) != len(vertex_ids):
         raise ValueError("S2S outline is not source vertex-aligned at real millimetres")
     ids = [vertex_ids[int(i)] for i in nearest]
     actual_edges = {
-        tuple(sorted((ids[i], ids[(i + 1) % len(ids)])))
-        for i in range(len(ids))
+        tuple(sorted((ids[i], ids[(i + 1) % len(ids)]))) for i in range(len(ids))
     }
     if actual_edges != boundary:
         raise ValueError("external SVG changed source seam topology or length")

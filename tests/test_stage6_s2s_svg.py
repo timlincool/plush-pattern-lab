@@ -14,9 +14,9 @@ NATIVE_HASH = "b" * 64
 SVG = (
     b'<svg xmlns="http://www.w3.org/2000/svg" width="20.0mm" '
     b'height="20.0mm" viewBox="0 0 20.0 20.0">'
-    b'<defs><style>.seam{fill:none}</style></defs><g>'
+    b"<defs><style>.seam{fill:none}</style></defs><g>"
     b'<path class="seam" d="M 2,18 12,18 12,8 2,8 2,18 "/>'
-    b'</g></svg>'
+    b"</g></svg>"
 )
 
 
@@ -26,9 +26,7 @@ def _fixture():
         "original_source_side": s2s.IDENTITY[1],
         "source_slit_direction": s2s.IDENTITY[2],
         "original_source_patch_sha256": "source-patch-locked",
-        "cut_disk_source_xyz_mm": [
-            [0, 0, 0], [10, 0, 0], [10, 10, 0], [0, 10, 0]
-        ],
+        "cut_disk_source_xyz_mm": [[0, 0, 0], [10, 0, 0], [10, 10, 0], [0, 10, 0]],
         "cut_disk_original_source_triangle_indices": [[0, 1, 2], [0, 2, 3]],
     }
     source = {
@@ -47,20 +45,25 @@ def _fixture():
         "methods": ["ANGLE_BASED", "CONFORMAL"],
         "cutting_patterns_approved": 0,
         "third_party_commercial_service_used": False,
-        "entries": [{
-            "source_variant": s2s.IDENTITY[0],
-            "source_side": s2s.IDENTITY[1],
-            "slit_direction": s2s.IDENTITY[2],
-            "source_patch_sha256": "source-patch-locked",
-            "method": "ANGLE_BASED",
-            "status": "completed",
-            "max_same_topological_vertex_uv_loop_disagreement": 0,
-            "vertex_count": 4,
-            "triangle_count": 2,
-            "uv_per_original_source_disk_vertex": [
-                [.1, .1], [.6, .1], [.6, .6], [.1, .6]
-            ],
-        }],
+        "entries": [
+            {
+                "source_variant": s2s.IDENTITY[0],
+                "source_side": s2s.IDENTITY[1],
+                "slit_direction": s2s.IDENTITY[2],
+                "source_patch_sha256": "source-patch-locked",
+                "method": "ANGLE_BASED",
+                "status": "completed",
+                "max_same_topological_vertex_uv_loop_disagreement": 0,
+                "vertex_count": 4,
+                "triangle_count": 2,
+                "uv_per_original_source_disk_vertex": [
+                    [0.1, 0.1],
+                    [0.6, 0.1],
+                    [0.6, 0.6],
+                    [0.1, 0.6],
+                ],
+            }
+        ],
     }
     audit = {
         "schema": s2s.AUDIT_SCHEMA,
@@ -69,17 +72,21 @@ def _fixture():
         "factory_cutting_patterns_approved": 0,
         "P3_status": "in_progress",
         "P4_status": "not_started",
-        "full_same_metric_comparisons": [{
-            "source_variant": s2s.IDENTITY[0],
-            "source_side": s2s.IDENTITY[1],
-            "original_source_slit": s2s.IDENTITY[2],
-            "external_blender_solvers": [{
-                "method": "ANGLE_BASED",
-                "uniform_scale_from_native_uv_to_research_mm": 20.,
-                "scaled_2d_p95_abs_edge_relative_error": 0.16,
-                "2d_two_sides_length_mismatch_fraction_of_source_3d": 0.02,
-            }],
-        }],
+        "full_same_metric_comparisons": [
+            {
+                "source_variant": s2s.IDENTITY[0],
+                "source_side": s2s.IDENTITY[1],
+                "original_source_slit": s2s.IDENTITY[2],
+                "external_blender_solvers": [
+                    {
+                        "method": "ANGLE_BASED",
+                        "uniform_scale_from_native_uv_to_research_mm": 20.0,
+                        "scaled_2d_p95_abs_edge_relative_error": 0.16,
+                        "2d_two_sides_length_mismatch_fraction_of_source_3d": 0.02,
+                    }
+                ],
+            }
+        ],
     }
     return source, native, audit
 
@@ -93,7 +100,7 @@ def test_external_s2s_proves_every_original_source_boundary_edge_in_mm():
     assert report["method"] == "ANGLE_BASED"
     assert report["source_boundary_edge_count"] == 4
     assert report["all_svg_edges_match_original_ABF_source_cut"]
-    assert report["svg_netline_perimeter_mm"] == pytest.approx(40.)
+    assert report["svg_netline_perimeter_mm"] == pytest.approx(40.0)
     assert report["external_svg_sha256"] == hashlib.sha256(SVG).hexdigest()
     assert not report["svg_contains_seam_allowance"]
     assert report["factory_cutting_patterns_approved"] == 0
@@ -103,8 +110,12 @@ def test_external_s2s_proves_every_original_source_boundary_edge_in_mm():
 @pytest.mark.parametrize(
     "fault",
     (
-        "bad_source_sha", "bad_raw_sha", "changed_original_source",
-        "fake_factory", "changed_cut_triangle", "wrong_source_patch",
+        "bad_source_sha",
+        "bad_raw_sha",
+        "changed_original_source",
+        "fake_factory",
+        "changed_cut_triangle",
+        "wrong_source_patch",
     ),
 )
 def test_external_s2s_rejects_source_signature_forgery(fault):
@@ -130,16 +141,18 @@ def test_external_s2s_rejects_source_signature_forgery(fault):
 @pytest.mark.parametrize(
     "fault",
     (
-        "uv_seam_split", "conformal_only", "wrong_method_identity",
-        "clipped_uv", "bad_scale", "duplicated_source_entry",
+        "uv_seam_split",
+        "conformal_only",
+        "wrong_method_identity",
+        "clipped_uv",
+        "bad_scale",
+        "duplicated_source_entry",
     ),
 )
 def test_external_s2s_rejects_unreviewed_solver_or_uv_geometry(fault):
     source, native, audit = _fixture()
     if fault == "uv_seam_split":
-        native["entries"][0][
-            "max_same_topological_vertex_uv_loop_disagreement"
-        ] = 0.2
+        native["entries"][0]["max_same_topological_vertex_uv_loop_disagreement"] = 0.2
     elif fault == "conformal_only":
         native["entries"][0]["method"] = "CONFORMAL"
     elif fault == "wrong_method_identity":
@@ -147,9 +160,9 @@ def test_external_s2s_rejects_unreviewed_solver_or_uv_geometry(fault):
     elif fault == "clipped_uv":
         native["entries"][0]["uv_per_original_source_disk_vertex"][1][0] = 1.3
     elif fault == "bad_scale":
-        audit["full_same_metric_comparisons"][0][
-            "external_blender_solvers"
-        ][0]["uniform_scale_from_native_uv_to_research_mm"] = float("nan")
+        audit["full_same_metric_comparisons"][0]["external_blender_solvers"][0][
+            "uniform_scale_from_native_uv_to_research_mm"
+        ] = float("nan")
     else:
         source["candidate_2d_research_disks"].append(
             deepcopy(source["candidate_2d_research_disks"][0])
@@ -163,9 +176,11 @@ def test_external_s2s_rejects_unreviewed_solver_or_uv_geometry(fault):
 @pytest.mark.parametrize(
     "replacement",
     (
-        b'width="20.0mm"', b'viewBox="0 0 20.0 20.0"',
-        b'2,18 12,18 12,8 2,8 2,18',
-        b'<path class="seam"', b'<g>',
+        b'width="20.0mm"',
+        b'viewBox="0 0 20.0 20.0"',
+        b"2,18 12,18 12,8 2,8 2,18",
+        b'<path class="seam"',
+        b"<g>",
     ),
 )
 def test_external_svg_negative_mutations_are_rejected(replacement):
@@ -173,14 +188,18 @@ def test_external_svg_negative_mutations_are_rejected(replacement):
     replacement_text = {
         b'width="20.0mm"': b'width="21.0mm"',
         b'viewBox="0 0 20.0 20.0"': b'viewBox="0 0 19.0 20.0"',
-        b'2,18 12,18 12,8 2,8 2,18': b'2,18 12,18 12,8 2,8 4,18',
+        b"2,18 12,18 12,8 2,8 2,18": b"2,18 12,18 12,8 2,8 4,18",
         b'<path class="seam"': b'<path class="danger"',
-        b'<g>': b'<g><script>alert(1)</script>',
+        b"<g>": b"<g><script>alert(1)</script>",
     }[replacement]
     with pytest.raises(ValueError):
         s2s.audit_stage6_external_svg(
-            source, native, audit, SVG.replace(replacement, replacement_text),
-            SOURCE_HASH, NATIVE_HASH,
+            source,
+            native,
+            audit,
+            SVG.replace(replacement, replacement_text),
+            SOURCE_HASH,
+            NATIVE_HASH,
         )
 
 
