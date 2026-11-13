@@ -63,21 +63,13 @@ def main():
     source, triangles = load_pinned_proxy(args.proxy)
     import trimesh  # noqa: PLC0415 - pinned optional MIT research dependency
 
-    report = audit_original_seven_port_shell(
-        source, triangles, caps, four, trimesh
-    )
+    report = audit_original_seven_port_shell(source, triangles, caps, four, trimesh)
     images = [
-        render_seven_real_rims_a4(
-            source, triangles, caps, report, split, trimesh
-        )
+        render_seven_real_rims_a4(source, triangles, caps, report, split, trimesh)
         for split in (20.0, 25.0)
     ]
-    report["same_run_original_three_caps_sha256"] = hashlib.sha256(
-        caps_raw
-    ).hexdigest()
-    report["same_run_original_four_zone_sha256"] = hashlib.sha256(
-        four_raw
-    ).hexdigest()
+    report["same_run_original_three_caps_sha256"] = hashlib.sha256(caps_raw).hexdigest()
+    report["same_run_original_four_zone_sha256"] = hashlib.sha256(four_raw).hexdigest()
     report["true_3D_XY_top_view_svg_sha256"] = [
         hashlib.sha256(svg.encode("utf8")).hexdigest() for svg in images
     ]

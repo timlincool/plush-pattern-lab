@@ -49,6 +49,6 @@
 
 新增 `patterns/stage6_lower_seven_port_svg.py`：两张A4固定210×297mm、真实XY毫米1:1顶视投影。黑线四蹄口、红/黄源头冠、蓝色源四区拼缝，附10×10mm校对尺；**禁止当织物裁切线**。脚本 `scripts/audit_stage6_lower_seven_port_graph.py` 从同轮原Artifact读取源PLY/三头冠/四区证据，输出 JSON+两张带证据哈希SVG，拒绝覆盖历史结果。
 
-受信main CI在原3D三帽验证后运行，并要求七开口、全部Zone面与95/94中央分段、6条最少开口切缝均成立；真实 CI 未完成前，上述数值仅为同SHA原PLY的**本地独立复算**，不等同于已经过主分支审核。
+**受信main [Stage6 #43424704397](https://github.com/timlincool/plush-pattern-lab/actions/runs/43424704397) 已成功**，固定原Blend/PLY/同轮三帽与四区输入，真实重切下壳并独立复验七开口、4×512原蹄口、全部111978个原下壳三角面、中央95/94+左右113/112条源3D边、两组Y及6条最少拓扑开缝。Artifact #14035548000保留7天。原生三个产物SHA256：原结果JSON `95e9112e7f2c9e1654fd1ee55779e837f36b0f2012b9c099f229b8e5dd82eb9e`，Y20 SVG `ddb4cfbd8c73e94e1d9ae91fc8709a79c1d584ee05c9c8fbc2c0ba856aff1252`，Y25 SVG `a8a7d55ce4ef5d39fad9f4f88c48782b80b178ad498ed9c77ed7f5911611e84e`；精确来源输入SHA、接口计数与否决门禁固定在[永久实验摘要](../experiments/stage6_lower_7port_fourzone_20261113/summary.json)。工作流成功只证明真实3D来源拓扑，没有任何可裁布2D纸样。
 
 **下一项实际工程**：以这张真实完整3D对接图决定连接/缝制顺序：每个前区必须连接一个蹄口、一个高位突出、半个中央头顶；后区各连一个蹄口。为四区设计6条不穿脸/云绣花的源边跨环连接，并逐片用原生Blender ABF查2D形变/成对净缝。特别先消除原两处四线交汇和确立下壳的返口；然后实际废布翻面试样。所有步骤在实体样/材料/工厂签核前，**P3不放行、P4不开始**。

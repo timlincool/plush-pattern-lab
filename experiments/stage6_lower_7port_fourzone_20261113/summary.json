@@ -1,0 +1,179 @@
+{
+  "schema": "stage6-original-lower-seven-rim-head-hoof-four-zone-trusted-main-evidence-v1",
+  "date_utc": "2026-11-13",
+  "repo": "timlincool/plush-pattern-lab",
+  "source_public_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_original_25pct_proxy_SHA256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "source_model_real_proxy_triangles_before_cut": 116568,
+  "original_lower_source_faces_after_z230": 111978,
+  "original_lower_source_vertices_after_z230": 57215,
+  "method": "Open-source MIT trimesh 4.11.1 original 3D z230 slice with no caps, merge repeated exact intersection corners only; reuse whole_shell_partition original source edge owners, face graph, Euler and exact shared seam checks; original Y=20/25 source four-zone classification",
+  "actual_trusted_stage6_main_run": {
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43424704397",
+    "id": 43424704397,
+    "main_commit_sha": "8d0349cb02775d538a0663bd27e955a35e7a36e3",
+    "result": "success",
+    "source_output_artifact_id": 14035548000,
+    "artifact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "expires_utc": "2026-11-20T12:27:12Z"
+  },
+  "original_stage6_source_inputs_sha256": {
+    "source_three_caps_json": "9ba8fba80ef02d62b4ab40c9e6370df62e58cd5efb59533f01c8b9caaa3fa8e8",
+    "four_region_seam_graph_json": "d83d12dcb5622c75a1252e8124aec78e45cdbf8f2acb87fbba1fcbaf73747eb1"
+  },
+  "raw_real_runner_reproducible_outputs_sha256": {
+    "lower_7port_4zone_source_QA_json": "95e9112e7f2c9e1654fd1ee55779e837f36b0f2012b9c099f229b8e5dd82eb9e",
+    "lower_7port_4zone_Y20_SOURCE_NOT_CLOTH_svg": "ddb4cfbd8c73e94e1d9ae91fc8709a79c1d584ee05c9c8fbc2c0ba856aff1252",
+    "lower_7port_4zone_Y25_SOURCE_NOT_CLOTH_svg": "a8a7d55ce4ef5d39fad9f4f88c48782b80b178ad498ed9c77ed7f5911611e84e"
+  },
+  "source_three_real_head_openings_z230_edges": [
+    189,
+    113,
+    112
+  ],
+  "source_four_original_hoof_openings_edges": [
+    512,
+    512,
+    512,
+    512
+  ],
+  "source_original_lower_boundary_edges_total": 2462,
+  "same_original_source_head_cap_interfaces": [
+    {
+      "id": "central_crown",
+      "real_3D_mm": 153.0939971276184,
+      "lower_left_front": {
+        "source_original_3D_edges": 95,
+        "mm": 76.57078480042392
+      },
+      "lower_right_front": {
+        "source_original_3D_edges": 94,
+        "mm": 76.52321232719447
+      },
+      "original_lower_zone_transitions_on_seam": 2
+    },
+    {
+      "id": "left_high_protrusion",
+      "real_3D_mm": 45.516755457301926,
+      "lower_left_front_edges": 113,
+      "zone_transitions": 0
+    },
+    {
+      "id": "right_high_protrusion",
+      "real_3D_mm": 45.51098616780679,
+      "lower_right_front_edges": 112,
+      "zone_transitions": 0
+    }
+  ],
+  "source_four_zone_alternatives": [
+    {
+      "split_y_mm": 20,
+      "zone_names": [
+        "left_front",
+        "left_rear",
+        "right_front",
+        "right_rear"
+      ],
+      "zone_source_triangle_count": [
+        34579,
+        21703,
+        34260,
+        21436
+      ],
+      "zone_source_boundary_rim_count": [
+        3,
+        2,
+        3,
+        2
+      ],
+      "zone_source_euler": [
+        -1,
+        0,
+        -1,
+        0
+      ],
+      "source_real_3D_interzone_pairs": [
+        {
+          "region_pair": "0:1",
+          "edges": 126,
+          "mm": 270.9312174173342
+        },
+        {
+          "region_pair": "0:2",
+          "edges": 321,
+          "mm": 642.5910428835232
+        },
+        {
+          "region_pair": "1:3",
+          "edges": 233,
+          "mm": 541.2636782503108
+        },
+        {
+          "region_pair": "2:3",
+          "edges": 121,
+          "mm": 279.5728131045939
+        }
+      ],
+      "minimum_additional_topological_interrim_cuts_to_four_disks": 6
+    },
+    {
+      "split_y_mm": 25,
+      "zone_names": [
+        "left_front",
+        "left_rear",
+        "right_front",
+        "right_rear"
+      ],
+      "zone_source_triangle_count": [
+        35001,
+        21281,
+        34592,
+        21104
+      ],
+      "zone_source_boundary_rim_count": [
+        3,
+        2,
+        3,
+        2
+      ],
+      "zone_source_euler": [
+        -1,
+        0,
+        -1,
+        0
+      ],
+      "source_real_3D_interzone_pairs": [
+        {
+          "region_pair": "0:1",
+          "edges": 135,
+          "mm": 356.20713998649444
+        },
+        {
+          "region_pair": "0:2",
+          "edges": 324,
+          "mm": 656.486772776145
+        },
+        {
+          "region_pair": "1:3",
+          "edges": 230,
+          "mm": 527.3679483576892
+        },
+        {
+          "region_pair": "2:3",
+          "edges": 116,
+          "mm": 263.04906752292527
+        }
+      ],
+      "minimum_additional_topological_interrim_cuts_to_four_disks": 6
+    }
+  ],
+  "decision": "Correct older four zones each assumed to be annulus after real top-crown source cut. Two front regions actually have 3 holes each, rear regions 2. At least two additional inter-rim paths per front region and one per rear needed to turn the current four connected genus-zero patches into topological disks. Also central crown requires joining two distinct 3D front-region arcs of 95 and 94 source edges. This is a topological lower bound, not six planned or manufacturable stitch lines.",
+  "physical_fabric_cuts_created": 0,
+  "actual_2d_fabric_rest_shapes_created": 0,
+  "source_joint_two_sided_2d_netlines_passed": false,
+  "sewing_or_filling_or_fabric_material_tested": false,
+  "approved_factory_cutting_patterns": 0,
+  "P3_status": "in_progress",
+  "P4_status": "not_started",
+  "next": "Design actual hidden seam paths joining original holes, especially lower front two rim-to-rim cuts per side, with original 3D edge identities; evaluate real native Blender ABF low-strain paired 2D netlines and physical waste-fabric toile before industrial pattern approval."
+}
