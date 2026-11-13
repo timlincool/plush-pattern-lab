@@ -1,6 +1,6 @@
 # Stage6 原七开口下主壳：六条真三维源边开缝及四片圆盘原生ABF
 
-**阶段：P3结构研究；四片原生Blender ABF已真实生成，独立源码复核全面否决；受信main独立审计的单位预缩放修复等待重新执行。P4未开始、正式裁切纸样0。**
+**阶段：P3结构研究；受信main Stage6 #43454129243真实完成四片原生Blender ABF、六新源缝与801原区缝独立二维 QA，全部联合研究门槛未通过。P4未开始、正式裁切纸样0。**
 
 ## 来源与为何重做真实下壳
 
@@ -37,7 +37,7 @@
 2. 原Y20四区间原Source 3D共享边固定 **126/321/233/121＝801条**，四组各自两侧二维净缝差同样≤3%。
 3. **上方真实中央头冠分成95＋94源边；另113/112高位头部连接、下方四个512蹄口的完整二维与布料真实接法尚需独立验证**。因此即使本轮4盘软件通过，也不自动宣称有完整工厂纸样。
 
-真实Stage6受信main入口：`scripts/build_stage6_lower_six_cut_disks.py` → `scripts/unwrap_stage6_lower_six_cut_disks_blender.py` → `scripts/audit_stage6_lower_six_cut_disks_abf.py`，原始三份带来源SHA的JSON保存在7天Artifact中，并随后归档数值；可信main已生成真实四片ABF并归档，但初次完整Run审计在旧的UV尺度系数检查处失败；原始几何与ABF真实输出保留。以下数值是用同一批原始文件在助手隔离环境重放计算，修复后的同提交受信main质量审计尚待回归。
+真实Stage6受信main入口：`scripts/build_stage6_lower_six_cut_disks.py` → `scripts/unwrap_stage6_lower_six_cut_disks_blender.py` → `scripts/audit_stage6_lower_six_cut_disks_abf.py`，原始三份带来源SHA的JSON保存在7天Artifact中，并随后归档数值；初次真实Run保留了成功生成的原始几何和四份原生ABF UV，旧UV尺度保护在独立QA处失败；后续[受信main #43454129243](https://github.com/timlincool/plush-pattern-lab/actions/runs/43454129243)已完整成功执行同一严格QA，原始3D/UV/QA三个SHA已永久记录。下列数值经独立复核与正式可信Runner计算一致，均为研究否决。
 
 ## 关键警告与下一工序
 
@@ -68,3 +68,17 @@
 上述原始数据、来源 SHA、Shapely翻向/重叠严格复核及工厂否决归档于[永久实验摘要](../experiments/stage6_real_lower_six_source_disks_ABF_20261113/summary.json)。**结论是三维拓扑成功、原生2D应变/接缝失败**，不是原生Blender没有展平，也不是工厂样品已经试缝。禁止通过任意换比例、把3D相等当2D相等或扩大材料容差晋升P4。
 
 **下个工程动作：** 放弃仅按“最短六条源边”机械产生整主体布片；结合设计四视图、原低应变可制造的胸身/头肩结构及绒布小样，重新安排少量实际合理的体积围片/隐藏缝和高位云耳连接；中央真实头冠与四个原蹄口保留来源证据。不得回到无限重试UV求解器或局部省道长度。
+
+## 成功受信main完整独立QA已完成并校验SHA（2026-11-13）
+
+[Stage6 #43454129243](https://github.com/timlincool/plush-pattern-lab/actions/runs/43454129243) 在 SHA `221e3c11e4d7058b7ff83c2578197ab40ea5527a` 上**完整success**：同一原Stage6来源、六条原网格边开缝、四份真实Blender4.3.2原生ANGLE_BASED与独立两侧2D审核实际执行。受信Runner明确输出4片P95精确数值 `0.32498994848530793 / 0.2761202814515417 / 0.3257065620431261 / 0.26135875718100254`，右前3片翻向或塌缩三角面和21对正面积重叠。四原区Source缝2D差依 `0:1/0:2/1:3/2:3` 为 `13.37855% / 3.90351% / 2.21617% / 10.24498%`。**既有10%全边应变/3%双侧配缝和零翻面重叠研究门槛均未松动；结果不合格，工厂图纸0片。**
+
+原始Artifact #14051729724 (7日留存) 已下载并逐文件SHA-256验证：
+
+- 原七开口六条真3D源切缝与四片盘JSON: `b25b14db7932203c183d9771da4a2c474398bafa2cd169333870070f0b90cee1`
+- 同轮原生Blender4.3.2四盘ABF JSON: `8253768408f3792dc07db21a174e29cb15f72205142901ced9b2850e7c101f80`
+- 同轮独立原Source六新/801原缝二维质量JSON: `8b37f669cbcf7353190d5fca8b41c65b89843ae65fa844737159449276fd18b9`
+
+三件原始JSON连同严格否决标记的长期证据见[永久实验摘要](../experiments/stage6_real_lower_six_source_disks_ABF_20261113/summary.json)。原三角面输出不稳定性的 Issue #210 仍单独保留，不改写先前实验的字节SHA。
+
+本轮结果之后应**停止按最短路径把七开口主壳硬切成四大片**；生产主线回到设计参考与外观曲率协调的头身分片、明确耳云连接、正确的净缝/缝份、翻面填棉及真实废布试样。无材料实测或已签核外观，不升P3/P4。
