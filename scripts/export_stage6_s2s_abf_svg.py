@@ -89,7 +89,10 @@ def _load_verified_exporter(directory):
         or not (directory / "GPL-license.txt").is_file()
     ):
         raise ValueError("external GPL add-on must be installed separately")
-    blob = hashlib.sha1(b"blob " + str(path.stat().st_size).encode() + bytes([0]) + path.read_bytes()).hexdigest()
+    blob_content = (
+        b"blob " + str(path.stat().st_size).encode() + bytes([0]) + path.read_bytes()
+    )
+    blob = hashlib.sha1(blob_content).hexdigest()
     if blob != ADDON_BLOB:
         raise ValueError("external addon exporter blob changed from reviewed upstream")
     spec = importlib.util.spec_from_file_location("pinned_external_s2s_export", path)
@@ -147,7 +150,9 @@ def main():
     argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     args = parser.parse_args(argv)
     if bpy.app.version[:3] != (4, 3, 2) or args.addon_commit != ADDON_COMMIT:
-        raise ValueError("exact Blender 4.3.2 and reviewed GPL exporter commit required")
+        raise ValueError(
+            "exact Blender 4.3.2 and reviewed GPL exporter commit required"
+        )
     if args.out_dir.exists() or args.out_dir.is_symlink():
         raise ValueError("never overwrite external research SVG or a symlink")
     if any(
