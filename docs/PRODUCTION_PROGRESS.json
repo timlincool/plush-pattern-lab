@@ -335,6 +335,10 @@
         {
           "path": "experiments/stage6_pinned_s2s_abf_export_20261113/summary.json",
           "kind": "real_stage6_main_ABF_to_pinned_thirdparty_S2S_svg_source_boundary_verified_702_Python_CI_no_factory"
+        },
+        {
+          "path": "docs/STAGE6_FREECAD_FLATMESH_AB.md",
+          "kind": "isolated_pinned_FreeCAD_flatmesh_LSCM_relax_vs_ABF_same_real_12_disks_pending_trusted_run"
         }
       ],
       "blockers": [
@@ -1365,6 +1369,13 @@
   },
   "next_actions": [
     {
+      "priority": "P1",
+      "phase_id": "P3",
+      "owner": "研发",
+      "action": "在不修改现有Stage6 ABF默认主线的前提下，复用原Stage6可信Run #43359212094的12组源圆盘/ABF已审计原始JSON，使用独立Nix环境调用FreeCAD原生C++ flatmesh FaceUnwrapper（LSCM＋10轮relax 0.95），以原共用_metrics核验P95、双侧净缝、翻面和重叠；仅跑一次独立受信main CI并硬限制18分钟。全部成功前不宣称FreeCAD优于ABF，也不进入量产纸样。",
+      "done_when": "独立FreeCAD原生模块真实导入、12组逐源求解、相同质量门禁均有完整成功或可信失败证据；是否替代ABF依结果判定。"
+    },
+    {
       "priority": "P0",
       "phase_id": "P3",
       "owner": "研发",
@@ -1718,6 +1729,11 @@
       "date": "2026-11-13",
       "event": "最终同提交可信 main Stage6 #43359212094与Python #43359212091全部success，SVG真实Artifact提取校验SHA256=16ef4ba444965022610d77b6cccc6318ebe1ae402b57cede163aaa1e86704aad；原N15左外侧230边二维净缝113.923334mm、P95边误差16.4031%仍超过10%预筛，二维双侧缝长差1.1312%，因此仅开源工具导出闭环完成，工厂裁布0片/实体样0、P3继续/P4不开启。",
       "evidence_path": "experiments/stage6_pinned_s2s_abf_export_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "针对用户同意继续，启动FreeCAD原生flatmesh与Blender ABF同12组Stage6真实源圆盘隔离对照：查原C++证实FreeCAD flatmesh为LSCM＋relax而非完全新求解器，写仅调用原编译模块的适配脚本/沿用现有质量计算/单独有限时Nix workflow，待可信main运行后按真实结果记分；P3继续、P4未开始，不添加付费插件。",
+      "evidence_path": "docs/STAGE6_FREECAD_FLATMESH_AB.md"
     }
   ]
 }
