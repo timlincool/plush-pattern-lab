@@ -44,6 +44,7 @@ on:
       - 'scripts/benchmark_stage6_blender_uv.py'
       - 'scripts/audit_stage6_external_uv_comparison.py'
       - 'scripts/build_stage6_crown_true_3d_cut.py'
+      - 'scripts/audit_stage6_lower_seven_port_graph.py'
       - 'scripts/unwrap_stage6_true_crown_caps_blender.py'
       - 'scripts/audit_stage6_true_crown_caps_abf.py'
       - 'scripts/build_stage6_protrusion_bisect_ab.py'
@@ -1559,6 +1560,41 @@ jobs:
           assert data["factory_cutting_patterns_approved"]==0
           assert data["P3_status"]=="in_progress" and data["P4_status"]=="not_started"
           print("STAGE6_REAL_SHORT_REAR_INNER_3D_SOURCE_AND_NATIVE_ABF_TWO_2D_SEAM_EVIDENCE_RESEARCH_ONLY")
+          PY
+      - name: Reconcile seven actual Stage6 lower 3D ports with four original zones
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference/z230_three_real_caps_research"
+          python scripts/audit_stage6_lower_seven_port_graph.py \
+            --proxy "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --caps "$root/source_three_caps.json" \
+            --caps-summary "$root/source_three_caps_topology_qa.json" \
+            --four-zone "$RUNNER_TEMP/stage6-reference/four_region_seam_graph.json" \
+            --output "$root/lower_7port_4zone_source_QA.json" \
+            --svg-y20 "$root/lower_7port_4zone_Y20_SOURCE_NOT_CLOTH.svg" \
+            --svg-y25 "$root/lower_7port_4zone_Y25_SOURCE_NOT_CLOTH.svg"
+          python - <<'PY'
+          import hashlib, json, os, pathlib
+          root=pathlib.Path(os.environ["RUNNER_TEMP"])/"stage6-reference/z230_three_real_caps_research"
+          study=json.loads((root/"lower_7port_4zone_source_QA.json").read_text())
+          assert study["schema"]=="stage6-real-lower-seven-3d-rims-four-zone-interface-audit-v1"
+          assert study["source_original_3D_boundary_edges"]==2462
+          assert study["source_original_z230_head_rims"]==3
+          assert study["source_original_hoof_rims"]==4
+          assert study["factory_cutting_patterns_approved"]==0
+          assert study["P3_status"]=="in_progress" and study["P4_status"]=="not_started"
+          assert len(study["source_four_zone_comparisons"])==2
+          for option in study["source_four_zone_comparisons"]:
+              assert option["minimum_additional_topological_opening_cuts_to_four_disks"]==6
+              assert [r["source_3D_boundary_loops"] for r in option["lower_four_zone_source_patches"]]==[3,2,3,2]
+              assert [r["lower_zone_edges"] for r in option["head_crown_to_lower_zone_source_3D_interfaces"]]==[
+                {"left_front":95,"right_front":94},{"left_front":113},{"right_front":112}]
+              assert len(option["source_3D_four_zone_shared_seams"])==4
+          for name,sha in zip(("lower_7port_4zone_Y20_SOURCE_NOT_CLOTH.svg","lower_7port_4zone_Y25_SOURCE_NOT_CLOTH.svg"),study["true_3D_XY_top_view_svg_sha256"]):
+              actual=hashlib.sha256((root/name).read_bytes()).hexdigest()
+              assert actual==sha and b"NOT FABRIC REST SHAPE" in (root/name).read_bytes()
+          print("STAGE6_TRUE_SEVEN_RIMS_HEAD_ARCS_AND_SIX_MINIMUM_TOPOLOGICAL_CUTS_NOT_FABRIC")
           PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()

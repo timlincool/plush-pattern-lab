@@ -387,6 +387,10 @@
         {
           "path": "experiments/stage6_short_rear_inner_ABF_20261113/summary.json",
           "kind": "trusted_main_four_original_source_half_slit_real_ABF_source_edge_P95_pairwise_2D_mm_differences_failed_factory_0"
+        },
+        {
+          "path": "docs/STAGE6_LOWER_7PORT_TRUE_SOURCE_4ZONE.md",
+          "kind": "source_locked_original_lower_7_real_3D_rims_4zones_95_94_3D_head_join_pending_trusted_Stage6_main_qa"
         }
       ],
       "blockers": [
@@ -1590,6 +1594,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋工艺与设计",
+      "action": "使用原Stage6 25%源代理与原三真源头冠/四区同一Runner输入，将原3头冠414边＋四蹄2048边的七开口下壳与四区真实Source face分配和3D拼缝关联。离线原SHA实测Y=20/25均得到前区3环/后区2环、前左原中央头冠95边/76.571mm和左侧帽113边、前右94边/76.523mm和右侧帽112边；保持原四蹄4×512。四区形成单边界圆盘至少需要2+1+2+1=6条额外跨环切缝，尚未设计为生产线。已有源码/测试/受信Stage6新增门禁，待真实CI复算后永久归档。下一步是按原正侧背顶与云耳位置选择真实6条跨环工艺缝及返口，先验证低应变2D与双侧缝，不再调短省道。",
+      "done_when": "源7开口、4区共6额外拓扑切缝约束及头顶中央95/94接口通过可信main实跑；此时只完成3D结构约束，不能升级P3/P4；还需原高曲率全身实际布片、材料和样布验证。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋工艺",
       "action": "可信main Stage6 #43419470617 (Blender4.3.2原生ABF) 完成原Stage6两种半长短开缝Y后侧、X内侧×左右4项全部真源三维/二维/配缝审核：源原1849/1906面、113/112源Z230边、顶点身份和源两侧3D缝匹配；P95边误差分别39.633/38.723/39.977/41.611%，两侧2D逐段绝对缝长差10.267/20.200/22.198/11.243%，全部0翻转和正面积重叠但0/4符合10%/3%门槛。说明减少切缝长度不足以释放原高位曲面形变，停止继续调短缝/换UV；应回到全角色接缝与真实设计、云耳构件、下部七边界主壳工艺和廉价废布试片。原Artifact SHA/全部失败值已保存到 experiments/stage6_short_rear_inner_ABF_20261113/summary.json。",
       "done_when": "本轮真实短开缝及Blender ABF/独立配边已完成并严格否决；完整可裁纸样、实体样品、工厂审批仍为0，P3维持in_progress/P4 not_started。"
@@ -2038,6 +2049,11 @@
       "date": "2026-11-13",
       "event": "真实受信main Stage6 #43419470617完整成功：以旧Y后段/X内侧原Source边替代全长高位曲面切缝生成左右4个单曲面开缝圆盘，Source1849/1906面、原113/112头冠底口与开缝两侧身份完好；Blender4.3.2原生ABF四项P95约38.72-41.61%、两侧逐段缝长差10.27-22.20%，全部未过10%/3%门槛，0翻转/0正面积重叠。来源3份原Raw SHA与失败结果永久归档，不继续盲调短缝；下部七开口仍无真实2D配缝，无实体样/工厂批准，P3进行中/P4未开始。",
       "evidence_path": "experiments/stage6_short_rear_inner_ABF_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-13",
+      "event": "继续整角色P3：复用原25% Stage6真源PLY/原3头冠与全壳四区，在同SHA本地完成Y20/Y25重切下壳七原环：111978面、三头顶189+113+112源接口和四蹄4×512原边，四区前各3边界环Euler-1、后各2边界环Euler0，中央真实头冠分配左前95边/76.571mm与右前94边/76.523mm；形成四区拓扑圆盘理论最少6条额外开缝。新增纯源验证、两套A4毫米顶视投影和可信main回归入口，待Runner实跑后晋升为长期证据；此时无可裁2D/实物/工厂批准。",
+      "evidence_path": "docs/STAGE6_LOWER_7PORT_TRUE_SOURCE_4ZONE.md"
     }
   ]
 }
