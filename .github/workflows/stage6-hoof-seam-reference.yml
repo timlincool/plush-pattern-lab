@@ -843,7 +843,7 @@ jobs:
               'factory_approved':False
           }))
           PY
-      - name: Solve B24 true 2D rest-piece cloth sewing and render actual final solver meshes
+      - name: Solve B24 true 2D cloth and save evaluated physical mesh for CPU photo rendering
         shell: bash
         run: |
           set -euo pipefail
@@ -872,10 +872,11 @@ jobs:
           assert d["all_original_2D_piece_vertices_baked_from_evaluated_Cloth"]
           assert not d["pressure_fill_enabled"]
           assert d["factory_cutting_patterns_approved"]==0
-          for view in ("three_quarter","side","front"):
-              for prefix in ("target_","sewn_"):
-                  assert (p/(prefix+view+".png")).stat().st_size>10000
-          print("STAGE6_ACTUAL_B24_SURROGATE_CLOTH_SOLVER_PHOTOS_NOT_AI_NOT_FACTORY",
+          assert d["real_solver_vertex_mesh_npz_exported"]
+          assert d["headless_Blender_render_skipped_due_to_libEGL_absence"]
+          assert (p/"actual_evaluated_B24_Cloth_frame.npz").stat().st_size>10000
+          assert d["final_sewing_spring_gap_mean_mm"]<d["initial_sewing_spring_gap_mean_mm"]
+          print("STAGE6_ACTUAL_B24_2D_REST_TO_BLENDER_PHYSICAL_MESH_SAVED_FOR_CPU_PREVIEW",
                 d["initial_sewing_spring_gap_mean_mm"],
                 d["final_sewing_spring_gap_mean_mm"])
           PY
