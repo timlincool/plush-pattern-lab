@@ -629,22 +629,28 @@ def main():
     builder = _assemble(body, lower)
     snap, report = _run_cloth(builder, args.frames)
     args.out.mkdir(parents=True, exist_ok=True)
-    _render_simulated(snap, args.out)
-    # Save only actual solver output; never paint a fake plush image.
-    render_obj = snap
-    bpy.ops.object.select_all(action="DESELECT")
-    render_obj.select_set(True)
-    bpy.context.view_layer.objects.active = render_obj
-    try:
-        bpy.ops.export_scene.gltf(
-            filepath=str(args.out / "sewn_cloth.glb"),
-            export_format="GLB",
-            use_selection=True,
-        )
-        report["real_solver_mesh_glb_exported"] = True
-    except Exception as exc:
-        print("OPTIONAL_GLTF_EXPORT_UNAVAILABLE", type(exc).__name__, str(exc))
-        report["real_solver_mesh_glb_exported"] = False
+    # Save every physically evaluated Blender vertex BEFORE attempting any
+    # rendering. Ubuntu GitHub runners can lack libEGL, so Workbench may abort.
+    # This compact NumPy source is used for a real CPU-rendered 3D preview.
+    actual_vertices = np.asarray(
+        [tuple(point.co) for point in snap.data.vertices], dtype=np.float64
+    )
+    face_lengths = np.asarray([len(face) for face in builder.faces], dtype=np.int32)
+    packed_faces = np.asarray(
+        [index for face in builder.faces for index in face], dtype=np.int32
+    )
+    np.savez_compressed(
+        args.out / "actual_evaluated_B24_Cloth_frame.npz",
+        evaluated_blender_cloth_vertices_m=actual_vertices,
+        initial_3d_prepositioned_vertices_m=np.asarray(builder.xyz),
+        true_independent_flat_2d_rest_xy_m=np.asarray(builder.rest),
+        face_lengths=face_lengths,
+        face_vertex_ids=packed_faces,
+        face_material_roles=np.asarray(builder.face_color, dtype=np.int8),
+        original_sewing_spring_vertex_pairs=np.asarray(builder.springs, dtype=np.int32),
+    )
+    if not np.isfinite(actual_vertices).all() or len(packed_faces) != sum(face_lengths):
+        raise ValueError("actual Blender cloth snapshot invalid after simulation")
     report.update(
         {
             "schema": SCHEMA,
@@ -655,14 +661,18 @@ def main():
             "original_five_stitch_boundaries_CDT_GE0S": True,
             "pattern_variant": graph["variant"],
             "status": "RESEARCH_ONLY_REAL_CLOTH_2D_TO_3D_NOT_FINAL_TOY",
-            "render_views": [name for name, _ in VIEWS],
+            "actual_solver_frame_vertex_source": "Blender evaluated depsgraph Cloth",
+            "real_solver_vertex_mesh_npz_exported": True,
+            "render_backend": "CPU preview separately from solver snapshot",
+            "headless_Blender_render_skipped_due_to_libEGL_absence": True,
+            "real_fabric_stuffing_or_pressure_simulated": False,
+            "factory_cutting_patterns_approved": 0,
         }
     )
     (args.out / "sewing_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf8",
     )
-    _render_original(args.original, args.out)
     print(
         "STAGE6_B24_REAL_CLOTH_SIM_COMPLETE",
         json.dumps(
