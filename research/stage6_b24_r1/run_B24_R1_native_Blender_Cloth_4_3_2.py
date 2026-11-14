@@ -144,8 +144,19 @@ def _evaluate_actual_cloth_frames(scene, obj, init, pairs, frames):
 
 
 def _persist_evaluated_snapshot(
-    args, init, rest, faces, pairs, roles, mesh, obj, scene,
-    final, gap_initial, gap_final, started
+    args,
+    init,
+    rest,
+    faces,
+    pairs,
+    roles,
+    mesh,
+    obj,
+    scene,
+    final,
+    gap_initial,
+    gap_final,
+    started,
 ):
     args.out.mkdir(parents=True, exist_ok=True)
     saved = args.out / "B24_R1_actual_evaluated_Cloth_frame40.npz"
@@ -202,7 +213,6 @@ def _persist_evaluated_snapshot(
     print("B24_R1_REAL_CLOTH_SOLVER_COMPLETE", json.dumps(audit), flush=True)
 
 
-
 def run(args):
     if bpy.app.version[:3] != (4, 3, 2):
         raise ValueError("exact trusted Blender 4.3.2 required")
@@ -216,8 +226,19 @@ def run(args):
         scene, obj, init, pairs, args.frames
     )
     _persist_evaluated_snapshot(
-        args, init, rest, faces, pairs, roles, mesh, obj, scene,
-        final, gap_initial, gap_final, started
+        args,
+        init,
+        rest,
+        faces,
+        pairs,
+        roles,
+        mesh,
+        obj,
+        scene,
+        final,
+        gap_initial,
+        gap_final,
+        started,
     )
 
 
