@@ -67,12 +67,7 @@ def read_input(path, qa_file):
     return vertices, rest, polygons, spring, roles
 
 
-def run(args):
-    if bpy.app.version[:3] != (4, 3, 2):
-        raise ValueError("exact trusted Blender 4.3.2 required")
-    if args.out.exists() and any(args.out.iterdir()):
-        raise ValueError("refuse to overwrite a previous R1 physics result")
-    init, rest, faces, pairs, roles = read_input(args.input, args.qa)
+def _setup_native_sewing(init, rest, faces, pairs, roles, frames):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     mesh = bpy.data.meshes.new("B24_R1_24_INDEPENDENT_2D_REST_SHAPES")
     mesh.from_pydata(init.tolist(), pairs.tolist(), faces)
@@ -112,14 +107,18 @@ def run(args):
     scene = bpy.context.scene
     scene.gravity = (0, 0, 0)
     scene.frame_start = 1
-    scene.frame_end = args.frames
+    scene.frame_end = frames
     cloth.point_cache.frame_start = 1
-    cloth.point_cache.frame_end = args.frames
+    cloth.point_cache.frame_end = frames
+    return obj, mesh, scene
+
+
+def _evaluate_actual_cloth_frames(obj, init, pairs, frames):
     deps = bpy.context.evaluated_depsgraph_get()
     gap_initial = np.linalg.norm(init[pairs[:, 0]] - init[pairs[:, 1]], axis=1)
     final = None
     started = time.monotonic()
-    for frame in range(1, args.frames + 1):
+    for frame in range(1, frames + 1):
         scene.frame_set(frame)
         ev = obj.evaluated_get(deps)
         em = ev.to_mesh()
@@ -141,6 +140,13 @@ def run(args):
                 flush=True,
             )
     gap_final = np.linalg.norm(final[pairs[:, 0]] - final[pairs[:, 1]], axis=1)
+    return final, gap_initial, gap_final, started
+
+
+def _persist_evaluated_snapshot(
+    args, init, rest, faces, pairs, roles, mesh, obj, scene,
+    final, gap_initial, gap_final, started
+):
     args.out.mkdir(parents=True, exist_ok=True)
     saved = args.out / "B24_R1_actual_evaluated_Cloth_frame40.npz"
     face_lengths = np.array([len(x) for x in faces], dtype=np.int32)
@@ -194,6 +200,25 @@ def run(args):
         json.dumps(audit, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
     )
     print("B24_R1_REAL_CLOTH_SOLVER_COMPLETE", json.dumps(audit), flush=True)
+
+
+
+def run(args):
+    if bpy.app.version[:3] != (4, 3, 2):
+        raise ValueError("exact trusted Blender 4.3.2 required")
+    if args.out.exists() and any(args.out.iterdir()):
+        raise ValueError("refuse to overwrite a previous R1 physics result")
+    init, rest, faces, pairs, roles = read_input(args.input, args.qa)
+    obj, mesh, scene = _setup_native_sewing(
+        init, rest, faces, pairs, roles, args.frames
+    )
+    final, gap_initial, gap_final, started = _evaluate_actual_cloth_frames(
+        obj, init, pairs, args.frames
+    )
+    _persist_evaluated_snapshot(
+        args, init, rest, faces, pairs, roles, mesh, obj, scene,
+        final, gap_initial, gap_final, started
+    )
 
 
 def main():
