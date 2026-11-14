@@ -71,9 +71,7 @@ def grid_preposition(rings, heights, idx):
     return np.asarray(out).reshape(-1, 3)
 
 
-def _reposition_revised_upper(trial, body, head, bz, hz, initial, rest):
-    edited = []
-    for stride, name, where in expected_segments():
+def _panel_replacement(name, trial, body, head, bz, hz):
         xy = None
         xyz = None
         if name.startswith("TORSO-"):
@@ -119,6 +117,13 @@ def _reposition_revised_upper(trial, body, head, bz, hz, initial, rest):
                     np.column_stack((ring, np.full(65, 145.0))),
                 )
             )
+    return xy, xyz
+
+
+def _reposition_revised_upper(trial, body, head, bz, hz, initial, rest):
+    edited = []
+    for stride, name, where in expected_segments():
+        xy, xyz = _panel_replacement(name, trial, body, head, bz, hz)
         if xy is not None:
             if xy.shape != (where.stop - where.start, 2) or xyz.shape != (len(xy), 3):
                 raise ValueError("R1 panel layout mismatch " + name)
