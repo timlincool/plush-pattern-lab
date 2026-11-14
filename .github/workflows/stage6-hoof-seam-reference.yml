@@ -81,9 +81,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl -fL --retry 3 --connect-timeout 30 --max-time 360 \
-            https://download.blender.org/release/Blender4.3/blender-4.3.2-linux-x64.tar.xz \
-            -o "$RUNNER_TEMP/blender.tar.xz"
+          # Official Blender mirror infrastructure offers identical hashed files.
+          # The first host may return HTTP 403 on some GitHub cloud runners.
+          obtained=0
+          for base in \
+            https://download.blender.org/release/Blender4.3 \
+            https://mirror.blender.org/release/Blender4.3 \
+            https://mirrors.ocf.berkeley.edu/blender/release/Blender4.3; do
+            if curl -fL --retry 2 --connect-timeout 30 --max-time 360 \
+              "$base/blender-4.3.2-linux-x64.tar.xz" \
+              -o "$RUNNER_TEMP/blender.tar.xz" &&
+              echo "4da1c956673c0485e63054e563ee69198cc8f80d8157dd7592dffc8a6a5592e6  $RUNNER_TEMP/blender.tar.xz" | sha256sum -c -; then
+              obtained=1
+              break
+            fi
+          done
+          test "$obtained" -eq 1
           echo "4da1c956673c0485e63054e563ee69198cc8f80d8157dd7592dffc8a6a5592e6  $RUNNER_TEMP/blender.tar.xz" | sha256sum -c -
           tar -xJf "$RUNNER_TEMP/blender.tar.xz" -C "$RUNNER_TEMP"
           BLENDER="$RUNNER_TEMP/blender-4.3.2-linux-x64/blender"
