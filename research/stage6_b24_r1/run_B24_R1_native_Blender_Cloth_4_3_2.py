@@ -113,7 +113,7 @@ def _setup_native_sewing(init, rest, faces, pairs, roles, frames):
     return obj, mesh, scene
 
 
-def _evaluate_actual_cloth_frames(obj, init, pairs, frames):
+def _evaluate_actual_cloth_frames(scene, obj, init, pairs, frames):
     deps = bpy.context.evaluated_depsgraph_get()
     gap_initial = np.linalg.norm(init[pairs[:, 0]] - init[pairs[:, 1]], axis=1)
     final = None
@@ -213,7 +213,7 @@ def run(args):
         init, rest, faces, pairs, roles, args.frames
     )
     final, gap_initial, gap_final, started = _evaluate_actual_cloth_frames(
-        obj, init, pairs, args.frames
+        scene, obj, init, pairs, args.frames
     )
     _persist_evaluated_snapshot(
         args, init, rest, faces, pairs, roles, mesh, obj, scene,
