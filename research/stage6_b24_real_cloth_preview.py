@@ -54,7 +54,8 @@ def _read(args):
     upper, lower, graph = (json.loads(s) for s in (upper_raw, lower_raw, graph_raw))
     constrained = json.loads(args.yoke_mesh.read_bytes())
     if (
-        constrained.get("schema") != "stage6-b24-four-hoof-hole-constrained-yoke-mesh-v1"
+        constrained.get("schema")
+        != "stage6-b24-four-hoof-hole-constrained-yoke-mesh-v1"
         or constrained.get("source_lower_mother_json_sha256")
         != hashlib.sha256(lower_raw).hexdigest()
         or constrained.get("source_2d_fabric_boundaries") != 5
@@ -62,7 +63,9 @@ def _read(args):
         or constrained.get("factory_cutting_patterns_approved") != 0
         or len(constrained.get("triangles_local_original_yoke_vertex_ids", [])) != 326
     ):
-        raise ValueError("same-run Shapely original four-hoof-hole yoke evidence required")
+        raise ValueError(
+            "same-run Shapely original four-hoof-hole yoke evidence required"
+        )
     lower["_trusted_constrained_yoke_faces"] = constrained[
         "triangles_local_original_yoke_vertex_ids"
     ]
@@ -210,8 +213,9 @@ def _gores(builder, pieces, rings, heights, role):
         result.append(_grid(builder, piece["id"], xyz, planar, role))
     for i in range(4):
         builder.seam(
-            result[i]["right"], result[(i + 1) % 4]["left"],
-            ("torso" if role == 0 else "headneck") + "_side"
+            result[i]["right"],
+            result[(i + 1) % 4]["left"],
+            ("torso" if role == 0 else "headneck") + "_side",
         )
     return result
 
@@ -304,8 +308,7 @@ def _yoke(builder, lower):
     xy = np.vstack([outer, *holes])
     faces = lower["_trusted_constrained_yoke_faces"]
     if len(faces) != 326 or any(
-        len(face) != 3 or any(not 0 <= int(v) < len(xy) for v in face)
-        for face in faces
+        len(face) != 3 or any(not 0 <= int(v) < len(xy) for v in face) for face in faces
     ):
         raise ValueError("no same-run four-hoof-hole original source CDT")
     edges = Counter(
@@ -613,8 +616,9 @@ def _render_original(original, out):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("upper", "lower", "graph", "original", "out", "yoke_mesh"):
+    for name in ("upper", "lower", "graph", "original", "out"):
         parser.add_argument("--" + name, type=Path, required=True)
+    parser.add_argument("--yoke-mesh", dest="yoke_mesh", type=Path, required=True)
     parser.add_argument("--frames", type=int, default=48)
     argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     args = parser.parse_args(argv)
@@ -645,10 +649,10 @@ def main():
         {
             "schema": SCHEMA,
             "original_stage6_input_proof": source_sha,
-        "same_run_source_yoke_cdt_SHA256": hashlib.sha256(
-            args.yoke_mesh.read_bytes()
-        ).hexdigest(),
-        "original_five_stitch_boundaries_CDT_GE0S": True,
+            "same_run_source_yoke_cdt_SHA256": hashlib.sha256(
+                args.yoke_mesh.read_bytes()
+            ).hexdigest(),
+            "original_five_stitch_boundaries_CDT_GE0S": True,
             "pattern_variant": graph["variant"],
             "status": "RESEARCH_ONLY_REAL_CLOTH_2D_TO_3D_NOT_FINAL_TOY",
             "render_views": [name for name, _ in VIEWS],

@@ -42,9 +42,9 @@ def test_unchanged_five_source_boundaries_preserved_in_2d():
 
 def test_original_yoke_with_invalid_overlapping_leg_holes_is_rejected():
     source = _source()
-    source["yoke"]["source_hoof_holes_stitch_xy_mm"]["FR"] = source[
-        "yoke"
-    ]["source_hoof_holes_stitch_xy_mm"]["FL"]
+    source["yoke"]["source_hoof_holes_stitch_xy_mm"]["FR"] = source["yoke"][
+        "source_hoof_holes_stitch_xy_mm"
+    ]["FL"]
     with pytest.raises(ValueError):
         build(source, "same-run-lower-sha")
 
