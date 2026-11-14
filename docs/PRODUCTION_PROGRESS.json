@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-13",
+  "updated_at": "2026-11-14",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_true_lower_7port_six_3D_interrim_disks_nativeABF_rejected_4panels_source_p3",
+    "stage": "stage6_B24_surrogate_2D_to_real_Blender_Cloth_40frames_preview_verified_but_appearance_not_target_P3",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -403,6 +403,14 @@
         {
           "path": "experiments/stage6_real_lower_six_source_disks_ABF_20261113/summary.json",
           "kind": "real_native_Blender4_3_2_ABF_4_lower_disks_original_source_6_and_801_2D_seam_QA_rejected"
+        },
+        {
+          "path": "docs/STAGE6_B24_REAL_SEWN_BLENDER_PREVIEW.md",
+          "kind": "actual_original_source_informed_B24_2D_rest_native_Blender_Cloth_40frames_974_sewing_springs_evaluated_3D_preview_not_filled"
+        },
+        {
+          "path": "experiments/stage6_B24_actual_Cloth_20261114/summary.json",
+          "kind": "trusted_main_Blender_4_3_2_B24_actual_2d_to_3d_solver_mesh_research_success_3d_shape_not_target_factory_zero"
         }
       ],
       "blockers": [
@@ -1649,6 +1657,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋原角色设计/实体工艺",
+      "action": "可信main Stage6 #43558523018（commit c13619c）真正完成B_integrated_neck_port 24件来源轮廓启发二维研究纸样→Shapely/GEOS约束Delaunay 4蹄孔下腹（326原面）→Blender4.3.2 Cloth Sewing Springs 40帧，并在第40帧保存evaluated真正3D网格，974条缝合弹簧平均间隙0.5585→0.007380mm。下游用真实NPZ/原Stage6固定25% PLY由Matplotlib CPU离屏渲染三视角、Trimesh生成可旋转GLB，不使用生图/原目标3D当物理结果。实测实际拼装外观头部偏扁、身体盒形、腿筒状，明显偏离目标；没有填棉压力/自碰/材料参数，也无耳云尾脸十水滴。之后每轮新纸样必须先真实模拟拼合后提供原目标vs实际正面/侧面/3/4、GLB、缝隙、碰撞/相似度否决，不再仅以源3D拓扑或二维净缝声称接近完成。",
+      "done_when": "已有真实第40帧研究网格/974缝合弹簧与三视图证明软件能力，但当前B24外观不合格。下一步在正确头身围片与耳云结构下重新设计纸样，使用真实面料/充胀、穿插、尺寸和物理样布逐门禁验证；P3未完成/P4未开始/工厂正式纸样0。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋玩偶制版与实物试缝",
       "action": "可信main Stage6 #43454129243成功完整执行固定原Stage6七开口下壳111978面、六条原Source跨环切缝（左前2/左后1/右前2/右后1）→四个Euler1真实3D盘；原生Blender4.3.2 ABF四盘＋严格原源逐边2D配缝QA全部完成。P95分别32.499/27.612/32.571/26.136%均超10%研究门槛；右前3个翻转/塌缩面和21对正面积重叠；六新缝中的高位连接双侧差31.70/38.43%，原四区801共享源边两侧差13.38/3.90/2.22/10.24%，多处超3%。Raw Artifact #14051729724 原3D/原ABF/原QA三SHA已永久保存experiments/stage6_real_lower_six_source_disks_ABF_20261113/summary.json。原旧尺度系数错误以代数等价UV×1000输入修复，不改毫米UV和任何10%/3%/0重叠门槛。工程决策：停止最短六条跨环四大片制造方案，不继续UV调参；改为真实设计外观曲率、耳云连接、头身围片及实际面料废布打样。",
       "done_when": "六条原Source开缝、四盘真实Blender ABF及六条新增/801旧共享源边两侧二维缝校验均在可信main完整运行并严格否决。P3未完成，P4未开始，物理样布/填充/厂商批准缺失，工厂正式裁片0。"
@@ -2136,6 +2151,11 @@
       "date": "2026-11-13",
       "event": "可信main Stage6 #43454129243 (commit 221e3c11)完整运行固定原Stage6真七开口下壳、六Source边跨孔切缝→四盘Blender4.3.2原生ABF/六新缝与四区801原源边两侧二维逐段配缝QA：3D拓扑完整，四片P95 32.50/27.61/32.57/26.14%超10%，右前3面折叠塌缩＋21对重叠，原801双边缝多处超3%，无一片获批工厂。原三份Source/UV/QA原始JSON SHA与成功Artifact #14051729724逐文件核验并归档；随后仅格式PR #213主干13426476的Python #43454971841 797项与Ruff/打包全部通过。保持P3 in_progress/P4 not_started/正式工厂0；停止重复最短6切及UV调参，转实物可缝结构、布料试样与签核四视图。",
       "evidence_path": "experiments/stage6_real_lower_six_source_disks_ABF_20261113/summary.json"
+    },
+    {
+      "date": "2026-11-14",
+      "event": "可信main真实Stage6 #43558523018与Python #43558523019成功：B研究母版24件真实独立二维Rest Shapes，经Shapely/GEOS CDT生成保有四腿开孔的下腹326面，真实Blender4.3.2 Cloth Sewing Springs执行40帧、974配对弹簧、2431最终顶点、1798个面；缝合端点间距平均0.55852156→0.00737994mm、最大0.11648mm。从actual evaluated mesh NPZ/原Stage6真实固定PLY分别用CPU重建正面侧面3/4对比照片和GLB，图不含任何AI生成，结果揭示B研究拼装头扁身体盒形，与原设计显著不相符。压力/棉花/自碰/布料参数关闭、四蹄512采样64、耳云尾表情雨滴未接，研究证据不等于成品制造；P3仍进行中，P4未开始、正式工厂纸样0。",
+      "evidence_path": "experiments/stage6_B24_actual_Cloth_20261114/summary.json"
     }
   ]
 }

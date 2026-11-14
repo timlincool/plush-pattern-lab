@@ -1,0 +1,78 @@
+{
+  "schema": "stage6-b-24piece-real-Blender-Cloth-evaluated-3d-preview-evidence-v1",
+  "date_utc": "2026-11-14",
+  "trusted_main_actual_run": {
+    "run_id": 43558523018,
+    "conclusion": "success",
+    "commit_sha": "c13619c344892505c8fed9a356df4c92cd4da3f9",
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43558523018",
+    "artifact_id": 14099940877,
+    "artifact_expires_utc": "2026-11-21T04:52:47Z"
+  },
+  "trusted_python_ci": {
+    "run_id": 43558523019,
+    "conclusion": "success",
+    "tests_passed": 800,
+    "ruff_and_build_passed": true
+  },
+  "source_original_stage6_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_study": "B_integrated_neck_port source-informed 24-piece 2D *surrogate* trial, not original triangle unroll",
+  "source_same_run_input_sha256": {
+    "upper": "eebda049ac34ee201a3251b363a915fa05ad6417394bc565bb4cc7942b4545ae",
+    "lower": "1427c7bdfc376431378e516f90540cb56e3b9adfb4695a3d5858c584041eea59",
+    "panel_graph": "2eda037eb54ef810e71affa55ad8fd7e5d9d189b51b8c1b8d4d73c77bf2266d3",
+    "source_yoke_cdt": "dce3b971a0bec583b985f97b7e8892bae64457fb16c0914090d4c84c81c4f6bb"
+  },
+  "source_hoofs_sampling": "original Stage6 512 source edges each downsampled 64 per hoof for physics preview only",
+  "same_run_original_4hoof_yoke_triangulation": {
+    "open_source": "Shapely/GEOS constrained_delaunay_triangles",
+    "triangles": 326,
+    "original_boundary_edges": 320,
+    "boundary_loops": 5,
+    "source_rest_shape_verified": true
+  },
+  "real_physics": {
+    "open_source": "Blender 4.3.2 Cloth Sewing Springs",
+    "pieces_2d": 24,
+    "sewing_springs": 974,
+    "frames": 40,
+    "solver_elapsed_seconds": 1.83,
+    "vertices_actual_evaluated": 2431,
+    "original_surface_polygons": 1798,
+    "triangulated_actual_glb_faces": 2950,
+    "initial_sewing_spring_gap_mean_mm": 0.5585215605749488,
+    "final_sewing_spring_gap_mean_mm": 0.007379937373069842,
+    "final_sewing_spring_gap_max_mm": 0.11648292147919398,
+    "actual_evaluated_depsgraph_cloth_vertices_used": true,
+    "original_stage6_target_never_as_final_geometry": true
+  },
+  "actual_real_solver_snapshot_sha256": "e7b890a3dae087df7e1c0d92c05716adcfd098279e5a067519de6a844f31fd8a",
+  "actual_sewing_report_sha256": "20fdf04b57fedd59efc848ca36895721d5fc9d27d9c618afe2dde5f4e12dbac7",
+  "downloadable_user_pack_generated_in_conversation": "stage6_B24_real_Blender_Cloth_sewn_3D_20261114.zip",
+  "download_pack_sha256": "e48a096cc3630625fe82af469341222cca39cabb88124b98f80caf3f16523eda",
+  "real_post_solver_trimesh_glb_sha256": "bcb931ac281b90e8f5eac4f065ee2a67d027548f5f61819f89a5c6a404b77577",
+  "software_CPU_presentation_still_image_sha256": {
+    "three_quarter": "96d2a8dc559c4819fd9a448e6cde175e65f7879b8695b85cdf2b50d9de465bba",
+    "side": "ed90ddde01655ed798eb0e3540babea95504c263750461cefaa7c1e8ee3f6457",
+    "front": "16e7ee8d6cc99dae3c207ab350f80885b50af1b1b4b79a55e3db4b102145a2a2"
+  },
+  "original_reference_image_source": "Same fixed Stage6 original 25% 3D core shell PLY; images show only core, not all independent cloud/ear meshes",
+  "actual_right_image_source": "Real final 40th-frame Blender evaluated Cloth NPZ; Matplotlib CPU polygon rendering and Trimesh GLB export; NO image generation",
+  "original_PLY_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "visual_finding": "Distinctive cloud alpaca morphology not reconstructed. Simplified torso shows boxy geometry; head is broad and flat, hooves cylindrical; no actual sewn ears, clouds, tail, eyes, or drops. Successful seam spring gap contraction is not fabric manufacture approval.",
+  "physical_model_limits": {
+    "pressure_or_polyester_fill_simulated": false,
+    "cloth_self_collision": false,
+    "material_stretch_calibrated": false,
+    "seam_weld_physically_closed": false,
+    "real_fabric_and_golden_sample": false,
+    "factory_paper_patterns_approved": 0
+  },
+  "project_gate": {
+    "P3": "in_progress",
+    "P4": "not_started",
+    "P5": "not_started",
+    "P6": "not_started"
+  },
+  "next": "Make this actual 2D-to-3D sewing/check/render loop a gate for each redesigned, source-informed character pattern; improve anatomically correct head/torso and ear/cloud attachments, test physical fill and intersections, then real waste-fabric toile."
+}
