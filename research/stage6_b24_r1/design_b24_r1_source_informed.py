@@ -330,8 +330,16 @@ def _reconcile_revised_seam_graph(graph, trial):
 
 
 def _write_research_revision(
-    output, upper, updated_graph, graph, original_inputs, targets, scales,
-    opt, gap, touched
+    output,
+    upper,
+    updated_graph,
+    graph,
+    original_inputs,
+    targets,
+    scales,
+    opt,
+    gap,
+    touched,
 ):
     upper_file, lower_file, original_graph_file, sections_file = original_inputs
     output = Path(output)
@@ -381,7 +389,6 @@ def _write_research_revision(
     return report
 
 
-
 def generate(upper_file, lower_file, original_graph_file, sections_file, output):
     original_upper = json.loads(Path(upper_file).read_text(encoding="utf8"))
     lower = json.loads(Path(lower_file).read_text(encoding="utf8"))
@@ -410,9 +417,16 @@ def generate(upper_file, lower_file, original_graph_file, sections_file, output)
     if trial["industrial_cut_patterns_approved"] != 0:
         raise ValueError("R1 cannot be declared production-ready")
     return _write_research_revision(
-        output, upper, updated_graph, graph,
+        output,
+        upper,
+        updated_graph,
+        graph,
         (upper_file, lower_file, original_graph_file, sections_file),
-        targets, scales, opt, gap, touched
+        targets,
+        scales,
+        opt,
+        gap,
+        touched,
     )
 
 
