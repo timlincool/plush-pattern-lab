@@ -1692,6 +1692,135 @@ jobs:
           assert qa["P3_status"]=="in_progress" and qa["P4_status"]=="not_started"
           print("STAGE6_REAL_7RIM_6SOURCE_EDGES_4TRUE_ABF_DISKS_PAIRED_2D_SEAMS_MEASURED_NO_FACTORY")
           PY
+      - name: Same-run R1 revised 2D panels to genuine Blender Cloth evaluated frame
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference"
+          out="$root/stage6_b24_r1_physical"
+          mkdir -p "$out/solver"
+          python research/stage6_b24_r1/design_b24_r1_source_informed.py \
+            --upper "$root/split_volume_toile_AB_research/two_volume_source_envelope_ab.json" \
+            --lower "$root/lower_mother_toile_research/lower_toile_source_geometry.json" \
+            --graph "$root/split_volume_toile_AB_research/B_integrated_neck_port/panel_interface_research_graph.json" \
+            --sections "$root/true_stage6_source_section_summary.json" \
+            --output "$out"
+          python research/stage6_b24_r1/build_b24_r1_blender_staging.py \
+            --snapshot "$root/stage6_b24_cloth_preview/actual_evaluated_B24_Cloth_frame.npz" \
+            --upper "$out/B24_R1_upper_source_envelope_ab_RESEARCH_ONLY.json" \
+            --out "$out"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python research/stage6_b24_r1/run_B24_R1_native_Blender_Cloth_4_3_2.py -- \
+            --input "$out/B24_R1_NEW_2D_REST_NEW_3D_PREPOSITION_NOT_SOLVED.npz" \
+            --qa "$out/B24_R1_staging_QA.json" \
+            --out "$out/solver" --frames 40
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+          import trimesh
+          from scipy.spatial import cKDTree
+
+          root = Path(os.environ["RUNNER_TEMP"])
+          base = root / "stage6-reference"
+          r1 = base / "stage6_b24_r1_physical"
+          old_file = base / "stage6_b24_cloth_preview/actual_evaluated_B24_Cloth_frame.npz"
+          new_file = r1 / "solver/B24_R1_actual_evaluated_Cloth_frame40.npz"
+          source_file = root / "stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply"
+
+          def actual_mesh(path):
+              with np.load(path, allow_pickle=False) as snap:
+                  verts = snap["evaluated_blender_cloth_vertices_m"]
+                  rest = snap["true_independent_flat_2d_rest_xy_m"]
+                  lengths = snap["face_lengths"]
+                  ids = snap["face_vertex_ids"]
+                  springs = snap["original_sewing_spring_vertex_pairs"]
+              assert verts.shape == (2431, 3) and springs.shape == (974, 2)
+              assert rest.shape == (2431, 2) and np.isfinite(verts).all()
+              triangles = []
+              material_edges = set()
+              at = 0
+              for size in lengths:
+                  polygon = ids[at:at + int(size)]
+                  triangles.extend(
+                      (int(polygon[0]), int(polygon[i]), int(polygon[i + 1]))
+                      for i in range(1, int(size) - 1)
+                  )
+                  material_edges.update(
+                      tuple(sorted((int(a), int(b))))
+                      for a, b in zip(polygon, np.roll(polygon, -1))
+                  )
+                  at += int(size)
+              assert at == len(ids) and len(triangles) == 2950
+              mesh = trimesh.Trimesh(vertices=verts, faces=triangles, process=False)
+              return mesh, rest, springs, np.asarray(sorted(material_edges), int)
+
+          old, _, old_seams, _ = actual_mesh(old_file)
+          new, rest, new_seams, edges = actual_mesh(new_file)
+          assert np.array_equal(old_seams, new_seams)
+          assert (new.vertices != old.vertices).any()
+          source = trimesh.load(source_file, force="mesh")
+          assert len(source.faces) == 116568
+          source.apply_scale(0.001)
+
+          def shape_stats(actual):
+              reference, _ = trimesh.sample.sample_surface(source, 15000, seed=33)
+              observed, _ = trimesh.sample.sample_surface(actual, 15000, seed=67)
+              a = cKDTree(observed).query(reference)[0] * 1000
+              b = cKDTree(reference).query(observed)[0] * 1000
+              return {
+                  "symmetric_sampled_nearest_mean_mm": float((a.mean() + b.mean()) / 2),
+                  "source_to_actual_p95_mm": float(np.percentile(a, 95)),
+                  "actual_to_source_p95_mm": float(np.percentile(b, 95)),
+              }
+
+          old_shape = shape_stats(old)
+          new_shape = shape_stats(new)
+          old_gap = np.linalg.norm(
+              old.vertices[old_seams[:, 0]] - old.vertices[old_seams[:, 1]], axis=1
+          ) * 1000
+          new_gap = np.linalg.norm(
+              new.vertices[new_seams[:, 0]] - new.vertices[new_seams[:, 1]], axis=1
+          ) * 1000
+          rest_lengths = np.linalg.norm(rest[edges[:, 0]] - rest[edges[:, 1]], axis=1)
+          final_lengths = np.linalg.norm(
+              new.vertices[edges[:, 0]] - new.vertices[edges[:, 1]], axis=1
+          )
+          assert (rest_lengths > 1e-12).all()
+          strain = abs(final_lengths / rest_lengths - 1.0) * 100
+          new.export(r1 / "solver/B24_R1_GENUINE_EVALUATED_CLOTH_FRAME40.glb")
+          report = {
+              "schema": "stage6-b24-r1-native-cloth-40frames-shape-ab-research-v1",
+              "comparison": "same-run original B24 and R1, both Blender 4.3.2",
+              "physical_R1_solver_used": True,
+              "both_real_meshes_from_blender_depsgraph": True,
+              "old_3d_surface": old_shape,
+              "r1_3d_surface": new_shape,
+              "r1_source_shape_mean_improved": (
+                  new_shape["symmetric_sampled_nearest_mean_mm"]
+                  < old_shape["symmetric_sampled_nearest_mean_mm"]
+              ),
+              "old_mean_seam_gap_mm": float(old_gap.mean()),
+              "r1_mean_seam_gap_mm": float(new_gap.mean()),
+              "r1_max_seam_gap_mm": float(new_gap.max()),
+              "r1_2d_rest_to_real_cloth_absolute_edge_strain_p95_percent": (
+                  float(np.percentile(strain, 95))
+              ),
+              "simulated_pressure_fill": False,
+              "self_collision_checked": False,
+              "real_source_ears_clouds_tail_physically_sewn": False,
+              "factory_cutting_patterns_approved": 0,
+              "manufacturing_status": "RESEARCH_ONLY_REJECT_P3_P4_PROMOTION",
+          }
+          report_path = r1 / "solver/B24_R1_vs_old_B24_TRUE_PHYSICAL_AB.json"
+          report_path.write_text(
+              json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf8",
+          )
+          print("B24_R1_ACTUAL_PHYSICAL_SHAPE_AB", json.dumps(report))
+          PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -1707,6 +1836,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/split_volume_toile_AB_research/**
             ${{ runner.temp }}/stage6-reference/z230_three_real_caps_research/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_preview/**
+            ${{ runner.temp }}/stage6-reference/stage6_b24_r1_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_source_yoke_CDT.json
             ${{ runner.temp }}/stage6-reference/stage6_external_s2s_abf_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
