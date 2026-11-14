@@ -616,8 +616,9 @@ def _render_original(original, out):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("upper", "lower", "graph", "original", "out", "yoke_mesh"):
+    for name in ("upper", "lower", "graph", "original", "out"):
         parser.add_argument("--" + name, type=Path, required=True)
+    parser.add_argument("--yoke-mesh", dest="yoke_mesh", type=Path, required=True)
     parser.add_argument("--frames", type=int, default=48)
     argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     args = parser.parse_args(argv)
