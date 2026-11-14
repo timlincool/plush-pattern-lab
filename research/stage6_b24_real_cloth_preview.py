@@ -520,7 +520,7 @@ def _run_cloth(builder, frames):
     return snap, report
 
 
-def _camera(scene, bounds, direction, tag, out):
+def _camera(scene, bounds, direction, tag, out, color_type):
     corners = np.asarray(bounds, dtype=float)
     target = (corners.min(axis=0) + corners.max(axis=0)) / 2
     length = float(np.max(corners.max(axis=0) - corners.min(axis=0)))
@@ -538,7 +538,7 @@ def _camera(scene, bounds, direction, tag, out):
     camera_data.ortho_scale = length * 1.45
     scene.camera = camera
     scene.render.engine = "BLENDER_WORKBENCH"
-    scene.display.shading.color_type = "MATERIAL"
+    scene.display.shading.color_type = color_type
     scene.display.shading.light = "STUDIO"
     scene.display.shading.show_shadows = True
     scene.display.shading.show_cavity = True
@@ -555,7 +555,7 @@ def _render_simulated(snap, out):
     scene = bpy.context.scene
     xyz = np.asarray([tuple(v.co) for v in snap.data.vertices])
     for name, direction in VIEWS:
-        _camera(scene, xyz, direction, name, out / ("sewn_" + name + ".png"))
+        _camera(scene, xyz, direction, name, out / ("sewn_" + name + ".png"), "MATERIAL")
 
 
 def _render_original(original, out):
@@ -588,7 +588,7 @@ def _render_original(original, out):
     ])
     scene.display.shading.color_type = "OBJECT"
     for name, direction in VIEWS:
-        _camera(scene, bbox, direction, name, out / ("target_" + name + ".png"))
+        _camera(scene, bbox, direction, name, out / ("target_" + name + ".png"), "OBJECT")
 
 
 def main():
