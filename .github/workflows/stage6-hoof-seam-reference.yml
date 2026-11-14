@@ -48,6 +48,7 @@ on:
       - 'scripts/build_stage6_lower_six_cut_disks.py'
       - 'scripts/unwrap_stage6_lower_six_cut_disks_blender.py'
       - 'scripts/audit_stage6_lower_six_cut_disks_abf.py'
+      - 'research/stage6_b24_real_cloth_preview.py'
       - 'scripts/unwrap_stage6_true_crown_caps_blender.py'
       - 'scripts/audit_stage6_true_crown_caps_abf.py'
       - 'scripts/build_stage6_protrusion_bisect_ab.py'
@@ -1640,6 +1641,37 @@ jobs:
           assert qa["P3_status"]=="in_progress" and qa["P4_status"]=="not_started"
           print("STAGE6_REAL_7RIM_6SOURCE_EDGES_4TRUE_ABF_DISKS_PAIRED_2D_SEAMS_MEASURED_NO_FACTORY")
           PY
+      - name: Solve B24 true 2D rest-piece cloth sewing and render actual final solver meshes
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference"
+          out="$root/stage6_b24_cloth_preview"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
+            --python research/stage6_b24_real_cloth_preview.py -- \
+            --upper "$root/split_volume_toile_AB_research/two_volume_source_envelope_ab.json" \
+            --lower "$root/lower_mother_toile_research/lower_toile_source_geometry.json" \
+            --graph "$root/split_volume_toile_AB_research/B_integrated_neck_port/panel_interface_research_graph.json" \
+            --original "$RUNNER_TEMP/stage6.blend" \
+            --out "$out" \
+            --frames 40
+          python - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ["RUNNER_TEMP"])/"stage6-reference/stage6_b24_cloth_preview"
+          d=json.loads((p/"sewing_report.json").read_text())
+          assert d["schema"]=="stage6-b-24piece-same-source-real-Blender-Cloth-sewn-preview-v1"
+          assert d["original_2D_surrogate_research_pieces"]==24
+          assert d["physically_connected_sewing_springs"]>=300
+          assert d["all_original_2D_piece_vertices_baked_from_evaluated_Cloth"]
+          assert not d["pressure_fill_enabled"]
+          assert d["factory_cutting_patterns_approved"]==0
+          for view in ("three_quarter","side","front"):
+              for prefix in ("target_","sewn_"):
+                  assert (p/(prefix+view+".png")).stat().st_size>10000
+          print("STAGE6_ACTUAL_B24_SURROGATE_CLOTH_SOLVER_PHOTOS_NOT_AI_NOT_FACTORY",
+                d["initial_sewing_spring_gap_mean_mm"],
+                d["final_sewing_spring_gap_mean_mm"])
+          PY
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -1654,6 +1686,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/18piece_trial_sewing_pack/**
             ${{ runner.temp }}/stage6-reference/split_volume_toile_AB_research/**
             ${{ runner.temp }}/stage6-reference/z230_three_real_caps_research/**
+            ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_preview/**
             ${{ runner.temp }}/stage6-reference/stage6_external_s2s_abf_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.svg
