@@ -58,15 +58,9 @@ def compare_surface(source, actual):
 
 def seam_strain(mesh, rest, springs, edges):
     verts = mesh.vertices
-    gaps = np.linalg.norm(
-        verts[springs[:, 0]] - verts[springs[:, 1]], axis=1
-    ) * 1000
-    rest_length = np.linalg.norm(
-        rest[edges[:, 0]] - rest[edges[:, 1]], axis=1
-    )
-    actual_length = np.linalg.norm(
-        verts[edges[:, 0]] - verts[edges[:, 1]], axis=1
-    )
+    gaps = np.linalg.norm(verts[springs[:, 0]] - verts[springs[:, 1]], axis=1) * 1000
+    rest_length = np.linalg.norm(rest[edges[:, 0]] - rest[edges[:, 1]], axis=1)
+    actual_length = np.linalg.norm(verts[edges[:, 0]] - verts[edges[:, 1]], axis=1)
     if not (rest_length > 1e-11).all():
         raise ValueError("zero-length R2 original 2D material edge")
     return {
@@ -100,9 +94,7 @@ def audit(source, baseline, candidate, out):
         "actual_B24_R2_shape": b,
         "actual_R1_physical": seam_strain(old, old_uv, old_pairs, old_edges),
         "actual_R2_physical": seam_strain(new, new_uv, new_pairs, new_edges),
-        "R2_mean_shape_improved": bool(
-            b["symmetric_mean_mm"] < a["symmetric_mean_mm"]
-        ),
+        "R2_mean_shape_improved": bool(b["symmetric_mean_mm"] < a["symmetric_mean_mm"]),
         "R2_source_P95_improved": bool(
             b["source_to_actual_P95_mm"] < a["source_to_actual_P95_mm"]
         ),
