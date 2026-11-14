@@ -72,51 +72,51 @@ def grid_preposition(rings, heights, idx):
 
 
 def _panel_replacement(name, trial, body, head, bz, hz):
-        xy = None
-        xyz = None
-        if name.startswith("TORSO-"):
-            index = int(name[-1]) - 1
-            piece = trial["torso_gore_pieces"][index]
-            xy = grid_rest(piece, body, index)
-            xyz = grid_preposition(body, bz, index)
-        elif name.startswith("HEADNECK-"):
-            index = int(name[-1]) - 1
-            piece = trial["headneck_gore_pieces"][index]
-            xy = grid_rest(piece, head, index)
-            xyz = grid_preposition(head, hz, index)
-        elif name == "SHOULDER-CAP-TRIAL":
-            a = body[-1]
-            b = head[0]
-            xy = np.vstack((a, b))
-            xyz = np.column_stack((xy, np.full(128, 135.0)))
-        elif name == "HEAD-TOP-CAP-TRIAL":
-            ring = head[-1]
-            center = ring.mean(axis=0)
-            xy = np.vstack((ring, center))
-            xyz = np.vstack(
-                (np.column_stack((ring, np.full(64, 230.0))), [[*center, 236.0]])
+    xy = None
+    xyz = None
+    if name.startswith("TORSO-"):
+        index = int(name[-1]) - 1
+        piece = trial["torso_gore_pieces"][index]
+        xy = grid_rest(piece, body, index)
+        xyz = grid_preposition(body, bz, index)
+    elif name.startswith("HEADNECK-"):
+        index = int(name[-1]) - 1
+        piece = trial["headneck_gore_pieces"][index]
+        xy = grid_rest(piece, head, index)
+        xyz = grid_preposition(head, hz, index)
+    elif name == "SHOULDER-CAP-TRIAL":
+        a = body[-1]
+        b = head[0]
+        xy = np.vstack((a, b))
+        xyz = np.column_stack((xy, np.full(128, 135.0)))
+    elif name == "HEAD-TOP-CAP-TRIAL":
+        ring = head[-1]
+        center = ring.mean(axis=0)
+        xy = np.vstack((ring, center))
+        xyz = np.vstack(
+            (np.column_stack((ring, np.full(64, 230.0))), [[*center, 236.0]])
+        )
+    elif name == "COLLAR-TRIAL":
+        station = np.asarray(
+            trial["neck_collar_if_integrated"][
+                "lower_and_upper_stitch_station_x_mm"
+            ]
+        )
+        if station.shape != (65,):
+            raise ValueError("R1 modified 64 station collar invalid")
+        xy = np.vstack(
+            (
+                np.column_stack((station, np.zeros(65))),
+                np.column_stack((station, np.full(65, 10.0))),
             )
-        elif name == "COLLAR-TRIAL":
-            station = np.asarray(
-                trial["neck_collar_if_integrated"][
-                    "lower_and_upper_stitch_station_x_mm"
-                ]
+        )
+        ring = head[0][np.arange(65) % 64]
+        xyz = np.vstack(
+            (
+                np.column_stack((ring, np.full(65, 135.0))),
+                np.column_stack((ring, np.full(65, 145.0))),
             )
-            if station.shape != (65,):
-                raise ValueError("R1 modified 64 station collar invalid")
-            xy = np.vstack(
-                (
-                    np.column_stack((station, np.zeros(65))),
-                    np.column_stack((station, np.full(65, 10.0))),
-                )
-            )
-            ring = head[0][np.arange(65) % 64]
-            xyz = np.vstack(
-                (
-                    np.column_stack((ring, np.full(65, 135.0))),
-                    np.column_stack((ring, np.full(65, 145.0))),
-                )
-            )
+        )
     return xy, xyz
 
 
