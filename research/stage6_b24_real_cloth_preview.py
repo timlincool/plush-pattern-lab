@@ -18,7 +18,6 @@ from pathlib import Path
 import bpy
 import numpy as np
 from mathutils import Vector
-from mathutils.geometry import tessellate_polygon
 
 SOURCE_SHA = "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a"
 SCHEMA = "stage6-b-24piece-same-source-real-Blender-Cloth-sewn-preview-v1"
@@ -42,7 +41,7 @@ VIEWS = (
 def _read(args):
     if bpy.app.version[:3] != (4, 3, 2):
         raise ValueError("only pinned original Blender 4.3.2 supported")
-    for path in (args.upper, args.lower, args.graph, args.original):
+    for path in (args.upper, args.lower, args.graph, args.original, args.yoke_mesh):
         if not path.is_file() or path.is_symlink():
             raise ValueError("missing verified Stage6 source or symlinked file")
     if hashlib.sha256(args.original.read_bytes()).hexdigest() != SOURCE_SHA:
@@ -53,6 +52,20 @@ def _read(args):
     lower_raw = args.lower.read_bytes()
     graph_raw = args.graph.read_bytes()
     upper, lower, graph = (json.loads(s) for s in (upper_raw, lower_raw, graph_raw))
+    constrained = json.loads(args.yoke_mesh.read_bytes())
+    if (
+        constrained.get("schema") != "stage6-b24-four-hoof-hole-constrained-yoke-mesh-v1"
+        or constrained.get("source_lower_mother_json_sha256")
+        != hashlib.sha256(lower_raw).hexdigest()
+        or constrained.get("source_2d_fabric_boundaries") != 5
+        or constrained.get("original_stitch_loop_boundary_edges") != 320
+        or constrained.get("factory_cutting_patterns_approved") != 0
+        or len(constrained.get("triangles_local_original_yoke_vertex_ids", [])) != 326
+    ):
+        raise ValueError("same-run Shapely original four-hoof-hole yoke evidence required")
+    lower["_trusted_constrained_yoke_faces"] = constrained[
+        "triangles_local_original_yoke_vertex_ids"
+    ]
     variant = next(
         (x for x in upper.get("options", []) if x["name"] == "B_integrated_neck_port"),
         None,
@@ -280,75 +293,38 @@ def _collar(builder, piece, lower_ring, upper_ring):
     return result
 
 
-def _on_loop(points, xy):
-    """Simple 2D point-in-loop, for triangulated original surrogate yoke."""
-    x, y = float(xy[0]), float(xy[1])
-    inside = False
-    for a, b in zip(points, np.roll(points, 1, axis=0)):
-        xa, ya = a
-        xb, yb = b
-        if (ya > y) != (yb > y):
-            at_x = (xb - xa) * (y - ya) / (yb - ya) + xa
-            if x < at_x:
-                inside = not inside
-    return inside
-
-
 def _yoke(builder, lower):
-    outer = np.asarray(lower["yoke"]["outer_stitch_xy_mm"])
+    outer = np.asarray(lower["yoke"]["outer_stitch_xy_mm"], dtype=float)
     holes = [
-        np.asarray(lower["yoke"]["source_hoof_holes_stitch_xy_mm"][k])[::8]
+        np.asarray(lower["yoke"]["source_hoof_holes_stitch_xy_mm"][k], dtype=float)[::8]
         for k in FOOTS
     ]
     if outer.shape != (64, 2) or any(h.shape != (64, 2) for h in holes):
-        raise ValueError("old Stage6 four original 512-edge hoof rings missing")
-    arrays = [outer] + holes
-    xy = np.vstack(arrays)
-    index = {tuple(np.round(coord, 6)): i for i, coord in enumerate(xy)}
-    if len(index) != len(xy):
-        raise ValueError("separated Stage6 original toe samples overlap")
-    polygons = []
-    ordered_to_source = []
-    for index_loop, p in enumerate(arrays):
-        # tessellate_polygon interprets opposite winding as holes.
-        signed = float(
-            np.sum(p[:, 0] * np.roll(p[:, 1], -1) - np.roll(p[:, 0], -1) * p[:, 1])
-        )
-        ordered = p if (signed > 0) == (index_loop == 0) else p[::-1]
-        polygons.append([Vector((float(x), float(y), 0.0)) for x, y in ordered])
-        ordered_to_source.extend(index[tuple(np.round(pair, 6))] for pair in ordered)
-    tri = tessellate_polygon(polygons)
-    faces = []
-    for triangle in tri:
-        mapped = tuple(
-            ordered_to_source[int(pt)]
-            if isinstance(pt, (int, np.integer))
-            else index[tuple(np.round((pt.x, pt.y), 6))]
-            for pt in triangle
-        )
-        middle = xy[list(mapped)].mean(axis=0)
-        if not _on_loop(outer, middle):
-            continue
-        if any(_on_loop(hole, middle) for hole in holes):
-            continue
-        faces.append(mapped)
-    if not faces:
-        raise ValueError("Blender original yoke could not triangulate 4 holes")
-    # A real YOKE topological sewing interface must preserve every sampled
-    # 64-edge hole and outer boundary; otherwise refuse the visual shortcut.
+        raise ValueError("original four 512-edge hoof source samples changed")
+    xy = np.vstack([outer, *holes])
+    faces = lower["_trusted_constrained_yoke_faces"]
+    if len(faces) != 326 or any(
+        len(face) != 3 or any(not 0 <= int(v) < len(xy) for v in face)
+        for face in faces
+    ):
+        raise ValueError("no same-run four-hoof-hole original source CDT")
     edges = Counter(
         tuple(sorted((int(u), int(v))))
         for face in faces
-        for u, v in ((face[0], face[1]), (face[1], face[2]), (face[2], face[0]))
+        for u, v in zip(face, face[1:] + face[:1])
     )
-    border = {e for e, count in edges.items() if count == 1}
+    border = {key for key, count in edges.items() if count == 1}
     want = {
         tuple(sorted((i + offset, (i + 1) % 64 + offset)))
         for offset in (0, 64, 128, 192, 256)
         for i in range(64)
     }
-    if border != want:
-        raise ValueError("Blender yoke tessellation did not preserve all four holes")
+    if (
+        border != want
+        or set(edges.values()) - {1, 2}
+        or len(set(tuple(sorted(face)) for face in faces)) != 326
+    ):
+        raise ValueError("five original 2D yoke stitch boundaries not preserved")
     ids = builder.patch(
         "YOKE-01",
         np.column_stack((xy, np.full(len(xy), 60.0))),
@@ -637,7 +613,7 @@ def _render_original(original, out):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("upper", "lower", "graph", "original", "out"):
+    for name in ("upper", "lower", "graph", "original", "out", "yoke_mesh"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--frames", type=int, default=48)
     argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
@@ -669,6 +645,10 @@ def main():
         {
             "schema": SCHEMA,
             "original_stage6_input_proof": source_sha,
+        "same_run_source_yoke_cdt_SHA256": hashlib.sha256(
+            args.yoke_mesh.read_bytes()
+        ).hexdigest(),
+        "original_five_stitch_boundaries_CDT_GE0S": True,
             "pattern_variant": graph["variant"],
             "status": "RESEARCH_ONLY_REAL_CLOTH_2D_TO_3D_NOT_FINAL_TOY",
             "render_views": [name for name, _ in VIEWS],
