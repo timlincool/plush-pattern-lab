@@ -98,9 +98,7 @@ def _panel_replacement(name, trial, body, head, bz, hz):
         )
     elif name == "COLLAR-TRIAL":
         station = np.asarray(
-            trial["neck_collar_if_integrated"][
-                "lower_and_upper_stitch_station_x_mm"
-            ]
+            trial["neck_collar_if_integrated"]["lower_and_upper_stitch_station_x_mm"]
         )
         if station.shape != (65,):
             raise ValueError("R1 modified 64 station collar invalid")
@@ -212,7 +210,6 @@ def _save_revised_staging(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
     )
     return report
-
 
 
 def build(snapshot_file, upper_file, output_dir):
