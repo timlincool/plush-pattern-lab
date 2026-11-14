@@ -50,6 +50,7 @@ on:
       - 'scripts/audit_stage6_lower_six_cut_disks_abf.py'
       - 'research/stage6_b24_source_yoke_cdt.py'
       - 'research/stage6_b24_real_cloth_preview.py'
+      - 'research/stage6_b24_r2/**'
       - 'scripts/unwrap_stage6_true_crown_caps_blender.py'
       - 'scripts/audit_stage6_true_crown_caps_abf.py'
       - 'scripts/build_stage6_protrusion_bisect_ab.py'
@@ -1821,6 +1822,70 @@ jobs:
           )
           print("B24_R1_ACTUAL_PHYSICAL_SHAPE_AB", json.dumps(report))
           PY
+      - name: R2 genuine source contours to same-run Blender Cloth and independent R1 A/B
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference"
+          trial="$root/stage6_b24_r2_physical"
+          python research/stage6_b24_r2/build_b24_r2_true_contour.py \
+            --source "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --baseline "$root/stage6_b24_r1_physical/B24_R1_upper_source_envelope_ab_RESEARCH_ONLY.json" \
+            --graph "$root/stage6_b24_r1_physical/B24_R1_panel_interface_46_RESEARCH_ONLY.json" \
+            --out "$trial"
+          python research/stage6_b24_r1/build_b24_r1_blender_staging.py \
+            --snapshot "$root/stage6_b24_cloth_preview/actual_evaluated_B24_Cloth_frame.npz" \
+            --upper "$trial/B24_R2_upper_RESEARCH_ONLY.json" \
+            --out "$trial"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+
+          root = Path(os.environ["RUNNER_TEMP"]) / "stage6-reference"
+          target = root / "stage6_b24_r2_physical"
+          qa = json.loads((target / "B24_R2_true_source_ring_QA.json").read_text())
+          assert len(qa["real_source_sections"]) == 6
+          assert all(r["R2_source_xy_IoU"] > r["R1_source_xy_IoU"] + .01
+                     for r in qa["real_source_sections"])
+          base = np.load(root / "stage6_b24_r1_physical/B24_R1_NEW_2D_REST_NEW_3D_PREPOSITION_NOT_SOLVED.npz")
+          trial = np.load(target / "B24_R1_NEW_2D_REST_NEW_3D_PREPOSITION_NOT_SOLVED.npz")
+          for key in ("face_lengths", "face_vertex_ids", "original_sewing_spring_vertex_pairs"):
+              assert np.array_equal(base[key], trial[key])
+          assert len(trial["original_sewing_spring_vertex_pairs"]) == 974
+          lengths, ids = trial["face_lengths"], trial["face_vertex_ids"]
+          edges = set()
+          offset = 0
+          for count in lengths:
+              polygon = ids[offset:offset + int(count)]
+              edges.update(tuple(sorted((int(a), int(b))))
+                           for a, b in zip(polygon, np.roll(polygon, -1)))
+              offset += int(count)
+          pairs = np.asarray(sorted(edges), dtype=int)
+          verts = trial["initial_3d_prepositioned_vertices_m"]
+          uv = trial["true_independent_flat_2d_rest_xy_m"]
+          physical = np.linalg.norm(verts[pairs[:, 0]] - verts[pairs[:, 1]], axis=1)
+          material = np.linalg.norm(uv[pairs[:, 0]] - uv[pairs[:, 1]], axis=1)
+          assert (material > 1e-11).all()
+          strain = abs(physical / material - 1) * 100
+          p95 = float(np.percentile(strain, 95))
+          max_error = float(strain.max())
+          assert p95 < 10.5 and max_error < 75, "unsafe R2 preposition distortion"
+          print("R2_TRUE_SOURCE_SHAPE_2D_MATERIAL_STRAIN_SCREEN", p95, max_error)
+          PY
+          mkdir -p "$trial/solver"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python research/stage6_b24_r1/run_B24_R1_native_Blender_Cloth_4_3_2.py -- \
+            --input "$trial/B24_R1_NEW_2D_REST_NEW_3D_PREPOSITION_NOT_SOLVED.npz" \
+            --qa "$trial/B24_R1_staging_QA.json" \
+            --out "$trial/solver" --frames 40
+          python research/stage6_b24_r2/audit_actual_blender_ab.py \
+            --source "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --baseline "$root/stage6_b24_r1_physical/solver/B24_R1_actual_evaluated_Cloth_frame40.npz" \
+            --candidate "$trial/solver/B24_R1_actual_evaluated_Cloth_frame40.npz" \
+            --out "$trial/solver"
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -1837,6 +1902,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/z230_three_real_caps_research/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_preview/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_r1_physical/**
+            ${{ runner.temp }}/stage6-reference/stage6_b24_r2_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_source_yoke_CDT.json
             ${{ runner.temp }}/stage6-reference/stage6_external_s2s_abf_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
