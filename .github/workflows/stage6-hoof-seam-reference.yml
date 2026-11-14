@@ -1828,6 +1828,9 @@ jobs:
           set -euo pipefail
           root="$RUNNER_TEMP/stage6-reference"
           trial="$root/stage6_b24_r2_physical"
+          # The older pinned trimesh was installed --no-deps earlier; its
+          # Path3D.discrete traversal requires open-source networkx.
+          python -m pip install --only-binary=:all: --no-deps networkx==3.4.2
           python research/stage6_b24_r2/build_b24_r2_true_contour.py \
             --source "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
             --baseline "$root/stage6_b24_r1_physical/B24_R1_upper_source_envelope_ab_RESEARCH_ONLY.json" \
