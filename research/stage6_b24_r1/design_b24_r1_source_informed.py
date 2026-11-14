@@ -257,27 +257,7 @@ def edge_segments(key, trial, row):
     return None
 
 
-def generate(upper_file, lower_file, original_graph_file, sections_file, output):
-    original_upper = json.loads(Path(upper_file).read_text(encoding="utf8"))
-    lower = json.loads(Path(lower_file).read_text(encoding="utf8"))
-    graph = json.loads(Path(original_graph_file).read_text(encoding="utf8"))
-    sections = json.loads(Path(sections_file).read_text(encoding="utf8"))
-    if (
-        original_upper.get("schema")
-        != "stage6-separated-torso-headneck-mother-trial-ab-v1"
-        or lower.get("schema") != "stage6-source-hoof-anchored-lower-mother-toile-v1"
-        or graph.get("variant") != RESEARCH_VARIANT
-        or graph.get("numerically_paired_interface_count") != 46
-        or graph.get("factory_cut_patterns_approved") != 0
-    ):
-        raise ValueError("input not the verified B24 research structure")
-    upper = copy.deepcopy(original_upper)
-    trial = next(x for x in upper["options"] if x["name"] == RESEARCH_VARIANT)
-    original_trial = next(
-        x for x in original_upper["options"] if x["name"] == RESEARCH_VARIANT
-    )
-    targets = true_targets(sections, trial)
-    scales, gap, opt = optimize_scales(trial, targets)
+def _redesign_anatomic_rings(trial, scales, gap):
     body = np.asarray(trial["body_synthetic_rings_xy_mm"], float)
     head = np.asarray(trial["head_synthetic_rings_xy_mm"], float)
     corrected_body = np.asarray([rescale_ring(r, s) for r, s in zip(body, scales[:4])])
@@ -321,10 +301,10 @@ def generate(upper_file, lower_file, original_graph_file, sections_file, output)
     trial["source_neck_port_modification"][
         "neck_port_matches_actual_source_root_geometry"
     ] = False
-    # Keep the old B-to-TORSO seam identity exactly: not simply equal perimeter,
-    # but all 64 original B100 ring 2D indexed segment lengths are immutable.
-    if not np.array_equal(corrected_body[0], body[0]):
-        raise ValueError("lower 13 original source-linked pieces were changed")
+    return body, corrected_body
+
+
+def _reconcile_revised_seam_graph(graph, trial):
     updated_graph = copy.deepcopy(graph)
     touched = 0
     for e in updated_graph["sewing_interfaces"]:
@@ -346,9 +326,14 @@ def generate(upper_file, lower_file, original_graph_file, sections_file, output)
         touched += 1
     if len(updated_graph["sewing_interfaces"]) != 46 or touched < 22:
         raise ValueError("R1 failed 46-interface continuity")
-    # Confirm zero material-approval elevation.
-    if trial["industrial_cut_patterns_approved"] != 0:
-        raise ValueError("R1 cannot be declared production-ready")
+    return updated_graph, touched
+
+
+def _write_research_revision(
+    output, upper, updated_graph, graph, original_inputs, targets, scales,
+    opt, gap, touched
+):
+    upper_file, lower_file, original_graph_file, sections_file = original_inputs
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     files = {
@@ -394,6 +379,41 @@ def generate(upper_file, lower_file, original_graph_file, sections_file, output)
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
     )
     return report
+
+
+
+def generate(upper_file, lower_file, original_graph_file, sections_file, output):
+    original_upper = json.loads(Path(upper_file).read_text(encoding="utf8"))
+    lower = json.loads(Path(lower_file).read_text(encoding="utf8"))
+    graph = json.loads(Path(original_graph_file).read_text(encoding="utf8"))
+    sections = json.loads(Path(sections_file).read_text(encoding="utf8"))
+    if (
+        original_upper.get("schema")
+        != "stage6-separated-torso-headneck-mother-trial-ab-v1"
+        or lower.get("schema") != "stage6-source-hoof-anchored-lower-mother-toile-v1"
+        or graph.get("variant") != RESEARCH_VARIANT
+        or graph.get("numerically_paired_interface_count") != 46
+        or graph.get("factory_cut_patterns_approved") != 0
+    ):
+        raise ValueError("input not the verified B24 research structure")
+    upper = copy.deepcopy(original_upper)
+    trial = next(x for x in upper["options"] if x["name"] == RESEARCH_VARIANT)
+    targets = true_targets(sections, trial)
+    scales, gap, opt = optimize_scales(trial, targets)
+    body, corrected_body = _redesign_anatomic_rings(trial, scales, gap)
+    # Keep the old B-to-TORSO seam identity exactly: not simply equal perimeter,
+    # but all 64 original B100 ring 2D indexed segment lengths are immutable.
+    if not np.array_equal(corrected_body[0], body[0]):
+        raise ValueError("lower 13 original source-linked pieces were changed")
+    updated_graph, touched = _reconcile_revised_seam_graph(graph, trial)
+    # Confirm zero material-approval elevation.
+    if trial["industrial_cut_patterns_approved"] != 0:
+        raise ValueError("R1 cannot be declared production-ready")
+    return _write_research_revision(
+        output, upper, updated_graph, graph,
+        (upper_file, lower_file, original_graph_file, sections_file),
+        targets, scales, opt, gap, touched
+    )
 
 
 def main():
