@@ -71,37 +71,7 @@ def grid_preposition(rings, heights, idx):
     return np.asarray(out).reshape(-1, 3)
 
 
-def build(snapshot_file, upper_file, output_dir):
-    if hashlib.sha256(Path(snapshot_file).read_bytes()).hexdigest() != SNAPSHOT_SHA256:
-        raise ValueError(
-            "R1 builder SHA mismatch: only accepts verified original B24 frame 40"
-        )
-    upper = json.loads(Path(upper_file).read_text(encoding="utf8"))
-    trial = next(p for p in upper["options"] if p["name"] == "B_integrated_neck_port")
-    body = np.asarray(trial["body_synthetic_rings_xy_mm"], float)
-    head = np.asarray(trial["head_synthetic_rings_xy_mm"], float)
-    bz = np.asarray(trial["body_rings_z_mm"], float)
-    hz = np.asarray(trial["head_rings_z_mm"], float)
-    if (
-        body.shape != (4, 64, 2)
-        or head.shape != (5, 64, 2)
-        or not np.all(np.isfinite(body))
-        or not np.all(np.isfinite(head))
-    ):
-        raise ValueError("invalid source-linked R1 64-station rings")
-    with np.load(snapshot_file, allow_pickle=False) as npz:
-        initial = np.array(npz["initial_3d_prepositioned_vertices_m"], dtype=np.float64)
-        rest = np.array(npz["true_independent_flat_2d_rest_xy_m"], dtype=np.float64)
-        flens = np.array(npz["face_lengths"], dtype=np.int32)
-        fids = np.array(npz["face_vertex_ids"], dtype=np.int32)
-        colors = np.array(npz["face_material_roles"], dtype=np.int8)
-        springs = np.array(npz["original_sewing_spring_vertex_pairs"], dtype=np.int32)
-    if (
-        initial.shape != (2431, 3)
-        or rest.shape != (2431, 2)
-        or springs.shape != (974, 2)
-    ):
-        raise ValueError("old real Cloth source topology not same as R1")
+def _reposition_revised_upper(trial, body, head, bz, hz, initial, rest):
     edited = []
     for stride, name, where in expected_segments():
         xy = None
@@ -160,6 +130,10 @@ def build(snapshot_file, upper_file, output_dir):
         raise ValueError("expected exactly 11 R1 upper pieces changed")
     if not np.isfinite(rest).all() or not np.isfinite(initial).all():
         raise ValueError("R1 XYZ/rest nonfinite")
+    return edited
+
+
+def _verify_immutable_lower(snapshot_file, initial, rest):
     old_p = np.load(snapshot_file)
     # Every original lower body vertex / 2D material coordinate is byte-value
     # preserved. This is much stronger than preserving an overall body bounding box.
@@ -176,6 +150,11 @@ def build(snapshot_file, upper_file, output_dir):
         ):
             raise ValueError("source-linked lower panel changed")
     old_p.close()
+
+
+def _save_revised_staging(
+    output_dir, upper_file, initial, rest, flens, fids, colors, springs, edited
+):
     # All physical sewing-spring graph edges remain the old approved numeric
     # research references; this is not a weld/closure certification.
     init_gap = (
@@ -228,6 +207,45 @@ def build(snapshot_file, upper_file, output_dir):
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
     )
     return report
+
+
+
+def build(snapshot_file, upper_file, output_dir):
+    if hashlib.sha256(Path(snapshot_file).read_bytes()).hexdigest() != SNAPSHOT_SHA256:
+        raise ValueError(
+            "R1 builder SHA mismatch: only accepts verified original B24 frame 40"
+        )
+    upper = json.loads(Path(upper_file).read_text(encoding="utf8"))
+    trial = next(p for p in upper["options"] if p["name"] == "B_integrated_neck_port")
+    body = np.asarray(trial["body_synthetic_rings_xy_mm"], float)
+    head = np.asarray(trial["head_synthetic_rings_xy_mm"], float)
+    bz = np.asarray(trial["body_rings_z_mm"], float)
+    hz = np.asarray(trial["head_rings_z_mm"], float)
+    if (
+        body.shape != (4, 64, 2)
+        or head.shape != (5, 64, 2)
+        or not np.all(np.isfinite(body))
+        or not np.all(np.isfinite(head))
+    ):
+        raise ValueError("invalid source-linked R1 64-station rings")
+    with np.load(snapshot_file, allow_pickle=False) as npz:
+        initial = np.array(npz["initial_3d_prepositioned_vertices_m"], dtype=np.float64)
+        rest = np.array(npz["true_independent_flat_2d_rest_xy_m"], dtype=np.float64)
+        flens = np.array(npz["face_lengths"], dtype=np.int32)
+        fids = np.array(npz["face_vertex_ids"], dtype=np.int32)
+        colors = np.array(npz["face_material_roles"], dtype=np.int8)
+        springs = np.array(npz["original_sewing_spring_vertex_pairs"], dtype=np.int32)
+    if (
+        initial.shape != (2431, 3)
+        or rest.shape != (2431, 2)
+        or springs.shape != (974, 2)
+    ):
+        raise ValueError("old real Cloth source topology not same as R1")
+    edited = _reposition_revised_upper(trial, body, head, bz, hz, initial, rest)
+    _verify_immutable_lower(snapshot_file, initial, rest)
+    return _save_revised_staging(
+        output_dir, upper_file, initial, rest, flens, fids, colors, springs, edited
+    )
 
 
 def main():
