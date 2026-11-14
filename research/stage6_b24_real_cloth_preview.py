@@ -74,12 +74,17 @@ def _read(args):
         or lower.get("approved_industrial_paper_patterns") != 0
     ):
         raise ValueError("expected same-run actual B24 research seam contract")
-    return variant, lower, graph, {
-        "upper_sha256": hashlib.sha256(upper_raw).hexdigest(),
-        "lower_sha256": hashlib.sha256(lower_raw).hexdigest(),
-        "graph_sha256": hashlib.sha256(graph_raw).hexdigest(),
-        "original_blend_sha256": SOURCE_SHA,
-    }
+    return (
+        variant,
+        lower,
+        graph,
+        {
+            "upper_sha256": hashlib.sha256(upper_raw).hexdigest(),
+            "lower_sha256": hashlib.sha256(lower_raw).hexdigest(),
+            "graph_sha256": hashlib.sha256(graph_raw).hexdigest(),
+            "original_blend_sha256": SOURCE_SHA,
+        },
+    )
 
 
 class MeshBuilder:
@@ -114,7 +119,9 @@ class MeshBuilder:
                 raise ValueError("trial piece face outside indexed material polygon")
             self.faces.append([start + int(i) for i in face])
             self.face_color.append(role)
-        self.parts.append({"id": name, "vertex_count": len(xyz), "face_count": len(faces)})
+        self.parts.append(
+            {"id": name, "vertex_count": len(xyz), "face_count": len(faces)}
+        )
         return [start + i for i in range(len(xyz))]
 
     def seam(self, first, second, kind):
@@ -141,9 +148,14 @@ def _grid(builder, name, xyz, rest, role):
         raise ValueError("sewing gore station/rest counts differ")
     rows, columns = positions.shape[:2]
     faces = [
-        (j * columns + k, (j + 1) * columns + k,
-         (j + 1) * columns + k + 1, j * columns + k + 1)
-        for j in range(rows - 1) for k in range(columns - 1)
+        (
+            j * columns + k,
+            (j + 1) * columns + k,
+            (j + 1) * columns + k + 1,
+            j * columns + k + 1,
+        )
+        for j in range(rows - 1)
+        for k in range(columns - 1)
     ]
     flat = builder.patch(
         name, positions.reshape(-1, 3), planar.reshape(-1, 2), faces, role
@@ -185,7 +197,8 @@ def _gores(builder, pieces, rings, heights, role):
         result.append(_grid(builder, piece["id"], xyz, planar, role))
     for i in range(4):
         builder.seam(
-            result[i]["right"], result[(i + 1) % 4]["left"], role + "_side"
+            result[i]["right"], result[(i + 1) % 4]["left"],
+            ("torso" if role == 0 else "headneck") + "_side"
         )
     return result
 
@@ -216,12 +229,13 @@ def _annulus(builder, name, outer, inner, z, role):
     if outer.shape != (64, 2) or inner.shape != (64, 2):
         raise ValueError("two original 64-segment shoulder rings needed")
     xyz = np.vstack(
-        (np.column_stack((outer, np.full(64, z))),
-         np.column_stack((inner, np.full(64, z))))
+        (
+            np.column_stack((outer, np.full(64, z))),
+            np.column_stack((inner, np.full(64, z))),
+        )
     )
     rest = np.vstack((outer, inner))
-    faces = [(i, (i + 1) % 64, 64 + (i + 1) % 64, 64 + i)
-             for i in range(64)]
+    faces = [(i, (i + 1) % 64, 64 + (i + 1) % 64, 64 + i) for i in range(64)]
     ids = builder.patch(name, xyz, rest, faces, role)
     return {"outer": ids[:64], "inner": ids[64:]}
 
@@ -230,14 +244,15 @@ def _top_cap(builder, piece, ring, z):
     xyz_ring = np.asarray(ring)
     rest_ring = np.asarray(piece["outer_stitch_xy_mm"])
     center = xyz_ring.mean(axis=0)
-    xyz = np.vstack((
-        np.column_stack((xyz_ring, np.full(64, z))),
-        [[center[0], center[1], z + 6.0]],
-    ))
+    xyz = np.vstack(
+        (
+            np.column_stack((xyz_ring, np.full(64, z))),
+            [[center[0], center[1], z + 6.0]],
+        )
+    )
     rest = np.vstack((rest_ring, rest_ring.mean(axis=0)))
     ids = builder.patch(
-        piece["id"], xyz, rest,
-        [(64, i, (i + 1) % 64) for i in range(64)], 1
+        piece["id"], xyz, rest, [(64, i, (i + 1) % 64) for i in range(64)], 1
     )
     return ids[:64]
 
@@ -248,14 +263,18 @@ def _collar(builder, piece, lower_ring, upper_ring):
         raise ValueError("not a real 64-station B collar research pattern")
     bottom = np.asarray(lower_ring)
     top = np.asarray(upper_ring)
-    xyz = np.stack((
-        np.column_stack((bottom[np.arange(65) % 64], np.full(65, 135.0))),
-        np.column_stack((top[np.arange(65) % 64], np.full(65, 145.0))),
-    ))
-    rest = np.stack((
-        np.column_stack((start, np.zeros(65))),
-        np.column_stack((start, np.full(65, 10.0))),
-    ))
+    xyz = np.stack(
+        (
+            np.column_stack((bottom[np.arange(65) % 64], np.full(65, 135.0))),
+            np.column_stack((top[np.arange(65) % 64], np.full(65, 145.0))),
+        )
+    )
+    rest = np.stack(
+        (
+            np.column_stack((start, np.zeros(65))),
+            np.column_stack((start, np.full(65, 10.0))),
+        )
+    )
     result = _grid(builder, "COLLAR-TRIAL", xyz, rest, 0)
     builder.seam(result["left"], result["right"], "collar_side")
     return result
@@ -285,22 +304,28 @@ def _yoke(builder, lower):
         raise ValueError("old Stage6 four original 512-edge hoof rings missing")
     arrays = [outer] + holes
     xy = np.vstack(arrays)
-    index = {
-        tuple(np.round(coord, 6)): i for i, coord in enumerate(xy)
-    }
+    index = {tuple(np.round(coord, 6)): i for i, coord in enumerate(xy)}
     if len(index) != len(xy):
         raise ValueError("separated Stage6 original toe samples overlap")
     polygons = []
+    ordered_to_source = []
     for index_loop, p in enumerate(arrays):
         # tessellate_polygon interprets opposite winding as holes.
-        signed = float(np.sum(p[:, 0] * np.roll(p[:, 1], -1)
-                            - np.roll(p[:, 0], -1) * p[:, 1]))
+        signed = float(
+            np.sum(p[:, 0] * np.roll(p[:, 1], -1) - np.roll(p[:, 0], -1) * p[:, 1])
+        )
         ordered = p if (signed > 0) == (index_loop == 0) else p[::-1]
         polygons.append([Vector((float(x), float(y), 0.0)) for x, y in ordered])
+        ordered_to_source.extend(index[tuple(np.round(pair, 6))] for pair in ordered)
     tri = tessellate_polygon(polygons)
     faces = []
     for triangle in tri:
-        mapped = tuple(index[tuple(np.round((pt.x, pt.y), 6))] for pt in triangle)
+        mapped = tuple(
+            ordered_to_source[int(pt)]
+            if isinstance(pt, (int, np.integer))
+            else index[tuple(np.round((pt.x, pt.y), 6))]
+            for pt in triangle
+        )
         middle = xy[list(mapped)].mean(axis=0)
         if not _on_loop(outer, middle):
             continue
@@ -313,13 +338,14 @@ def _yoke(builder, lower):
     # 64-edge hole and outer boundary; otherwise refuse the visual shortcut.
     edges = Counter(
         tuple(sorted((int(u), int(v))))
-        for face in faces for u, v in
-        ((face[0], face[1]), (face[1], face[2]), (face[2], face[0]))
+        for face in faces
+        for u, v in ((face[0], face[1]), (face[1], face[2]), (face[2], face[0]))
     )
     border = {e for e, count in edges.items() if count == 1}
     want = {
         tuple(sorted((i + offset, (i + 1) % 64 + offset)))
-        for offset in (0, 64, 128, 192, 256) for i in range(64)
+        for offset in (0, 64, 128, 192, 256)
+        for i in range(64)
     }
     if border != want:
         raise ValueError("Blender yoke tessellation did not preserve all four holes")
@@ -330,9 +356,12 @@ def _yoke(builder, lower):
         faces,
         0,
     )
-    return {"outer": ids[:64],
-            "holes": {name: ids[64 * (i + 1):64 * (i + 2)]
-                      for i, name in enumerate(FOOTS)}}
+    return {
+        "outer": ids[:64],
+        "holes": {
+            name: ids[64 * (i + 1) : 64 * (i + 2)] for i, name in enumerate(FOOTS)
+        },
+    }
 
 
 def _legs(builder, lower):
@@ -354,14 +383,16 @@ def _legs(builder, lower):
         builder.seam(sleeve["left"], sleeve["right"], "leg_tube_side")
         rest_top = ring
         center = rest_top.mean(axis=0)
-        sole_xyz = np.vstack((
-            np.column_stack((ring, np.full(64, 20.0))),
-            [[center[0], center[1], 19.0]]
-        ))
+        sole_xyz = np.vstack(
+            (np.column_stack((ring, np.full(64, 20.0))), [[center[0], center[1], 19.0]])
+        )
         sole_rest = np.vstack((ring, center))
         ids = builder.patch(
-            "SOLE-" + name, sole_xyz, sole_rest,
-            [(64, i, (i + 1) % 64) for i in range(64)], 3
+            "SOLE-" + name,
+            sole_xyz,
+            sole_rest,
+            [(64, i, (i + 1) % 64) for i in range(64)],
+            3,
         )
         builder.seam(sleeve["bottom"][:64], ids[:64], "sole_to_leg")
         sleeves[name] = sleeve
@@ -372,41 +403,51 @@ def _assemble(body, lower):
     builder = MeshBuilder()
     bands = _bands(builder, lower, body)
     torso = _gores(
-        builder, body["torso_gore_pieces"],
-        body["body_synthetic_rings_xy_mm"], body["body_rings_z_mm"], 0
+        builder,
+        body["torso_gore_pieces"],
+        body["body_synthetic_rings_xy_mm"],
+        body["body_rings_z_mm"],
+        0,
     )
     head = _gores(
-        builder, body["headneck_gore_pieces"],
-        body["head_synthetic_rings_xy_mm"], body["head_rings_z_mm"], 1
+        builder,
+        body["headneck_gore_pieces"],
+        body["head_synthetic_rings_xy_mm"],
+        body["head_rings_z_mm"],
+        1,
     )
     outer = body["shoulder_cap"]["outer_stitch_xy_mm"]
     inner = body["shoulder_cap"]["upper_head_opening_stitch_xy_mm"][0]
     shoulder = _annulus(builder, "SHOULDER-CAP-TRIAL", outer, inner, 135.0, 0)
     top = _top_cap(
-        builder, body["head_top_cap"],
-        body["head_synthetic_rings_xy_mm"][-1], 230.0
+        builder, body["head_top_cap"], body["head_synthetic_rings_xy_mm"][-1], 230.0
     )
     collar = _collar(
-        builder, body["neck_collar_if_integrated"], inner,
-        body["head_synthetic_rings_xy_mm"][0]
+        builder,
+        body["neck_collar_if_integrated"],
+        inner,
+        body["head_synthetic_rings_xy_mm"][0],
     )
     yoke = _yoke(builder, lower)
     legs = _legs(builder, lower)
     for i in range(4):
         ring = [(i * 16 + k) % 64 for k in range(17)]
         builder.seam(bands[i]["top"], torso[i]["bottom"], "band_to_torso")
-        builder.seam(bands[i]["bottom"], [yoke["outer"][k] for k in ring],
-                     "band_to_yoke")
-        builder.seam(torso[i]["top"], [shoulder["outer"][k] for k in ring],
-                     "torso_to_shoulder")
-        builder.seam(head[i]["top"], [top[k] for k in ring],
-                     "head_to_cap")
-        builder.seam(head[i]["bottom"], [collar["top"][k] for k in range(i*16,i*16+17)],
-                     "head_to_collar")
+        builder.seam(
+            bands[i]["bottom"], [yoke["outer"][k] for k in ring], "band_to_yoke"
+        )
+        builder.seam(
+            torso[i]["top"], [shoulder["outer"][k] for k in ring], "torso_to_shoulder"
+        )
+        builder.seam(head[i]["top"], [top[k] for k in ring], "head_to_cap")
+        builder.seam(
+            head[i]["bottom"],
+            [collar["top"][k] for k in range(i * 16, i * 16 + 17)],
+            "head_to_collar",
+        )
     builder.seam(shoulder["inner"], collar["bottom"][:64], "collar_to_shoulder")
     for foot in FOOTS:
-        builder.seam(legs[foot]["top"][:64], yoke["holes"][foot],
-                     "leg_to_yoke")
+        builder.seam(legs[foot]["top"][:64], yoke["holes"][foot], "leg_to_yoke")
     if len(builder.parts) != 24:
         raise ValueError("expected all B 24 independent original trial pieces")
     return builder
@@ -473,14 +514,15 @@ def _run_cloth(builder, frames):
         if len(latest) != len(original) or not np.isfinite(latest).all():
             raise ValueError("Blender cloth changed topology or yielded nonfinite XYZ")
         if frame % 12 == 0:
-            gaps = np.linalg.norm(
-                latest[pairs[:, 0]] - latest[pairs[:, 1]], axis=1
+            gaps = np.linalg.norm(latest[pairs[:, 0]] - latest[pairs[:, 1]], axis=1)
+            print(
+                "STAGE6_B24_REAL_CLOTH_FRAME",
+                frame,
+                "seam_mean_mm",
+                float(gaps.mean() * 1000),
+                flush=True,
             )
-            print("STAGE6_B24_REAL_CLOTH_FRAME", frame,
-                  "seam_mean_mm", float(gaps.mean() * 1000), flush=True)
-    final_gap = np.linalg.norm(
-        latest[pairs[:, 0]] - latest[pairs[:, 1]], axis=1
-    )
+    final_gap = np.linalg.norm(latest[pairs[:, 0]] - latest[pairs[:, 1]], axis=1)
     snapshot = bpy.data.meshes.new("B24_ACTUAL_SOLVER_FRAME")
     snapshot.from_pydata(latest.tolist(), [], builder.faces)
     snap = bpy.data.objects.new("B24_EVALUATED_CLOTH_NOT_A_FACTORY_TOY", snapshot)
@@ -553,7 +595,9 @@ def _render_simulated(snap, out):
     scene = bpy.context.scene
     xyz = np.asarray([tuple(v.co) for v in snap.data.vertices])
     for name, direction in VIEWS:
-        _camera(scene, xyz, direction, name, out / ("sewn_" + name + ".png"), "MATERIAL")
+        _camera(
+            scene, xyz, direction, name, out / ("sewn_" + name + ".png"), "MATERIAL"
+        )
 
 
 def _render_original(original, out):
@@ -581,12 +625,14 @@ def _render_original(original, out):
         raise ValueError("original Stage6 target main body object missing")
     from mathutils import Vector as V  # noqa: PLC0415
 
-    bbox = np.asarray([
-        tuple(target.matrix_world @ V(corner)) for corner in target.bound_box
-    ])
+    bbox = np.asarray(
+        [tuple(target.matrix_world @ V(corner)) for corner in target.bound_box]
+    )
     scene.display.shading.color_type = "OBJECT"
     for name, direction in VIEWS:
-        _camera(scene, bbox, direction, name, out / ("target_" + name + ".png"), "OBJECT")
+        _camera(
+            scene, bbox, direction, name, out / ("target_" + name + ".png"), "OBJECT"
+        )
 
 
 def main():
@@ -619,26 +665,34 @@ def main():
     except Exception as exc:
         print("OPTIONAL_GLTF_EXPORT_UNAVAILABLE", type(exc).__name__, str(exc))
         report["real_solver_mesh_glb_exported"] = False
-    report.update({
-        "schema": SCHEMA,
-        "original_stage6_input_proof": source_sha,
-        "pattern_variant": graph["variant"],
-        "status": "RESEARCH_ONLY_REAL_CLOTH_2D_TO_3D_NOT_FINAL_TOY",
-        "render_views": [name for name, _ in VIEWS],
-    })
+    report.update(
+        {
+            "schema": SCHEMA,
+            "original_stage6_input_proof": source_sha,
+            "pattern_variant": graph["variant"],
+            "status": "RESEARCH_ONLY_REAL_CLOTH_2D_TO_3D_NOT_FINAL_TOY",
+            "render_views": [name for name, _ in VIEWS],
+        }
+    )
     (args.out / "sewing_report.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",
         encoding="utf8",
     )
     _render_original(args.original, args.out)
-    print("STAGE6_B24_REAL_CLOTH_SIM_COMPLETE", json.dumps({
-        "pieces": report["original_2D_surrogate_research_pieces"],
-        "springs": report["physically_connected_sewing_springs"],
-        "initial_mm": report["initial_sewing_spring_gap_mean_mm"],
-        "final_mm": report["final_sewing_spring_gap_mean_mm"],
-        "filling": False,
-        "factory_approved": 0,
-    }), flush=True)
+    print(
+        "STAGE6_B24_REAL_CLOTH_SIM_COMPLETE",
+        json.dumps(
+            {
+                "pieces": report["original_2D_surrogate_research_pieces"],
+                "springs": report["physically_connected_sewing_springs"],
+                "initial_mm": report["initial_sewing_spring_gap_mean_mm"],
+                "final_mm": report["final_sewing_spring_gap_mean_mm"],
+                "filling": False,
+                "factory_approved": 0,
+            }
+        ),
+        flush=True,
+    )
 
 
 if __name__ == "__main__":
