@@ -48,6 +48,7 @@ on:
       - 'scripts/build_stage6_lower_six_cut_disks.py'
       - 'scripts/unwrap_stage6_lower_six_cut_disks_blender.py'
       - 'scripts/audit_stage6_lower_six_cut_disks_abf.py'
+      - 'research/stage6_b24_source_yoke_cdt.py'
       - 'research/stage6_b24_real_cloth_preview.py'
       - 'scripts/unwrap_stage6_true_crown_caps_blender.py'
       - 'scripts/audit_stage6_true_crown_caps_abf.py'
@@ -848,10 +849,14 @@ jobs:
           set -euo pipefail
           root="$RUNNER_TEMP/stage6-reference"
           out="$root/stage6_b24_cloth_preview"
+          python research/stage6_b24_source_yoke_cdt.py \
+            --lower "$root/lower_mother_toile_research/lower_toile_source_geometry.json" \
+            --out "$root/stage6_b24_cloth_source_yoke_CDT.json"
           "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 2 \
             --python research/stage6_b24_real_cloth_preview.py -- \
             --upper "$root/split_volume_toile_AB_research/two_volume_source_envelope_ab.json" \
             --lower "$root/lower_mother_toile_research/lower_toile_source_geometry.json" \
+            --yoke-mesh "$root/stage6_b24_cloth_source_yoke_CDT.json" \
             --graph "$root/split_volume_toile_AB_research/B_integrated_neck_port/panel_interface_research_graph.json" \
             --original "$RUNNER_TEMP/stage6.blend" \
             --out "$out" \
@@ -861,6 +866,7 @@ jobs:
           p=pathlib.Path(os.environ["RUNNER_TEMP"])/"stage6-reference/stage6_b24_cloth_preview"
           d=json.loads((p/"sewing_report.json").read_text())
           assert d["schema"]=="stage6-b-24piece-same-source-real-Blender-Cloth-sewn-preview-v1"
+          assert d["original_five_stitch_boundaries_CDT_GE0S"]
           assert d["original_2D_surrogate_research_pieces"]==24
           assert d["physically_connected_sewing_springs"]>=300
           assert d["all_original_2D_piece_vertices_baked_from_evaluated_Cloth"]
@@ -1700,6 +1706,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/split_volume_toile_AB_research/**
             ${{ runner.temp }}/stage6-reference/z230_three_real_caps_research/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_preview/**
+            ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_source_yoke_CDT.json
             ${{ runner.temp }}/stage6-reference/stage6_external_s2s_abf_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.svg
