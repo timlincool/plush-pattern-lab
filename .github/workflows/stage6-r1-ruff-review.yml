@@ -1,0 +1,68 @@
+name: One-time trusted Ruff review of owner B24 R1 branch
+# The branch is never executed; files are only parsed as text by Ruff.
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/stage6-r1-ruff-review.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  read-only-format-review:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Install pinned Ruff without running external code
+        run: python -m pip install --only-binary=:all: ruff==0.17.2
+      - name: Read branch as text, Ruff-format and emit canonical file JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin \
+            refs/heads/research/stage6-b24-r1-native-cloth-20261114:refs/remotes/origin/r1-review
+          mkdir -p "$RUNNER_TEMP/ruff-r1"
+          for name in \
+            design_b24_r1_source_informed.py \
+            build_b24_r1_blender_staging.py \
+            run_B24_R1_native_Blender_Cloth_4_3_2.py; do
+            git show "origin/r1-review:research/stage6_b24_r1/$name" \
+              > "$RUNNER_TEMP/ruff-r1/$name"
+          done
+          python -m ruff check "$RUNNER_TEMP/ruff-r1" \
+            --config "$GITHUB_WORKSPACE/ruff.toml" --fix || true
+          python -m ruff format "$RUNNER_TEMP/ruff-r1" \
+            --config "$GITHUB_WORKSPACE/ruff.toml"
+          python -m ruff check "$RUNNER_TEMP/ruff-r1" \
+            --config "$GITHUB_WORKSPACE/ruff.toml" || true
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ["RUNNER_TEMP"]) / "ruff-r1"
+          for name in (
+              "design_b24_r1_source_informed.py",
+              "build_b24_r1_blender_staging.py",
+              "run_B24_R1_native_Blender_Cloth_4_3_2.py",
+          ):
+              content = (root / name).read_text(encoding="utf8")
+              print("RUFF_CODE_JSON:" + json.dumps({
+                  "name": name,
+                  "content": content,
+              }, ensure_ascii=True), flush=True)
+          PY
+      - name: Preserve exact canonical formatter output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: B24-R1-Ruff-0-17-2-format-review
+          path: ${{ runner.temp }}/ruff-r1/*.py
+          if-no-files-found: warn
+          retention-days: 1
