@@ -196,7 +196,10 @@ def _gores(builder, pieces, rings, heights, role):
             planar.append(np.column_stack((x, np.full(17, left[row, 1]))))
         result.append(_grid(builder, piece["id"], xyz, planar, role))
     for i in range(4):
-        builder.seam(result[i]["right"], result[(i + 1) % 4]["left"], role + "_side")
+        builder.seam(
+            result[i]["right"], result[(i + 1) % 4]["left"],
+            ("torso" if role == 0 else "headneck") + "_side"
+        )
     return result
 
 
@@ -305,6 +308,7 @@ def _yoke(builder, lower):
     if len(index) != len(xy):
         raise ValueError("separated Stage6 original toe samples overlap")
     polygons = []
+    ordered_to_source = []
     for index_loop, p in enumerate(arrays):
         # tessellate_polygon interprets opposite winding as holes.
         signed = float(
@@ -312,10 +316,16 @@ def _yoke(builder, lower):
         )
         ordered = p if (signed > 0) == (index_loop == 0) else p[::-1]
         polygons.append([Vector((float(x), float(y), 0.0)) for x, y in ordered])
+        ordered_to_source.extend(index[tuple(np.round(pair, 6))] for pair in ordered)
     tri = tessellate_polygon(polygons)
     faces = []
     for triangle in tri:
-        mapped = tuple(index[tuple(np.round((pt.x, pt.y), 6))] for pt in triangle)
+        mapped = tuple(
+            ordered_to_source[int(pt)]
+            if isinstance(pt, (int, np.integer))
+            else index[tuple(np.round((pt.x, pt.y), 6))]
+            for pt in triangle
+        )
         middle = xy[list(mapped)].mean(axis=0)
         if not _on_loop(outer, middle):
             continue
