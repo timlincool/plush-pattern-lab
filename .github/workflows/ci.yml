@@ -31,6 +31,34 @@ jobs:
         run: 'python -m pip install --only-binary=:all: -r requirements-dev.txt'
       - name: Install trusted package
         run: python -m pip install --no-deps --no-build-isolation -e .
+      - name: Read-only owner R1 Ruff review (never execute branch Python)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin refs/heads/research/stage6-b24-r1-native-cloth-20261114:refs/remotes/origin/r1-review
+          mkdir -p "$RUNNER_TEMP/ruff-r1"
+          for name in design_b24_r1_source_informed.py build_b24_r1_blender_staging.py run_B24_R1_native_Blender_Cloth_4_3_2.py; do
+            git show "origin/r1-review:research/stage6_b24_r1/$name" > "$RUNNER_TEMP/ruff-r1/$name"
+          done
+          python -m ruff check "$RUNNER_TEMP/ruff-r1" --config "$GITHUB_WORKSPACE/ruff.toml" --fix || true
+          python -m ruff format "$RUNNER_TEMP/ruff-r1" --config "$GITHUB_WORKSPACE/ruff.toml"
+          python -m ruff check "$RUNNER_TEMP/ruff-r1" --config "$GITHUB_WORKSPACE/ruff.toml" || true
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ["RUNNER_TEMP"]) / "ruff-r1"
+          for name in (
+              "design_b24_r1_source_informed.py",
+              "build_b24_r1_blender_staging.py",
+              "run_B24_R1_native_Blender_Cloth_4_3_2.py",
+          ):
+              print("RUFF_CODE_JSON:" + json.dumps({
+                  "name": name,
+                  "content": (root / name).read_text(encoding="utf8"),
+              }, ensure_ascii=True), flush=True)
+          PY
       - name: Unified static, format, complexity and architecture checks
         run: python scripts/check_quality.py
       - name: Syntax and full tests on trusted main
