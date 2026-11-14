@@ -1,0 +1,90 @@
+{
+  "schema": "stage6-b24-r2-real-physical-sewing-evidence-v1",
+  "date_utc": "2026-11-14",
+  "trust": {
+    "repository": "timlincool/plush-pattern-lab",
+    "main_commit": "bce217118d9b7646281500e8cd0dcf4fd3354654",
+    "native_blender_run_id": 43603638044,
+    "native_blender_run_url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43603638044",
+    "artefact_id": 14117696202,
+    "artefact_name": "stage6-hoof-3d-arc-and-2d-projection-reference",
+    "artefact_zip_sha256": "d49d278e35caf73278a148f852037b2bade4e2e1158628de2c7694e3c212ef33",
+    "artifact_expires_utc": "2026-11-21T14:14:59Z",
+    "native_blender_version": "4.3.2"
+  },
+  "source_evidence": {
+    "stage6_25percent_ply_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+    "source_stage6_original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "same_run_r1_source_json_sha256": "08b3d2989ffbf34ae700033c14174bab8d88e9ca6a685040709882a3a65bf003",
+    "r2_source_informed_2d_json_sha256": "1df8c0b791e54ef9c60e5535948aea6896c2545bc69841abbc37c34bd892e787",
+    "r2_actual_input_2d_3d_stage_npz_sha256": "14d8846692e4d60f2576d4784d02f42b64d5689be91ce2d82e5d9c1ee35fe479",
+    "r2_evaluated_npz_sha256": "18fbdd6d40c95c6a84b7c5434cefd91e2565379e9eafd04e32fc62e081a8d450",
+    "r2_real_evaluated_glb_sha256": "e372d0b498bd4c589c45a68d5512a3d120f96adffa0bebad110e9132d164df5d",
+    "r2_vs_r1_actual_ab_json_sha256": "8559d7a581cbe3cc67c61cd39daf9a8d5822603e3c3997d316cb54097e33ed64"
+  },
+  "actual_physics": {
+    "source_surrogate_panel_count": 24,
+    "sewing_springs": 974,
+    "evaluated_vertices": 2431,
+    "surface_polygons": 1798,
+    "triangulated_glb_faces": 2950,
+    "frames": 40,
+    "shape_nearest_sample_count_each": 15000,
+    "R1_symmetric_mean_nearest_mm": 6.951595621674663,
+    "R2_symmetric_mean_nearest_mm": 6.776925387045706,
+    "mean_shape_improvement_percent": 2.5126639139415072,
+    "R1_source_to_evaluated_p95_mm": 16.415586263412116,
+    "R2_source_to_evaluated_p95_mm": 16.44094003584246,
+    "R1_evaluated_to_source_p95_mm": 18.58536438639139,
+    "R2_evaluated_to_source_p95_mm": 18.3840472754163,
+    "R1_mean_spring_gap_mm": 0.007225066628001778,
+    "R2_mean_spring_gap_mm": 0.006962816483288358,
+    "R1_rest_to_real_absolute_edge_error_p95_percent": 8.088458725915348,
+    "R2_rest_to_real_absolute_edge_error_p95_percent": 9.25061019794262,
+    "supports_shape_mean_improvement": true,
+    "source_to_actual_p95_improvement": false,
+    "cloth_rest_edge_strain_improvement": false,
+    "true_stuffing_simulated": false,
+    "self_collision_audited": false,
+    "actual_original_source_ears_cloud_tail_sewn": false
+  },
+  "real_source_upper_cap_overlay_offline_sampling_not_stitched": {
+    "algorithm": "trimesh sampled 32000 actual Cloth surface points + KDTree 3D nearest-to-original-source-rim (approximation)",
+    "central_cap_mean_gap_mm": 2.9318896008989315,
+    "left_high_protrusion_mean_gap_mm": 17.56917190911256,
+    "right_high_protrusion_mean_gap_mm": 17.918714208129504,
+    "physical_join_verified": false
+  },
+  "geometry_source_six_station_iou": {
+    "body_z115": {
+      "R1": 0.79023954791339,
+      "R2": 0.8357896718479413
+    },
+    "body_z125": {
+      "R1": 0.6866789493258777,
+      "R2": 0.7819543494505646
+    },
+    "head_z155": {
+      "R1": 0.8315072878355441,
+      "R2": 0.9453235600088998
+    },
+    "head_z180": {
+      "R1": 0.9049216987965004,
+      "R2": 0.9700176802087217
+    },
+    "head_z205": {
+      "R1": 0.8739394387158272,
+      "R2": 0.9600727791768942
+    },
+    "center_top_z230": {
+      "R1": 0.591824977398501,
+      "R2": 0.8509929070972073
+    }
+  },
+  "project_gate": {
+    "P3": "in_progress",
+    "P4": "not_started",
+    "factory_cutting_patterns_approved": 0
+  },
+  "conclusion": "Real Blender R2 mean shape improved slightly, but source-to-evaluated P95 worsened and physical strain increased. No successful collision/stuffing/ear/cloud/tail integration; do not promote to production or claim complete alpaca."
+}

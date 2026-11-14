@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_B24_surrogate_2D_to_real_Blender_Cloth_40frames_preview_verified_but_appearance_not_target_P3",
+    "stage": "stage6_B24_R2_true_source_contour_native_Blender_Cloth_40frames_mean_shape_better_P95_worse_not_factory_P3",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -411,6 +411,14 @@
         {
           "path": "experiments/stage6_B24_actual_Cloth_20261114/summary.json",
           "kind": "trusted_main_Blender_4_3_2_B24_actual_2d_to_3d_solver_mesh_research_success_3d_shape_not_target_factory_zero"
+        },
+        {
+          "path": "docs/STAGE6_B24_R2_REAL_SEWN_RESULT.md",
+          "kind": "R1_to_R2_true_Stage6_six_source_sections_native_Blender_40frame_AB_mean_shape_better_but_P95_and_strain_worse"
+        },
+        {
+          "path": "experiments/stage6_B24_R2_actual_Cloth_20261114/summary.json",
+          "kind": "trusted_native_Blender_4_3_2_R2_2431_vertices_974_springs_real_solver_and_independent_R1_AB_not_approved"
         }
       ],
       "blockers": [
@@ -1657,6 +1665,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋制版/实体工艺",
+      "action": "受信 Stage6 Run #43603638044 实测 B24-R2 同条件 Blender Cloth 40帧真实 evaluated 网格，源轮廓面积IoU改善，但相对R1实际3D平均距离仅6.951596→6.776925mm（改善2.51%），源→实际P95 16.415586→16.440940mm变差，2D rest→实际边长P95 8.088%→9.251%变差。974弹簧间距0.007225→0.006963mm。必须停止只调截面缩放，着手原z125双闭环到主体接缝的隐藏省道/过渡片、原z230中央和两侧三个分离源冠/突出部件的可靠双侧2D配缝；先设计真实可缝结构再用同一Blender仿真与自碰撞/试布校验。原下半身13片保留，工厂0件，耳云尾十水滴未缝。",
+      "done_when": "每个新转接件都有真实原源面/SourceID、2D双侧净缝、可翻面返口与实际Blender40帧形状/缝隙/应变/接触独立负例。P3继续、P4未开始、不得把真实源曲面视觉挂件当已缝部件。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋原角色设计/实体工艺",
       "action": "可信main Stage6 #43558523018（commit c13619c）真正完成B_integrated_neck_port 24件来源轮廓启发二维研究纸样→Shapely/GEOS约束Delaunay 4蹄孔下腹（326原面）→Blender4.3.2 Cloth Sewing Springs 40帧，并在第40帧保存evaluated真正3D网格，974条缝合弹簧平均间隙0.5585→0.007380mm。下游用真实NPZ/原Stage6固定25% PLY由Matplotlib CPU离屏渲染三视角、Trimesh生成可旋转GLB，不使用生图/原目标3D当物理结果。实测实际拼装外观头部偏扁、身体盒形、腿筒状，明显偏离目标；没有填棉压力/自碰/材料参数，也无耳云尾脸十水滴。之后每轮新纸样必须先真实模拟拼合后提供原目标vs实际正面/侧面/3/4、GLB、缝隙、碰撞/相似度否决，不再仅以源3D拓扑或二维净缝声称接近完成。",
       "done_when": "已有真实第40帧研究网格/974缝合弹簧与三视图证明软件能力，但当前B24外观不合格。下一步在正确头身围片与耳云结构下重新设计纸样，使用真实面料/充胀、穿插、尺寸和物理样布逐门禁验证；P3未完成/P4未开始/工厂正式纸样0。"
@@ -2156,6 +2171,11 @@
       "date": "2026-11-14",
       "event": "可信main真实Stage6 #43558523018与Python #43558523019成功：B研究母版24件真实独立二维Rest Shapes，经Shapely/GEOS CDT生成保有四腿开孔的下腹326面，真实Blender4.3.2 Cloth Sewing Springs执行40帧、974配对弹簧、2431最终顶点、1798个面；缝合端点间距平均0.55852156→0.00737994mm、最大0.11648mm。从actual evaluated mesh NPZ/原Stage6真实固定PLY分别用CPU重建正面侧面3/4对比照片和GLB，图不含任何AI生成，结果揭示B研究拼装头扁身体盒形，与原设计显著不相符。压力/棉花/自碰/布料参数关闭、四蹄512采样64、耳云尾表情雨滴未接，研究证据不等于成品制造；P3仍进行中，P4未开始、正式工厂纸样0。",
       "evidence_path": "experiments/stage6_B24_actual_Cloth_20261114/summary.json"
+    },
+    {
+      "date": "2026-11-14",
+      "event": "可信main原生 Blender Stage6 #43603638044 成功对B24-R2真实源六截面优化24件研究试版运行40帧物理缝合，974弹簧、2431 evaluated顶点。与同run R1对比：对源双向采样均距6.951596→6.776925mm改善2.51%，源→实际P95 16.415586→16.440940变差，实体边长应变P95 8.088→9.251%变差；缝口均距0.007225→0.006963mm。尾、耳、云、棉、面料、自碰仍未验证；原三冠侧高部件与R2物理壳间隙仍大，未真实缝入。正式纸样0，P3继续/P4未开始。",
+      "evidence_path": "experiments/stage6_B24_R2_actual_Cloth_20261114/summary.json"
     }
   ]
 }
