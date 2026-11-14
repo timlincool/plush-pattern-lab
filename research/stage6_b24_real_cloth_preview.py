@@ -10,7 +10,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 import sys
 import time
 from collections import Counter
@@ -394,7 +393,6 @@ def _assemble(body, lower):
     yoke = _yoke(builder, lower)
     legs = _legs(builder, lower)
     for i in range(4):
-        nxt = (i + 1) % 4
         ring = [(i * 16 + k) % 64 for k in range(17)]
         builder.seam(bands[i]["top"], torso[i]["bottom"], "band_to_torso")
         builder.seam(bands[i]["bottom"], [yoke["outer"][k] for k in ring],
