@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-14",
+  "updated_at": "2026-11-15",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_B24_R2_true_source_contour_native_Blender_Cloth_40frames_mean_shape_better_P95_worse_not_factory_P3",
+    "stage": "stage6_real_41_product_meshes_full_visual_reference_R2_actual_Cloth_plus40_source_attachments_unsewn_P3",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -102,6 +102,14 @@
         {
           "path": "docs/STAGE6_MANUFACTURING_STRUCTURE.md",
           "kind": "whole_character_proposed_construction_structure"
+        },
+        {
+          "path": "docs/STAGE6_FULL_41_COMPONENT_VISUAL_ASSEMBLY.md",
+          "kind": "true_Stage6_41_original_MESH_full_character_visual_source_and_R2_physical_main_plus_40_unsewn_overlays"
+        },
+        {
+          "path": "experiments/stage6_full_41mesh_visual_20261115/summary.json",
+          "kind": "real_source_42_minus_studio_floor_41_original_visual_meshes_blender_and_all_accessory_attachment_distances_no_manufacturing_approval"
         }
       ],
       "blockers": [
@@ -419,6 +427,14 @@
         {
           "path": "experiments/stage6_B24_R2_actual_Cloth_20261114/summary.json",
           "kind": "trusted_native_Blender_4_3_2_R2_2431_vertices_974_springs_real_solver_and_independent_R1_AB_not_approved"
+        },
+        {
+          "path": "docs/STAGE6_FULL_41_COMPONENT_VISUAL_ASSEMBLY.md",
+          "kind": "true_Stage6_41_original_MESH_full_character_visual_source_and_R2_physical_main_plus_40_unsewn_overlays"
+        },
+        {
+          "path": "experiments/stage6_full_41mesh_visual_20261115/summary.json",
+          "kind": "real_source_42_minus_studio_floor_41_original_visual_meshes_blender_and_all_accessory_attachment_distances_no_manufacturing_approval"
         }
       ],
       "blockers": [
@@ -1665,6 +1681,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋外观与玩偶制版",
+      "action": "可信 Stage6 原模型Run #43669527493从固定 SHA .blend 独立导出41个真实产品Mesh（主体1、云覆层7、蹄4、耳4、尾1、面部4、水滴10、布带10），原完整17大件/41件外观可以真实渲染。已经用旧R2真实Blender40帧求解主壳替换原主壳并源坐标叠上40件附件，眼看仍是扁筒头/盒形身体；源附件距R2最近顶点约云层18.2mm、耳38.6mm、蹄11.7mm，均未缝接。下一步以原17大件完整视觉原型先设计头身和肩颈真实可缝分片/安装面，做面料变形、填充和自碰撞门禁；停止只调圆环截面尺寸或把源附着件叠加截图当成功。",
+      "done_when": "整只外观主体头身四肢和至少7个云覆层真实接口从源轮廓到2D裁片及Blender求解均有独立核验，形状与原目标的五视图和源SourceID可对账；尚未证明时保持P3进行中、P4未开始和工厂图纸0。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋制版/实体工艺",
       "action": "受信 Stage6 Run #43603638044 实测 B24-R2 同条件 Blender Cloth 40帧真实 evaluated 网格，源轮廓面积IoU改善，但相对R1实际3D平均距离仅6.951596→6.776925mm（改善2.51%），源→实际P95 16.415586→16.440940mm变差，2D rest→实际边长P95 8.088%→9.251%变差。974弹簧间距0.007225→0.006963mm。必须停止只调截面缩放，着手原z125双闭环到主体接缝的隐藏省道/过渡片、原z230中央和两侧三个分离源冠/突出部件的可靠双侧2D配缝；先设计真实可缝结构再用同一Blender仿真与自碰撞/试布校验。原下半身13片保留，工厂0件，耳云尾十水滴未缝。",
       "done_when": "每个新转接件都有真实原源面/SourceID、2D双侧净缝、可翻面返口与实际Blender40帧形状/缝隙/应变/接触独立负例。P3继续、P4未开始、不得把真实源曲面视觉挂件当已缝部件。"
@@ -2176,6 +2199,11 @@
       "date": "2026-11-14",
       "event": "可信main原生 Blender Stage6 #43603638044 成功对B24-R2真实源六截面优化24件研究试版运行40帧物理缝合，974弹簧、2431 evaluated顶点。与同run R1对比：对源双向采样均距6.951596→6.776925mm改善2.51%，源→实际P95 16.415586→16.440940变差，实体边长应变P95 8.088→9.251%变差；缝口均距0.007225→0.006963mm。尾、耳、云、棉、面料、自碰仍未验证；原三冠侧高部件与R2物理壳间隙仍大，未真实缝入。正式纸样0，P3继续/P4未开始。",
       "evidence_path": "experiments/stage6_B24_R2_actual_Cloth_20261114/summary.json"
+    },
+    {
+      "date": "2026-11-15",
+      "event": "可信 main 原Stage6公开Blend SHA锁定 Blender4.3.2 Run #43669527493导出41产品网格（原42个Mesh剔除1摄影地面），真正包含1个主壳、7云覆层、4蹄、4耳、1尾、4眼部、10水滴、10连接带。离线生成原完整17大件/41件可旋转GLB；对照旧R2真实第40帧物理Cloth主壳+源位置40件视觉附件，证实原完整外观像羊驼，R2仍方盒/扁筒。源云层到R2近邻顶点均距约18.2mm，耳约38.6mm；近邻仅诊断，不是缝隙/接触证据。所有源饰件均未物理缝入R2，原423曲线毛发视觉未导出，不能晋升P3/P4/工厂。",
+      "evidence_path": "experiments/stage6_full_41mesh_visual_20261115/summary.json"
     }
   ]
 }
