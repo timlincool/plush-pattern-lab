@@ -43,8 +43,7 @@ def _triangulate(mesh):
         if len(corners) < 3:
             raise ValueError("degenerate source face")
         faces.extend(
-            (corners[0], corners[k], corners[k + 1])
-            for k in range(1, len(corners) - 1)
+            (corners[0], corners[k], corners[k + 1]) for k in range(1, len(corners) - 1)
         )
     return np.asarray(faces, dtype=np.int32).reshape(-1, 3)
 
@@ -87,17 +86,19 @@ def _export_source(input_file, registry_path, output):
         arrays[key + "_vertices_m"] = verts
         arrays[key + "_triangles"] = faces
         entry = role_by_name[name]
-        catalog.append({
-            "id": key,
-            "name": name,
-            "category": entry["scene_group"],
-            "original_source_polygons": len(obj.data.polygons),
-            "vertices": len(verts),
-            "triangles": len(faces),
-            "bounds_m": [verts.min(axis=0).tolist(), verts.max(axis=0).tolist()],
-            "geometry_is_original_source_mesh": True,
-            "physical_attachment_to_R2_sewn": False,
-        })
+        catalog.append(
+            {
+                "id": key,
+                "name": name,
+                "category": entry["scene_group"],
+                "original_source_polygons": len(obj.data.polygons),
+                "vertices": len(verts),
+                "triangles": len(faces),
+                "bounds_m": [verts.min(axis=0).tolist(), verts.max(axis=0).tolist()],
+                "geometry_is_original_source_mesh": True,
+                "physical_attachment_to_R2_sewn": False,
+            }
+        )
     binary = out / "STAGE6_41_ORIGINAL_PRODUCT_MESHES_UNSEWN.npz"
     np.savez_compressed(binary, **arrays)
     curves = [o for o in bpy.data.objects if o.type in {"CURVE", "CURVES"}]
@@ -122,10 +123,18 @@ def _export_source(input_file, registry_path, output):
     (out / "STAGE6_41_original_mesh_manifest.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
     )
-    print("STAGE6_FULL_VISUAL_41_MESH_EXPORTED",
-          json.dumps({"original_meshes": len(catalog), "curves_not_exported": len(curves),
-                      "total_triangles": sum(x["triangles"] for x in catalog),
-                      "archive_sha256": report["mesh_archive_sha256"]}), flush=True)
+    print(
+        "STAGE6_FULL_VISUAL_41_MESH_EXPORTED",
+        json.dumps(
+            {
+                "original_meshes": len(catalog),
+                "curves_not_exported": len(curves),
+                "total_triangles": sum(x["triangles"] for x in catalog),
+                "archive_sha256": report["mesh_archive_sha256"],
+            }
+        ),
+        flush=True,
+    )
 
 
 def main():
@@ -133,7 +142,7 @@ def main():
     p.add_argument("--input", required=True, type=Path)
     p.add_argument("--registry", required=True, type=Path)
     p.add_argument("--out", required=True, type=Path)
-    argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+    argv = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
     a = p.parse_args(argv)
     _export_source(a.input, a.registry, a.out)
 
