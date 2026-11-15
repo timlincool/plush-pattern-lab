@@ -3,6 +3,7 @@
 This is a read-only visual scene export, not a cut-pattern or sewn attachment.
 All 41 product meshes retain actual original world-space vertex coordinates.
 """
+
 from __future__ import annotations
 
 import argparse
