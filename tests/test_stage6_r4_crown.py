@@ -15,10 +15,11 @@ from research.stage6_b24_r4.build_r4_source_crown import (
 def test_r4_old_crown_cap_becomes64_quads_and64_triangles():
     outer = np.arange(64)
     cap = [((i, (i + 1) % 64, 64), 1) for i in range(64)]
-    result = _new_crown_topology(cap, outer, 64, 200)
-    assert len(result) == 128
+    unrelated = [((1000, 1001, 1002), 0) for _ in range(1926)]
+    result = _new_crown_topology(unrelated + cap, outer, 64, 200)
+    assert len(result) == 2054
     assert sum(len(face) == 4 for face, _ in result) == 64
-    assert sum(len(face) == 3 for face, _ in result) == 64
+    assert sum(len(face) == 3 for face, _ in result) == 1990
 
 
 def test_r4_rejects_missing_cap_fan():
