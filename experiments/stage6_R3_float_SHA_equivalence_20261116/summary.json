@@ -1,0 +1,27 @@
+{
+  "schema": "stage6-r3-two-equivalent-shas-to-r4-crown-gate-v1",
+  "date": "2026-11-16",
+  "previous_R3_staging_SHA256": "d93afe5667bc2c808e4700c5554a858b1df9b1574c9e23de1cb2c08b42c27fc3",
+  "equivalently_recomputed_R3_staging_SHA256": "faf7dfa2129e7a1ce63d4829cb49b0ef85608fa0c39cd7271ef36a5c53a9a2e5",
+  "baseline_successful_R3_run_id": 43817842762,
+  "repeat_R2_run_id": 43842593307,
+  "comparison": {
+    "source_R3_vertices": 2635,
+    "old_R3_faces": 1990,
+    "sewing_pairs": 986,
+    "initial_3d_max_abs_delta_m": 2.397726461822458e-11,
+    "independent_flat_rest_2d_max_abs_delta_m": 2.1068979894067752e-11,
+    "unchanged_arrays": [
+      "face_lengths",
+      "face_vertex_ids",
+      "face_material_roles",
+      "original_sewing_spring_vertex_pairs"
+    ]
+  },
+  "changed_policy": "R4 R3 stage allows only old and newly proven complete byte SHA; original Stage6 proxy remains one fixed SHA",
+  "physics_R4_tested": false,
+  "head_shape_result": "not verified",
+  "factory_cutting_patterns_approved": 0,
+  "P3": "in_progress",
+  "P4": "not_started"
+}
