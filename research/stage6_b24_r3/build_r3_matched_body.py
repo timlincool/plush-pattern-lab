@@ -76,7 +76,8 @@ def radial_fit(old, poly):
     original = np.asarray(old, dtype=float)
     if original.shape != (64, 2) or not Polygon(original).is_valid:
         raise ValueError("bad original 64-piece station ring")
-    center = np.asarray(poly.centroid.coords[0]); old_center = original.mean(axis=0)
+    center = np.asarray(poly.centroid.coords[0])
+    old_center = original.mean(axis=0)
     fitted = []
     for point in original:
         direction = point - old_center
@@ -244,12 +245,14 @@ def rework_torso(old_r2, new_ring100, initial, rest, item_ids):
     body=np.asarray(old_r2["body_synthetic_rings_xy_mm"],float).copy()
     body[0] = new_ring100
     for i in range(4):
-        name=f"TORSO-{i+1}"; idx=item_ids[name]
+        name = f"TORSO-{i + 1}"
+        idx = item_ids[name]
         pos,pattern=gore_vertices(body,old_r2["body_rings_z_mm"],name,i)
         if pos.shape!=(68,3) or pattern.shape!=(68,2):
             raise ValueError("torso final vertices topology unexpectedly changed")
         offset=rest[idx[0]]-pattern[0]  # preserve source material layout position at first vertex
-        initial[idx]=pos;rest[idx]=pattern+offset
+        initial[idx] = pos
+        rest[idx] = pattern + offset
     return body
 
 
@@ -353,9 +356,11 @@ def append_band_internal(initial, rest, old_pairs, ids, rings, trial):
 
 
 def physical_material_checks(init, rest, flens, fids, pairs):
-    at=0; edges=set()
+    at = 0
+    edges = set()
     for length in flens:
-        face=fids[at:at+int(length)]; at+=int(length)
+        face = fids[at:at + int(length)]
+        at += int(length)
         for a,b in zip(face,np.roll(face,-1)):
             edges.add(tuple(sorted((int(a),int(b)))))
     edges=np.asarray(sorted(edges),int)
