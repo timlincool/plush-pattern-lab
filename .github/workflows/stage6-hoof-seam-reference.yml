@@ -1915,6 +1915,72 @@ jobs:
           assert j["factory_cut_patterns_approved"] == 0
           print("STAGE6_FULL_41_PRODUCT_VISUALS_SOURCE_VERIFIED", p.stat().st_size)
           PY
+      - name: R3 five-ring matched 2D sewing panels and real Blender 40f vs R2
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference"
+          trial="$root/stage6_b24_r3_physical"
+          r2="$root/stage6_b24_r2_physical"
+          python research/stage6_b24_r3/build_r3_matched_body.py \
+            --source "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --lower "$root/lower_mother_toile_research/lower_toile_source_geometry.json" \
+            --upper "$r2/B24_R2_upper_RESEARCH_ONLY.json" \
+            --stage "$r2/B24_R1_NEW_2D_REST_NEW_3D_PREPOSITION_NOT_SOLVED.npz" \
+            --out "$trial"
+          python research/stage6_b24_r3/audit_r3_matched_netlines.py \
+            --stage "$trial/R3_MATCHED_24_PIECE_2D_REST_AND_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --output "$trial/R3_INDEPENDENT_940_PAIRED_2D_SEAMS_QA.json"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+
+          from research.stage6_b24_r3.audit_r3_matched_netlines import paired_2d_netlines
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "stage6-reference/stage6_b24_r3_physical"
+          qa = json.loads((out / "R3_2d_geometry_QA.json").read_text(encoding="utf8"))
+          seams = json.loads(
+              (out / "R3_INDEPENDENT_940_PAIRED_2D_SEAMS_QA.json").read_text(encoding="utf8")
+          )
+          assert qa["R3_pieces"] == 24 and qa["R3_springs_total"] == 986
+          assert qa["new_yoke_cdt_triangles"] == 326
+          assert qa["new_yoke_outer_min_bridge_mm"] >= 12.7
+          assert qa["rest_edge_strain_p95_percent"] < 10.5
+          assert qa["rest_edge_strain_max_percent"] < 75
+          assert len(qa["source_station_2d_iou"]) == 5
+          assert all(row["R3_section_iou"] > row["R2_section_iou"] + 0.02
+                     for row in qa["source_station_2d_iou"])
+          assert seams["actual_2d_paired_segments"] == 940
+          assert seams["mismatched_net_segments_gt_0p0001mm"] == 0
+          assert seams["largest_2d_net_seam_disagreement_mm"] < 0.0001
+          stage = out / "R3_MATCHED_24_PIECE_2D_REST_AND_3D_PREPOSITION_NOT_SIMULATED.npz"
+          with np.load(stage, allow_pickle=False) as data:
+              rest = data["true_independent_flat_2d_rest_xy_m"].copy()
+              lengths = data["face_lengths"]
+              indices = data["face_vertex_ids"]
+              springs = data["original_sewing_spring_vertex_pairs"]
+          rest[0, 0] += 0.0005
+          broken, _ = paired_2d_netlines(lengths, indices, springs, rest)
+          assert broken.max() > 0.0001, "R3 canary failed to detect 2D mismatch"
+          print("STAGE6_R3_TRUE_NETLINE_QA_STRICT_AND_NEGATIVE_CANARY_PASS",
+                json.dumps({"paired": 940,
+                            "max_mm": seams["largest_2d_net_seam_disagreement_mm"],
+                            "rest_edge_p95": qa["rest_edge_strain_p95_percent"]}))
+          PY
+          mkdir -p "$trial/solver"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python research/stage6_b24_r3/run_r3_blender.py -- \
+            --stage "$trial/R3_MATCHED_24_PIECE_2D_REST_AND_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --qa "$trial/R3_2d_geometry_QA.json" \
+            --out "$trial/solver" --frames 40
+          python research/stage6_b24_r3/audit_r3_native_ab.py \
+            --source "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
+            --baseline "$r2/solver/B24_R1_actual_evaluated_Cloth_frame40.npz" \
+            --candidate "$trial/solver/R3_ACTUAL_EVALUATED_CLOTH_FRAME40.npz" \
+            --out "$trial/solver/R3_VERSUS_R2_REAL_BLENDER_AB.json"
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -1933,6 +1999,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/stage6_b24_r1_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_r2_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_full_visual_meshes/**
+            ${{ runner.temp }}/stage6-reference/stage6_b24_r3_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_source_yoke_CDT.json
             ${{ runner.temp }}/stage6-reference/stage6_external_s2s_abf_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
