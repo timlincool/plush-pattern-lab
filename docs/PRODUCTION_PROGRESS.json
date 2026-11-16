@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-15",
+  "updated_at": "2026-11-16",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_real_41_product_meshes_full_visual_reference_R2_actual_Cloth_plus40_source_attachments_unsewn_P3",
+    "stage": "stage6_true_original_main_plus_four_hooves_watertight_SOURCE_ONLY_12_major_ornaments_closed_R2_unsewn_R3_2D_rejected_P3",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -110,6 +110,14 @@
         {
           "path": "experiments/stage6_full_41mesh_visual_20261115/summary.json",
           "kind": "real_source_42_minus_studio_floor_41_original_visual_meshes_blender_and_all_accessory_attachment_distances_no_manufacturing_approval"
+        },
+        {
+          "path": "docs/STAGE6_WELDED_CORE_AND_12_CLOSED_ATTACHMENTS.md",
+          "kind": "true_original_3D_source_body_and_4x512_hoof_rim_welded_0_open_edges_12_ornament_3D_closed_without_netlines"
+        },
+        {
+          "path": "experiments/stage6_true_hoof_weld_and_12_major_mounters_20261116/summary.json",
+          "kind": "original_source_hoof_watertight_17_major_assembly_12_R2_mounters_KD32_nearest_source_R3_2D_double_netline_REJECTED"
         }
       ],
       "blockers": [
@@ -435,6 +443,14 @@
         {
           "path": "experiments/stage6_full_41mesh_visual_20261115/summary.json",
           "kind": "real_source_42_minus_studio_floor_41_original_visual_meshes_blender_and_all_accessory_attachment_distances_no_manufacturing_approval"
+        },
+        {
+          "path": "docs/STAGE6_WELDED_CORE_AND_12_CLOSED_ATTACHMENTS.md",
+          "kind": "true_original_3D_source_body_and_4x512_hoof_rim_welded_0_open_edges_12_ornament_3D_closed_without_netlines"
+        },
+        {
+          "path": "experiments/stage6_true_hoof_weld_and_12_major_mounters_20261116/summary.json",
+          "kind": "original_source_hoof_watertight_17_major_assembly_12_R2_mounters_KD32_nearest_source_R3_2D_double_netline_REJECTED"
         }
       ],
       "blockers": [
@@ -1681,6 +1697,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋玩偶制版与实物工艺",
+      "action": "源Stage6全件恢复后，从固定41个真网格中把原主壳和4蹄沿4×512反向源边逐顶点焊为253109顶点/506214面、0开边、Euler2真设计源曲面（不是Blender Cloth成品），并查到7云+4耳+1尾均为闭合独立网格、没有天然净缝。R2真布壳距原外/内耳抽样中位32.6–43.2mm，附件不能靠直接摆放或填棉修复。R3直接把源z60–100轮廓加入BODY虽保住原蹄口与12.95mm桥宽，2D BAND-TORSO净线最大不配0.717mm；强制整平则侧缝差26.696mm，严格拒绝且未运行R3 Blender。下一步先做头身曲率分片和真实双侧净缝兼容/隐藏省道，再运行原生Blender和自碰；云覆层、耳根、尾根需要设计真实表面固定或开口接口，不再做无接口直接合体。",
+      "done_when": "在真实设计源几何上生成可翻面填充的主壳母版，所有二维净缝逐段配对且材料变形/3D外观/自碰独立检查，不通过不升P3/P4、工厂0片。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋外观与玩偶制版",
       "action": "可信 Stage6 原模型Run #43669527493从固定 SHA .blend 独立导出41个真实产品Mesh（主体1、云覆层7、蹄4、耳4、尾1、面部4、水滴10、布带10），原完整17大件/41件外观可以真实渲染。已经用旧R2真实Blender40帧求解主壳替换原主壳并源坐标叠上40件附件，眼看仍是扁筒头/盒形身体；源附件距R2最近顶点约云层18.2mm、耳38.6mm、蹄11.7mm，均未缝接。下一步以原17大件完整视觉原型先设计头身和肩颈真实可缝分片/安装面，做面料变形、填充和自碰撞门禁；停止只调圆环截面尺寸或把源附着件叠加截图当成功。",
       "done_when": "整只外观主体头身四肢和至少7个云覆层真实接口从源轮廓到2D裁片及Blender求解均有独立核验，形状与原目标的五视图和源SourceID可对账；尚未证明时保持P3进行中、P4未开始和工厂图纸0。"
@@ -2204,6 +2227,11 @@
       "date": "2026-11-15",
       "event": "可信 main 原Stage6公开Blend SHA锁定 Blender4.3.2 Run #43669527493导出41产品网格（原42个Mesh剔除1摄影地面），真正包含1个主壳、7云覆层、4蹄、4耳、1尾、4眼部、10水滴、10连接带。离线生成原完整17大件/41件可旋转GLB；对照旧R2真实第40帧物理Cloth主壳+源位置40件视觉附件，证实原完整外观像羊驼，R2仍方盒/扁筒。源云层到R2近邻顶点均距约18.2mm，耳约38.6mm；近邻仅诊断，不是缝隙/接触证据。所有源饰件均未物理缝入R2，原423曲线毛发视觉未导出，不能晋升P3/P4/工厂。",
       "evidence_path": "experiments/stage6_full_41mesh_visual_20261115/summary.json"
+    },
+    {
+      "date": "2026-11-16",
+      "event": "独立真实原Stage6源三角面原主体466278+四蹄各9984，按4×512真3D接口逐点0mm焊接得到253109顶点506214面、0开放边、闭合绕向一致Euler2的原设计源几何（非缝纫）。原7云/4耳/尾12大附件全部封闭无可对机器净缝开口，表面接触仅抽样诊断。到R2真实40帧Cloth，耳部样本中位32.6–43.2mm，源耳约10.7–12.3mm。R3扩大BODY真实截面尝试因2D双侧净缝最大0.717mm错配、强制整平26.696mm错配被否决，未实跑R3 Cloth。个人下载研究包23.9MB保存可复现代码/源NPZ/GLB/SHA，P3未完成/P4未开始/工厂0。",
+      "evidence_path": "experiments/stage6_true_hoof_weld_and_12_major_mounters_20261116/summary.json"
     }
   ]
 }
