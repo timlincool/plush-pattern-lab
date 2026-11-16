@@ -1,0 +1,74 @@
+{
+  "schema": "stage6-original-source-4-hoof-weld-and-12-major-closed-attachment-qa-v1",
+  "date": "2026-11-16",
+  "source_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+  "source_41_product_npz_sha256": "e1a3e8e28599ed152cd6f6e29b7a277e24fc178976f510ab069c8fb65f756f27",
+  "source_blender_run_id": 43669527493,
+  "R2_native_cloth_run_id": 43603638044,
+  "source_body_triangles": 466278,
+  "true_welded_source_mesh": {
+    "source_hoofs": 4,
+    "matches_per_hoof_source_boundary_vertices": 512,
+    "matched_source_boundary_vertices_total": 2048,
+    "max_original_interface_gap_mm": 0,
+    "watertight": true,
+    "winding_consistent": true,
+    "euler": 2,
+    "vertices": 253109,
+    "triangles": 506214,
+    "open_edges": 0,
+    "glb_sha256": "62bf5c8dfdb263dc038102812327d9dca0b3f5156dff48fcd21665495bd7d3ad"
+  },
+  "major_visual_assembly": {
+    "original_unwelded_big_pieces": 17,
+    "welded_core_count": 1,
+    "other_source_visual_closed_accessories": 12,
+    "objects_after_welding_and_restoring_visual_accessories": 13,
+    "accessories_physically_sewn_to_R2": 0,
+    "original_source_export_tris_used": true,
+    "full_visual_GLB_sha256": "810de8079be5adb9525b69634975a73821c902ed7d32bd5765b5bc4022036095",
+    "approximate_anchor_marker_GLB_sha256": "02c26bfda82fd1893f2a1e7e3518a5422e635b39c85cf132eb22dae6124609ec"
+  },
+  "closed_source_accessory_inventory": {
+    "clouds": 7,
+    "ears": 4,
+    "tail": 1,
+    "existing_open_netline_edges": 0,
+    "all_watertight": true,
+    "contact_projection_samples_each": 1600,
+    "nearest_candidate_triangles_each": 32,
+    "first_piece_256_samples_k32_to_k96_max_difference_mm": 0,
+    "median_R2_cloth_distance_ear_range_mm": [
+      32.6073,
+      43.1583
+    ],
+    "source_ear_median_distance_range_mm": [
+      10.69,
+      12.26
+    ]
+  },
+  "R3_direct_source_contour_trial_rejected": {
+    "real_40frame_Blender_executed": false,
+    "candidate_panels": 24,
+    "springs_proposed": 986,
+    "yoke_orig_four_hole_mesh_326_triangles": true,
+    "new_min_yoke_bridge_mm": 12.95,
+    "rejection_reason": "unmatched 2D net stitch length",
+    "wavy_rest_band_to_torso_max_segment_disagreement_mm": 0.7174273367557262,
+    "flat_last_row_torso_to_torso_max_segment_disagreement_mm": 26.69554471231146,
+    "flat_last_row_max_material_preposition_strain_percent": 124.7938,
+    "approved": false
+  },
+  "evidence_bundle_sha256": "26d803832164b19a07afbf413860a903fa858813a69469b113cc8092a4bad998",
+  "qa_file_sha256": {
+    "source_hoof_weld": "d552944e643a388142a2569f7ae5419b06416ec826626b4dc8c1423a5eea2f2c",
+    "closed_source_accessories": "499d1983f437bc995e45421ed1656b346477f2dbe8c035b363e77257c2e416cb",
+    "visual_assembly": "367d991904899ad686c9cd3e36b09da7c86208eb869fc07d641659d81067ae95"
+  },
+  "no_original_source_3d_as_Cloth_output": true,
+  "engineering_status": "P3_SOURCEMESH_GEOMETRY_ONLY_not_sewn_R3_REJECTED",
+  "P2": "in_progress",
+  "P3": "in_progress",
+  "P4": "not_started",
+  "factory_approved_cut_patterns": 0
+}
