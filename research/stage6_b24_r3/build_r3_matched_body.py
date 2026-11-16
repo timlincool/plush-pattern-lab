@@ -13,7 +13,6 @@ from collections import Counter
 from pathlib import Path
 
 import numpy as np
-import trimesh
 from scipy.spatial import cKDTree
 from shapely import constrained_delaunay_triangles
 from shapely.geometry import LineString, Polygon
@@ -452,6 +451,8 @@ def _source_ring_and_yoke(mesh, lower, trial):
 
 
 def _rebuild(source, lower, trial, old):
+    import trimesh
+
     mesh = trimesh.load(source, force="mesh")
     outer, rings, yoke_faces, diagnostics = _source_ring_and_yoke(mesh, lower, trial)
     ids = pieces()
@@ -531,6 +532,8 @@ def _create_report(trial_arrays, rings, diagnostics, yoke_faces, lower):
 
 
 def _save_reproducible_staging(output, arrays, meta):
+    import trimesh
+
     init, rest, springs, lengths, indices, roles = arrays
     root = Path(output)
     if root.exists() and (root.is_symlink() or any(root.iterdir())):
