@@ -12,7 +12,6 @@ import json
 from pathlib import Path
 
 import numpy as np
-import trimesh
 from shapely.geometry import Polygon
 
 from research.stage6_b24_r3.build_r3_matched_body import radial_fit
@@ -42,6 +41,8 @@ def _read_pinned(stage, source):
         or len(data["face_lengths"]) != 1990
     ):
         raise ValueError("pinned R3 24-panel vertex or spring topology changed")
+    import trimesh  # noqa: PLC0415
+
     return data, trimesh.load(source, force="mesh")
 
 
