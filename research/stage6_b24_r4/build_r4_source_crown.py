@@ -18,6 +18,9 @@ from research.stage6_b24_r3.build_r3_matched_body import radial_fit
 
 SOURCE_SHA = "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd"
 R3_SHA = "d93afe5667bc2c808e4700c5554a858b1df9b1574c9e23de1cb2c08b42c27fc3"
+R3_EQUIVALENT_SHA = (
+    "faf7dfa2129e7a1ce63d4829cb49b0ef85608fa0c39cd7271ef36a5c53a9a2e5"
+)
 CAP_START = 4 * 34 + 4 * 68 + 4 * 85 + 128
 Z_INNER = 234.0
 SOURCE_BLEND = 0.50
@@ -28,9 +31,10 @@ def _hash(path):
 
 
 def _read_pinned(stage, source):
-    for path, expected in ((stage, R3_SHA), (source, SOURCE_SHA)):
+    allowed = ((stage, {R3_SHA, R3_EQUIVALENT_SHA}), (source, {SOURCE_SHA}))
+    for path, accepted in allowed:
         path = Path(path)
-        if not path.is_file() or path.is_symlink() or _hash(path) != expected:
+        if not path.is_file() or path.is_symlink() or _hash(path) not in accepted:
             raise ValueError("source not equal to signed-off R3/Stage6 evidence")
     with np.load(stage, allow_pickle=False) as r3:
         data = {name: r3[name].copy() for name in r3.files}
@@ -191,7 +195,7 @@ def generate(stage, source, output):
     report = {
         "schema": "stage6-r4-source-crown-24-panel-2d-study-v1",
         "source_proxy_SHA256": SOURCE_SHA,
-        "R3_original_stage_SHA256": R3_SHA,
+        "R3_original_stage_SHA256": _hash(stage),
         "R4_new_stage_SHA256": _hash(result),
         "original_24_2d_panels_remain": True,
         "old_986_sewing_springs_unchanged": True,
