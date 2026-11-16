@@ -62,7 +62,9 @@ def _physics_diagnostics(mesh, pairs, rest, surface_edges):
     v = mesh.vertices
     seam = np.linalg.norm(v[pairs[:, 0]] - v[pairs[:, 1]], axis=1) * 1000
     physical = np.linalg.norm(v[surface_edges[:, 0]] - v[surface_edges[:, 1]], axis=1)
-    material = np.linalg.norm(rest[surface_edges[:, 0]] - rest[surface_edges[:, 1]], axis=1)
+    material = np.linalg.norm(
+        rest[surface_edges[:, 0]] - rest[surface_edges[:, 1]], axis=1
+    )
     if not np.isfinite(physical).all() or (material <= 1e-11).any():
         raise ValueError("non-finite or collapsed material edge")
     strain = abs(physical / material - 1) * 100
