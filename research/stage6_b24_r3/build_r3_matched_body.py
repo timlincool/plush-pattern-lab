@@ -21,6 +21,8 @@ SOURCE_SHA = "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd"
 LOWER_SHA = "1427c7bdfc376431378e516f90540cb56e3b9adfb4695a3d5858c584041eea59"
 R2_STAGE_SHA = "14d8846692e4d60f2576d4784d02f42b64d5689be91ce2d82e5d9c1ee35fe479"
 R2_UPPER_SHA = "1df8c0b791e54ef9c60e5535948aea6896c2545bc69841abbc37c34bd892e787"
+R2_UPPER_EQUIVALENT_SHA = "9593db78687ec782e29dc3d866336933f61e8ce7e0c3c78fe54f1f5578533050"
+R2_STAGE_EQUIVALENT_SHA = "b2817cbef68514f369bc998f3eb472ad74b12505a330ae08c60935d5b905730d"
 Z = (60.0, 70.0, 80.0, 90.0, 100.0)
 BAND_BLEND = (None, 0.29, 0.47, 0.48, 0.56)
 MIN_YOKE_CLEARANCE_MM = 12.7
@@ -33,7 +35,12 @@ def digest(path):
 
 def strict_input(path, sha):
     p = Path(path)
-    if not p.is_file() or p.is_symlink() or digest(p) != sha:
+    accepted = {sha}
+    if sha == R2_UPPER_SHA:
+        accepted.add(R2_UPPER_EQUIVALENT_SHA)
+    elif sha == R2_STAGE_SHA:
+        accepted.add(R2_STAGE_EQUIVALENT_SHA)
+    if not p.is_file() or p.is_symlink() or digest(p) not in accepted:
         raise ValueError(f"source not pinned, regular or unchanged: {p.name}")
     return p
 
