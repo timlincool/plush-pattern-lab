@@ -5,11 +5,11 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+from research.stage6_b24_r4.audit_r4_staging import audit
 from research.stage6_b24_r4.build_r4_source_crown import (
     _new_crown_topology,
     _read_pinned,
 )
-from research.stage6_b24_r4.audit_r4_staging import audit
 
 
 def test_r4_old_crown_cap_becomes64_quads_and64_triangles():
