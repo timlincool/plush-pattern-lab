@@ -81,8 +81,14 @@ def _crown_material(outer, outer_uv, center_uv, ring):
         stretch = np.concatenate(
             (abs(spoke / mat_spoke - 1), abs(inners / mat_inner - 1))
         )
-        options.append((float(np.percentile(stretch, 95)), float(stretch.max()),
-                        float(ratio), uv_inner))
+        options.append(
+            (
+                float(np.percentile(stretch, 95)),
+                float(stretch.max()),
+                float(ratio),
+                uv_inner,
+            )
+        )
     if not options:
         raise ValueError("no valid nonzero material ring")
     p95, worst, ratio, flat = min(options, key=lambda item: item[:2])
@@ -95,7 +101,9 @@ def _packed_old_faces(data):
     output = []
     cursor = 0
     for count, color in zip(data["face_lengths"], data["face_material_roles"]):
-        face = tuple(int(i) for i in data["face_vertex_ids"][cursor:cursor + int(count)])
+        face = tuple(
+            int(i) for i in data["face_vertex_ids"][cursor : cursor + int(count)]
+        )
         output.append((face, int(color)))
         cursor += int(count)
     if cursor != len(data["face_vertex_ids"]):
@@ -139,16 +147,21 @@ def _revise(data, source):
     faces = _new_crown_topology(_packed_old_faces(data), outer_ids, tip, len(xyz))
     if augmented_xyz.shape != (2699, 3):
         raise ValueError("R4 true upper source panel vertex topology changed")
-    return augmented_xyz, augmented_uv, faces, {
-        "central_source_230_mm_area": float(crown230.area),
-        "central_source_234_mm_area": float(crown234.area),
-        "three_real_source_loops_at_230_and_234": count230 == count234 == 3,
-        "gradual_crown_source_blend": SOURCE_BLEND,
-        "new_crown_inner_z_mm": Z_INNER,
-        "rest_ring_scale": ratio,
-        "crown_new_internal_strain_p95_pct": p95,
-        "crown_new_internal_strain_max_pct": worst,
-    }
+    return (
+        augmented_xyz,
+        augmented_uv,
+        faces,
+        {
+            "central_source_230_mm_area": float(crown230.area),
+            "central_source_234_mm_area": float(crown234.area),
+            "three_real_source_loops_at_230_and_234": count230 == count234 == 3,
+            "gradual_crown_source_blend": SOURCE_BLEND,
+            "new_crown_inner_z_mm": Z_INNER,
+            "rest_ring_scale": ratio,
+            "crown_new_internal_strain_p95_pct": p95,
+            "crown_new_internal_strain_max_pct": worst,
+        },
+    )
 
 
 def generate(stage, source, output):
@@ -157,9 +170,7 @@ def generate(stage, source, output):
     old = data["initial_3d_prepositioned_vertices_m"]
     if not np.array_equal(old, xyz[:2635]):
         raise ValueError("R3 actual source preposition was modified")
-    if not np.array_equal(
-        data["true_independent_flat_2d_rest_xy_m"], rest[:2635]
-    ):
+    if not np.array_equal(data["true_independent_flat_2d_rest_xy_m"], rest[:2635]):
         raise ValueError("R3 flat material seams were modified")
     output = Path(output)
     if output.is_symlink() or (output.exists() and any(output.iterdir())):
@@ -172,7 +183,9 @@ def generate(stage, source, output):
         true_independent_flat_2d_rest_xy_m=rest,
         original_sewing_spring_vertex_pairs=data["original_sewing_spring_vertex_pairs"],
         face_lengths=np.asarray([len(face) for face, _ in faces], dtype=np.int32),
-        face_vertex_ids=np.asarray([i for face, _ in faces for i in face], dtype=np.int32),
+        face_vertex_ids=np.asarray(
+            [i for face, _ in faces for i in face], dtype=np.int32
+        ),
         face_material_roles=np.asarray([role for _, role in faces], dtype=np.int8),
     )
     report = {
