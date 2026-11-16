@@ -39,8 +39,7 @@ def audit(stage):
     for size in sizes:
         face = ids[start : start + int(size)]
         edge_count.update(
-            tuple(sorted((int(a), int(b))))
-            for a, b in zip(face, np.roll(face, -1))
+            tuple(sorted((int(a), int(b)))) for a, b in zip(face, np.roll(face, -1))
         )
         start += int(size)
     if start != len(ids) or max(edge_count.values()) > 2:
