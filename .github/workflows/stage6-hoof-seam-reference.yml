@@ -1988,11 +1988,11 @@ jobs:
           root="$RUNNER_TEMP/stage6-reference"
           trial="$root/stage6_b24_r4_physical"
           base="$root/stage6_b24_r3_physical"
-          python research/stage6_b24_r4/build_r4_source_crown.py \
+          python -m research.stage6_b24_r4.build_r4_source_crown \
             --r3 "$base/R3_MATCHED_24_PIECE_2D_REST_AND_3D_PREPOSITION_NOT_SIMULATED.npz" \
             --source "$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply" \
             --out "$trial"
-          python research/stage6_b24_r4/audit_r4_staging.py \
+          python -m research.stage6_b24_r4.audit_r4_staging \
             --stage "$trial/R4_2D_REST_AND_3D_PREPOSITION_NOT_SIMULATED.npz" \
             --out "$trial/R4_INDEPENDENT_940_NETLINES_QA.json"
           python - <<'PY'
