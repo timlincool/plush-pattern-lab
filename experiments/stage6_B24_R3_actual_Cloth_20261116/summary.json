@@ -1,0 +1,101 @@
+{
+  "schema": "stage6-b24-r3-real-Blender4.3.2-40frames-source-shape-R2-ab-v1",
+  "date_utc": "2026-11-16",
+  "run": {
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43817842762",
+    "id": 43817842762,
+    "commit_sha": "06e6f519b85c9ab20c321696d5c38a045ba3ade6",
+    "conclusion": "success",
+    "artifact_id": 14203661514
+  },
+  "trusted_python_ci": {
+    "url": "https://github.com/timlincool/plush-pattern-lab/actions/runs/43817842750",
+    "conclusion": "success",
+    "tests_passed": 803
+  },
+  "source": {
+    "original_blend_sha256": "38a0be58ed4cb6b3af66fc392f4820d544851715002ee8520543d7e9fba85f3a",
+    "source_25pct_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+    "original_41_mesh_npz_sha256": "e1a3e8e28599ed152cd6f6e29b7a277e24fc178976f510ab069c8fb65f756f27"
+  },
+  "input_geometry": {
+    "research_panels": 24,
+    "original_reused_springs": 974,
+    "new_sewing_springs": 12,
+    "total_sewing_springs": 986,
+    "cloth_vertices": 2635,
+    "cloth_surface_polygons": 1990,
+    "cloth_output_triangles": 3334,
+    "source_real_hoof_holes_sampled_64_points_each": true,
+    "source_four_hoof_original_512_open_edges_each_preserved_as_anchor_identity": true,
+    "constrained_yoke_cdt_triangles": 326,
+    "actual_2d_paired_seam_segments": 940,
+    "maximum_2d_paired_segment_mismatch_mm": 2.913225216616411e-13,
+    "research_tolerance_mm": 0.0001,
+    "all_actual_netline_pairs_within_tolerance": true,
+    "preposition_edge_absolute_strain_p95_percent": 10.075162787989766
+  },
+  "blender_physics": {
+    "software": "Blender 4.3.2 native Cloth Sewing Springs",
+    "frames": 40,
+    "solver_seconds": 1.93,
+    "true_evaluated_mesh_from_depsgraph": true,
+    "snapshot_npz_sha256": "6a1349eb9467051480ea9f396416ae3358a92567faf6a6fb903c4cd3fbcf162f",
+    "blend_sha256": "02f25f2e4665401cc3932f071843acf9432bd841a9d9e13835ee1ad913ce8e59",
+    "glb_sha256": "d783c22b29f9bf76635b18c6059e1c199725ead93b4946c4a1184a4594dbb4a3",
+    "first_mean_seam_spring_gap_mm": 0.2758620689655173,
+    "last_mean_seam_spring_gap_mm": 0.003895499265180072,
+    "last_max_seam_spring_gap_mm": 0.10786803716408482,
+    "pressure_fill_enabled": false,
+    "cloth_self_collision_enabled": false,
+    "calibrated_real_material": false
+  },
+  "real_shape_AB": {
+    "metric": "same-run fixed original 25percent Stage6 PLY, 15k seeded surface samples per mesh, bidirectional KDTree nearest distances in mm",
+    "R2": {
+      "symmetric_sampled_mean_distance_mm": 6.776925387045706,
+      "source_to_real_p95_mm": 16.44094003584246,
+      "real_to_source_p95_mm": 18.3840472754163,
+      "real_fabric_edge_absolute_relative_strain_p95_percent": 9.25061019794262,
+      "real_fabric_edge_absolute_relative_strain_max_percent": 62.662463544712935,
+      "mean_spring_end_gap_mm": 0.006962816483288358
+    },
+    "R3": {
+      "symmetric_sampled_mean_distance_mm": 5.4969121666364416,
+      "source_to_real_p95_mm": 11.66997571173376,
+      "real_to_source_p95_mm": 11.778179897002861,
+      "real_fabric_edge_absolute_relative_strain_p95_percent": 9.934095900992817,
+      "real_fabric_edge_absolute_relative_strain_max_percent": 62.66364922932064,
+      "mean_spring_end_gap_mm": 0.003895499265180072
+    },
+    "R3_sampled_mean_error_improvement_percent": 18.8863,
+    "R3_real_edge_strain_p95_worsened": true
+  },
+  "visual_overlays": {
+    "original_source_body_not_substituted_for_R3": true,
+    "source_cloud_ear_tail_12_mounted_visually_only": true,
+    "original_source_40_accessories_mounted_visually_only": true,
+    "original_attachments_physically_sewn": 0,
+    "unsewn_12_glb_sha256": "aea45463caa23727c301b474f1f33c7f1d1357025989efec610968bef9ad5cd6",
+    "unsewn_40_glb_sha256": "5ce4d656e232adea67265698e96331ac5c0ae64fb547e21637bfb1a73326c581",
+    "source_17_vs_R3_12_threeviews_sha256": "95ec36e80f7e5f0a369f3cf8c5d48cb56d564d93ff917eca2f1342c9febc6b07"
+  },
+  "local_bundle": {
+    "name": "云朵羊驼_R3真实40帧_大件总装与R2对照_20261116.zip",
+    "sha256": "1f8a13a1da5a25aa4ed403d652ab195bf3cfc7a2ae7a993e0b4f8415c90944f7",
+    "included_blender_and_glb_and_qa": true
+  },
+  "unverified": {
+    "self_collision": true,
+    "polyester_fill": true,
+    "actual_material": true,
+    "fabric_cutting": true,
+    "full_character_sewing": true
+  },
+  "project_gate": {
+    "P2": "in_progress",
+    "P3": "in_progress",
+    "P4": "not_started",
+    "factory_cutting_patterns_approved": 0
+  }
+}
