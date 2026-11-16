@@ -1,0 +1,32 @@
+{
+  "schema": "stage6-r2-two-source-shas-float-equivalence-evidence-v1",
+  "date": "2026-11-16",
+  "comparison_runs": {
+    "earlier": 43817842762,
+    "later": 43842593307
+  },
+  "old_R2_upper_sha256": "1df8c0b791e54ef9c60e5535948aea6896c2545bc69841abbc37c34bd892e787",
+  "new_R2_upper_sha256": "9593db78687ec782e29dc3d866336933f61e8ce7e0c3c78fe54f1f5578533050",
+  "upper_json": {
+    "maximum_numeric_abs_difference_mm": 2.397726461822458e-8,
+    "numeric_fields_with_float_last_digits_differ": 3477,
+    "structural_and_string_changes": 0
+  },
+  "old_R2_stage_sha256": "14d8846692e4d60f2576d4784d02f42b64d5689be91ce2d82e5d9c1ee35fe479",
+  "new_R2_stage_sha256": "b2817cbef68514f369bc998f3eb472ad74b12505a330ae08c60935d5b905730d",
+  "stage_npz": {
+    "vertices": 2431,
+    "rest_2d_vertices": 2431,
+    "face_lengths_exact_equal": true,
+    "face_vertex_ids_exact_equal": true,
+    "face_material_roles_exact_equal": true,
+    "original_974_spring_pairs_exact_equal": true,
+    "maximum_3d_position_abs_delta_m": 2.397726461822458e-11,
+    "maximum_2d_rest_abs_delta_m": 1.7245149752653788e-11
+  },
+  "policy": "only these two complete byte SHA identities accepted for R2 upper and R2 stage; source PLY and lower unchanged",
+  "R4_actual_Blender_execution": "not completed by this source-hash comparison",
+  "P3": "in_progress",
+  "P4": "not_started",
+  "factory_approved_patterns": 0
+}
