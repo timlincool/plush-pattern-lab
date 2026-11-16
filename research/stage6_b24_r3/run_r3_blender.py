@@ -60,7 +60,15 @@ def _read_input(stage, report):
         raise ValueError("R3 physical panels or spring counts changed")
     if not np.isfinite(init).all() or not np.isfinite(rest).all():
         raise ValueError("R3 source shape contains nonfinite vertices")
-    return init, rest, pairs, _packed_faces_to_blender(fids, flens, roles), roles, flens, fids
+    return (
+        init,
+        rest,
+        pairs,
+        _packed_faces_to_blender(fids, flens, roles),
+        roles,
+        flens,
+        fids,
+    )
 
 
 def _setup_scene(init, rest, pairs, faces, roles, frames):

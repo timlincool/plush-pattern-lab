@@ -46,7 +46,9 @@ def pieces():
     sizes.extend([68] * 4)
     names.extend(f"HEADNECK-{i}" for i in range(1, 5))
     sizes.extend([85] * 4)
-    names.extend(["SHOULDER-CAP-TRIAL", "HEAD-TOP-CAP-TRIAL", "COLLAR-TRIAL", "YOKE-01"])
+    names.extend(
+        ["SHOULDER-CAP-TRIAL", "HEAD-TOP-CAP-TRIAL", "COLLAR-TRIAL", "YOKE-01"]
+    )
     sizes.extend([128, 65, 130, 320])
     for hoof in ("FL", "FR", "RL", "RR"):
         names.extend((f"LEG-{hoof}", f"SOLE-{hoof}"))
@@ -64,11 +66,16 @@ def largest_source_loop(mesh, z):
     section = mesh.section(plane_origin=(0, 0, z), plane_normal=(0, 0, 1))
     if section is None:
         raise ValueError("missing original source slice")
-    loops = [Polygon(p[:, :2]) for p in section.discrete if
-             len(p) > 20 and np.linalg.norm(p[0] - p[-1]) < 1e-4]
+    loops = [
+        Polygon(p[:, :2])
+        for p in section.discrete
+        if len(p) > 20 and np.linalg.norm(p[0] - p[-1]) < 1e-4
+    ]
     valid = [p for p in loops if p.is_valid and p.area > 100]
     if len(valid) != 1:
-        raise ValueError(f"expected single continuous original body at {z}: {len(valid)}")
+        raise ValueError(
+            f"expected single continuous original body at {z}: {len(valid)}"
+        )
     return valid[0]
 
 
@@ -138,15 +145,24 @@ def sample_rings(mesh, old_yoke, old_top, holes):
         p = Polygon(ring)
         if not p.is_valid or p.area <= 0 or np.any(~np.isfinite(ring)):
             raise ValueError("invalid R3 true-section blend ring")
-        iou_old = Polygon(base).intersection(source).area / Polygon(base).union(source).area
+        iou_old = (
+            Polygon(base).intersection(source).area / Polygon(base).union(source).area
+        )
         iou_new = p.intersection(source).area / p.union(source).area
         if iou_new <= iou_old + 0.02:
             raise ValueError("R3 band source IoU did not improve")
         results.append(ring)
-        diagnostics.append({"z_mm":z,"blend":float(alpha),"source_area_mm2":float(source.area),
-                            "R2_baseline_area_mm2":float(Polygon(base).area),
-                            "R3_area_mm2":float(p.area),"R2_section_iou":float(iou_old),
-                            "R3_section_iou":float(iou_new)})
+        diagnostics.append(
+            {
+                "z_mm": z,
+                "blend": float(alpha),
+                "source_area_mm2": float(source.area),
+                "R2_baseline_area_mm2": float(Polygon(base).area),
+                "R3_area_mm2": float(p.area),
+                "R2_section_iou": float(iou_old),
+                "R3_section_iou": float(iou_new),
+            }
+        )
     rings = np.asarray(results)
     if clearance(rings[0], holes) < MIN_YOKE_CLEARANCE_MM:
         raise ValueError("hoof hole yoke clearance broken")
@@ -189,7 +205,9 @@ def yoke_triangulation(xy):
     shape = Polygon(xy[:64], [xy[i : i + 64] for i in (64, 128, 192, 256)])
     if not shape.is_valid:
         raise ValueError("four-hole source fabric polygon invalid")
-    faces = _triangles_from_constrained_geometry(constrained_delaunay_triangles(shape), xy)
+    faces = _triangles_from_constrained_geometry(
+        constrained_delaunay_triangles(shape), xy
+    )
     if len(faces) != 326:
         raise ValueError("original source 4-hoof yoke triangle count changed")
     _validate_yoke_cdt_edges(faces)
@@ -197,11 +215,11 @@ def yoke_triangulation(xy):
 
 
 def quarter_widths(rings):
-    widths = np.zeros((len(rings),4))
-    for k,ring in enumerate(rings):
+    widths = np.zeros((len(rings), 4))
+    for k, ring in enumerate(rings):
         for i in range(4):
-            arc=ring[(i*16+np.arange(17))%64]
-            widths[k,i] = np.linalg.norm(np.diff(arc,axis=0),axis=1).sum()
+            arc = ring[(i * 16 + np.arange(17)) % 64]
+            widths[k, i] = np.linalg.norm(np.diff(arc, axis=0), axis=1).sum()
     return widths
 
 
@@ -217,14 +235,20 @@ def gore_vertices(rings, heights, piece, i):
     rings = np.asarray(rings, dtype=float)
     widths = quarter_widths(rings)
     bounds = np.stack(
-        [np.column_stack((ring[[0, 16, 32, 48]], np.full(4, z)))
-         for ring, z in zip(rings, heights)], axis=0
+        [
+            np.column_stack((ring[[0, 16, 32, 48]], np.full(4, z)))
+            for ring, z in zip(rings, heights)
+        ],
+        axis=0,
     )
     source_side = np.linalg.norm(np.diff(bounds, axis=0), axis=2)
-    common_meridians = np.maximum(
-        source_side.max(axis=1),
-        0.5 * np.max(abs(np.diff(widths, axis=0)), axis=1),
-    ) + 0.2
+    common_meridians = (
+        np.maximum(
+            source_side.max(axis=1),
+            0.5 * np.max(abs(np.diff(widths, axis=0)), axis=1),
+        )
+        + 0.2
+    )
     half_shift = np.diff(widths[:, i]) * 0.5
     increments = np.sqrt(common_meridians**2 - half_shift**2)
     if not np.isfinite(increments).all() or (increments <= 0).any():
@@ -242,15 +266,17 @@ def gore_vertices(rings, heights, piece, i):
 
 
 def rework_torso(old_r2, new_ring100, initial, rest, item_ids):
-    body=np.asarray(old_r2["body_synthetic_rings_xy_mm"],float).copy()
+    body = np.asarray(old_r2["body_synthetic_rings_xy_mm"], float).copy()
     body[0] = new_ring100
     for i in range(4):
         name = f"TORSO-{i + 1}"
         idx = item_ids[name]
-        pos,pattern=gore_vertices(body,old_r2["body_rings_z_mm"],name,i)
-        if pos.shape!=(68,3) or pattern.shape!=(68,2):
+        pos, pattern = gore_vertices(body, old_r2["body_rings_z_mm"], name, i)
+        if pos.shape != (68, 3) or pattern.shape != (68, 2):
             raise ValueError("torso final vertices topology unexpectedly changed")
-        offset=rest[idx[0]]-pattern[0]  # preserve source material layout position at first vertex
+        offset = (
+            rest[idx[0]] - pattern[0]
+        )  # preserve source material layout position at first vertex
         initial[idx] = pos
         rest[idx] = pattern + offset
     return body
@@ -359,20 +385,24 @@ def physical_material_checks(init, rest, flens, fids, pairs):
     at = 0
     edges = set()
     for length in flens:
-        face = fids[at:at + int(length)]
+        face = fids[at : at + int(length)]
         at += int(length)
-        for a,b in zip(face,np.roll(face,-1)):
-            edges.add(tuple(sorted((int(a),int(b)))))
-    edges=np.asarray(sorted(edges),int)
-    planar=np.linalg.norm(rest[edges[:,0]]-rest[edges[:,1]],axis=1)
-    physical=np.linalg.norm(init[edges[:,0]]-init[edges[:,1]],axis=1)
-    valid=planar>1e-9
-    strain=abs(physical[valid]/planar[valid]-1)*100
-    gaps=np.linalg.norm(init[pairs[:,0]]-init[pairs[:,1]],axis=1)*1000
-    return {"rest_edge_strain_p95_percent":float(np.percentile(strain,95)),
-            "rest_edge_strain_max_percent":float(np.max(strain)),
-            "initial_seam_mean_mm":float(gaps.mean()),"initial_seam_max_mm":float(gaps.max()),
-            "undirected_surface_edges":len(edges),"invalid_zero_length_material_edges":int((~valid).sum())}
+        for a, b in zip(face, np.roll(face, -1)):
+            edges.add(tuple(sorted((int(a), int(b)))))
+    edges = np.asarray(sorted(edges), int)
+    planar = np.linalg.norm(rest[edges[:, 0]] - rest[edges[:, 1]], axis=1)
+    physical = np.linalg.norm(init[edges[:, 0]] - init[edges[:, 1]], axis=1)
+    valid = planar > 1e-9
+    strain = abs(physical[valid] / planar[valid] - 1) * 100
+    gaps = np.linalg.norm(init[pairs[:, 0]] - init[pairs[:, 1]], axis=1) * 1000
+    return {
+        "rest_edge_strain_p95_percent": float(np.percentile(strain, 95)),
+        "rest_edge_strain_max_percent": float(np.max(strain)),
+        "initial_seam_mean_mm": float(gaps.mean()),
+        "initial_seam_max_mm": float(gaps.max()),
+        "undirected_surface_edges": len(edges),
+        "invalid_zero_length_material_edges": int((~valid).sum()),
+    }
 
 
 def _load_pinned_experiment(source, lower_file, upper_file, old_stage):
@@ -406,9 +436,7 @@ def _load_pinned_experiment(source, lower_file, upper_file, old_stage):
 def _source_ring_and_yoke(mesh, lower, trial):
     outer = np.asarray(lower["yoke"]["outer_stitch_xy_mm"], dtype=float)
     holes = [
-        np.asarray(
-            lower["yoke"]["source_hoof_holes_stitch_xy_mm"][k], dtype=float
-        )[::8]
+        np.asarray(lower["yoke"]["source_hoof_holes_stitch_xy_mm"][k], dtype=float)[::8]
         for k in ("FL", "FR", "RL", "RR")
     ]
     rings, diagnostics = sample_rings(
@@ -425,9 +453,7 @@ def _source_ring_and_yoke(mesh, lower, trial):
 
 def _rebuild(source, lower, trial, old):
     mesh = trimesh.load(source, force="mesh")
-    outer, rings, yoke_faces, diagnostics = _source_ring_and_yoke(
-        mesh, lower, trial
-    )
+    outer, rings, yoke_faces, diagnostics = _source_ring_and_yoke(mesh, lower, trial)
     ids = pieces()
     init = old["initial_3d_prepositioned_vertices_m"].copy()
     rest = old["true_independent_flat_2d_rest_xy_m"].copy()
@@ -447,7 +473,12 @@ def _rebuild(source, lower, trial, old):
         rows,
         yoke_faces,
     )
-    return (init, rest, springs, lengths, indices, roles), rings, diagnostics, yoke_faces
+    return (
+        (init, rest, springs, lengths, indices, roles),
+        rings,
+        diagnostics,
+        yoke_faces,
+    )
 
 
 def _create_report(trial_arrays, rings, diagnostics, yoke_faces, lower):
@@ -478,7 +509,11 @@ def _create_report(trial_arrays, rings, diagnostics, yoke_faces, lower):
         new_yoke_outer_min_bridge_mm=clearance(
             rings[0],
             [
-                Polygon(np.asarray(lower["yoke"]["source_hoof_holes_stitch_xy_mm"][key])[::8])
+                Polygon(
+                    np.asarray(lower["yoke"]["source_hoof_holes_stitch_xy_mm"][key])[
+                        ::8
+                    ]
+                )
                 for key in ("FL", "FR", "RL", "RR")
             ],
         ),
@@ -518,24 +553,22 @@ def _save_reproducible_staging(output, arrays, meta):
     triangles = []
     cursor = 0
     for length in lengths:
-        face = indices[cursor:cursor + int(length)]
+        face = indices[cursor : cursor + int(length)]
         triangles.extend(
             (int(face[0]), int(face[k]), int(face[k + 1]))
             for k in range(1, int(length) - 1)
         )
         cursor += int(length)
-    trimesh.Trimesh(
-        vertices=init, faces=np.asarray(triangles), process=False
-    ).export(root / "R3_PREPOSITION_NOT_A_SEWN_TOY.glb")
+    trimesh.Trimesh(vertices=init, faces=np.asarray(triangles), process=False).export(
+        root / "R3_PREPOSITION_NOT_A_SEWN_TOY.glb"
+    )
 
 
 def build(source, lower_file, upper_file, old_stage, output):
     lower, trial, previous = _load_pinned_experiment(
         source, lower_file, upper_file, old_stage
     )
-    arrays, rings, diagnostics, yoke_faces = _rebuild(
-        source, lower, trial, previous
-    )
+    arrays, rings, diagnostics, yoke_faces = _rebuild(source, lower, trial, previous)
     meta = _create_report(arrays, rings, diagnostics, yoke_faces, lower)
     _save_reproducible_staging(output, arrays, meta)
     return meta
@@ -549,7 +582,11 @@ def main():
     report = build(args.source, args.lower, args.upper, args.stage, args.out)
     print(
         json.dumps(
-            {key: value for key, value in report.items() if key != "source_station_2d_iou"},
+            {
+                key: value
+                for key, value in report.items()
+                if key != "source_station_2d_iou"
+            },
             ensure_ascii=False,
         )
     )

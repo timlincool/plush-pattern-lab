@@ -38,8 +38,9 @@ def rings():
 def test_shared_2d_side_seams_match_across_four_gores():
     source = rings()
     flattened = [
-        gore_vertices(source, [60, 70, 80, 90, 100], f"BAND-{i + 1}", i)[1]
-        .reshape(5, 17, 2)
+        gore_vertices(source, [60, 70, 80, 90, 100], f"BAND-{i + 1}", i)[1].reshape(
+            5, 17, 2
+        )
         for i in range(4)
     ]
     for i in range(4):
