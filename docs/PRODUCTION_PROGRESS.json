@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-16",
+  "updated_at": "2026-11-17",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -29,7 +29,7 @@
     "blocked_external"
   ],
   "overall": {
-    "stage": "stage6_B24_R3_true_940_segment_2D_netline_native_Blender4_3_2_40frames_mean_shape_better_18p9pct_but_material_strain_and_full_assembly_unapproved_P3",
+    "stage": "Stage6_R4_actual_Blender_40frames_local_head_mean_improves_4p7pct_global_mean_worse_0p45pct_KEEP_R3_as_baseline_P3",
     "ready_for_preliminary_supplier_conversation": true,
     "factory_sample_pack_ready": false,
     "mass_production_ready": false,
@@ -459,6 +459,14 @@
         {
           "path": "experiments/stage6_B24_R3_actual_Cloth_20261116/summary.json",
           "kind": "same_run_R2_R3_source_25pct_15k_sampling_strict_40frame_shape_AB_and_native_depsgraph_sha_real_result_not_approved"
+        },
+        {
+          "path": "docs/STAGE6_R4_REAL_HEAD_CROWN_AB.md",
+          "kind": "true_R4_native_Blender_4_3_2_40frames_local_crown_improvement_global_mean_worse_rejected_as_global_upgrade"
+        },
+        {
+          "path": "experiments/stage6_B24_R4_actual_Cloth_20261117/summary.json",
+          "kind": "true_R4_2699_vertices_2054_polygons_986_springs_same_run_R3_vs_R4_symmetric_surface_error_material_stretch_research_negative"
         }
       ],
       "blockers": [
@@ -1705,6 +1713,13 @@
     {
       "priority": "P0",
       "phase_id": "P3",
+      "owner": "研发＋原始外观与实体制版",
+      "action": "可信 Run #43844609621 已完成R4中央头冠64点弧面层的真正Blender4.3.2第40帧，同run对R3：中央头部双向均距3.703534→3.528842mm改善4.72%，但主壳全局5.496912→5.521642mm恶化0.45%，真实材料边长应变P95 9.934→10.138%变差。R4仅作为局部头冠几何候选，不替代R3主基线。下一步不再只调中央顶盖系数，优先设计原Stage6左右两处独立顶端突起/四耳根的真正装配净缝与隐藏省道，兼顾头颈外观及可翻面填棉；两个真实二侧缝长校验通过后再在相同Blender运行A/B，必须追加自碰/BVH非邻接接触与真实面料实验。原40饰件仅源位置可视组合，不等于缝入。",
+      "done_when": "新耳根/双高位突出部件具备来源面身份、真实可配缝双侧二维静止净线、3D实际Blender第40帧和相对于R3头部与全局形状/真实应变/A/B接触等独立证据；无外观加材料的共同通过不得升级P3、P4或工厂纸样。"
+    },
+    {
+      "priority": "P0",
+      "phase_id": "P3",
       "owner": "研发＋原设计/实物试缝",
       "action": "已在可信 Stage6 main Run #43817842762 同条件 Blender4.3.2 Cloth真实重构新R3的24件/986弹簧/40帧，独立核验940段实际二维配缝最大差2.913e-13mm。与同run旧R2相比，真3D双向抽样表面平均误差6.776925→5.496912mm（改善18.9%），源→实体P95 16.44094→11.66998mm，回向P95 18.38405→11.77818mm；缝线端点平均隙0.006963→0.0038955mm。负面：2D静止→真实3D绝对边长变形P95由9.25%恶化9.93%，最大仍62.66%，材料未测/不批准；12个云耳尾等只在Stage6原坐标视觉叠加，未真缝。下一轮停止只修改BODY截面：先针对原z230三闭环/中央冠与两侧高突设计圆头/耳根工艺分片，与下颈做真实对齐、全双侧2D配缝；另对已改善下身做材料变形热点、压力/自碰负例，身体/头/腿单独评估并保留真A/B。",
       "done_when": "R3研究指标和真实solver及完整视觉装配证据已归档；下轮头颈/耳根方案在原源几何下生成真实二维净线、亲自运行Blender 40帧、独立通过形状+应变+自碰与实体试布后才能考虑P3验收。P3仍进行中、P4未开始、工厂正式纸样0。"
@@ -2252,6 +2267,11 @@
       "date": "2026-11-16",
       "event": "可信Stage6 main Blender4.3.2 #43817842762真实40帧：原R3双侧2D净线错配0.717mm已通过四围片共享材料纵线改造，实际940对净缝段最大差2.913e-13mm，24布片/986弹簧/2635物理最终顶点/1990面成功 evaluated，不是静态预定位。与同run真R2的25%原源15k均采样形状对照，均距6.776925→5.496912mm改善18.89%，源→实体P95 16.44094→11.66998mm且回向P95 18.38405→11.77818mm；均缝隙0.0069628→0.0038955mm。负面：2D到物理3D相对边形变P95 9.25061→9.93410%恶化，极值仍62.663%，未做真实材料/棉花/碰撞。R3真网格叠加原Stage6 12/40大附件仅视觉拼装、非缝合，原目标主壳未冒充R3结果。源码PR #240–244，主干803测试绿。完整Zip SHA1f8a13a1...归档，P3在研，P4未开始，正式工厂纸样0。",
       "evidence_path": "experiments/stage6_B24_R3_actual_Cloth_20261116/summary.json"
+    },
+    {
+      "date": "2026-11-17",
+      "event": "检回受信main Stage6 Run #43844609621 真实Blender4.3.2成功R4中央头冠层40帧，原R3 2635顶点/986弹簧不变，新增64内部顶点后R4总2699顶点2054面，940段二维净缝仍配长。真正原源对同Run R3/R4的12k抽样中：中央上头部双向均距3.703534→3.528842mm改善4.72%；全主壳均距5.496912→5.521642mm恶化0.45%；真实材料边长应变P95 9.934→10.138%恶化。R4只局部改善，否决作为整体主版。压力、自碰、布料实测、左右高位突起/耳云尾皆未缝入。修复2处Ruff格式CI（PR#253），用户取得真实GLB、对照三视图、离线交互与带SHA完整ZIP；P3继续/P4未开始、正式工厂纸样0。",
+      "evidence_path": "experiments/stage6_B24_R4_actual_Cloth_20261117/summary.json"
     }
   ]
 }

@@ -1,0 +1,59 @@
+{
+  "schema": "stage6-r4-actual-Blender-4-3-2-central-head-crown-vs-R3-physical-ab-v1",
+  "date": "2026-11-17",
+  "run_id": 43844609621,
+  "blender_version": "4.3.2",
+  "run_conclusion": "success",
+  "artifact_id": 14214464100,
+  "source_proxy_sha256": "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd",
+  "R3_real_cloth_npz_sha256": "6a1349eb9467051480ea9f396416ae3358a92567faf6a6fb903c4cd3fbcf162f",
+  "R4_real_cloth_npz_sha256": "76d7cc7e1c72fc95f1c0b319d55bcc5fdfc38472373fbd2ab86f539643b3cb02",
+  "R4_AB_original_result_sha256": "43bc1febfabc85fe4244ff8d3a98c430c77c8c8ca14c1e328407fbf7ec1c578b",
+  "true_frame_40_evaluated_mesh": true,
+  "R3": {
+    "vertices": 2635,
+    "mean_global_mm": 5.4969121666364416,
+    "mean_upper_head_mm": 3.7035342443040102,
+    "source_to_actual_p95_mm": 11.66997571173376,
+    "actual_to_source_p95_mm": 11.778179897002861,
+    "material_edge_strain_p95_pct": 9.934095900992817,
+    "mean_spring_endpoint_gap_mm": 0.003895499265180072
+  },
+  "R4": {
+    "vertices": 2699,
+    "polygons": 2054,
+    "source_crown_inner_vertices_added": 64,
+    "mean_global_mm": 5.521642447664293,
+    "mean_upper_head_mm": 3.528842288372993,
+    "source_to_actual_p95_mm": 11.649693639287964,
+    "actual_to_source_p95_mm": 11.882287176091289,
+    "material_edge_strain_p95_pct": 10.1383085124811,
+    "mean_spring_endpoint_gap_mm": 0.0038298972182687807
+  },
+  "matched_springs": 986,
+  "paired_2d_netline_edges": 940,
+  "upper_head_mean_improved": true,
+  "global_mean_improved": false,
+  "global_physical_candidate_promoted": false,
+  "source_side_protrusions_and_ears_sewn": false,
+  "clouds_tail_drops_sewn": false,
+  "self_collision_tested": false,
+  "pressure_fill_tested": false,
+  "real_fabric_tested": false,
+  "old_2635_solved_vertex_displacement_mm": {
+    "mean": 0.26130925407509936,
+    "p95": 0.5578935675692462,
+    "max": 1.4800836976274407
+  },
+  "visual_files_sha256": {
+    "source_R3_R4_three_views_png": "98bd6366ceb0a67ad330bbbd3f99e2ffda77000fffb1c1752974368155c8b7f8",
+    "R3_R4_offline_rotation_html": "c162f17bdad07f480b08bca4e95924ce467b6ac19546a1815e6cfae8267dd8b9",
+    "R4_cloth_real_glb": "052693c43478b24f6245649bcbd36ef2e671ac707a12684fc9df2506da7682eb",
+    "R4_40_unsewn_accessories_glb": "3fe88363e8b7498d91011371f58bead3a3f285fadbc35a3a1e6c20fe6d2fbc84",
+    "stage6_original41_visual_reference_glb": "f1787dbacd5d761c743f91ca62d7ba7afc38c97eb1d514282ec058575913639a"
+  },
+  "bundle_sha256": "8401a92b83e8b15b0c4ebfd3af502203b5c2fd0125c84fc1707e39766ae61afc",
+  "P3": "in_progress",
+  "P4": "not_started",
+  "approved_factory_patterns": 0
+}
