@@ -16,6 +16,8 @@ from scipy.optimize import least_squares
 from shapely import constrained_delaunay_triangles
 from shapely.geometry import Point, Polygon
 
+from research.stage6_b24_r3.verify_r3_generated_source import require_verified_r3
+
 R3_SHA = "d93afe5667bc2c808e4700c5554a858b1df9b1574c9e23de1cb2c08b42c27fc3"
 R3_EQUIVALENT_SHA = "faf7dfa2129e7a1ce63d4829cb49b0ef85608fa0c39cd7271ef36a5c53a9a2e5"
 SOURCE_SHA = "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd"
@@ -36,12 +38,8 @@ def _sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def _load_inputs(r3_path, source_path):
-    if (
-        _sha(r3_path) not in {R3_SHA, R3_EQUIVALENT_SHA}
-        or _sha(source_path) != SOURCE_SHA
-    ):
-        raise ValueError("unverified R3 native input or Stage6 source PLY")
+def _load_inputs(r3_path, source_path, r3_qa=None):
+    require_verified_r3(r3_path, source_path, r3_qa)
     with np.load(r3_path, allow_pickle=False) as prior:
         inp = {key: prior[key].copy() for key in prior.files}
     if (
@@ -348,11 +346,11 @@ def _append_bridge(arrays, faces, roles, springs, hole_ids, side, rings):
     }
 
 
-def generate(stage, source, output):
+def generate(stage, source, output, r3_qa=None):
     output = Path(output)
     if output.exists() and any(output.iterdir()):
         raise ValueError("refuse to overwrite earlier research output")
-    arrays, mesh = _load_inputs(stage, source)
+    arrays, mesh = _load_inputs(stage, source, r3_qa)
     faces, roles = _split_r3_faces(arrays)
     springs = [
         tuple(map(int, edge)) for edge in arrays["original_sewing_spring_vertex_pairs"]
@@ -460,8 +458,15 @@ def main():
     p.add_argument("--stage", required=True, type=Path)
     p.add_argument("--source", required=True, type=Path)
     p.add_argument("--out", required=True, type=Path)
+    p.add_argument("--r3-qa", type=Path)
     a = p.parse_args()
-    print(json.dumps(generate(a.stage, a.source, a.out), ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            generate(a.stage, a.source, a.out, a.r3_qa),
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":
