@@ -2042,6 +2042,55 @@ jobs:
             --baseline "$base/solver/R3_ACTUAL_EVALUATED_CLOTH_FRAME40.npz" \
             --candidate "$trial/solver/R4_ACTUAL_EVALUATED_CLOTH_FRAME40.npz" \
             --out "$trial/solver/R4_VERSUS_R3_SOURCE_HEAD_TRUE_BLENDER_AB.json"
+      - name: R5 source-guided LEFT/RIGHT head lobes genuine 2D-to-40-frame Blender Cloth
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference"
+          r3="$root/stage6_b24_r3_physical"
+          trial="$root/stage6_b24_r5_physical"
+          source="$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply"
+          python -m research.stage6_b24_r5.build_r5_side_lobes \
+            --stage "$r3/R3_MATCHED_24_PIECE_2D_REST_AND_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --source "$source" --out "$trial"
+          python -m research.stage6_b24_r5.audit_r5_side_lobes \
+            --stage "$trial/R5_SOURCE_TWO_SIDE_LOBES_2D_REST_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --r3 "$r3/R3_MATCHED_24_PIECE_2D_REST_AND_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --out "$trial/R5_INDEPENDENT_NETLINES_QA.json"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ["RUNNER_TEMP"]) / "stage6-reference/stage6_b24_r5_physical"
+          study = json.loads((root / "R5_RESEARCH_TOPOLOGY_QA.json").read_text())
+          qa = json.loads((root / "R5_INDEPENDENT_NETLINES_QA.json").read_text())
+          assert study["schema"] == "stage6-R5-source-two-side-lobe-open-headcap-40pieces-v1"
+          assert qa["original_R3_986_springs_exactly_unchanged"]
+          assert qa["new_R5_narrow_gores_do_not_self_overlap"]
+          assert qa["total_research_panels"] == 40
+          assert study["sewing_springs"] == 1170
+          assert study["crown_two_new_holes_clearance_to_outer_mm"] >= 12.7
+          assert study["crown_hole_to_hole_clearance_mm"] >= 12.7
+          assert qa["new_2d_paired_line_length_max_mismatch_mm"] < 0.0001
+          assert qa["preposition_global_edge_strain"]["P95_pct"] < 10.5
+          assert qa["preposition_global_edge_strain"]["max_pct"] < 75
+          assert study["added_original_real_eared_visual_meshes_sewn"] == 0
+          assert qa["factory_cutting_patterns_approved"] == 0
+          print("R5_TRUE_SOURCE_40PANEL_NETLINES_AND_MATERIAL_NEGATIVE_GATE_PASS")
+          PY
+          mkdir -p "$trial/solver"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python research/stage6_b24_r5/run_r5_blender.py -- \
+            --stage "$trial/R5_SOURCE_TWO_SIDE_LOBES_2D_REST_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --qa "$trial/R5_RESEARCH_TOPOLOGY_QA.json" \
+            --audit "$trial/R5_INDEPENDENT_NETLINES_QA.json" \
+            --out "$trial/solver" --frames 40
+          python -m research.stage6_b24_r5.audit_r5_real_ab \
+            --source "$source" \
+            --baseline "$r3/solver/R3_ACTUAL_EVALUATED_CLOTH_FRAME40.npz" \
+            --candidate "$trial/solver/R5_GENUINE_EVALUATED_CLOTH_FRAME40.npz" \
+            --out "$trial/solver/R5_VERSUS_R3_TRUE_BLENDER_SOURCE_HEAD_AB.json"
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -2062,6 +2111,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/stage6_full_visual_meshes/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_r3_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_r4_physical/**
+            ${{ runner.temp }}/stage6-reference/stage6_b24_r5_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_source_yoke_CDT.json
             ${{ runner.temp }}/stage6-reference/stage6_external_s2s_abf_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
