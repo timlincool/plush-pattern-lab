@@ -180,6 +180,7 @@ def _cap_with_two_real_openings(staging, holes, vertex_offset):
         raise ValueError("old R3 apex is not interior to new crown")
     a, b, c = faces.pop(selected)
     faces.extend([(a, b, CAP_CENTER), (b, c, CAP_CENTER), (c, a, CAP_CENTER)])
+
     def signed(face):
         x, y, z = orig[np.asarray(face), :2]
         return (y[0] - x[0]) * (z[1] - x[1]) - (y[1] - x[1]) * (z[0] - x[0])
@@ -322,6 +323,7 @@ def _append_tip_wedges(arrays, faces, roles, springs, side, full, heights, all_i
         successor = wedges[(k + 1) % 4]
         springs.append((int(wedge[-2]), int(successor[0])))
         springs.append((int(wedge[-1]), int(successor[-1])))
+
 
 def _append_bridge(arrays, faces, roles, springs, hole_ids, side, rings):
     """Use source-derived four gores and four fitted tip darts per side."""
