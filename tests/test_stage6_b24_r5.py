@@ -40,11 +40,11 @@ def test_r5_cdt_crown_keeps_original_center_and_two_real_holes():
     pos = np.zeros((2699, 3))
     outer = _ellipse_outer()
     holes = [_make_hole(-10), _make_hole(10)]
-    pos[876:940, :2] = outer * .001
-    pos[940, :2] = [0, -.047]
-    pos[940, 2] = .236
-    pos[2635:2667, :2] = holes[0] * .001
-    pos[2667:2699, :2] = holes[1] * .001
+    pos[876:940, :2] = outer * 0.001
+    pos[940, :2] = [0, -0.047]
+    pos[940, 2] = 0.236
+    pos[2635:2667, :2] = holes[0] * 0.001
+    pos[2667:2699, :2] = holes[1] * 0.001
     faces, border, gap = _cap_with_two_real_openings(
         {"initial_3d_prepositioned_vertices_m": pos}, holes, 2635
     )
@@ -66,10 +66,16 @@ def test_r5_source_ring_resampling_is_ccw_and_keeps_32_stations():
 def test_r5_narrow_gore_both_sides_retain_true_3d_lengths():
     xyz = []
     t = np.linspace(0, np.pi / 2, 9)
-    for z, x, w in ((230, 12, 2), (240, 30, 5), (230, 55, 8),
-                    (235, 58, 7), (245, 61, 4)):
-        xyz.append(np.column_stack((x + w * np.cos(t), -45 + w * np.sin(t),
-                                     np.full(9, z))))
+    for z, x, w in (
+        (230, 12, 2),
+        (240, 30, 5),
+        (230, 55, 8),
+        (235, 58, 7),
+        (245, 61, 4),
+    ):
+        xyz.append(
+            np.column_stack((x + w * np.cos(t), -45 + w * np.sin(t), np.full(9, z)))
+        )
     arc = np.asarray(xyz)
     uv = _fabric_unfold_gore(arc)
     for index in (0, -1):

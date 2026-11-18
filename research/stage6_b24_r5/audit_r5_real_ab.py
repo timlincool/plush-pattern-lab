@@ -61,9 +61,7 @@ def verify(source, baseline, candidate, output):
     new, springs, rest, edges = _actual_mesh(candidate)
     if len(old.vertices) != 2635 or len(new.vertices) != 3139:
         raise ValueError("R5 result is not an actual 40-panel frame40 mesh")
-    if springs.shape != (1170, 2) or not np.array_equal(
-        old_springs, springs[:986]
-    ):
+    if springs.shape != (1170, 2) or not np.array_equal(old_springs, springs[:986]):
         raise ValueError("R5 did not preserve R3 original spring identity")
     if not np.isfinite(new.vertices).all():
         raise ValueError("R5 native cloth produced nonfinite geometry")
@@ -92,9 +90,12 @@ def verify(source, baseline, candidate, output):
         "source_4_ear_meshes_physically_sewn": 0,
         "self_collision_and_filling_tested": False,
         "factory_cutting_patterns_approved": 0,
-        "P3": "in_progress", "P4": "not_started",
+        "P3": "in_progress",
+        "P4": "not_started",
     }
-    new.export(output.parent / "R5_TRUE_40FRAME_CLOTH_WITH_TWO_SOURCE_LOBE_RESEARCH.glb")
+    new.export(
+        output.parent / "R5_TRUE_40FRAME_CLOTH_WITH_TWO_SOURCE_LOBE_RESEARCH.glb"
+    )
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     print("R5_REAL_BLENDER_SHAPE_AB", json.dumps(report))
     return report
