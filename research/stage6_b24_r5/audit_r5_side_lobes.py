@@ -31,7 +31,7 @@ def load(path):
 def unpack(sizes, ids):
     faces, offset = [], 0
     for n in sizes:
-        face = np.asarray(ids[offset:offset + int(n)], dtype=int)
+        face = np.asarray(ids[offset : offset + int(n)], dtype=int)
         if len(set(face)) != len(face):
             raise ValueError("repeated polygon vertex inside R5 fabric face")
         faces.append(face)
@@ -44,7 +44,9 @@ def unpack(sizes, ids):
 def all_edges(faces):
     counter = Counter()
     for f in faces:
-        counter.update(tuple(sorted((int(a), int(b)))) for a, b in zip(f, np.roll(f, -1)))
+        counter.update(
+            tuple(sorted((int(a), int(b)))) for a, b in zip(f, np.roll(f, -1))
+        )
     if set(counter.values()) - {1, 2}:
         raise ValueError("fabric has edge incidence over 2 or missing")
     return counter
@@ -56,8 +58,12 @@ def strain(xyz, rest, edges):
     if xyzlen.min() <= 1e-10 or uvlen.min() <= 1e-10:
         raise ValueError("collapsed 2D/3D material edge")
     delta = abs(xyzlen / uvlen - 1) * 100
-    return {"count": len(edges), "P95_pct": float(np.percentile(delta, 95)),
-            "mean_pct": float(delta.mean()), "max_pct": float(delta.max())}
+    return {
+        "count": len(edges),
+        "P95_pct": float(np.percentile(delta, 95)),
+        "mean_pct": float(delta.mean()),
+        "max_pct": float(delta.max()),
+    }
 
 
 def comparison(uv, left, right):
@@ -73,45 +79,61 @@ def detailed_new_seams(uv, all_springs):
     for side_index in range(2):
         holes = np.arange(2635 + 32 * side_index, 2667 + 32 * side_index)
         base = 2699 + side_index * 220
-        gores = [np.arange(base + j * 45, base + (j + 1) * 45).reshape(5, 9)
-                 for j in range(4)]
-        caps = [np.arange(base + 180 + j * 10, base + 190 + j * 10)
-                for j in range(4)]
+        gores = [
+            np.arange(base + j * 45, base + (j + 1) * 45).reshape(5, 9)
+            for j in range(4)
+        ]
+        caps = [np.arange(base + 180 + j * 10, base + 190 + j * 10) for j in range(4)]
         predicted = []
         for gore_index, gore in enumerate(gores):
             for col in range(8):
                 predicted.append((int(holes[gore_index * 8 + col]), int(gore[0, col])))
         for gore_index, gore in enumerate(gores):
             following = gores[(gore_index + 1) % 4]
-            predicted.extend((int(a), int(b)) for a, b in zip(gore[:, -1], following[:, 0]))
+            predicted.extend(
+                (int(a), int(b)) for a, b in zip(gore[:, -1], following[:, 0])
+            )
         for gore, cap in zip(gores, caps):
             predicted.extend((int(gore[-1, col]), int(cap[col])) for col in range(8))
         for wedge_index, cap in enumerate(caps):
             follower = caps[(wedge_index + 1) % 4]
-            predicted.extend(((int(cap[-2]), int(follower[0])),
-                              (int(cap[-1]), int(follower[-1]))))
+            predicted.extend(
+                ((int(cap[-2]), int(follower[0])), (int(cap[-1]), int(follower[-1])))
+            )
         start = OLD_SPRINGS + 92 * side_index
-        actual = all_springs[start:start + 92]
-        if set(map(tuple, map(sorted, actual))) != set(map(tuple, map(sorted, predicted))):
-            raise ValueError("wrong R5 sewing identities for 4 side-gores and 4 tip wedges")
+        actual = all_springs[start : start + 92]
+        if set(map(tuple, map(sorted, actual))) != set(
+            map(tuple, map(sorted, predicted))
+        ):
+            raise ValueError(
+                "wrong R5 sewing identities for 4 side-gores and 4 tip wedges"
+            )
         data = {"side": "L" if side_index == 0 else "R"}
         for gore_index, gore in enumerate(gores):
-            data[f"headcap_to_gore_{gore_index+1}_mm"] = comparison(
-                uv, np.r_[holes[gore_index * 8:gore_index * 8 + 9] if gore_index < 3 else
-                          np.r_[holes[24:], holes[0]]], gore[0]
+            data[f"headcap_to_gore_{gore_index + 1}_mm"] = comparison(
+                uv,
+                np.r_[
+                    holes[gore_index * 8 : gore_index * 8 + 9]
+                    if gore_index < 3
+                    else np.r_[holes[24:], holes[0]]
+                ],
+                gore[0],
             )
             following = gores[(gore_index + 1) % 4]
-            data[f"gore_side_to_{(gore_index+1)%4+1}_mm"] = comparison(
+            data[f"gore_side_to_{(gore_index + 1) % 4 + 1}_mm"] = comparison(
                 uv, gore[:, -1], following[:, 0]
             )
-            data[f"gore_to_wedge_{gore_index+1}_mm"] = comparison(
+            data[f"gore_to_wedge_{gore_index + 1}_mm"] = comparison(
                 uv, gore[-1], caps[gore_index][:9]
             )
             follower_cap = caps[(gore_index + 1) % 4]
-            data[f"tip_radial_{gore_index+1}_mm"] = abs(
-                np.linalg.norm(uv[caps[gore_index][-1]] - uv[caps[gore_index][-2]])
-                - np.linalg.norm(uv[follower_cap[-1]] - uv[follower_cap[0]])
-            ) * 1000
+            data[f"tip_radial_{gore_index + 1}_mm"] = (
+                abs(
+                    np.linalg.norm(uv[caps[gore_index][-1]] - uv[caps[gore_index][-2]])
+                    - np.linalg.norm(uv[follower_cap[-1]] - uv[follower_cap[0]])
+                )
+                * 1000
+            )
         errors.extend(value for key, value in data.items() if key.endswith("_mm"))
         side_data.append(data)
     max_error = max(errors)
@@ -127,15 +149,21 @@ def validate_surfaces(faces, rest):
         base = 2699 + side * 220
         for part in range(4):
             lo = base + 45 * part
-            polygons = [Polygon(rest[f]) for f in faces
-                        if len(f) == 4 and min(f) >= lo and max(f) < lo + 45]
-            if len(polygons) != 32 or any(not p.is_valid or p.area <= 1e-12 for p in polygons):
+            polygons = [
+                Polygon(rest[f])
+                for f in faces
+                if len(f) == 4 and min(f) >= lo and max(f) < lo + 45
+            ]
+            if len(polygons) != 32 or any(
+                not p.is_valid or p.area <= 1e-12 for p in polygons
+            ):
                 raise ValueError("R5 newly flattened gore has invalid planar quad")
             sum_area = sum(p.area for p in polygons)
             union = unary_union(polygons).area
             if sum_area - union > 1e-10:
-                overlapping.append({"side": side, "panel": part,
-                                    "intersection_m2": sum_area - union})
+                overlapping.append(
+                    {"side": side, "panel": part, "intersection_m2": sum_area - union}
+                )
     if overlapping:
         raise ValueError("R5 narrow fabric gores self-overlap in material space")
 
@@ -198,7 +226,9 @@ def main():
     if a.out.exists():
         raise FileExistsError("R5 independent QA must not overwrite prior result")
     result = audit(a.stage, a.r3)
-    a.out.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
+    a.out.write_text(
+        json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf8"
+    )
     print(json.dumps(result, indent=2))
 
 

@@ -33,19 +33,30 @@ def _sha(path):
 def _verify_input(stage, qa, independent):
     design = json.loads(Path(qa).read_text(encoding="utf8"))
     check = json.loads(Path(independent).read_text(encoding="utf8"))
-    if design.get("schema") != "stage6-R5-source-two-side-lobe-open-headcap-40pieces-v1":
+    if (
+        design.get("schema")
+        != "stage6-R5-source-two-side-lobe-open-headcap-40pieces-v1"
+    ):
         raise ValueError("not a pinned R5 source-guided pattern experiment")
     if design.get("R5_stage_npz_SHA256") != _sha(stage):
         raise ValueError("R5 2D rest or 3D preposition changed after source QA")
-    if (design.get("factory_approved_cut_patterns") != 0
-            or check.get("factory_cutting_patterns_approved") != 0):
+    if (
+        design.get("factory_approved_cut_patterns") != 0
+        or check.get("factory_cutting_patterns_approved") != 0
+    ):
         raise ValueError("not approved for factory cutting")
-    if check.get("schema") != "stage6-R5-independent-40-piece-matched-netline-and-strain-v1":
+    if (
+        check.get("schema")
+        != "stage6-R5-independent-40-piece-matched-netline-and-strain-v1"
+    ):
         raise ValueError("independent R5 netline audit is absent")
     shape = check["preposition_global_edge_strain"]
-    if (shape["P95_pct"] >= 10.5 or shape["max_pct"] >= 75
-            or check["new_2d_paired_line_length_max_mismatch_mm"] >= 0.0001
-            or not check["new_R5_narrow_gores_do_not_self_overlap"]):
+    if (
+        shape["P95_pct"] >= 10.5
+        or shape["max_pct"] >= 75
+        or check["new_2d_paired_line_length_max_mismatch_mm"] >= 0.0001
+        or not check["new_R5_narrow_gores_do_not_self_overlap"]
+    ):
         raise ValueError("R5 source-guided seam/material research gate failed")
 
 
@@ -57,8 +68,12 @@ def _input_mesh(stage):
         face_lengths = payload["face_lengths"].copy()
         face_ids = payload["face_vertex_ids"].copy()
         roles = payload["face_material_roles"].copy()
-    if (init.shape != (3139, 3) or rest.shape != (3139, 2)
-            or springs.shape != (1170, 2) or len(face_lengths) != 2378):
+    if (
+        init.shape != (3139, 3)
+        or rest.shape != (3139, 2)
+        or springs.shape != (1170, 2)
+        or len(face_lengths) != 2378
+    ):
         raise ValueError("R5 Blender source panel topology mismatch")
     if not np.isfinite(init).all() or not np.isfinite(rest).all():
         raise ValueError("R5 source has nonfinite 3D/2D material coordinates")
@@ -129,7 +144,9 @@ def main():
     for name in ("stage", "qa", "audit", "out"):
         p.add_argument("--" + name, type=Path, required=True)
     p.add_argument("--frames", type=int, default=40)
-    args = p.parse_args(sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else [])
+    args = p.parse_args(
+        sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else []
+    )
     if bpy.app.version[:3] != (4, 3, 2) or args.frames != 40:
         raise ValueError("only pinned Blender 4.3.2 / 40 frames allowed")
     if args.out.is_symlink() or (args.out.exists() and any(args.out.iterdir())):
@@ -138,7 +155,9 @@ def main():
     result = _input_mesh(args.stage)
     obj, scene, materials = _setup_scene(*result[:5], args.frames)
     obj.name = "R5_NATIVE_40_PIECE_SOURCE_LOBE_SEWING"
-    final, elapsed = _evaluate_frame(scene, obj, result[0].shape, result[2], args.frames)
+    final, elapsed = _evaluate_frame(
+        scene, obj, result[0].shape, result[2], args.frames
+    )
     _save_result(args, result, obj, scene, materials, final, elapsed)
 
 
