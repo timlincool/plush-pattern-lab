@@ -15,8 +15,7 @@ def _source_rings():
     angle = np.linspace(0, 2 * np.pi, 32, endpoint=False)
     disk = np.column_stack((np.cos(angle), np.sin(angle)))
     return [
-        disk * width + (dx, 0)
-        for width, dx in ((2.5, 10), (3, 54), (4, 55), (3, 60))
+        disk * width + (dx, 0) for width, dx in ((2.5, 10), (3, 54), (4, 55), (3, 60))
     ]
 
 
