@@ -15,6 +15,7 @@ import numpy as np
 from shapely.geometry import Polygon
 
 from research.stage6_b24_r3.build_r3_matched_body import radial_fit
+from research.stage6_b24_r3.verify_r3_generated_source import require_verified_r3
 
 SOURCE_SHA = "5b52e3fd09c83b19c5b9d95d6d8d859a147ff4deef90f1518f868d2e82e3a2dd"
 R3_SHA = "d93afe5667bc2c808e4700c5554a858b1df9b1574c9e23de1cb2c08b42c27fc3"
@@ -28,12 +29,10 @@ def _hash(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def _read_pinned(stage, source):
-    allowed = ((stage, {R3_SHA, R3_EQUIVALENT_SHA}), (source, {SOURCE_SHA}))
-    for path, accepted in allowed:
-        path = Path(path)
-        if not path.is_file() or path.is_symlink() or _hash(path) not in accepted:
-            raise ValueError("source not equal to signed-off R3/Stage6 evidence")
+def _read_pinned(stage, source, r3_qa=None):
+    # Validate actual source identity; permit only the signed near-identical R3
+    # geometry fingerprint when the same-run R3 QA binds a different ZIP SHA.
+    require_verified_r3(stage, source, r3_qa)
     with np.load(stage, allow_pickle=False) as r3:
         data = {name: r3[name].copy() for name in r3.files}
     if (
@@ -166,8 +165,8 @@ def _revise(data, source):
     )
 
 
-def generate(stage, source, output):
-    data, mesh = _read_pinned(stage, source)
+def generate(stage, source, output, r3_qa=None):
+    data, mesh = _read_pinned(stage, source, r3_qa)
     xyz, rest, faces, meta = _revise(data, mesh)
     old = data["initial_3d_prepositioned_vertices_m"]
     if not np.array_equal(old, xyz[:2635]):
@@ -216,8 +215,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for field in ("r3", "source", "out"):
         parser.add_argument("--" + field, required=True, type=Path)
+    parser.add_argument("--r3-qa", type=Path)
     args = parser.parse_args()
-    print(json.dumps(generate(args.r3, args.source, args.out), ensure_ascii=False))
+    print(json.dumps(generate(args.r3, args.source, args.out, args.r3_qa), ensure_ascii=False))
 
 
 if __name__ == "__main__":
