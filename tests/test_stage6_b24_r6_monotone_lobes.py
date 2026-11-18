@@ -25,14 +25,10 @@ def _synthetic_profile():
 def test_r6_ascending_five_levels():
     assert candidate.R6_HEIGHTS_MM == (230, 231, 232, 235, 245)
     assert all(
-        b > a
-        for a, b in zip(candidate.R6_HEIGHTS_MM, candidate.R6_HEIGHTS_MM[1:])
+        b > a for a, b in zip(candidate.R6_HEIGHTS_MM, candidate.R6_HEIGHTS_MM[1:])
     )
     assert 235 in candidate.R6_HEIGHTS_MM and 245 in candidate.R6_HEIGHTS_MM
-    assert (
-        candidate.R5_REJECTED_HEIGHTS_MM[1]
-        > candidate.R5_REJECTED_HEIGHTS_MM[2]
-    )
+    assert candidate.R5_REJECTED_HEIGHTS_MM[1] > candidate.R5_REJECTED_HEIGHTS_MM[2]
 
 
 def test_r5_original_generator_default_unchanged():
@@ -40,9 +36,7 @@ def test_r5_original_generator_default_unchanged():
 
 
 def test_nonmonotone_negative_control(monkeypatch):
-    monkeypatch.setattr(
-        candidate, "R6_HEIGHTS_MM", (230, 240, 230, 235, 245)
-    )
+    monkeypatch.setattr(candidate, "R6_HEIGHTS_MM", (230, 240, 230, 235, 245))
     with pytest.raises(ValueError, match="descending"):
         candidate.bridge({}, [], [], [], [], -1, _synthetic_profile())
 
@@ -51,8 +45,7 @@ def test_r6_reuses_four_gores_and_four_tip_wedges():
     with patch.object(baseline, "_append_side_gores") as gores:
         with patch.object(baseline, "_append_tip_wedges") as wedges:
             gores.return_value = [
-                np.arange(i * 45, (i + 1) * 45).reshape(5, 9)
-                for i in range(4)
+                np.arange(i * 45, (i + 1) * 45).reshape(5, 9) for i in range(4)
             ]
             result = candidate.bridge(
                 {}, [], [], [], np.arange(32), -1, _synthetic_profile()
