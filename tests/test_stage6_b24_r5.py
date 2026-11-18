@@ -6,6 +6,7 @@ import numpy as np
 import pytest
 from shapely.geometry import Polygon
 
+from research.stage6_b24_r5.audit_r5_side_lobes import comparison
 from research.stage6_b24_r5.build_r5_side_lobes import (
     _cap_clearances,
     _cap_with_two_real_openings,
@@ -14,7 +15,6 @@ from research.stage6_b24_r5.build_r5_side_lobes import (
     _make_hole,
     _resample_source_loop,
 )
-from research.stage6_b24_r5.audit_r5_side_lobes import comparison
 
 
 def _ellipse_outer():
