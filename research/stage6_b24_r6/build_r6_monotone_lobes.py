@@ -38,12 +38,8 @@ def bridge(arrays, faces, roles, springs, hole_ids, side, rings):
     )
     for index, gore in enumerate(all_ids):
         following = all_ids[(index + 1) % 4]
-        springs.extend(
-            (int(a), int(b)) for a, b in zip(gore[:, -1], following[:, 0])
-        )
-    base._append_tip_wedges(
-        arrays, faces, roles, springs, side, full, heights, all_ids
-    )
+        springs.extend((int(a), int(b)) for a, b in zip(gore[:, -1], following[:, 0]))
+    base._append_tip_wedges(arrays, faces, roles, springs, side, full, heights, all_ids)
     return {
         "side": "L" if side < 0 else "R",
         "gore_panels": 4,
