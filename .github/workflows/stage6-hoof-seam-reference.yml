@@ -53,6 +53,7 @@ on:
       - 'research/stage6_b24_r2/**'
       - 'research/stage6_b24_r3/**'
       - 'research/stage6_b24_r4/**'
+      - 'research/stage6_b24_r5/**'
       - 'scripts/unwrap_stage6_true_crown_caps_blender.py'
       - 'scripts/audit_stage6_true_crown_caps_abf.py'
       - 'scripts/build_stage6_protrusion_bisect_ab.py'
