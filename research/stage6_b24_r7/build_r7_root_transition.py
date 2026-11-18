@@ -56,13 +56,14 @@ def generate(stage, source, output):
     """Reuse trusted R5 panel construction and save a separate R7 candidate."""
     out = Path(output)
     report = base.generate(stage, source, out, bridge_builder=bridge)
-    candidate = out / "R5_SOURCE_TWO_SIDE_LOBES_2D_REST_3D_PREPOSITION_NOT_SIMULATED.npz"
+    candidate = (
+        out / "R5_SOURCE_TWO_SIDE_LOBES_2D_REST_3D_PREPOSITION_NOT_SIMULATED.npz"
+    )
     digest = hashlib.sha256(candidate.read_bytes()).hexdigest()
     if digest != report["R5_stage_npz_SHA256"]:
         raise ValueError("R7 3D/2D stage hash differs from audited generator")
     if len(report["side_lobe_panels"]) != 2 or any(
-        x["profile_z_mm"] != list(R7_LEVELS_MM)
-        for x in report["side_lobe_panels"]
+        x["profile_z_mm"] != list(R7_LEVELS_MM) for x in report["side_lobe_panels"]
     ):
         raise ValueError("R7 source panel identity changed")
     metadata = {
