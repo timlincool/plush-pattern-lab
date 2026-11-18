@@ -348,7 +348,7 @@ def _append_bridge(arrays, faces, roles, springs, hole_ids, side, rings):
     }
 
 
-def generate(stage, source, output):
+def generate(stage, source, output, bridge_builder=_append_bridge):
     output = Path(output)
     if output.exists() and any(output.iterdir()):
         raise ValueError("refuse to overwrite earlier research output")
@@ -389,7 +389,7 @@ def generate(stage, source, output):
             for z in SOURCE_LEVELS_MM
         ]
         panels.append(
-            _append_bridge(
+            bridge_builder(
                 arrays, faces, roles, springs, ids, side, [hole_xy[(side > 0)], *target]
             )
         )

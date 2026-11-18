@@ -54,6 +54,7 @@ on:
       - 'research/stage6_b24_r3/**'
       - 'research/stage6_b24_r4/**'
       - 'research/stage6_b24_r5/**'
+      - 'research/stage6_b24_r6/**'
       - 'scripts/unwrap_stage6_true_crown_caps_blender.py'
       - 'scripts/audit_stage6_true_crown_caps_abf.py'
       - 'scripts/build_stage6_protrusion_bisect_ab.py'
@@ -2092,6 +2093,74 @@ jobs:
             --baseline "$r3/solver/R3_ACTUAL_EVALUATED_CLOTH_FRAME40.npz" \
             --candidate "$trial/solver/R5_GENUINE_EVALUATED_CLOTH_FRAME40.npz" \
             --out "$trial/solver/R5_VERSUS_R3_TRUE_BLENDER_SOURCE_HEAD_AB.json"
+      - name: R6 monotone head-lobe bridge native Cloth 40f vs R5 genuine physics
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/stage6-reference"
+          r3="$root/stage6_b24_r3_physical"
+          r5="$root/stage6_b24_r5_physical"
+          r6="$root/stage6_b24_r6_physical"
+          source="$RUNNER_TEMP/stage6-proxy-candidates/core_shell_proxy_ratio_0.25.ply"
+          python -m research.stage6_b24_r6.build_r6_monotone_lobes \
+            --stage "$r3/R3_MATCHED_24_PIECE_2D_REST_AND_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --source "$source" --out "$r6"
+          python -m research.stage6_b24_r5.audit_r5_side_lobes \
+            --stage "$r6/R5_SOURCE_TWO_SIDE_LOBES_2D_REST_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --r3 "$r3/R3_MATCHED_24_PIECE_2D_REST_AND_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --out "$r6/R5_INDEPENDENT_NETLINES_QA.json"
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          import numpy as np
+
+          root = Path(os.environ["RUNNER_TEMP"]) / "stage6-reference"
+          r5 = root / "stage6_b24_r5_physical"
+          r6 = root / "stage6_b24_r6_physical"
+          manifest = json.loads((r6 / "R6_MONOTONE_BRIDGE_PROVENANCE.json").read_text())
+          qa = json.loads((r6 / "R5_INDEPENDENT_NETLINES_QA.json").read_text())
+          stage = r6 / "R5_SOURCE_TWO_SIDE_LOBES_2D_REST_3D_PREPOSITION_NOT_SIMULATED.npz"
+          assert manifest["schema"] == "stage6-R6-monotone-lobe-no-backtracking-research-v1"
+          assert manifest["R6_monotone_heights_mm"] == [230, 231, 232, 235, 245]
+          assert manifest["source_stage_sha256"] == hashlib.sha256(stage.read_bytes()).hexdigest()
+          assert qa["total_research_panels"] == 40
+          assert qa["new_R5_narrow_gores_do_not_self_overlap"]
+          assert qa["new_2d_paired_line_length_max_mismatch_mm"] < 0.0001
+          assert qa["preposition_global_edge_strain"]["P95_pct"] < 10.5
+          assert qa["preposition_global_edge_strain"]["max_pct"] < 75
+          assert qa["source_original_4_ear_meshes_physically_sewn"] == 0
+          with np.load(stage, allow_pickle=False) as trial:
+              xyz = trial["initial_3d_prepositioned_vertices_m"]
+              springs = trial["original_sewing_spring_vertex_pairs"]
+          with np.load(
+              r5 / "R5_SOURCE_TWO_SIDE_LOBES_2D_REST_3D_PREPOSITION_NOT_SIMULATED.npz",
+              allow_pickle=False,
+          ) as baseline:
+              assert np.array_equal(springs, baseline["original_sewing_spring_vertex_pairs"])
+          for start in (2699, 2919):
+              z = [
+                  float(np.mean(xyz[start + row * 9:start + (row + 1) * 9, 2]) * 1000)
+                  for row in range(5)
+              ]
+              assert np.allclose(z, [230, 231, 232, 235, 245], atol=1e-5), z
+          assert manifest["factory_cutting_patterns_approved"] == 0
+          print("R6_ASCENDING_Z_1170_IDENTICAL_SPRINGS_NETLINES_AND_STRAIN_PASS")
+          PY
+          mkdir -p "$r6/solver"
+          "$BLENDER" --disable-autoexec --python-exit-code 1 -b -t 1 \
+            --python research/stage6_b24_r5/run_r5_blender.py -- \
+            --stage "$r6/R5_SOURCE_TWO_SIDE_LOBES_2D_REST_3D_PREPOSITION_NOT_SIMULATED.npz" \
+            --qa "$r6/R5_RESEARCH_TOPOLOGY_QA.json" \
+            --audit "$r6/R5_INDEPENDENT_NETLINES_QA.json" \
+            --out "$r6/solver" --frames 40
+          python -m research.stage6_b24_r6.audit_r6_physical_ab \
+            --source "$source" \
+            --baseline "$r5/solver/R5_GENUINE_EVALUATED_CLOTH_FRAME40.npz" \
+            --candidate "$r6/solver/R5_GENUINE_EVALUATED_CLOTH_FRAME40.npz" \
+            --out "$r6/solver/R6_VERSUS_R5_REAL_BLENDER_AB.json"
       - name: Keep research JSON and SVG only (no model/secret artifacts)
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -2113,6 +2182,7 @@ jobs:
             ${{ runner.temp }}/stage6-reference/stage6_b24_r3_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_r4_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_r5_physical/**
+            ${{ runner.temp }}/stage6-reference/stage6_b24_r6_physical/**
             ${{ runner.temp }}/stage6-reference/stage6_b24_cloth_source_yoke_CDT.json
             ${{ runner.temp }}/stage6-reference/stage6_external_s2s_abf_research/**
             ${{ runner.temp }}/stage6-reference/true_stage6_source_section_*.json
