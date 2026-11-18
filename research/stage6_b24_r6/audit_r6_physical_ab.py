@@ -59,15 +59,9 @@ def verify(source, baseline, candidate, output):
         raise ValueError("R6 Blender Cloth vertices are invalid")
     old_shape = _geometry_distance(target, before)
     new_shape = _geometry_distance(target, after)
-    old_material = _physics_diagnostics(
-        before, springs_old, rest_old, edges_old
-    )
-    new_material = _physics_diagnostics(
-        after, springs_new, rest_new, edges_new
-    )
-    high = _rename_head_metrics(
-        _side_surface_metrics(target, before, after)
-    )
+    old_material = _physics_diagnostics(before, springs_old, rest_old, edges_old)
+    new_material = _physics_diagnostics(after, springs_new, rest_new, edges_new)
+    high = _rename_head_metrics(_side_surface_metrics(target, before, after))
     report = {
         "schema": "stage6-R6-monotone-native40f-vs-R5-physical-AB-v1",
         "R5_real_cloth_npz_SHA256": _sha(baseline),
@@ -95,9 +89,7 @@ def verify(source, baseline, candidate, output):
         "P4": "not_started",
     }
     after.export(output.parent / "R6_MONOTONE_REAL_BLENDER_FRAME40_UNAPPROVED.glb")
-    output.write_text(
-        json.dumps(report, ensure_ascii=False, indent=2) + "\n"
-    )
+    output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     print("STAGE6_R6_REAL_FRAME40_VS_R5", json.dumps(report))
     return report
 
