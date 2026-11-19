@@ -1,0 +1,102 @@
+{
+  "schema": "cloud-alpaca-single-unit-no-rework-manufacturing-release-gates-v1",
+  "updated_at": "2026-11-19",
+  "product": "Cloud Alpaca ~25cm, one commissioned physical plush, no iterative customer-return cycle",
+  "state": "HOLD_NOT_AUTHORIZED_FOR_CUTTING",
+  "ready_for_factory_cutting": false,
+  "final_factory_version_exists": false,
+  "approved_cut_patterns": 0,
+  "source_appearance_contract": "design/reference-v25/APPEARANCE_CONTRACT_v25.md",
+  "historic_pdf_preflight": {
+    "document": "Historical 1.1-R1-PROTOTYPE 26-page A4 patterns",
+    "historic_pdf_sha256": "1e7b5cecfd67209bff45720aeb21a93849a279780668547055d0b5b65d720a66",
+    "pages_verified": 26,
+    "paper_size": "A4 210x297 mm",
+    "vector_ruler_50mm_each_page": true,
+    "vector_square_20x20mm_each_page": true,
+    "red_cutline_blue_stitchline_each_page": true,
+    "historic_total_cut_pieces": 82,
+    "historic_drop_count": 8,
+    "mathematical_88_pieces_if_only_two_drops_and_straps_added": true,
+    "factory_current_pattern_accepted": false,
+    "text_extraction_unicode_glyph_mapping_imperfect": true,
+    "scope": "vector PDF geometry only; actual printer calibration, newest 3D shape, stitching and fill are not verified"
+  },
+  "current_design_drops": {
+    "total": 10,
+    "blue": 5,
+    "slate": 3,
+    "aqua": 2,
+    "finished_tab_width_mm": 4,
+    "cut_tab_width_mm": 8,
+    "anchor_registration_is_3d_visual_only": true,
+    "source_gaps_to_named_hosts_up_to_mm": 5.94813749
+  },
+  "material_bom": "design/manufacturing/SINGLE_UNIT_MATERIAL_BOM_CANDIDATE.csv",
+  "drop_anchors": "design/manufacturing/SINGLE_UNIT_10_DROP_ATTACHMENT_CANDIDATES.csv",
+  "master_instructions": "docs/SINGLE_UNIT_MASTER_MANUFACTURING_SPEC_DRAFT.md",
+  "number_of_resolved_manufacturing_gates": 0,
+  "must_pass_all_before_single_unit_cutting": [
+    {
+      "id": "G01",
+      "topic": "appearance_views_and_dimensions",
+      "needed": "needs_approved_6_views_and_height_landmarks",
+      "status": "HOLD"
+    },
+    {
+      "id": "G02",
+      "topic": "all_sewing_components_accounted",
+      "needed": "stage6_41_to_factory_part_roles_and_true_joins_incomplete",
+      "status": "HOLD"
+    },
+    {
+      "id": "G03",
+      "topic": "single_version_1to1_patterns",
+      "needed": "legacy_26_A4_vector_50mm_and_20mm_scalebars_pass_but_current_10_drop_and_modern_head_body_patterns_missing",
+      "status": "HOLD"
+    },
+    {
+      "id": "G04",
+      "topic": "net_seam_alignment_and_turning",
+      "needed": "not_all_parts_has_verified_mated_net_seams_and_sewn_turning_paths",
+      "status": "HOLD"
+    },
+    {
+      "id": "G05",
+      "topic": "embroider_ears_clouds_tail_and_10_drops",
+      "needed": "visual_source_positions_not_registered_to_current_2D_attachment_host",
+      "status": "HOLD"
+    },
+    {
+      "id": "G06",
+      "topic": "confirmed_material_sku_and_fabric_behavior",
+      "needed": "no_vendor_accepted_material_lot_shade_pile_stretch_data",
+      "status": "HOLD"
+    },
+    {
+      "id": "G07",
+      "topic": "measured_fill_and_standing_appearance",
+      "needed": "only_104_5g_historic_8drop_guess_and_105g_hypothetical_10drop_unvalidated",
+      "status": "HOLD"
+    },
+    {
+      "id": "G08",
+      "topic": "workshop_ability_format_quote_review",
+      "needed": "one_unit_factory_has_not_accepted_pdf_svg_dxf_methods_or_total_quote",
+      "status": "HOLD"
+    },
+    {
+      "id": "G09",
+      "topic": "immutable_factory_bundle",
+      "needed": "no_final_versioned_manifest_of_all_bom_pattern_stitch_files",
+      "status": "HOLD"
+    }
+  ],
+  "conditional_safety_gate": {
+    "id": "G10",
+    "status": "UNDETERMINED",
+    "condition": "If made for children or sold, require relevant safety/attachment verification and legal compliance."
+  },
+  "authoritative_status_source": "docs/PRODUCTION_PROGRESS.json",
+  "instruction": "Do not mark ready by only changing this JSON; require signed evidence and matching release manifest."
+}
