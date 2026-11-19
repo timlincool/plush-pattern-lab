@@ -2,6 +2,8 @@
 
 **用途**：围绕约 25 cm 原创云朵羊驼生成**一个工厂能据此报价、打样、修版和批量复现**的正式技术包。不代表当前任何项目文件已通过。实际进展以 [PRODUCTION_PROGRESS.json](PRODUCTION_PROGRESS.json) 为准。
 
+**单只工程主规范（仍未放行）：** [材料、裁片、填充、16步SOP与返工预防总表](SINGLE_UNIT_MASTER_MANUFACTURING_SPEC_DRAFT.md)；[必须通过才能开工的结构化门禁](SINGLE_UNIT_FACTORY_RELEASE_GATES.json)；[12类材料候选采购BOM](../design/manufacturing/SINGLE_UNIT_MATERIAL_BOM_CANDIDATE.csv)；[10水滴源位置候选表](../design/manufacturing/SINGLE_UNIT_10_DROP_ATTACHMENT_CANDIDATES.csv)。这四份**不是正式工厂包**，不应因表格完整而取消工坊内部验图或实样验证。旧26页A4纸样虽然PDF矢量比例正确，但只支持历史8枚水滴。
+
 **当前优先路径：单只制作、一轮验图、尽量一次性交付。** 采购需求、历史8枚与当前10枚水滴的版本冲突、试制文件门禁见 [单只制作方案](SINGLE_UNIT_PLUSH_SAMPLE_SCOPE.md)；可复制的询价内容见 [单只工坊询价模板](SINGLE_UNIT_SUPPLIER_RFQ.md)。以下标准化批量生产清单仍保留为后续要求，**不得倒推为现有文件已具备工业可裁性**。
 
 **当前已有但尚未批准的基础结构数据：** [Stage6 42 个视觉网格 → 制造部件候选、40项连接意图](../design/manufacturing/STAGE6_COMPONENT_REGISTRY_DRAFT.json)。其中任何 `pieces_to_cut=null` 均表示没有确认裁片件数；不得复制进正式BOM，也不能作为自动化裁床数据。

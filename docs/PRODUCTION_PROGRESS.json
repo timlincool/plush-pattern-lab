@@ -1,6 +1,6 @@
 {
   "schema": "cloud-alpaca-production-progress-v1",
-  "updated_at": "2026-11-18",
+  "updated_at": "2026-11-19",
   "canonical_document": "docs/FACTORY_ROADMAP.md",
   "factory_handoff": "docs/FACTORY_HANDOFF.md",
   "source_repository": "timlincool/plush-pattern-lab",
@@ -534,7 +534,16 @@
       "name": "真实角色 1:1 工业纸样",
       "status": "not_started",
       "acceptance": "整只角色所有裁片含完整缝线/裁切线/缝份/标记/毛向/镜像件数，1:1 PDF/SVG 与目标厂商 DXF 可校核",
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/SINGLE_UNIT_MASTER_MANUFACTURING_SPEC_DRAFT.md",
+          "kind": "preproduction_process_document_materials_stuffing_assembly_10_drop_reconciliation_not_cutable_patterns"
+        },
+        {
+          "path": "docs/SINGLE_UNIT_FACTORY_RELEASE_GATES.json",
+          "kind": "no_cutting_release_blocked_until_9_required_gates_proven"
+        }
+      ],
       "blockers": [
         "现有 12+2 纸样仅为合成椭球，不是本产品纸样"
       ]
@@ -1736,6 +1745,13 @@
   "next_actions": [
     {
       "priority": "P0",
+      "phase_id": "P4",
+      "owner": "设计端/制版与工艺审核",
+      "action": "目标为完整单只可执行纸样及配套工艺而非无限R8局部自碰研究。已核验用户历史26页A4单只纸样：全部A4 210×297、含精确50mm标尺/20×20校准方框及独立红裁切蓝净缝矢量线，但旧版26模板82片、只8枚水滴，当前Stage6与外观合同10枚（蓝5、灰蓝3、青2）且短布带旧10mm料宽与新裁宽8mm/成品4mm冲突。现已建立单只总制造草案、12材料SKU候选表、10水滴3D锚点候选表、16步含提前埋短布带根端的SOP、分区填棉候选和G01-G09全HOLD机器门禁。下一步首先把真实Stage6外观逐件映射到统一1:1纸样与真实净缝，修复十水滴2D安装点、两耳根/头身/云层装配及面部刺绣，之后使用实际面料提供的SKU/布样数据确认针距、缝份和填棉；在所有门禁完成前绝对不授权工匠开裁。",
+      "done_when": "同一冻结版号下每片材料SKU/颜色/毛向/净缝/裁切/缝份/编号/镜像/标注和配缝全部可机检，10水滴及7云装配、真实材料/分腔填充、翻口和SOP一致，供应商书面表示一只按图可以做且仅承担采购/人工；此后才能从HOLD改为READY_FOR_ONE_OFF_CUTTING。"
+    },
+    {
+      "priority": "P0",
       "phase_id": "P1",
       "owner": "设计端＋单只加工工坊",
       "action": "切换实物交付优先路线：只制作一只约25cm云朵羊驼，先发询价与生产文件格式确认，再完成一套统一版本的实尺试裁纸样，避免反复寄回修版。现有历史26页1:1 A4纸样/82片只含8枚水滴，当前设计是10枚且未实测；不得直接转交厂商宣称可生产。使用 docs/SINGLE_UNIT_PLUSH_SAMPLE_SCOPE.md 和 docs/SINGLE_UNIT_SUPPLIER_RFQ.md 向接受单件订单的工坊询问包工包料总价、文件格式、纯执行与最小必要修版价差、现货面料、版权与交期；¥600–1000只是询价谈判目标，非承诺报价。",
@@ -2351,6 +2367,11 @@
       "date": "2026-11-18",
       "event": "用户明确选择单只约25cm原创羊驼的一次性交付路线，希望我方尽量提前完成纸样以减少工坊研发和修版工作。复核用户历史资料：2026-10-19旧工艺手册1.1-R1-PROTOTYPE有26种纸样/82片与实际26页A4实尺文档，但只有8枚布艺水滴且无布料/填棉/实物验证；当前设计和Stage6登记为10枚。旧版不能直接当新10水滴工厂最终版，R5/R6/R7真实Blender求解亦未形成整只可裁纸样。新增单只打样需求与询价模板，报价目标600–1000元仅谈判参考；优先做统一完整1:1试裁技术包→单只可加工性预检→一次制作，保留原P1/P3/P4未通过的工厂门禁。",
       "evidence_path": "docs/SINGLE_UNIT_PLUSH_SAMPLE_SCOPE.md"
+    },
+    {
+      "date": "2026-11-19",
+      "event": "用户明确拒绝提前交付：只接受后续工匠主要出材料/人工、几乎不需设计返工的统一完整工程技术包。实际使用Library原始26页A4 R1-PROTOTYPE进行PDF矢量审计，26页A4均210×297mm，全部具有50mm校准标尺和20×20mm正方框、红裁切/蓝净缝线；只是PDF矢量比例通过，实体布料或最新款式未通过。复核历史26模板82片、8枚水滴与现Stage6 10枚蓝5灰蓝3青2、8mm裁宽/4mm成品布带冲突。新增工艺主规范（12材料类目BOM、旧填棉各腔候选、16步SOP、提前埋设水滴布带、真实10水滴锚点CSV和G01-G09全HOLD门禁）；纸样/材料厂家真实SKU/布料回弹/实物形状/完整新版1:1未完成，不得批准开剪。P1未开始、P3在研、P4未开始、工厂纸样0。",
+      "evidence_path": "docs/SINGLE_UNIT_MASTER_MANUFACTURING_SPEC_DRAFT.md"
     }
   ]
 }
