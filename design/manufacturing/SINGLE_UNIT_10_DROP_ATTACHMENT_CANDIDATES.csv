@@ -1,0 +1,11 @@
+drop_id,color,source_visual_anchor_x_mm,source_visual_anchor_y_mm,source_visual_anchor_z_mm,source_drop_top_x_mm,source_drop_top_y_mm,source_drop_top_z_mm,source_named_host,source_visual_centerline_mm,initial_cut_length_mm,finished_tab_width_mm,cut_tab_width_mm,source_to_host_distance_mm,attachment_real_net_seam_confirmed
+"D01","blue","-47.45","-73.34","224.44","-60","-80","212","Varied ivory forehead cloud","18.884167901519085","30.884167901519085","4","8","0.698339194059372","NO"
+"D02","blue","53","-70","224","56","-80","215","Varied ivory forehead cloud","13.784048752090222","25.78404875209022","4","8","4.695712588727474","NO"
+"D03","slate","-60","-42","187","-66","-49","180","Grey head cloud halo","11.575836902790225","23.575836902790225","4","8","2.709380816668272","NO"
+"D04","aqua","-37.96","-71.79","133.15","-46","-85","125","Asymmetric flowing ivory bib","17.48050606665011","29.48050606665011","4","8","0.695789058227092","NO"
+"D05","blue","34","-76","130","39","-84","122","Asymmetric flowing ivory bib","12.36931687685298","24.36931687685298","4","8","0.5929492181167006","NO"
+"D06","blue","-53","20","105","-61","17","97","Grey flank cloud -1","11.704699910719626","23.704699910719626","4","8","5.948137491941452","NO"
+"D07","aqua","-50.08","-19.31","104.01","-60","-29","96","Grey flank cloud -1","16.014449985478812","28.014449985478812","4","8","0.6930243689566851","NO"
+"D08","slate","7","-88","91","9","-98","82","Asymmetric flowing ivory bib","13.601470508735444","25.601470508735446","4","8","1.5358254313468933","NO"
+"D09","slate","-25","-82","153","-29","-88","146","Asymmetric flowing ivory bib","10.04987562112089","22.04987562112089","4","8","2.9516767244786024","NO"
+"D10","blue","39","-66","95","44","-75","88","Asymmetric flowing ivory bib","12.449899597988733","24.449899597988733","4","8","2.2922158241271973","NO"
